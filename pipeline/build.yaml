@@ -21,3 +21,4 @@ run:
   args:
   - run
   - ci-build
+  dir: source
