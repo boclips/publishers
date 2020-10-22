@@ -1,0 +1,20 @@
+{
+  "name": "publishers",
+  "version": "1.0.0",
+  "description": "The publishers frontend app, v2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ci-build": "npm ci && cp index.html ../dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boclips/publishers.git"
+  },
+  "author": "avrono",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boclips/publishers/issues"
+  },
+  "homepage": "https://github.com/boclips/publishers#readme"
+}
