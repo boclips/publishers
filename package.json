@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ci-build": "mkdir ../dist/ && npm ci && cp -R dist/ ../dist/html && cp application.conf Dockerfile ../dist/"
+    "ci-build": "npm ci && webpack && cp -R dist/ ../dist/html && cp application.conf Dockerfile ../dist/"
   },
   "repository": {
     "type": "git",
