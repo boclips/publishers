@@ -5,7 +5,15 @@ module.exports = {
   },
   purge: ["./src/**/*.html"],
   theme: {
-    extend: {},
+    fontFamily: {
+      'heading': ['Rubik Medium'],
+    },
+    extend: {
+      colors: {
+        "primary": '#00217D',
+        "primary-light": '#F5F8FF'
+      },
+    },
   },
   variants: {},
   plugins: [],

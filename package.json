@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack serve --mode development",
     "ci-build": "npm ci && webpack && cp -R dist/ ../dist/html && cp application.conf Dockerfile ../dist/"
   },
   "repository": {
@@ -28,6 +29,10 @@
     "style-loader": "^2.0.0",
     "tailwindcss": "^1.9.5",
     "webpack": "^5.2.0",
-    "webpack-cli": "^4.1.0"
+    "webpack-cli": "^4.1.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "copy-webpack-plugin": "^6.2.1"
   }
 }
