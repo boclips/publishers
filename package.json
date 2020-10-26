@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --mode development",
-    "ci-build": "npm ci && webpack && cp -R dist/ ../dist/html && cp application.conf Dockerfile ../dist/"
+    "ci-build": "npm ci && NODE_ENV=production webpack --mode production && cp -R dist/ ../dist/html && cp application.conf Dockerfile ../dist/"
   },
   "repository": {
     "type": "git",
