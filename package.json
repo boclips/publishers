@@ -2,7 +2,7 @@
   "name": "publishers",
   "version": "1.0.0",
   "description": "The publishers frontend app, v2",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --mode development",
@@ -33,6 +33,22 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^6.2.1"
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
+    "copy-webpack-plugin": "^6.2.1",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-config-boclips": "^1.0.6",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.1.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "ts-loader": "^8.0.7",
+    "typescript": "^4.0.5"
   }
 }
