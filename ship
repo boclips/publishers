@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+git pull -r
+
+npm i
+npm run ci-build
+
+git push
