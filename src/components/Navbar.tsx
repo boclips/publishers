@@ -12,7 +12,7 @@ const Navbar = () => {
           </a>
         </div>
         <div className="flex mr-2 items-center">
-          <span className="mr-4">
+          <span className="mr-4 text-primary">
             <MyAccountSVG />
           </span>
           <span>
