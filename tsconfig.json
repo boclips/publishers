@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "baseUrl": "./src",
+    "skipLibCheck": true,
     "paths": {
       "src/*": ["*"],
       "resources/*": ["../resources/*"],
