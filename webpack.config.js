@@ -8,6 +8,9 @@ const path = require('path');
 const srcPath = path.resolve(__dirname, 'src');
 
 module.exports = {
+  output: {
+    filename: '[name].[chunkhash].js',
+  },
   entry: path.resolve(srcPath, 'index.tsx'),
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -24,11 +27,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        exclude: /node_modules/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
-      },
-      {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: {
@@ -37,6 +35,11 @@ module.exports = {
             transpileOnly: true,
           },
         },
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
       },
       {
         test: /.svg$/i,
@@ -51,7 +54,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({ filename: '[name].[chunkhash].css' }),
     new HtmlWebpackPlugin({ template: path.resolve(srcPath, 'index.html') }),
     new CopyWebpackPlugin({
       patterns: [{ from: './src/resources', to: 'assets' }],

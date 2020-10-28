@@ -3,7 +3,7 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
-  purge: ['./src/**/*.html'],
+  purge: ['./src/**/*.html', './src/**/*.tsx'],
   theme: {
     fontFamily: {
       sans: ['Rubik'],
