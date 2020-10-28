@@ -3,6 +3,9 @@
 git pull -r
 
 npm i
-npm run ci-build
+
+npm run compile
+
+npm run lint
 
 git push

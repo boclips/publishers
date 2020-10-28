@@ -6,14 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve --mode development",
+    "compile": "tsc -p . --noEmit",
     "ci-build": "npm ci && NODE_ENV=production webpack --mode production && cp -R ./dist/ ../dist/html/ && cp application.conf Dockerfile ../dist",
     "build:local": "NODE_ENV=production webpack --mode production",
-    "lint": "npm-run-all --parallel --print-label --aggregate-output lint:eslint lint:prettier",
-    "lint:fix": "npm-run-all --print-label lint:eslint:fix lint:prettier:fix",
-    "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:eslint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
-    "lint:prettier": "prettier --config .prettierrc --check \"**/*.{ts,tsx}\"",
-    "lint:prettier:fix": "prettier --config .prettierrc --write \"**/*.{ts,tsx}\""
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "repository": {
     "type": "git",
@@ -52,7 +49,6 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
