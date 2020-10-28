@@ -4,7 +4,7 @@
   "description": "The publishers frontend app, v2",
   "main": "index.tsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "webpack serve --mode development",
     "compile": "tsc -p . --noEmit",
     "ci-build": "npm ci && NODE_ENV=production webpack --mode production && cp -R ./dist/ ../dist/html/ && cp application.conf Dockerfile ../dist",
