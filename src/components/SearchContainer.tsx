@@ -14,7 +14,10 @@ const SearchContainer = () => {
               placeholder="Search by topic or keyword"
               className="h-full w-full ml-2 focus:outline-none"
             />
-            <button className="w-48 text-white bg-primary rounded font-medium text-lg hover:bg-primary-hover active:bg-primary-active focus:shadow-button-focus focus:outline-none">
+            <button
+              className="w-48 text-white bg-primary rounded font-medium text-lg hover:bg-primary-hover active:bg-primary-active focus:shadow-button-focus focus:outline-none"
+              type="button"
+            >
               <div className="flex justify-center w-full">
                 <span className="mr-3 mt-1">
                   <svg
