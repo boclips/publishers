@@ -7,6 +7,9 @@ const path = require('path');
 
 const srcPath = path.resolve(__dirname, 'src');
 
+const productionBuild = process.env.NODE_ENV === 'production';
+const devBuild = !productionBuild;
+
 module.exports = {
   output: {
     filename: '[name].[chunkhash].js',
@@ -54,8 +57,16 @@ module.exports = {
     ],
   },
   plugins: [
+    devBuild &&
+      new HtmlWebpackPlugin({
+        inject: false,
+        filename: 'silent-check-sso.html',
+        template: path.resolve(srcPath, 'silent-check-sso.html'),
+      }),
     new MiniCssExtractPlugin({ filename: '[name].[chunkhash].css' }),
-    new HtmlWebpackPlugin({ template: path.resolve(srcPath, 'index.html') }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(srcPath, `index${devBuild ? '-dev' : ''}.html`),
+    }),
     new CopyWebpackPlugin({
       patterns: [{ from: './src/resources', to: 'assets' }],
     }),
