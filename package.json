@@ -5,10 +5,10 @@
   "main": "index.tsx",
   "scripts": {
     "test": "jest",
-    "dev": "webpack serve --mode development",
+    "dev": "webpack serve --config webpack/webpack.dev.js",
     "compile": "tsc -p . --noEmit",
     "ci-build": "npm ci && npm run test && npm run lint && npm run build && cp -R ./dist/ ../dist/html/ && cp application.conf Dockerfile ../dist",
-    "build": "NODE_ENV=production webpack --mode production",
+    "build": "NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
@@ -34,7 +34,8 @@
     "tailwindcss": "^1.9.5",
     "webpack": "^5.2.0",
     "webpack-cli": "^4.1.0",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.2.0"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",

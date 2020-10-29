@@ -1,0 +1,26 @@
+const { merge } = require('webpack-merge');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const common = require('./webpack.common.js');
+
+const srcPath = path.resolve(__dirname, '../src');
+
+module.exports = merge(common, {
+  mode: 'production',
+  devtool: 'source-map',
+  output: {
+    filename: '[name].[fullhash:20].js',
+    chunkFilename: '[name].[chunkhash:20].chunk.js',
+  },
+  plugins: [
+    new MiniCssExtractPlugin({ filename: '[name].[fullhash].css' }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(srcPath, 'index.html'),
+    }),
+  ],
+  optimization: {
+    minimizer: [new CssMinimizerPlugin()],
+  },
+});
