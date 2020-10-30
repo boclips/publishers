@@ -13,7 +13,7 @@ const Navbar = () => {
           </a>
         </div>
         <div className="grid grid-cols-2 gap-4 justify-center text-xs place-items-center">
-          <span className="flex items-center flex-col ">
+          <span className="flex items-center flex-col">
             <MyAccountSVG />
             Profile
           </span>
