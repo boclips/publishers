@@ -7,7 +7,9 @@ const HomeView = () => {
   return (
     <div>
       <Navbar />
-      <SearchHero />
+      <main className="container mx-auto">
+        <SearchHero />
+      </main>
       <Footer />
     </div>
   );

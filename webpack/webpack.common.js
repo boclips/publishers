@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const tsImportPluginFactory = require('ts-import-plugin');
 
 const path = require('path');
 
@@ -18,30 +19,32 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.m?js/,
-        resolve: {
-          fullySpecified: false,
-        },
-      },
+      // {
+      //   test: /\.m?js/,
+      //   resolve: {
+      //     fullySpecified: false,
+      //   },
+      // },
       {
         test: /\.(ts|tsx)$/,
         exclude: ['/node_modules/', '/storybook'],
         use: [
           {
             loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
-              plugins: [
-                '@babel/plugin-syntax-jsx',
-                '@babel/plugin-transform-react-jsx',
-              ],
-            },
           },
           {
             loader: 'ts-loader',
             options: {
-              transpileOnly: false,
+              transpileOnly: true,
+              getCustomTransformers: () => ({
+                before: [
+                  tsImportPluginFactory({
+                    libraryName: 'antd',
+                    libraryDirectory: 'lib',
+                    style: true,
+                  }),
+                ],
+              }),
             },
           },
         ],

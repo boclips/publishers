@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const webpack = require('webpack');
 const common = require('./webpack.common.js');
 
 const srcPath = path.resolve(__dirname, '../src');
@@ -27,6 +28,10 @@ module.exports = merge(common, {
     },
     minimize: true,
     minimizer: [
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      }),
       new CssMinimizerPlugin(),
       new TerserPlugin({ terserOptions: { sourceMap: true }, parallel: true }),
     ],

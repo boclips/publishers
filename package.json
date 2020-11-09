@@ -50,7 +50,8 @@
     "@babel/plugin-transform-typescript": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.1",
-    "@boclips-ui/search-bar": "^1.0.15",
+    "@boclips-ui/search-bar": "^1.2.3",
+    "@boclips-ui/styles": "^2.1.1",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@types/jest": "^26.0.15",
@@ -80,6 +81,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "svg-react-loader": "^0.4.6",
+    "ts-import-plugin": "^1.6.6",
     "ts-jest": "^26.4.3",
     "ts-loader": "^8.0.7",
     "typescript": "^4.0.5"
