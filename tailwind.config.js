@@ -18,6 +18,28 @@ module.exports = {
     // },
     extend: {
       colors: {
+        blue: {
+          100: '#F9FBFF',
+          200: '#F5F8FF',
+          300: '#E6ECFB',
+          400: '#D9E3FF',
+          500: '#BCCDFF',
+          600: '#8BAAFF',
+          700: '#193DA1',
+          800: '#00217D',
+          900: '#001550',
+        },
+        gray: {
+          100: '#F7FAFC',
+          200: '#EDF2F7',
+          300: '#E2E8F0',
+          400: '#CBD5E0',
+          500: '#A0AEC0',
+          600: '#718096',
+          700: '#4A5568',
+          800: '#2D3748',
+          900: '#1A202C'
+        },
         primary: '#00217D',
         'primary-hover': '#193DA1',
         'primary-active': '#001550',
@@ -46,9 +68,20 @@ module.exports = {
     },
   },
   variants: {
+    appearance: ['responsive', 'checked'],
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     border: ['responsive', 'hover', 'focus', 'focus-within', 'active'],
-    backgroundColor: ['responsive', 'hover', 'focus', 'focus-within', 'active'],
+    backgroundColor: [
+      'responsive',
+      'hover',
+      'focus',
+      'focus-within',
+      'active',
+      'checked',
+    ],
   },
-  plugins: [debugScreens],
+  plugins: [
+    require('@tailwindcss/custom-forms'),
+    debugScreens
+  ],
 };
