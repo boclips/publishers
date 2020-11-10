@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+cwd="$(cd "$(dirname "$0")" && pwd)"
+dir=$(mktemp -d -t fly-build-publishers.XXXXX)
+
+tidy () {
+    rm -rf "$dir"
+}
+
+trap tidy EXIT
+
+mkdir "$dir/version"
+echo TEST_VERSION > "$dir/version/version"
+
+fly --target ci execute \
+    --input source="$cwd" \
+    --config "$cwd/pipeline/build.yaml" \
+    --output dist=fly-dist
