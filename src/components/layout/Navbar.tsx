@@ -2,7 +2,7 @@ import React from 'react';
 import MyAccountSVG from '../../resources/my-account-icon.svg';
 import MyBasketSVG from '../../resources/shopping-cart-icon.svg';
 import BoclipsLogoSVG from '../../resources/boclips.svg';
-import { Search } from '../search/SearchBar';
+import { Search } from '../searchBar/SearchBar';
 
 interface Props {
   showSearchBar?: boolean;

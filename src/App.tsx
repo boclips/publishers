@@ -4,8 +4,8 @@ import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { ApiBoclipsClient } from 'boclips-api-client';
 import { ReactQueryDevtools } from 'react-query-devtools';
-import HomeView from './views/home/HomeView';
-import SearchResultsView from './views/searchResults/SearchResultsView';
+import HomeView from './views/homeView/HomeView';
+import SearchResultsView from './views/searchResultsView/SearchResultsView';
 import { ApiClientWrapper } from './services/apiClientWrapper';
 import { Constants } from './AppConstants';
 

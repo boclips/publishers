@@ -1,6 +1,6 @@
 import React from 'react';
 import HomeImageSVG from 'src/resources/home-image.svg';
-import { Search } from 'src/components/search/SearchBar';
+import { Search } from 'src/components/searchBar/SearchBar';
 
 const SearchHero = () => {
   return (
