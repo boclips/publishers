@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchHero from 'src/components/SearchHero';
+import SearchHero from 'src/components/searchHero/SearchHero';
 import { PageLayout } from 'src/components/layout/PageLayout';
 
 const HomeView = () => {
