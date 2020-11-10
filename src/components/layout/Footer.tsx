@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="container mx-auto">
+    <footer className="container mx-auto" aria-label="Boclips footer">
       <div className="border-t text-xxs text-footer pt-4 font-thin">
         <div>
           <span> Copyright © 2020 Boclips. All rights reserved. </span>

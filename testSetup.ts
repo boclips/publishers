@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import * as ReactTestingLibrary from '@testing-library/react';
+import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 
 ReactTestingLibrary.configure({ testIdAttribute: 'data-qa' });
 
@@ -16,6 +17,7 @@ window.matchMedia =
     };
   };
 
-afterEach(() => {
+afterEach(async () => {
   ReactTestingLibrary.cleanup();
+  (await FakeApiClient).clear();
 });

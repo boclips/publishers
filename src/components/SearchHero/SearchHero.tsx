@@ -1,6 +1,6 @@
 import React from 'react';
-import SearchBar from '@boclips-ui/search-bar';
 import HomeImageSVG from 'src/resources/home-image.svg';
+import { Search } from 'src/components/search/SearchBar';
 
 const SearchHero = () => {
   return (
@@ -9,13 +9,7 @@ const SearchHero = () => {
         <h1 className="mb-8 text-4xl font-medium">
           What video do you need today?
         </h1>
-        <SearchBar
-          placeholder="Search by topic or keyword"
-          size="big"
-          autocomplete={false}
-          onSearch={() => null}
-          theme="publishers"
-        />
+        <Search size="big" showIconOnly={false} />
       </div>
       <div className="col-span-5 my-16 mx-6">
         <HomeImageSVG />

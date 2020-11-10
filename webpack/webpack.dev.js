@@ -16,6 +16,7 @@ module.exports = merge(common, {
   },
   devServer: {
     contentBase: distPath,
+    historyApiFallback: true,
     port: 9000,
   },
   plugins: [

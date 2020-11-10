@@ -1,9 +1,10 @@
 import './main.less';
 
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import ReactDom from 'react-dom';
-import HomeView from 'src/views/HomeView';
 import BoclipsSecurity from 'boclips-js-security';
+import App from './App';
 import { Constants } from './AppConstants';
 
 const authOptions = {
@@ -12,7 +13,12 @@ const authOptions = {
   requireLoginPage: true,
   authEndpoint: Constants.AUTH_ENDPOINT,
   onLogin: () => {
-    ReactDom.render(<HomeView />, document.getElementById('root'));
+    ReactDom.render(
+      <Router>
+        <App />
+      </Router>,
+      document.getElementById('root'),
+    );
   },
 };
 
