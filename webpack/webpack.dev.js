@@ -10,6 +10,7 @@ const distPath = path.resolve(__dirname, '../dist');
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'eval-source-map',
+  entry: ['react-hot-loader/patch', srcPath],
   output: {
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
@@ -18,6 +19,7 @@ module.exports = merge(common, {
     contentBase: distPath,
     historyApiFallback: true,
     port: 9000,
+    hot: true,
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: '[name].css' }),

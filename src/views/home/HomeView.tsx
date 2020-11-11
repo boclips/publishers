@@ -1,12 +1,17 @@
 import React from 'react';
-import SearchHero from 'src/components/searchHero/SearchHero';
-import { PageLayout } from 'src/components/layout/PageLayout';
+import Navbar from 'src/components/layout/Navbar';
+import SearchHero from 'src/components/SearchHero/SearchHero';
+import Footer from 'src/components/layout/Footer';
 
 const HomeView = () => {
   return (
-    <PageLayout>
-      <SearchHero />
-    </PageLayout>
+    <div>
+      <Navbar />
+      <main className="container mx-auto">
+        <SearchHero />
+      </main>
+      <Footer />
+    </div>
   );
 };
 
