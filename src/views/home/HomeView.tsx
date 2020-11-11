@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from 'src/components/layout/Navbar';
-import SearchHero from 'src/components/SearchHero/SearchHero';
 import Footer from 'src/components/layout/Footer';
+import SearchHero from '../../components/searchHero/SearchHero';
 
 const HomeView = () => {
   return (
