@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { ApiBoclipsClient } from 'boclips-api-client';
 import { ReactQueryDevtools } from 'react-query-devtools';
-import { Loading } from 'src/components/common/Loading';
 import HomeView from './views/home/HomeView';
+import SearchResultsView from './views/search/SearchResultsView';
 import { ApiClientWrapper } from './services/apiClientWrapper';
 import { Constants } from './AppConstants';
 
@@ -18,10 +18,6 @@ const App = () => {
     setupClient();
   }, []);
 
-  const SearchResultsView = lazy(
-    () => import('./views/search/SearchResultsView'),
-  );
-
   return (
     <>
       <Switch>
@@ -29,9 +25,7 @@ const App = () => {
           <HomeView />
         </Route>
         <Route path="/videos">
-          <Suspense fallback={<Loading />}>
-            <SearchResultsView />
-          </Suspense>
+          <SearchResultsView />
         </Route>
       </Switch>
       <ReactQueryDevtools initialIsOpen={false} />
