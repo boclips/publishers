@@ -56,7 +56,7 @@
     "@boclips-ui/search-bar": "^1.2.3",
     "@boclips-ui/styles": "^2.1.1",
     "@boclips-ui/video": "1.0.6",
-    "@boclips-ui/video-card": "^1.1.0",
+    "@boclips-ui/video-card": "^1.1.1",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@types/jest": "^26.0.15",

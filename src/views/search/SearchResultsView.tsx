@@ -50,18 +50,21 @@ const SearchResultsView = () => {
               }}
               dataSource={resolvedData?.page}
               renderItem={(video: Video) => (
-                <VideoCard
-                  key={video.id}
-                  videoPlayer={
-                    <Player videoUri={video.links.self.getOriginalLink()} />
-                  }
-                  video={convertVideoFromApi(video)}
-                  loading={isFetching}
-                  authenticated
-                  hideAttachments
-                  hideBestFor
-                  theme="lti"
-                />
+                <div className="mb-4">
+                  <VideoCard
+                    key={video.id}
+                    videoPlayer={
+                      <Player videoUri={video.links.self.getOriginalLink()} />
+                    }
+                    border="bottom"
+                    video={convertVideoFromApi(video)}
+                    loading={isFetching}
+                    authenticated
+                    hideAttachments
+                    hideBestFor
+                    theme="lti"
+                  />
+                </div>
               )}
             />
           </div>

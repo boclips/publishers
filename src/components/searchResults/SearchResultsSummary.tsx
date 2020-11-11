@@ -7,7 +7,7 @@ interface Props {
 
 export const SearchResultsSummary = ({ count, query }: Props) => {
   return (
-    <span className="text-lg text-gray-800 font-normal">
+    <span className="text-lg text-gray-800 font-normal mb-6">
       Showing{' '}
       <span data-qa="search-hits" className="font-extrabold">
         {count}
