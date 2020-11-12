@@ -12,7 +12,7 @@ const SearchHero = () => {
         <Search size="big" showIconOnly={false} />
       </div>
       <div className="col-span-5 my-16 mx-6">
-        <HomeImageSVG />
+        <HomeImageSVG className="w-full h-full" />
       </div>
     </section>
   );
