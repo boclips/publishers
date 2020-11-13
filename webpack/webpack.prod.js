@@ -17,12 +17,19 @@ module.exports = merge(common, {
     chunkFilename: '[name].[chunkhash:20].chunk.js',
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: '[name].[fullhash:20].css' }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[fullhash:20].css',
+      chunkFilename: '[name].[chunkhash:20].chunk.css',
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(srcPath, 'index.html'),
     }),
   ],
   optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: false,
+    },
     runtimeChunk: {
       name: 'manifest',
     },

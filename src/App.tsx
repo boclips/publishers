@@ -6,7 +6,6 @@ import { ApiBoclipsClient } from 'boclips-api-client';
 import { ReactQueryDevtools } from 'react-query-devtools';
 import { Loading } from 'src/components/common/Loading';
 import { hot } from 'react-hot-loader/root';
-import HomeView from './views/home/HomeView';
 import { ApiClientWrapper } from './services/apiClientWrapper';
 import { Constants } from './AppConstants';
 
@@ -14,26 +13,27 @@ export const setupClient = () => {
   ApiClientWrapper.set(ApiBoclipsClient.create(axios, Constants.API_PREFIX));
 };
 
+const SearchResultsView = lazy(
+  () => import('./views/search/SearchResultsView'),
+);
+const HomeView = lazy(() => import('./views/home/HomeView'));
+
 const App = () => {
   useEffect(() => {
     setupClient();
   }, []);
 
-  const SearchResultsView = lazy(
-    () => import('./views/search/SearchResultsView'),
-  );
-
   return (
     <>
       <Switch>
-        <Route exact path="/">
-          <HomeView />
-        </Route>
-        <Route path="/videos">
-          <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading />}>
+          <Route exact path="/">
+            <HomeView />
+          </Route>
+          <Route path="/videos">
             <SearchResultsView />
-          </Suspense>
-        </Route>
+          </Route>
+        </Suspense>
       </Switch>
       <ReactQueryDevtools initialIsOpen={false} />
     </>

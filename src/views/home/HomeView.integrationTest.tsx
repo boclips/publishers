@@ -6,7 +6,7 @@ import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 
 describe('HomeView', () => {
-  it('loads the home view text', () => {
+  it('loads the home view text', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/']}>
         <App />
@@ -14,7 +14,7 @@ describe('HomeView', () => {
     );
 
     expect(
-      wrapper.getByText('What video do you need today?'),
+      await wrapper.findByText('What video do you need today?'),
     ).toBeInTheDocument();
   });
 
