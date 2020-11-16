@@ -23,6 +23,13 @@ const SearchResultsView = () => {
     pageSize: 10,
   });
 
+  const handleChange = (page: number) => {
+    window.scrollTo({ top: 0 });
+    history.push({
+      search: `?q=${query}&page=${page}`,
+    });
+  };
+
   return (
     <PageLayout navBar={<Navbar showSearchBar />}>
       <div className="py-10">
@@ -44,12 +51,7 @@ const SearchResultsView = () => {
                   total: resolvedData?.pageSpec?.totalElements,
                   pageSize: 10,
                   showSizeChanger: false,
-                  onChange: (page) => {
-                    history.push({
-                      search: `?q=${query}&page=${page}`,
-                    });
-                    // scrollToTop();
-                  },
+                  onChange: handleChange,
                   current: currentPage,
                 }}
                 dataSource={resolvedData?.page}
