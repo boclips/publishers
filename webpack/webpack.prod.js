@@ -8,6 +8,7 @@ const webpack = require('webpack');
 const common = require('./webpack.common.js');
 
 const srcPath = path.resolve(__dirname, '../src');
+const kilobyte = 1024;
 
 module.exports = merge(common, {
   mode: 'production',
@@ -25,6 +26,11 @@ module.exports = merge(common, {
       template: path.resolve(srcPath, 'index.html'),
     }),
   ],
+  performance: {
+    hints: 'error',
+    maxAssetSize: 800 * kilobyte, // we set this as the current largest - could maybe go lower
+    maxEntrypointSize: 450 * kilobyte,
+  },
   optimization: {
     splitChunks: {
       chunks: 'all',
