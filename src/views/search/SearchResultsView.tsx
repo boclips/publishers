@@ -1,4 +1,5 @@
 import { VideoCard } from '@boclips-ui/video-card';
+import { VideoCardsPlaceholder } from '@boclips-ui/video-card-placeholder';
 import { List } from 'antd';
 import { Video } from 'boclips-api-client/dist/types';
 import React from 'react';
@@ -33,40 +34,43 @@ const SearchResultsView = () => {
               count={resolvedData?.pageSpec?.totalElements}
               query={query}
             />
-            <List
-              itemLayout="vertical"
-              size="large"
-              pagination={{
-                total: resolvedData?.pageSpec?.totalElements,
-                pageSize: 10,
-                showSizeChanger: false,
-                onChange: (page) => {
-                  history.push({
-                    search: `?q=${query}&page=${page}`,
-                  });
-                  // scrollToTop();
-                },
-                current: currentPage,
-              }}
-              dataSource={resolvedData?.page}
-              renderItem={(video: Video) => (
-                <div className="mb-4">
-                  <VideoCard
-                    key={video.id}
-                    videoPlayer={
-                      <Player videoUri={video.links.self.getOriginalLink()} />
-                    }
-                    border="bottom"
-                    video={convertVideoFromApi(video)}
-                    loading={isFetching}
-                    authenticated
-                    hideAttachments
-                    hideBestFor
-                    theme="lti"
-                  />
-                </div>
-              )}
-            />
+            {isFetching ? (
+              <VideoCardsPlaceholder />
+            ) : (
+              <List
+                itemLayout="vertical"
+                size="large"
+                pagination={{
+                  total: resolvedData?.pageSpec?.totalElements,
+                  pageSize: 10,
+                  showSizeChanger: false,
+                  onChange: (page) => {
+                    history.push({
+                      search: `?q=${query}&page=${page}`,
+                    });
+                    // scrollToTop();
+                  },
+                  current: currentPage,
+                }}
+                dataSource={resolvedData?.page}
+                renderItem={(video: Video) => (
+                  <div className="mb-4">
+                    <VideoCard
+                      key={video.id}
+                      videoPlayer={
+                        <Player videoUri={video.links.self.getOriginalLink()} />
+                      }
+                      border="bottom"
+                      video={convertVideoFromApi(video)}
+                      authenticated
+                      hideAttachments
+                      hideBestFor
+                      theme="lti"
+                    />
+                  </div>
+                )}
+              />
+            )}
           </div>
         )}
       </div>

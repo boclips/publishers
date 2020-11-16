@@ -58,6 +58,7 @@
     "@boclips-ui/styles": "2.1.2-alpha.3",
     "@boclips-ui/video": "1.0.7-alpha.3",
     "@boclips-ui/video-card": "1.1.5-alpha.3",
+    "@boclips-ui/video-card-placeholder": "^1.1.14",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@types/jest": "^26.0.15",
