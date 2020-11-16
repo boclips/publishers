@@ -37,6 +37,7 @@
     "react-hot-loader": "^4.13.0",
     "style-loader": "^2.0.0",
     "tailwindcss": "^1.9.5",
+    "tailwindcss-debug-screens": "^1.1.0",
     "terser-webpack-plugin": "^5.0.3",
     "webpack": "^5.2.0",
     "webpack-bundle-analyzer": "^3.9.0",

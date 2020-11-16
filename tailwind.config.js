@@ -1,3 +1,5 @@
+const debugScreens = require('tailwindcss-debug-screens');
+
 module.exports = {
   future: {
     removeDeprecatedGapUtilities: true,
@@ -43,5 +45,5 @@ module.exports = {
     border: ['responsive', 'hover', 'focus', 'focus-within', 'active'],
     backgroundColor: ['responsive', 'hover', 'focus', 'focus-within', 'active'],
   },
-  plugins: [],
+  plugins: [debugScreens],
 };

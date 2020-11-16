@@ -1,5 +1,5 @@
 import React from 'react';
-import HomeImageSVG from 'src/resources/home-image.svg';
+import HomeImageSVG from 'src/resources/home-search.svg';
 import { Search } from 'src/components/searchBar/SearchBar';
 
 const SearchHero = () => {
@@ -11,8 +11,8 @@ const SearchHero = () => {
         </h1>
         <Search size="big" showIconOnly={false} />
       </div>
-      <div className="col-span-5 my-16 mx-6">
-        <HomeImageSVG className="w-full h-full" />
+      <div className="col-span-5 my-16 mx-6 w-10/12 object-scale-down">
+        <HomeImageSVG />
       </div>
     </section>
   );
