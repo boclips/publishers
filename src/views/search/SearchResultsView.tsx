@@ -32,48 +32,53 @@ const SearchResultsView = () => {
 
   return (
     <PageLayout navBar={<Navbar showSearchBar />}>
-      <div className="py-10">
+      <div className="grid grid-cols-12 gap-4">
         {isError ? (
-          <div>{error}</div>
+          <div className="col-span-12">{error}</div>
         ) : (
-          <div>
-            <SearchResultsSummary
-              count={resolvedData?.pageSpec?.totalElements}
-              query={query}
-            />
-            {isFetching ? (
-              <VideoCardsPlaceholder />
-            ) : (
-              <List
-                itemLayout="vertical"
-                size="large"
-                pagination={{
-                  total: resolvedData?.pageSpec?.totalElements,
-                  pageSize: 10,
-                  showSizeChanger: false,
-                  onChange: handleChange,
-                  current: currentPage,
-                }}
-                dataSource={resolvedData?.page}
-                renderItem={(video: Video) => (
-                  <div className="mb-4">
-                    <VideoCard
-                      key={video.id}
-                      videoPlayer={
-                        <Player videoUri={video.links.self.getOriginalLink()} />
-                      }
-                      border="bottom"
-                      video={convertVideoFromApi(video)}
-                      authenticated
-                      hideAttachments
-                      hideBestFor
-                      theme="lti"
-                    />
-                  </div>
-                )}
+          <>
+            <div className="col-start-1 col-end-4">filters</div>
+            <div className="col-start-4 col-end-13">
+              <SearchResultsSummary
+                count={resolvedData?.pageSpec?.totalElements}
+                query={query}
               />
-            )}
-          </div>
+              {isFetching ? (
+                <VideoCardsPlaceholder />
+              ) : (
+                <List
+                  itemLayout="vertical"
+                  size="large"
+                  pagination={{
+                    total: resolvedData?.pageSpec?.totalElements,
+                    pageSize: 10,
+                    showSizeChanger: false,
+                    onChange: handleChange,
+                    current: currentPage,
+                  }}
+                  dataSource={resolvedData?.page}
+                  renderItem={(video: Video) => (
+                    <div className="mb-4">
+                      <VideoCard
+                        key={video.id}
+                        videoPlayer={
+                          <Player
+                            videoUri={video.links.self.getOriginalLink()}
+                          />
+                        }
+                        border="bottom"
+                        video={convertVideoFromApi(video)}
+                        authenticated
+                        hideAttachments
+                        hideBestFor
+                        theme="publishers"
+                      />
+                    </div>
+                  )}
+                />
+              )}
+            </div>
+          </>
         )}
       </div>
     </PageLayout>

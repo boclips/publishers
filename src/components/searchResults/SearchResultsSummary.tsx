@@ -7,7 +7,7 @@ interface Props {
 
 export const SearchResultsSummary = ({ count, query }: Props) => {
   return (
-    <span className="text-lg text-gray-800 font-normal mb-6">
+    <div className="text-lg text-gray-800 font-normal mb-8 mt-6">
       Showing{' '}
       <span data-qa="search-hits" className="font-extrabold">
         {count}
@@ -15,6 +15,6 @@ export const SearchResultsSummary = ({ count, query }: Props) => {
       videos for &quot;
       {query}
       &quot;
-    </span>
+    </div>
   );
 };
