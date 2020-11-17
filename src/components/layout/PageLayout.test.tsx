@@ -12,7 +12,7 @@ describe('PageLayout', () => {
     );
 
     expect(
-      page.getByRole('navigation', { name: 'Bolcips navigation bar' }),
+      page.getByRole('navigation', { name: 'Boclips navigation bar' }),
     ).toBeVisible();
 
     expect(
@@ -45,7 +45,7 @@ describe('PageLayout', () => {
 
     expect(page.getByText('This is a navbar')).toBeVisible();
     expect(
-      page.queryByRole('navigation', { name: 'Bolcips navigation bar' }),
+      page.queryByRole('navigation', { name: 'Boclips navigation bar' }),
     ).not.toBeInTheDocument();
   });
 });

@@ -11,7 +11,7 @@ interface Props {
 
 const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
   return (
-    <nav className="shadow-md" aria-label="Bolcips navigation bar">
+    <nav className="shadow-md" aria-label="Boclips navigation bar">
       <div className="container mx-auto">
         <div className="grid grid-cols-3 md:grid-cols-12 md:gap-2 py-3 items-center">
           <div className="col-span-1 md:col-span-3">
