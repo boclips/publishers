@@ -51,7 +51,6 @@ describe('SearchResults', () => {
     expect(await wrapper.findByText('by BFI')).toBeVisible();
     expect(await wrapper.findByText('geography')).toBeVisible();
     expect(await wrapper.findByText('Ages 7-9')).toBeVisible();
-    expect(await wrapper.findByTestId('youtube-license')).toBeVisible();
   });
 
   it('renders a hits count that is updated after new search', async () => {
