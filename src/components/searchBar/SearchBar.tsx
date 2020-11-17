@@ -6,16 +6,21 @@ import { useLocationParams } from 'src/hooks/useLocationParams';
 interface Props {
   size: 'big' | 'small';
   showIconOnly: boolean;
+  onSearch?: (query: string) => void;
 }
 
-export const Search = ({ size, showIconOnly }: Props) => {
+export const Search = ({ size, showIconOnly, onSearch }: Props) => {
   const history = useHistory();
-
   const query = useLocationParams().get('q');
 
   const handleSearch = (searchQuery: string) => {
+    if (onSearch) {
+      onSearch(searchQuery);
+    }
+
     return history.push({ pathname: `/videos`, search: `?q=${searchQuery}` });
   };
+
   return (
     <SearchBar
       placeholder="Search by topic or keyword"
