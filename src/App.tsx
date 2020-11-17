@@ -6,8 +6,10 @@ import { ApiBoclipsClient } from 'boclips-api-client';
 import { ReactQueryDevtools } from 'react-query-devtools';
 import { Loading } from 'src/components/common/Loading';
 import { hot } from 'react-hot-loader/root';
+import { ReactQueryCacheProvider } from 'react-query';
 import { ApiClientWrapper } from './services/apiClientWrapper';
 import { Constants } from './AppConstants';
+import { ourQueryCache } from './hooks/api/queryCache';
 
 export const setupClient = () => {
   ApiClientWrapper.set(ApiBoclipsClient.create(axios, Constants.API_PREFIX));
@@ -26,16 +28,18 @@ const App = () => {
   return (
     <>
       <Switch>
-        <Suspense fallback={<Loading />}>
-          <Route exact path="/">
-            <HomeView />
-          </Route>
-          <Route path="/videos">
-            <SearchResultsView />
-          </Route>
-        </Suspense>
+        <ReactQueryCacheProvider queryCache={ourQueryCache}>
+          <Suspense fallback={<Loading />}>
+            <Route exact path="/">
+              <HomeView />
+            </Route>
+            <Route path="/videos">
+              <SearchResultsView />
+            </Route>
+          </Suspense>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </ReactQueryCacheProvider>
       </Switch>
-      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 };
