@@ -22,7 +22,7 @@ module.exports = merge(common, {
     hot: true,
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: '[name].css' }),
+    new MiniCssExtractPlugin({ filename: '[name].css', ignoreOrder: true }),
     new HtmlWebpackPlugin({
       inject: false,
       filename: 'silent-check-sso.html',
