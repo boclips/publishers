@@ -6,6 +6,9 @@ ReactTestingLibrary.configure({ testIdAttribute: 'data-qa' });
 
 jest.setTimeout(30000);
 
+// JSDom doesn't implement scrollTo
+window.scrollTo = jest.fn();
+
 // @ts-ignore
 window.matchMedia =
   window.matchMedia ||
