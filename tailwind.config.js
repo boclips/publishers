@@ -10,7 +10,12 @@ module.exports = {
     fontFamily: {
       sans: ['Rubik'],
     },
-
+    screens: {
+      sm: '1080px',
+      md: '1280px',
+      lg: '1440px',
+      xl: '1920px',
+    },
     extend: {
       colors: {
         primary: '#00217D',
