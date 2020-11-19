@@ -14,6 +14,7 @@ import { Player } from 'boclips-player-react';
 import Navbar from 'src/components/layout/Navbar';
 import { PageLayout } from 'src/components/layout/PageLayout';
 import { SearchResultsSummary } from 'src/components/searchResults/SearchResultsSummary';
+import playerOptions from 'src/Player/playerOptions';
 
 export const PAGE_SIZE = 10;
 
@@ -79,6 +80,7 @@ const SearchResultsView = () => {
                           <Player
                             videoUri={video.links.self.getOriginalLink()}
                             borderRadius="4px"
+                            options={playerOptions}
                           />
                         }
                         border="bottom"
