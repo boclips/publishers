@@ -12,7 +12,7 @@ const kilobyte = 1024;
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: 'source-map',
+  devtool: false,
   output: {
     filename: '[name].[fullhash:20].js',
     chunkFilename: '[name].[chunkhash:20].chunk.js',
@@ -29,12 +29,25 @@ module.exports = merge(common, {
   performance: {
     hints: 'error',
     maxAssetSize: 1015 * kilobyte, // we set this as the current largest - could maybe go lower
-    maxEntrypointSize: 450 * kilobyte,
+    maxEntrypointSize: 1024 * kilobyte,
   },
   optimization: {
     splitChunks: {
       chunks: 'all',
       name: false,
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
+            )[1];
+            return `npm.${packageName.replace('@', '')}`;
+          },
+        },
+      },
     },
     runtimeChunk: {
       name: 'manifest',
