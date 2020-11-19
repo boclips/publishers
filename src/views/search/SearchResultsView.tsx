@@ -78,6 +78,7 @@ const SearchResultsView = () => {
                         videoPlayer={
                           <Player
                             videoUri={video.links.self.getOriginalLink()}
+                            borderRadius="4px"
                           />
                         }
                         border="bottom"
