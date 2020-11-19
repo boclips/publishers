@@ -86,6 +86,7 @@ const SearchResultsView = () => {
                         hideAttachments
                         hideBestFor
                         theme="publishers"
+                        videoRoundedCorners
                       />
                     </div>
                   )}

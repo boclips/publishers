@@ -4,9 +4,13 @@
 
 @import 'antd/lib/style/themes/default.less';
 
+@font-family: 'Rubik', Helvetica Neue, Helvetica, Arial, sans-serif;
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-@font-family: 'Rubik', 'sans-serif';
+body, html {
+  font-family: @font-family!important;
+}

@@ -3,11 +3,12 @@ import HomeImageSVG from 'src/resources/home-search.svg';
 import { Search } from 'src/components/searchBar/SearchBar';
 import { prefetchSearchQuery } from 'src/hooks/api/useSearchQuery';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
+import s from './style.module.less';
 
 const SearchHero = () => {
   return (
-    <section className="grid grid-cols-12 bg-primary-light h-auto rounded-lg my-12">
-      <div className="col-span-7 mt-32 ml-16 mr-10">
+    <section className={s.heroContainer}>
+      <div className="col-start-2 col-end-8 self-center">
         <h1 className="mb-8 text-4xl font-medium">
           What video do you need today?
         </h1>
@@ -19,7 +20,7 @@ const SearchHero = () => {
           }
         />
       </div>
-      <div className="col-span-5 my-16 mx-6 w-10/12 object-scale-down">
+      <div className={s.svgContainer}>
         <HomeImageSVG />
       </div>
     </section>
