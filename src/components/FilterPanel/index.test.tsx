@@ -47,10 +47,7 @@ describe(`filterPanel`, () => {
 
     fireEvent.click(panel.getByText('News'));
     expect(onFilterSpy).toHaveBeenCalledTimes(1);
-    expect(onFilterSpy).toHaveBeenCalledWith({
-      news: true,
-      stock: false,
-    });
+    expect(onFilterSpy).toHaveBeenCalledWith('test', ['news']);
   });
 
   it('can hide the options if you collapse the panel', () => {

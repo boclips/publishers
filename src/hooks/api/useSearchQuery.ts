@@ -6,17 +6,25 @@ interface SearchQuery {
   query: string;
   page: number;
   pageSize: number;
+  video_type?: string[];
 }
 
-const doSearch = ({ query, page, pageSize }: SearchQuery) =>
+const doSearch = ({ query, page, pageSize, video_type }: SearchQuery) =>
   ApiClientWrapper.get().then((client) => {
-    return client.videos.search({ query, page, size: pageSize });
+    return client.videos.search({
+      query,
+      page,
+      size: pageSize,
+      type: video_type,
+    });
   });
 
-const generateSearchKey = ({ query, page, pageSize }: SearchQuery) => [
-  'videos',
-  { query, page, pageSize },
-];
+const generateSearchKey = ({
+  query,
+  page,
+  pageSize,
+  video_type,
+}: SearchQuery) => ['videos', { query, page, pageSize, video_type }];
 
 export const useSearchQuery = (searchQuery: SearchQuery) =>
   useQuery(generateSearchKey(searchQuery), () => doSearch(searchQuery));

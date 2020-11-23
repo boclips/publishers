@@ -1,4 +1,5 @@
 const debugScreens = require('tailwindcss-debug-screens');
+const customForms = require('@tailwindcss/custom-forms');
 
 module.exports = {
   future: {
@@ -38,7 +39,7 @@ module.exports = {
           600: '#718096',
           700: '#4A5568',
           800: '#2D3748',
-          900: '#1A202C'
+          900: '#1A202C',
         },
         primary: '#00217D',
         'primary-hover': '#193DA1',
@@ -80,8 +81,5 @@ module.exports = {
       'checked',
     ],
   },
-  plugins: [
-    require('@tailwindcss/custom-forms'),
-    debugScreens
-  ],
+  plugins: [customForms, debugScreens],
 };

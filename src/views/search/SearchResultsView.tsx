@@ -2,7 +2,7 @@ import { VideoCard } from '@boclips-ui/video-card';
 import { VideoCardsPlaceholder } from '@boclips-ui/video-card-placeholder';
 import { List } from 'antd';
 import { Video } from 'boclips-api-client/dist/types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   useSearchQuery,
   prefetchSearchQuery,
@@ -15,18 +15,24 @@ import Navbar from 'src/components/layout/Navbar';
 import { PageLayout } from 'src/components/layout/PageLayout';
 import { SearchResultsSummary } from 'src/components/searchResults/SearchResultsSummary';
 import playerOptions from 'src/Player/playerOptions';
+import CheckboxFilter, { FilterOption } from 'src/components/FilterPanel';
+import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 
 export const PAGE_SIZE = 10;
 
 const SearchResultsView = () => {
   const history = useHistory();
   const query = useLocationParams().get('q');
+  const [typeFilter, setTypeFilter] = useState<string[]>(
+    useLocationParams().getAll('video_type') || [],
+  );
   const currentPage = Number(useLocationParams().get('page')) || 1;
 
   const { data, isError, error, isLoading } = useSearchQuery({
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
+    video_type: typeFilter,
   });
 
   useEffect(() => {
@@ -35,14 +41,50 @@ const SearchResultsView = () => {
       query,
       pageSize: PAGE_SIZE,
       page: currentPage,
+      video_type: typeFilter,
     });
   }, [currentPage, query]);
 
-  const handleChange = (page: number) => {
+  const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });
     history.push({
       search: `?q=${query}&page=${page}`,
     });
+  };
+
+  const handleFilter = (filter: string, values: string[]) => {
+    setTypeFilter(values);
+    window.scrollTo({ top: 0 });
+    history.push({
+      search: `?q=${query}&page=1${
+        values.length > 0 ? `&${filter}=` : ''
+      }${values}`,
+    });
+  };
+
+  const getVideoTypeOptions = (facets: {
+    [id: string]: Facet;
+  }): FilterOption[] => {
+    return (
+      facets &&
+      [
+        facets.instructional && {
+          label: 'Educational',
+          hits: facets.instructional.hits,
+          id: 'INSTRUCTIONAL',
+        },
+        facets.stock && {
+          label: 'Raw Footage',
+          hits: facets.stock.hits,
+          id: 'STOCK',
+        },
+        facets.news && {
+          label: 'News',
+          hits: facets.news.hits,
+          id: 'NEWS',
+        },
+      ].filter(Boolean)
+    );
   };
 
   return (
@@ -52,7 +94,17 @@ const SearchResultsView = () => {
           <div className="col-span-12">{error}</div>
         ) : (
           <>
-            <div className="col-start-1 col-end-4">filters</div>
+            <div className="col-start-1 col-end-4">
+              {!isLoading && (
+                <CheckboxFilter
+                  filterOptions={getVideoTypeOptions(data?.facets?.videoTypes)}
+                  title="Video type"
+                  filterName="video_type"
+                  onFilter={handleFilter}
+                  initialValues={typeFilter}
+                />
+              )}
+            </div>
             <div className="col-start-4 col-end-13">
               <SearchResultsSummary
                 count={data?.pageSpec?.totalElements}
@@ -68,7 +120,7 @@ const SearchResultsView = () => {
                     total: data?.pageSpec?.totalElements,
                     pageSize: PAGE_SIZE,
                     showSizeChanger: false,
-                    onChange: handleChange,
+                    onChange: handlePageChange,
                     current: currentPage,
                   }}
                   dataSource={data?.page}
