@@ -1,21 +1,14 @@
-import { VideoCard } from '@boclips-ui/video-card';
-import { VideoCardsPlaceholder } from '@boclips-ui/video-card-placeholder';
-import { List } from 'antd';
-import { Video } from 'boclips-api-client/dist/types';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  useSearchQuery,
   prefetchSearchQuery,
+  useSearchQuery,
 } from 'src/hooks/api/useSearchQuery';
 import { useLocationParams } from 'src/hooks/useLocationParams';
 import { useHistory } from 'react-router-dom';
-import { convertVideoFromApi } from 'src/services/convertVideoFromApi';
-import { Player } from 'boclips-player-react';
 import Navbar from 'src/components/layout/Navbar';
 import { PageLayout } from 'src/components/layout/PageLayout';
-import { SearchResultsSummary } from 'src/components/searchResults/SearchResultsSummary';
-import playerOptions from 'src/Player/playerOptions';
 import { FilterPanel } from 'src/components/filters/FilterPanel';
+import { SearchResults } from 'src/components/searchResults/SearchResults';
 
 export const PAGE_SIZE = 10;
 
@@ -81,47 +74,13 @@ const SearchResultsView = () => {
               )}
             </div>
             <div className="col-start-4 col-end-13">
-              <SearchResultsSummary
-                count={data?.pageSpec?.totalElements}
+              <SearchResults
+                results={data}
                 query={query}
+                isLoading={isLoading}
+                handlePageChange={handlePageChange}
+                currentPage={currentPage}
               />
-              {isLoading ? (
-                <VideoCardsPlaceholder />
-              ) : (
-                <List
-                  itemLayout="vertical"
-                  size="large"
-                  pagination={{
-                    total: data?.pageSpec?.totalElements,
-                    pageSize: PAGE_SIZE,
-                    showSizeChanger: false,
-                    onChange: handlePageChange,
-                    current: currentPage,
-                  }}
-                  dataSource={data?.page}
-                  renderItem={(video: Video) => (
-                    <div className="mb-4">
-                      <VideoCard
-                        key={video.id}
-                        videoPlayer={
-                          <Player
-                            videoUri={video.links.self.getOriginalLink()}
-                            borderRadius="4px"
-                            options={playerOptions}
-                          />
-                        }
-                        border="bottom"
-                        video={convertVideoFromApi(video)}
-                        authenticated
-                        hideAttachments
-                        hideBestFor
-                        theme="publishers"
-                        videoRoundedCorners
-                      />
-                    </div>
-                  )}
-                />
-              )}
             </div>
           </>
         )}
