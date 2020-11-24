@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   prefetchSearchQuery,
   useSearchQuery,
 } from 'src/hooks/api/useSearchQuery';
-import { useLocationParams } from 'src/hooks/useLocationParams';
-import { useHistory } from 'react-router-dom';
+import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 import Navbar from 'src/components/layout/Navbar';
 import { PageLayout } from 'src/components/layout/PageLayout';
 import { FilterPanel } from 'src/components/filters/FilterPanel';
@@ -13,18 +12,14 @@ import { SearchResults } from 'src/components/searchResults/SearchResults';
 export const PAGE_SIZE = 10;
 
 const SearchResultsView = () => {
-  const history = useHistory();
-  const query = useLocationParams().get('q');
-  const [typeFilter, setTypeFilter] = useState<string[]>(
-    useLocationParams().getAll('video_type') || [],
-  );
-  const currentPage = Number(useLocationParams().get('page')) || 1;
+  const [searchLocation, setSearchLocation] = useSearchQueryLocationParams();
+  const { query, page: currentPage, filters } = searchLocation;
 
   const { data, isError, error, isLoading } = useSearchQuery({
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
-    video_type: typeFilter,
+    filters,
   });
 
   useEffect(() => {
@@ -33,33 +28,29 @@ const SearchResultsView = () => {
       query,
       pageSize: PAGE_SIZE,
       page: currentPage,
-      video_type: typeFilter,
+      filters,
     });
-  }, [currentPage, query, typeFilter]);
+  }, [currentPage, query, filters]);
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });
-    let search = `?q=${query}&page=${page}`;
-    if (typeFilter.length > 0) {
-      search += `&video_type=${typeFilter}`;
-    }
-
-    history.push({
-      search,
+    setSearchLocation({
+      query,
+      page,
+      filters,
     });
   };
 
   const handleFilter = useCallback(
-    (filter: string, values: string[]) => {
-      setTypeFilter(values);
-      window.scrollTo({ top: 0 });
-      history.push({
-        search: `?q=${query}&page=1${
-          values.length > 0 ? `&${filter}=` : ''
-        }${values}`,
+    // can we type the filter name here?
+    (_: string, values: string[]) => {
+      setSearchLocation({
+        query,
+        page: 1,
+        filters: { video_type: values }, // TODO already applied filters
       });
     },
-    [history, query],
+    [setSearchLocation, query],
   );
 
   return (
@@ -73,7 +64,7 @@ const SearchResultsView = () => {
               {!isLoading && (
                 <FilterPanel
                   handleFilter={handleFilter}
-                  initialVideoTypeFilters={typeFilter}
+                  initialVideoTypeFilters={filters.video_type}
                   facets={data?.facets}
                 />
               )}
