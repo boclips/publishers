@@ -15,10 +15,7 @@ import Navbar from 'src/components/layout/Navbar';
 import { PageLayout } from 'src/components/layout/PageLayout';
 import { SearchResultsSummary } from 'src/components/searchResults/SearchResultsSummary';
 import playerOptions from 'src/Player/playerOptions';
-import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import CheckboxFilter, {
-  FilterOption,
-} from 'src/components/filters/CheckboxFilter';
+import { FilterPanel } from 'src/components/filters/FilterPanel';
 
 export const PAGE_SIZE = 10;
 
@@ -67,31 +64,6 @@ const SearchResultsView = () => {
     [history, query],
   );
 
-  const getVideoTypeOptions = (facets: {
-    [id: string]: Facet;
-  }): FilterOption[] => {
-    return (
-      facets &&
-      [
-        facets.instructional && {
-          label: 'Educational',
-          hits: facets.instructional.hits,
-          id: 'INSTRUCTIONAL',
-        },
-        facets.stock && {
-          label: 'Raw Footage',
-          hits: facets.stock.hits,
-          id: 'STOCK',
-        },
-        facets.news && {
-          label: 'News',
-          hits: facets.news.hits,
-          id: 'NEWS',
-        },
-      ].filter(Boolean)
-    );
-  };
-
   return (
     <PageLayout navBar={<Navbar showSearchBar />}>
       <div className="grid grid-cols-12 gap-4">
@@ -101,12 +73,10 @@ const SearchResultsView = () => {
           <>
             <div className="col-start-1 col-end-4">
               {!isLoading && (
-                <CheckboxFilter
-                  filterOptions={getVideoTypeOptions(data?.facets?.videoTypes)}
-                  title="Video type"
-                  filterName="video_type"
-                  onFilter={handleFilter}
-                  initialValues={typeFilter}
+                <FilterPanel
+                  handleFilter={handleFilter}
+                  initialVideoTypeFilters={typeFilter}
+                  facets={data?.facets}
                 />
               )}
             </div>
