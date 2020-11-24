@@ -33,11 +33,9 @@ const CheckboxFilter = ({
 
   useEffect(() => {
     if (filtersTouched) {
-      applyFilters();
+      onFilter(filterName, optionStates);
     }
-  }, [filtersTouched, optionStates]);
-
-  const applyFilters = () => onFilter(filterName, optionStates);
+  }, [filtersTouched, filterName, optionStates, onFilter]);
 
   const onSelectOption = (_, item: string) => {
     setFiltersTouched(true);
@@ -76,7 +74,6 @@ const CheckboxFilter = ({
             .map((item) => (
               <div key={item.id} className="mb-3">
                 <label
-                  // onChange={(event) => onSelectOption(event, item.id)}
                   htmlFor={item.id}
                   className="flex items-center cursor-pointer"
                 >

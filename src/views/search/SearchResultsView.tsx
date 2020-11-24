@@ -2,7 +2,7 @@ import { VideoCard } from '@boclips-ui/video-card';
 import { VideoCardsPlaceholder } from '@boclips-ui/video-card-placeholder';
 import { List } from 'antd';
 import { Video } from 'boclips-api-client/dist/types';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   useSearchQuery,
   prefetchSearchQuery,
@@ -43,7 +43,7 @@ const SearchResultsView = () => {
       page: currentPage,
       video_type: typeFilter,
     });
-  }, [currentPage, query]);
+  }, [currentPage, query, typeFilter]);
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });
@@ -52,15 +52,18 @@ const SearchResultsView = () => {
     });
   };
 
-  const handleFilter = (filter: string, values: string[]) => {
-    setTypeFilter(values);
-    window.scrollTo({ top: 0 });
-    history.push({
-      search: `?q=${query}&page=1${
-        values.length > 0 ? `&${filter}=` : ''
-      }${values}`,
-    });
-  };
+  const handleFilter = useCallback(
+    (filter: string, values: string[]) => {
+      setTypeFilter(values);
+      window.scrollTo({ top: 0 });
+      history.push({
+        search: `?q=${query}&page=1${
+          values.length > 0 ? `&${filter}=` : ''
+        }${values}`,
+      });
+    },
+    [history, query],
+  );
 
   const getVideoTypeOptions = (facets: {
     [id: string]: Facet;
