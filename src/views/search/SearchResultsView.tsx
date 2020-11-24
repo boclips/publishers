@@ -15,8 +15,10 @@ import Navbar from 'src/components/layout/Navbar';
 import { PageLayout } from 'src/components/layout/PageLayout';
 import { SearchResultsSummary } from 'src/components/searchResults/SearchResultsSummary';
 import playerOptions from 'src/Player/playerOptions';
-import CheckboxFilter, { FilterOption } from 'src/components/FilterPanel';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
+import CheckboxFilter, {
+  FilterOption,
+} from 'src/components/filters/CheckboxFilter';
 
 export const PAGE_SIZE = 10;
 

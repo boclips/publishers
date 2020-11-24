@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import CheckboxFilter from './index';
+import CheckboxFilter from './CheckboxFilter';
 
 describe(`filterPanel`, () => {
   const videoTypes = [
