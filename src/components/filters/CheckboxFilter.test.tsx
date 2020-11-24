@@ -22,7 +22,7 @@ describe(`filterPanel`, () => {
         filterOptions={videoTypes}
         title="Video Types"
         filterName="test"
-        onFilter={() => console.log('tet')}
+        onFilter={() => {}}
       />,
     );
 
@@ -56,7 +56,7 @@ describe(`filterPanel`, () => {
         filterOptions={videoTypes}
         title="Video Types"
         filterName="test"
-        onFilter={() => console.log('tet')}
+        onFilter={() => {}}
       />,
     );
 

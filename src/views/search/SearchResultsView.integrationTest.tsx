@@ -5,9 +5,10 @@ import React from 'react';
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import App from 'src/App';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
+import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
 
 describe('SearchResults', () => {
-  let videosClient: any = null;
+  let videosClient: FakeVideosClient = null;
 
   beforeEach(async () => {
     videosClient = (await FakeApiClient).videos;
@@ -192,12 +193,12 @@ describe('SearchResults', () => {
       VideoFactory.sample({
         id: '1',
         title: 'stock video',
-        types: [{ name: 'STOCKs', id: 1 }],
+        types: [{ name: 'STOCK', id: 1 }],
       }),
       VideoFactory.sample({
         id: '2',
         title: 'news video',
-        types: [{ name: 'NEWSs', id: 2 }],
+        types: [{ name: 'NEWS', id: 2 }],
       }),
     ];
 
@@ -218,16 +219,108 @@ describe('SearchResults', () => {
     expect(await wrapper.findByText('news video')).toBeInTheDocument();
     expect(await wrapper.findByText('stock video')).toBeInTheDocument();
 
+    const newsCheckbox = wrapper.getByTestId('NEWS-checkbox');
+
+    videosClient.setFacets({
+      ageRanges: {},
+      durations: {},
+      resourceTypes: {},
+      subjects: {},
+      videoTypes: {
+        news: { id: 'NEWS', hits: 1 },
+      },
+    });
+
     fireEvent.click(wrapper.getByTestId('NEWS-checkbox'));
+    expect(newsCheckbox).toHaveProperty('checked', true);
 
     expect(await wrapper.findByText('news video')).toBeVisible();
 
     // below line fails and I don't know why - suspect something
     // strange about react query but will need to dig more and fix this
     // works fine in browser fwiw
-    // expect(await wrapper.queryByText('stock video')).not.toBeInTheDocument();
+    // await waitForElementToBeRemoved(() => wrapper.getByText('stock video'));
 
     expect(await wrapper.findByText('News')).toBeInTheDocument();
-    expect(await wrapper.queryByText('Stock')).toBeNull();
+    expect(await wrapper.queryByText('Raw Footage')).toBeNull();
+  });
+
+  it(`applies filters from url on load`, async () => {
+    videosClient.setFacets({
+      ageRanges: {},
+      durations: {},
+      resourceTypes: {},
+      subjects: {},
+      videoTypes: {
+        stock: { id: 'STOCK', hits: 1 },
+        news: { id: 'NEWS', hits: 1 },
+      },
+    });
+
+    videosClient.insertVideo(
+      VideoFactory.sample({
+        id: '1',
+        title: 'stock video',
+        types: [{ name: 'STOCK', id: 1 }],
+      }),
+    );
+    videosClient.insertVideo(
+      VideoFactory.sample({
+        id: '2',
+        title: 'news video',
+        types: [{ name: 'NEWS', id: 2 }],
+      }),
+    );
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/videos?q=video&video_type=STOCK']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    const stockCheckbox = await wrapper.findByTestId('STOCK-checkbox');
+    expect(stockCheckbox).toHaveProperty('checked', true);
+  });
+
+  it(`persists queries between pages`, async () => {
+    for (let i = 0; i < 11; i++) {
+      videosClient.insertVideo(
+        VideoFactory.sample({ id: `video ${i}`, title: `video ${i}` }),
+      );
+    }
+    videosClient.setFacets({
+      ageRanges: {},
+      durations: {},
+      resourceTypes: {},
+      subjects: {},
+      videoTypes: {
+        news: { id: 'NEWS', hits: 1 },
+      },
+    });
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/videos?q=video']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(wrapper.getByTestId('NEWS-checkbox'));
+    expect(wrapper.getByTestId('NEWS-checkbox')).toHaveProperty(
+      'checked',
+      true,
+    );
+
+    expect(await wrapper.findByText('video 0')).toBeVisible();
+    expect(await wrapper.queryByText('video 10')).not.toBeInTheDocument();
+
+    fireEvent.click(wrapper.getByText('2'));
+
+    expect(wrapper.getByTestId('NEWS-checkbox')).toHaveProperty(
+      'checked',
+      true,
+    );
+
+    expect(await wrapper.findByText('video 10')).toBeVisible();
+    expect(await wrapper.queryByText('video 0')).not.toBeInTheDocument();
   });
 });

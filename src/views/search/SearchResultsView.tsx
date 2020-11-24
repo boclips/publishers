@@ -39,8 +39,13 @@ const SearchResultsView = () => {
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });
+    let search = `?q=${query}&page=${page}`;
+    if (typeFilter.length > 0) {
+      search += `&video_type=${typeFilter}`;
+    }
+
     history.push({
-      search: `?q=${query}&page=${page}`,
+      search,
     });
   };
 
