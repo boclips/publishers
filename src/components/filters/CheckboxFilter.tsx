@@ -42,7 +42,9 @@ const CheckboxFilter = ({
     const itemIndex = optionStates.indexOf(item); // -1
 
     if (itemIndex >= 0) {
-      setOptionStates([]);
+      setOptionStates((prevState) =>
+        prevState.filter((_item, i) => i !== itemIndex),
+      );
     } else {
       setOptionStates((prevState) => [...prevState, item]);
     }

@@ -65,4 +65,23 @@ describe(`filterPanel`, () => {
     fireEvent.click(panel.getByText('Video Types'));
     expect(panel.getByText('Stock')).toBeVisible();
   });
+
+  it('can uncheck an option and others remain checked', () => {
+    const panel = render(
+      <CheckboxFilter
+        filterOptions={videoTypes}
+        title="Video Types"
+        filterName="test"
+        onFilter={() => {}}
+      />,
+    );
+
+    fireEvent.click(panel.getByText('News'));
+    fireEvent.click(panel.getByText('Stock'));
+
+    fireEvent.click(panel.getByText('News'));
+
+    const stockCheckbox = panel.getByTestId('stock-checkbox');
+    expect(stockCheckbox).toHaveProperty('checked', true);
+  });
 });
