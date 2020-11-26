@@ -1,6 +1,5 @@
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import CheckboxFilter, {
-} from 'src/components/filters/CheckboxFilter';
+import CheckboxFilter from 'src/components/filters/CheckboxFilter';
 import React from 'react';
 
 interface Props {
@@ -12,10 +11,14 @@ interface Props {
 const setLabels = (filterOptions: Facet[]): Facet[] =>
   filterOptions.map((option) => {
     switch (option.id.toLocaleLowerCase()) {
-      case 'instructional': return { ...option, name: 'Educational' };
-      case 'stock': return { ...option, name: 'Raw Footage' };
-      case 'news': return { ...option, name: 'News' };
-      default: return option;
+      case 'instructional':
+        return { ...option, name: 'Educational' };
+      case 'stock':
+        return { ...option, name: 'Raw Footage' };
+      case 'news':
+        return { ...option, name: 'News' };
+      default:
+        return option;
     }
   });
 export const VideoTypeFilter = ({

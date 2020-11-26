@@ -3,7 +3,7 @@ import FilterArrowUp from 'src/resources/filter-arrow-up.svg';
 import FilterArrowDown from 'src/resources/filter-arrow-down.svg';
 
 import c from 'classnames';
-import {Facet} from "boclips-api-client/dist/sub-clients/videos/model/VideoFacets";
+import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 
 export interface Props {
   filterOptions: Facet[];
