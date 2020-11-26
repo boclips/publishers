@@ -13,6 +13,8 @@ export interface Props {
   initialValues?: string[];
 }
 
+const DEFAULT_VISIBLE_OPTIONS = 5;
+
 const CheckboxFilter = ({
   filterOptions,
   title,
@@ -25,6 +27,7 @@ const CheckboxFilter = ({
     initialValues || [],
   );
   const [filtersTouched, setFiltersTouched] = useState<boolean>(false);
+  const [allOptionsVisible, setAllOptionsVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (filtersTouched) {
@@ -45,19 +48,41 @@ const CheckboxFilter = ({
     }
   };
 
-  const toggleOpen = () => setOpen(!open);
-  const handleKeyDown = (event) => {
+  const toggleFilter = () => setOpen(!open);
+  const toggleOptions = () => setAllOptionsVisible(!allOptionsVisible);
+
+  const handleKeyDown = (event, callback) => {
     if (event.key === 'Enter') {
-      toggleOpen();
+      callback();
     }
+  };
+
+  const renderOptionsToggle = () => {
+    const tooManyOptions = filterOptions.length > DEFAULT_VISIBLE_OPTIONS;
+
+    if (tooManyOptions) {
+      return (
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={toggleOptions}
+          onKeyDown={(event) => handleKeyDown(event, toggleOptions)}
+        >
+          {allOptionsVisible
+            ? 'Show less'
+            : `Show all (${filterOptions.length})`}
+        </div>
+      );
+    }
+    return '';
   };
 
   return (
     <div className="bg-blue-100 mt-6 p-4  border-solid border border-blue-300 rounded ">
       <div
         className="text-base text-blue-800 font-semibold flex items-center cursor-pointer active:border-none"
-        onClick={toggleOpen}
-        onKeyDown={handleKeyDown}
+        onClick={toggleFilter}
+        onKeyDown={(event) => handleKeyDown(event, toggleFilter)}
         tabIndex={0}
         role="listbox"
       >
@@ -68,6 +93,12 @@ const CheckboxFilter = ({
         <div className="flex flex-col mb-1 mt-4">
           {filterOptions
             .sort((a, b) => (a.hits < b.hits ? 1 : -1))
+            .slice(
+              0,
+              allOptionsVisible
+                ? filterOptions.length
+                : DEFAULT_VISIBLE_OPTIONS,
+            )
             .map((item) => (
               <div key={item.id} className="mb-3">
                 <label
@@ -94,6 +125,7 @@ const CheckboxFilter = ({
                 </label>
               </div>
             ))}
+          {renderOptionsToggle()}
         </div>
       )}
     </div>
