@@ -6,6 +6,7 @@ import { Player } from 'boclips-player-react';
 import playerOptions from 'src/Player/playerOptions';
 import { convertVideoFromApi } from 'src/services/convertVideoFromApi';
 import React from 'react';
+import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 
 interface Props {
   videos: Video[];
@@ -43,6 +44,7 @@ export const VideoCardList = ({
                 options={playerOptions}
               />
             }
+            videoActionButtons={[<AddToCartButton videoId={video.id} />]}
             border="bottom"
             video={convertVideoFromApi(video)}
             authenticated

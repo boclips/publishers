@@ -53,7 +53,7 @@ const CheckboxFilter = ({
   };
 
   return (
-    <div className="w-64 bg-blue-100 mt-6 p-4  border-solid border border-blue-300 rounded ">
+    <div className="bg-blue-100 mt-6 p-4  border-solid border border-blue-300 rounded ">
       <div
         className="text-base text-blue-800 font-semibold flex items-center cursor-pointer active:border-none"
         onClick={toggleOpen}

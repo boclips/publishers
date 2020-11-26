@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useCartQuery } from 'src/hooks/api/cartQuery';
 import MyAccountSVG from '../../resources/my-account-icon.svg';
 import MyBasketSVG from '../../resources/shopping-cart-icon.svg';
 import BoclipsLogoSVG from '../../resources/boclips.svg';
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
+  const { data } = useCartQuery();
+
   return (
     <nav className="shadow-md" aria-label="Boclips navigation bar">
       <div className="container mx-auto">
@@ -29,7 +32,7 @@ const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
             </div>
             <div className="flex flex-col items-center">
               <MyBasketSVG />
-              <span className="text-xs mt-1">Basket</span>
+              <span className="text-xs mt-1">Basket {data?.items?.length}</span>
             </div>
           </div>
         </div>
