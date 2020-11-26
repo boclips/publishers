@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
@@ -10,12 +10,15 @@ import {
   FacetFactory,
   FacetsFactory,
 } from 'boclips-api-client/dist/test-support/FacetsFactory';
+import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/client/FakeCartsClient';
 
 describe('SearchResults', () => {
   let videosClient: FakeVideosClient = null;
+  let cartClient: FakeCartsClient = null;
 
   beforeEach(async () => {
     videosClient = (await FakeApiClient).videos;
+    cartClient = (await FakeApiClient).carts;
   });
 
   it('renders a list of videos that match the search query', async () => {
@@ -339,6 +342,62 @@ describe('SearchResults', () => {
       expect(await wrapper.findByText('Subject')).toBeInTheDocument();
       expect(await wrapper.findByText('History')).toBeInTheDocument();
       expect(await wrapper.findByText('12')).toBeInTheDocument();
+    });
+  });
+
+  describe('cart in video-card', () => {
+    it(`displays add to cart button`, async () => {
+      videosClient.insertVideo(
+        VideoFactory.sample({
+          id: '2',
+          title: 'news video',
+          types: [{ name: 'NEWS', id: 2 }],
+        }),
+      );
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=video']}>
+          <App />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('Add to cart')).toBeVisible();
+    });
+
+    it(`adds to cart when clicked`, async () => {
+      const video = VideoFactory.sample({
+        id: 'video-id',
+        title: 'news video',
+        types: [{ name: 'NEWS', id: 2 }],
+      });
+
+      videosClient.insertVideo(video);
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=vid']}>
+          <App />
+        </MemoryRouter>,
+      );
+
+      await waitFor(() => {
+        expect(wrapper.getByText('Add to cart')).toBeInTheDocument();
+      });
+
+      fireEvent(
+        wrapper.getByText('Add to cart'),
+        new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+
+      const cart = await cartClient.getCart();
+
+      await waitFor(() => {
+        expect(cart.items).toHaveLength(1);
+      });
+
+      expect(wrapper.getByText('Remove from cart')).toBeInTheDocument();
     });
   });
 });

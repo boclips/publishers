@@ -44,7 +44,9 @@ export const VideoCardList = ({
                 options={playerOptions}
               />
             }
-            videoActionButtons={[<AddToCartButton videoId={video.id} />]}
+            videoActionButtons={[
+              <AddToCartButton key={video.channelId} videoId={video.id} />,
+            ]}
             border="bottom"
             video={convertVideoFromApi(video)}
             authenticated
