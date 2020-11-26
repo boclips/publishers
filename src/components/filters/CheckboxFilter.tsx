@@ -82,7 +82,7 @@ const CheckboxFilter = ({
   return (
     <div className="bg-blue-100 mt-6 p-4  border-solid border border-blue-300 rounded ">
       <div
-        className="text-base text-blue-800 font-semibold flex items-center cursor-pointer active:border-none"
+        className="text-base text-blue-800 font-medium flex items-center cursor-pointer active:border-none"
         onClick={toggleFilter}
         onKeyDown={(event) => handleKeyDown(event, toggleFilter)}
         tabIndex={0}
@@ -105,11 +105,11 @@ const CheckboxFilter = ({
               <div key={item.id} className="mb-3">
                 <label
                   htmlFor={item.id}
-                  className="flex items-center cursor-pointer"
+                  className="flex items-center cursor-pointer text-gray-700"
                 >
                   <input
                     onChange={(event) => onSelectOption(event, item.id)}
-                    className="form-checkbox checked:bg-blue-800 w-5 h-5"
+                    className="form-checkbox checked:bg-blue-800 w-5 h-5 hover:border-blue-800 hover:border-solid border-2"
                     type="checkbox"
                     value={item.id}
                     checked={optionStates.indexOf(item.id) > -1}
@@ -118,7 +118,7 @@ const CheckboxFilter = ({
                   />
                   <span
                     className={c('text-sm ml-2 flex-grow', {
-                      'font-semibold': optionStates.includes(item.id),
+                      'font-medium': optionStates.includes(item.id),
                     })}
                   >
                     {item.name}
