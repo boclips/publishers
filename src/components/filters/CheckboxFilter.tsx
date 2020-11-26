@@ -4,6 +4,7 @@ import FilterArrowDown from 'src/resources/filter-arrow-down.svg';
 
 import c from 'classnames';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
+import { sortByHitAndName } from 'src/services/sortFacets';
 
 export interface Props {
   filterOptions: Facet[];
@@ -67,6 +68,7 @@ const CheckboxFilter = ({
           tabIndex={0}
           onClick={toggleOptions}
           onKeyDown={(event) => handleKeyDown(event, toggleOptions)}
+          className="text-blue-800 underline font-medium text-right focus:outline-none"
         >
           {allOptionsVisible
             ? 'Show less'
@@ -92,7 +94,7 @@ const CheckboxFilter = ({
       {open && (
         <div className="flex flex-col mb-1 mt-4">
           {filterOptions
-            .sort((a, b) => (a.hits < b.hits ? 1 : -1))
+            .sort(sortByHitAndName)
             .slice(
               0,
               allOptionsVisible
