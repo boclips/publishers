@@ -6,6 +6,10 @@ import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import App from 'src/App';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
+import {
+  FacetFactory,
+  FacetsFactory,
+} from 'boclips-api-client/dist/test-support/FacetsFactory';
 
 describe('SearchResults', () => {
   let videosClient: FakeVideosClient = null;
@@ -151,17 +155,20 @@ describe('SearchResults', () => {
   });
 
   it(`displays the video type filters and facet counts`, async () => {
-    videosClient.setFacets({
-      ageRanges: {},
-      durations: {},
-      resourceTypes: {},
-      subjects: {},
-      videoTypes: {
-        instructional: { id: 'instructional', hits: 888 },
-        stock: { id: 'stock', hits: 666 },
-        news: { id: 'news', hits: 1234321 },
-      },
-    });
+    videosClient.setFacets(
+      FacetsFactory.sample({
+        videoTypes: [
+          FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 1234321 }),
+          FacetFactory.sample({
+            name: 'instructional',
+            id: 'INSTRUCTIONAL',
+            hits: 888,
+          }),
+          FacetFactory.sample({ name: 'stock', id: 'STOCK', hits: 666 }),
+        ],
+      }),
+    );
+
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
         <App />
@@ -179,16 +186,14 @@ describe('SearchResults', () => {
   });
 
   it(`can filter videos by type`, async () => {
-    videosClient.setFacets({
-      ageRanges: {},
-      durations: {},
-      resourceTypes: {},
-      subjects: {},
-      videoTypes: {
-        stock: { id: 'STOCK', hits: 1 },
-        news: { id: 'NEWS', hits: 1 },
-      },
-    });
+    videosClient.setFacets(
+      FacetsFactory.sample({
+        videoTypes: [
+          FacetFactory.sample({ id: 'STOCK', hits: 1, name: 'Stock' }),
+          FacetFactory.sample({ id: 'NEWS', hits: 1, name: 'News' }),
+        ],
+      }),
+    );
     const videos = [
       VideoFactory.sample({
         id: '1',
@@ -221,15 +226,13 @@ describe('SearchResults', () => {
 
     const newsCheckbox = wrapper.getByTestId('NEWS-checkbox');
 
-    videosClient.setFacets({
-      ageRanges: {},
-      durations: {},
-      resourceTypes: {},
-      subjects: {},
-      videoTypes: {
-        news: { id: 'NEWS', hits: 1 },
-      },
-    });
+    videosClient.setFacets(
+      FacetsFactory.sample({
+        videoTypes: [
+          FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 10 }),
+        ],
+      }),
+    );
 
     fireEvent.click(wrapper.getByTestId('NEWS-checkbox'));
     expect(newsCheckbox).toHaveProperty('checked', true);
@@ -246,16 +249,14 @@ describe('SearchResults', () => {
   });
 
   it(`applies filters from url on load`, async () => {
-    videosClient.setFacets({
-      ageRanges: {},
-      durations: {},
-      resourceTypes: {},
-      subjects: {},
-      videoTypes: {
-        stock: { id: 'STOCK', hits: 1 },
-        news: { id: 'NEWS', hits: 1 },
-      },
-    });
+    videosClient.setFacets(
+      FacetsFactory.sample({
+        videoTypes: [
+          FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 1 }),
+          FacetFactory.sample({ name: 'Stock', id: 'STOCK', hits: 1 }),
+        ],
+      }),
+    );
 
     videosClient.insertVideo(
       VideoFactory.sample({
@@ -288,15 +289,13 @@ describe('SearchResults', () => {
         VideoFactory.sample({ id: `video ${i}`, title: `video ${i}` }),
       );
     }
-    videosClient.setFacets({
-      ageRanges: {},
-      durations: {},
-      resourceTypes: {},
-      subjects: {},
-      videoTypes: {
-        news: { id: 'NEWS', hits: 1 },
-      },
-    });
+    videosClient.setFacets(
+      FacetsFactory.sample({
+        videoTypes: [
+          FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 1 }),
+        ],
+      }),
+    );
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>

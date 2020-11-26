@@ -7,12 +7,12 @@ describe(`filterPanel`, () => {
     {
       hits: 10,
       id: 'stock',
-      label: 'Stock',
+      name: 'Stock',
     },
     {
       hits: 5,
       id: 'news',
-      label: 'News',
+      name: 'News',
     },
   ];
 

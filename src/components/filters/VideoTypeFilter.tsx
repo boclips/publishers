@@ -1,15 +1,23 @@
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import CheckboxFilter, {
-  FilterOption,
 } from 'src/components/filters/CheckboxFilter';
 import React from 'react';
 
 interface Props {
   handleFilter: (filter: string, values: string[]) => void;
   initialValues: string[];
-  options: { [id: string]: Facet };
+  options: Facet[];
 }
 
+const setLabels = (filterOptions: Facet[]): Facet[] =>
+  filterOptions.map((option) => {
+    switch (option.id.toLocaleLowerCase()) {
+      case 'instructional': return { ...option, name: 'Educational' };
+      case 'stock': return { ...option, name: 'Raw Footage' };
+      case 'news': return { ...option, name: 'News' };
+      default: return option;
+    }
+  });
 export const VideoTypeFilter = ({
   handleFilter,
   initialValues,
@@ -17,36 +25,11 @@ export const VideoTypeFilter = ({
 }: Props) => {
   return (
     <CheckboxFilter
-      filterOptions={getVideoTypeOptions(options)}
+      filterOptions={setLabels(options)}
       title="Video type"
       filterName="video_type"
       onFilter={handleFilter}
       initialValues={initialValues}
     />
-  );
-};
-
-const getVideoTypeOptions = (facets: {
-  [id: string]: Facet;
-}): FilterOption[] => {
-  return (
-    facets &&
-    [
-      facets.instructional && {
-        label: 'Educational',
-        hits: facets.instructional.hits,
-        id: 'INSTRUCTIONAL',
-      },
-      facets.stock && {
-        label: 'Raw Footage',
-        hits: facets.stock.hits,
-        id: 'STOCK',
-      },
-      facets.news && {
-        label: 'News',
-        hits: facets.news.hits,
-        id: 'NEWS',
-      },
-    ].filter(Boolean)
   );
 };

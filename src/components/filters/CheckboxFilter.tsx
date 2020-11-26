@@ -3,17 +3,12 @@ import FilterArrowUp from 'src/resources/filter-arrow-up.svg';
 import FilterArrowDown from 'src/resources/filter-arrow-down.svg';
 
 import c from 'classnames';
-
-export interface FilterOption {
-  hits?: number;
-  id: string;
-  label: string;
-}
+import {Facet} from "boclips-api-client/dist/sub-clients/videos/model/VideoFacets";
 
 export interface Props {
-  filterOptions: FilterOption[];
-  title: string; // Video type
-  filterName: string; // video_type
+  filterOptions: Facet[];
+  title: string;
+  filterName: string;
   onFilter: (filter: string, values: string[]) => void;
   initialValues?: string[];
 }
@@ -93,7 +88,7 @@ const CheckboxFilter = ({
                       'font-semibold': optionStates.includes(item.id),
                     })}
                   >
-                    {item.label}
+                    {item.name}
                   </span>
                   <span className="text-blue-700">{item.hits}</span>
                 </label>
