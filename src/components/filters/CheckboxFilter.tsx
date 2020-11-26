@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import FilterArrowUp from 'src/resources/filter-arrow-up.svg';
 import FilterArrowDown from 'src/resources/filter-arrow-down.svg';
-
 import c from 'classnames';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { sortByHitAndName } from 'src/services/sortFacets';
@@ -12,6 +11,8 @@ export interface Props {
   filterName: string;
   onFilter: (filter: string, values: string[]) => void;
   initialValues?: string[];
+  searchEnabled?: boolean;
+  searchPlaceHolderText?: string;
 }
 
 const DEFAULT_VISIBLE_OPTIONS = 5;
@@ -22,8 +23,11 @@ const CheckboxFilter = ({
   onFilter,
   filterName,
   initialValues,
+  searchEnabled,
+  searchPlaceHolderText = "Search"
 }: Props) => {
   const [open, setOpen] = useState<boolean>(true);
+  const [searchText, setSearchText] = useState<string>();
   const [optionStates, setOptionStates] = useState<string[]>(
     initialValues || [],
   );
@@ -91,9 +95,18 @@ const CheckboxFilter = ({
         <span className="flex-grow">{title}</span>{' '}
         {open ? <FilterArrowUp /> : <FilterArrowDown />}
       </div>
-      {open && (
+      {open && (searchEnabled && (<input
+              className="form-input"
+              placeholder={searchPlaceHolderText}
+              onChange={(e: any) => {
+                console.log(e.target.value);
+                setSearchText(e.target.value);
+              }}
+          // prefix={<SearchOutlined/>}
+          />)) &&
         <div className="flex flex-col mb-1 mt-4">
           {filterOptions
+            .filter(option => !searchText || option.name.toLowerCase().includes(searchText.toLowerCase()))
             .sort(sortByHitAndName)
             .slice(
               0,
@@ -128,8 +141,7 @@ const CheckboxFilter = ({
               </div>
             ))}
           {renderOptionsToggle()}
-        </div>
-      )}
+        </div>}
     </div>
   );
 };

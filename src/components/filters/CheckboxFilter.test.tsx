@@ -28,6 +28,23 @@ describe(`filterPanel`, () => {
       name: 'News',
     },
   ];
+  const channels = [
+    {
+      hits: 10,
+      id: 'channel-1',
+      name: 'TED-ED',
+    },
+    {
+      hits: 5,
+      id: 'channel-2',
+      name: 'History channel',
+    },
+    {
+      hits: 5,
+      id: 'channel-3',
+      name: 'TED',
+    },
+  ];
 
   it('renders the title, filters and facets provided', () => {
     const panel = render(
@@ -129,5 +146,56 @@ describe(`filterPanel`, () => {
 
     expect(panel.queryByText('Option 5')).toBeVisible();
     expect(panel.getByText('Show less')).toBeVisible();
+  });
+
+  it('renders the search input with default placeholder when enabled', () => {
+    const panel = render(
+      <CheckboxFilter
+        filterOptions={channels}
+        title="Video Types"
+        filterName="test"
+        onFilter={() => {}}
+        searchEnabled
+      />,
+    );
+
+    expect(panel.getByPlaceholderText('Search')).toBeInTheDocument();
+  });
+
+  it('renders the search input with custom placeholder when passed in', () => {
+    const panel = render(
+      <CheckboxFilter
+        filterOptions={channels}
+        title="Video Types"
+        filterName="test"
+        onFilter={() => {}}
+        searchEnabled
+        searchPlaceHolderText="Search for channel"
+      />,
+    );
+
+    expect(
+      panel.getByPlaceholderText('Search for channel'),
+    ).toBeInTheDocument();
+  });
+
+  it('filters options based on the search input', () => {
+    const panel = render(
+      <CheckboxFilter
+        filterOptions={channels}
+        title="Video Types"
+        filterName="test"
+        onFilter={() => {}}
+        searchEnabled
+        searchPlaceHolderText="Search for channel"
+      />,
+    );
+
+    const searchInput = panel.getByPlaceholderText('Search for channel');
+    fireEvent.change(searchInput, { target: { value: 'TED' } });
+
+    expect(panel.getByText('TED')).toBeInTheDocument();
+    expect(panel.getByText('TED-ED')).toBeInTheDocument();
+    expect(panel.queryByText('History channel')).not.toBeInTheDocument();
   });
 });
