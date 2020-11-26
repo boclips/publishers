@@ -10,12 +10,13 @@ interface Props {
 
 const setLabels = (filterOptions: Facet[]): Facet[] =>
   filterOptions.map((option) => {
-    switch (option.id.toLocaleLowerCase()) {
-      case 'instructional':
+    option = { ...option, id: option.id.toLocaleUpperCase() };
+    switch (option.id) {
+      case 'INSTRUCTIONAL':
         return { ...option, name: 'Educational' };
-      case 'stock':
+      case 'STOCK':
         return { ...option, name: 'Raw Footage' };
-      case 'news':
+      case 'NEWS':
         return { ...option, name: 'News' };
       default:
         return option;
