@@ -8,6 +8,7 @@ import Navbar from 'src/components/layout/Navbar';
 import { PageLayout } from 'src/components/layout/PageLayout';
 import { FilterPanel } from 'src/components/filters/FilterPanel';
 import { SearchResults } from 'src/components/searchResults/SearchResults';
+import { FilterKeys } from 'src/types/search/FilterKeys';
 
 export const PAGE_SIZE = 10;
 
@@ -42,15 +43,20 @@ const SearchResultsView = () => {
   };
 
   const handleFilter = useCallback(
-    // can we type the filter name here?
-    (_: string, values: string[]) => {
-      setSearchLocation({
-        query,
-        page: 1,
-        filters: { video_type: values }, // TODO already applied filters
-      });
+    (key: FilterKeys, values: string[]) => {
+      const prevValues = filters[key];
+      if (prevValues.length !== values.length) {
+        setSearchLocation({
+          query,
+          page: 1,
+          filters: {
+            ...filters,
+            [key]: values,
+          },
+        });
+      }
     },
-    [setSearchLocation, query],
+    [setSearchLocation, query, filters],
   );
 
   return (
@@ -65,6 +71,7 @@ const SearchResultsView = () => {
                 <FilterPanel
                   handleFilter={handleFilter}
                   initialVideoTypeFilters={filters.video_type}
+                  initialSubjectFilters={filters.subject}
                   facets={data?.facets}
                 />
               )}

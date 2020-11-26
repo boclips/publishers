@@ -322,4 +322,23 @@ describe('SearchResults', () => {
     expect(await wrapper.findByText('video 10')).toBeVisible();
     expect(await wrapper.queryByText('video 0')).not.toBeInTheDocument();
   });
+
+  describe('Subject filters', () => {
+    it(`displays the subject filters and facet counts`, async () => {
+      videosClient.setFacets(
+        FacetsFactory.sample({
+          subjects: [{ id: 'subject1', name: 'History', hits: 12 }],
+        }),
+      );
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=video']}>
+          <App />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('Subject')).toBeInTheDocument();
+      expect(await wrapper.findByText('History')).toBeInTheDocument();
+      expect(await wrapper.findByText('12')).toBeInTheDocument();
+    });
+  });
 });

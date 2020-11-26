@@ -17,6 +17,7 @@ const doSearch = ({ query, page, pageSize, filters }: SearchQuery) =>
       page,
       size: pageSize,
       type: filters?.video_type,
+      subject: filters?.subject,
     });
   });
 
