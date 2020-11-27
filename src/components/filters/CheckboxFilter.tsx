@@ -4,13 +4,15 @@ import FilterArrowDown from 'src/resources/filter-arrow-down.svg';
 import SearchIconSVG from 'src/resources/search-icon.svg';
 import c from 'classnames';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import { sortByHitAndName } from 'src/services/sortFacets';
+import { getFacetSorter } from 'src/services/sortFacets';
+import { SortBy } from 'src/types/SortBy';
 
 export interface Props {
   filterOptions: Facet[];
   title: string;
   filterName: string;
   onFilter: (filter: string, values: string[]) => void;
+  sortBy?: SortBy;
   initialValues?: string[];
   searchEnabled?: boolean;
   searchPlaceHolderText?: string;
@@ -23,6 +25,7 @@ const CheckboxFilter = ({
   title,
   onFilter,
   filterName,
+  sortBy = 'SORT_BY_HITS_AND_NAME',
   initialValues,
   searchEnabled,
   searchPlaceHolderText = 'Search',
@@ -120,7 +123,7 @@ const CheckboxFilter = ({
                   !searchText ||
                   option.name.toLowerCase().includes(searchText.toLowerCase()),
               )
-              .sort(sortByHitAndName)
+              .sort(getFacetSorter(sortBy))
               .slice(
                 0,
                 allOptionsVisible

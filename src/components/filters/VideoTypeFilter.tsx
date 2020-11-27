@@ -10,7 +10,7 @@ interface Props {
 
 const setLabels = (filterOptions: Facet[]): Facet[] =>
   filterOptions.map((option) => {
-    switch (option.id) {
+    switch (option.id.toUpperCase()) {
       case 'INSTRUCTIONAL':
         return { ...option, name: 'Educational' };
       case 'STOCK':
@@ -21,6 +21,7 @@ const setLabels = (filterOptions: Facet[]): Facet[] =>
         return option;
     }
   });
+
 export const VideoTypeFilter = ({
   handleFilter,
   initialValues,
@@ -31,6 +32,7 @@ export const VideoTypeFilter = ({
       filterOptions={setLabels(options)}
       title="Video type"
       filterName="video_type"
+      sortBy="SORT_BY_NAME"
       onFilter={handleFilter}
       initialValues={initialValues}
     />
