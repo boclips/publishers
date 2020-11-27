@@ -8,7 +8,7 @@ import { getFacetSorter } from 'src/services/sortFacets';
 import { SortBy } from 'src/types/SortBy';
 
 export interface Props {
-  filterOptions: Facet[];
+  filters: Facet[];
   title: string;
   filterName: string;
   onFilter: (filter: string, values: string[]) => void;
@@ -21,7 +21,7 @@ export interface Props {
 const DEFAULT_VISIBLE_OPTIONS = 5;
 
 const CheckboxFilter = ({
-  filterOptions,
+  filters,
   title,
   onFilter,
   filterName,
@@ -37,6 +37,12 @@ const CheckboxFilter = ({
   );
   const [filtersTouched, setFiltersTouched] = useState<boolean>(false);
   const [allOptionsVisible, setAllOptionsVisible] = useState<boolean>(false);
+
+  const filteredFilters = filters.filter(
+    (option) =>
+      !searchText ||
+      option.name.toLowerCase().includes(searchText.toLowerCase()),
+  );
 
   useEffect(() => {
     if (filtersTouched) {
@@ -70,7 +76,7 @@ const CheckboxFilter = ({
   };
 
   const renderOptionsToggle = () => {
-    const tooManyOptions = filterOptions.length > DEFAULT_VISIBLE_OPTIONS;
+    const tooManyOptions = filteredFilters.length > DEFAULT_VISIBLE_OPTIONS;
 
     if (tooManyOptions) {
       return (
@@ -83,7 +89,7 @@ const CheckboxFilter = ({
         >
           {allOptionsVisible
             ? 'Show less'
-            : `Show all (${filterOptions.length})`}
+            : `Show all (${filteredFilters.length})`}
         </div>
       );
     }
@@ -117,17 +123,12 @@ const CheckboxFilter = ({
       {open && (
         <div className="flex flex-col mb-1 mt-4">
           <div className={`overflow-y-scroll ${allOptionsVisible && 'h-64'}`}>
-            {filterOptions
-              .filter(
-                (option) =>
-                  !searchText ||
-                  option.name.toLowerCase().includes(searchText.toLowerCase()),
-              )
+            {filteredFilters
               .sort(getFacetSorter(sortBy))
               .slice(
                 0,
                 allOptionsVisible
-                  ? filterOptions.length
+                  ? filteredFilters.length
                   : DEFAULT_VISIBLE_OPTIONS,
               )
               .map((item) => (

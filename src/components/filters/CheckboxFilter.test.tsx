@@ -44,12 +44,27 @@ describe(`filterPanel`, () => {
       id: 'channel-3',
       name: 'TED',
     },
+    {
+      hits: 5,
+      id: 'channel-4',
+      name: 'TED-2',
+    },
+    {
+      hits: 5,
+      id: 'channel-5',
+      name: 'TED-3',
+    },
+    {
+      hits: 5,
+      id: 'channel-6',
+      name: 'TED-4',
+    },
   ];
 
   it('renders the title, filters and facets provided', () => {
     const panel = render(
       <CheckboxFilter
-        filterOptions={videoTypes}
+        filters={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -69,7 +84,7 @@ describe(`filterPanel`, () => {
     const onFilterSpy = jest.fn();
     const panel = render(
       <CheckboxFilter
-        filterOptions={videoTypes}
+        filters={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={onFilterSpy}
@@ -84,7 +99,7 @@ describe(`filterPanel`, () => {
   it('can hide the options if you collapse the panel', () => {
     const panel = render(
       <CheckboxFilter
-        filterOptions={videoTypes}
+        filters={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -100,7 +115,7 @@ describe(`filterPanel`, () => {
   it('can uncheck an option and others remain checked', () => {
     const panel = render(
       <CheckboxFilter
-        filterOptions={videoTypes}
+        filters={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -118,7 +133,7 @@ describe(`filterPanel`, () => {
   it('renders a show more label with the correct number', () => {
     const panel = render(
       <CheckboxFilter
-        filterOptions={generateOptions(6)}
+        filters={generateOptions(6)}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -133,7 +148,7 @@ describe(`filterPanel`, () => {
   it('toggles the filter to show more results', () => {
     const panel = render(
       <CheckboxFilter
-        filterOptions={generateOptions(6)}
+        filters={generateOptions(6)}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -151,7 +166,7 @@ describe(`filterPanel`, () => {
   it('renders the search input with default placeholder when enabled', () => {
     const panel = render(
       <CheckboxFilter
-        filterOptions={channels}
+        filters={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -165,7 +180,7 @@ describe(`filterPanel`, () => {
   it('renders the search input with custom placeholder when passed in', () => {
     const panel = render(
       <CheckboxFilter
-        filterOptions={channels}
+        filters={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -182,7 +197,7 @@ describe(`filterPanel`, () => {
   it('filters options based on the search input', () => {
     const panel = render(
       <CheckboxFilter
-        filterOptions={channels}
+        filters={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -192,8 +207,11 @@ describe(`filterPanel`, () => {
     );
 
     const searchInput = panel.getByPlaceholderText('Search for channel');
+    expect(panel.getByText('Show all (6)')).toBeInTheDocument();
+
     fireEvent.change(searchInput, { target: { value: 'TED' } });
 
+    expect(panel.queryByText('Show all (6)')).toBeNull();
     expect(panel.getByText('TED')).toBeInTheDocument();
     expect(panel.getByText('TED-ED')).toBeInTheDocument();
     expect(panel.queryByText('History channel')).not.toBeInTheDocument();

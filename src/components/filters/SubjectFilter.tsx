@@ -15,7 +15,7 @@ export const SubjectFilter = ({
 }: Props) => {
   return (
     <CheckboxFilter
-      filterOptions={options}
+      filters={options}
       title="Subject"
       filterName="subject"
       onFilter={handleFilter}

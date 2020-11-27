@@ -32,7 +32,7 @@ export const FilterPanel = ({
         initialValues={initialSubjectFilters}
       />
       <CheckboxFilter
-        filterOptions={facets?.channels}
+        filters={facets?.channels}
         title="Channel"
         filterName="channel"
         onFilter={handleFilter}

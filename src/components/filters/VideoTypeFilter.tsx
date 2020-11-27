@@ -29,7 +29,7 @@ export const VideoTypeFilter = ({
 }: Props) => {
   return (
     <CheckboxFilter
-      filterOptions={setLabels(options)}
+      filters={setLabels(options)}
       title="Video type"
       filterName="video_type"
       sortBy="SORT_BY_NAME"
