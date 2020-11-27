@@ -15,7 +15,7 @@ export const SubjectFilter = ({
 }: Props) => {
   return (
     <Filter
-      filterOptions={options}
+      options={options}
       title="Subject"
       filterName="subject"
       onFilter={handleFilter}

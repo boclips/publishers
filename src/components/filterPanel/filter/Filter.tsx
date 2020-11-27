@@ -7,7 +7,7 @@ import { SortBy } from 'src/types/SortBy';
 
 interface Props {
   title: string;
-  filterOptions: Facet[];
+  options: Facet[];
   filterName: string;
   onFilter: (filter: string, values: string[]) => void;
   initialValues?: string[];
@@ -18,7 +18,7 @@ interface Props {
 
 export const Filter = ({
   title,
-  filterOptions,
+  options,
   filterName,
   onFilter,
   initialValues,
@@ -79,7 +79,7 @@ export const Filter = ({
         />
       )}
       <FilterOptionList
-        filterOptions={filterOptions}
+        options={options}
         selectedOptions={optionStates}
         onSelect={onSelectOption}
         sortBy={sortBy}

@@ -15,7 +15,7 @@ export const ChannelFilter = ({
 }: Props) => {
   return (
     <Filter
-      filterOptions={options}
+      options={options}
       title="Channel"
       filterName="channel"
       onFilter={handleFilter}

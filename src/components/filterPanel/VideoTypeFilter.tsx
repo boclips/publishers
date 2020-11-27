@@ -29,7 +29,7 @@ export const VideoTypeFilter = ({
 }: Props) => {
   return (
     <Filter
-      filterOptions={setLabels(options)}
+      options={setLabels(options)}
       title="Video type"
       filterName="video_type"
       sortBy="SORT_BY_NAME"

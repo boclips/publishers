@@ -64,7 +64,7 @@ describe(`filterPanel`, () => {
   it('renders the title, filters and facets provided', () => {
     const panel = render(
       <Filter
-        filterOptions={videoTypes}
+        options={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -84,7 +84,7 @@ describe(`filterPanel`, () => {
     const onFilterSpy = jest.fn();
     const panel = render(
       <Filter
-        filterOptions={videoTypes}
+        options={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={onFilterSpy}
@@ -99,7 +99,7 @@ describe(`filterPanel`, () => {
   it('can hide the options if you collapse the panel', () => {
     const panel = render(
       <Filter
-        filterOptions={videoTypes}
+        options={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -115,7 +115,7 @@ describe(`filterPanel`, () => {
   it('can uncheck an option and others remain checked', () => {
     const panel = render(
       <Filter
-        filterOptions={videoTypes}
+        options={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -133,7 +133,7 @@ describe(`filterPanel`, () => {
   it('renders a show more label with the correct number', () => {
     const panel = render(
       <Filter
-        filterOptions={generateOptions(6)}
+        options={generateOptions(6)}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -148,7 +148,7 @@ describe(`filterPanel`, () => {
   it('toggles the filter to show more results', () => {
     const panel = render(
       <Filter
-        filterOptions={generateOptions(6)}
+        options={generateOptions(6)}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -166,7 +166,7 @@ describe(`filterPanel`, () => {
   it('renders the search input with default placeholder when enabled', () => {
     const panel = render(
       <Filter
-        filterOptions={channels}
+        options={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -180,7 +180,7 @@ describe(`filterPanel`, () => {
   it('renders the search input with custom placeholder when passed in', () => {
     const panel = render(
       <Filter
-        filterOptions={channels}
+        options={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -197,7 +197,7 @@ describe(`filterPanel`, () => {
   it('filters options based on the search input', () => {
     const panel = render(
       <Filter
-        filterOptions={channels}
+        options={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
