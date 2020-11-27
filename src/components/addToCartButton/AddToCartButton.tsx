@@ -13,8 +13,16 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
   const cache = useQueryCache();
   const { data: cart } = useCartQuery();
 
+  const itemNotInBasket =
+    cart.items.filter((it) => it?.videoId === videoId).length === 0;
+
   const [mutateAddToCart] = useMutation(
-    (id: string) => doAddToCart(cart as Cart, id),
+    (id: string) => {
+      if (itemNotInBasket) {
+        return doAddToCart(cart as Cart, id);
+      }
+      return Promise.reject(new Error('Item already in basket'));
+    },
     {
       onSuccess: (it) => {
         cache.setQueryData('cart', (old: Cart) => ({
@@ -24,11 +32,9 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
       },
     },
   );
-  const addToCartButton =
-    cart.items.filter((it) => it.videoId === videoId).length === 0;
 
   const displayButton = () => {
-    if (addToCartButton) {
+    if (itemNotInBasket) {
       return (
         <Button
           onClick={() => mutateAddToCart(videoId)}
@@ -41,7 +47,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
     }
     return (
       <Button
-        onClick={() => null}
+        onClick={() => mutateAddToCart(videoId)}
         theme="publishers"
         type="secondary"
         text="Remove from cart"
@@ -51,7 +57,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
   };
 
   return (
-    <div className="h-12 w-full flex justify-end mt-2"> {displayButton()} </div>
+    <div className="h-12 w-full flex justify-end mt-2">{displayButton()}</div>
   );
 };
 

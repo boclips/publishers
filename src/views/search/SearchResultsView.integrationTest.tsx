@@ -11,6 +11,7 @@ import {
   FacetsFactory,
 } from 'boclips-api-client/dist/test-support/FacetsFactory';
 import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/client/FakeCartsClient';
+import Navbar from 'src/components/layout/Navbar';
 
 describe('SearchResults', () => {
   let videosClient: FakeVideosClient = null;
@@ -398,6 +399,30 @@ describe('SearchResults', () => {
       });
 
       expect(wrapper.getByText('Remove from cart')).toBeInTheDocument();
+    });
+
+    it(`basket counter goes up when item added to cart in navbar`, async () => {
+      const video = VideoFactory.sample({
+        id: 'video-id',
+        title: 'news video',
+        types: [{ name: 'NEWS', id: 2 }],
+      });
+
+      videosClient.insertVideo(video);
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=vid']}>
+          <Navbar />
+        </MemoryRouter>,
+      );
+
+      cartClient.insertCartItem('video-id');
+      const cart = await cartClient.getCart();
+
+      await waitFor(() => {
+        const cartCounter = wrapper.getByTestId('cart-counter').innerHTML;
+        expect(cartCounter).toBe(cart.items.length.toString());
+      });
     });
   });
 });

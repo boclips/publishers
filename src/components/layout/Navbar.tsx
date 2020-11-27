@@ -5,6 +5,7 @@ import MyAccountSVG from '../../resources/my-account-icon.svg';
 import MyBasketSVG from '../../resources/shopping-cart-icon.svg';
 import BoclipsLogoSVG from '../../resources/boclips.svg';
 import { Search } from '../searchBar/SearchBar';
+import s from './Navbar.module.less';
 
 interface Props {
   showSearchBar?: boolean;
@@ -30,9 +31,14 @@ const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
               <MyAccountSVG />
               <span className="text-xs mt-1">Profile</span>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center relative">
               <MyBasketSVG />
-              <span className="text-xs mt-1">Basket {data?.items?.length}</span>
+              <span className="text-xs mt-1">
+                Cart
+                <div data-qa="cart-counter" className={s.basketCounter}>
+                  {data?.items?.length}
+                </div>
+              </span>
             </div>
           </div>
         </div>
