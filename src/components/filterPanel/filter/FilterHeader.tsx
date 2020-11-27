@@ -1,24 +1,19 @@
 import React from 'react';
 import FilterArrowUp from 'src/resources/filter-arrow-up.svg';
 import FilterArrowDown from 'src/resources/filter-arrow-down.svg';
+import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
 
 interface Props {
   text: string;
   filterIsOpen: boolean;
   toggleFilter: () => void;
-  handleKeyDown: (event, callback) => void;
 }
-export const FilterHeader = ({
-  text,
-  filterIsOpen,
-  toggleFilter,
-  handleKeyDown,
-}: Props) => {
+export const FilterHeader = ({ text, filterIsOpen, toggleFilter }: Props) => {
   return (
     <div
       className="text-base text-blue-800 font-medium flex items-center cursor-pointer active:border-none"
       onClick={toggleFilter}
-      onKeyDown={(event) => handleKeyDown(event, toggleFilter)}
+      onKeyDown={(event) => handleEnterKeyDown(event, toggleFilter)}
       tabIndex={0}
       role="listbox"
     >

@@ -3,6 +3,7 @@ import { getFacetSorter } from 'src/services/sortFacets';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { SortBy } from 'src/types/SortBy';
 import { FilterOption } from 'src/components/filterPanel/filter/FilterOption';
+import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
 
 interface Props {
   options: Facet[];
@@ -11,7 +12,6 @@ interface Props {
   sortBy?: SortBy;
   filterIsOpen: boolean;
   searchText?: string;
-  handleKeyDown: (event, callback) => void;
 }
 const DEFAULT_VISIBLE_OPTIONS = 5;
 
@@ -22,7 +22,6 @@ export const FilterOptionList = ({
   sortBy = 'SORT_BY_HITS_AND_NAME',
   searchText,
   filterIsOpen,
-  handleKeyDown,
 }: Props) => {
   const [allExpanded, setAllExpanded] = useState<boolean>(false);
 
@@ -58,7 +57,7 @@ export const FilterOptionList = ({
             role="button"
             tabIndex={0}
             onClick={() => setAllExpanded(!allExpanded)}
-            onKeyDown={(event) => handleKeyDown(event, toggleOptions)}
+            onKeyDown={(event) => handleEnterKeyDown(event, toggleOptions)}
             className="text-blue-800 underline font-medium text-right focus:outline-none"
           >
             {allExpanded ? 'Show less' : `Show all (${filteredOptions.length})`}

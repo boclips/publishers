@@ -52,12 +52,6 @@ export const Filter = ({
     }
   };
 
-  const handleKeyDown = (event, callback) => {
-    if (event.key === 'Enter') {
-      callback();
-    }
-  };
-
   const toggleFilter = () => {
     setOpen(!open);
     setSearchText('');
@@ -69,7 +63,6 @@ export const Filter = ({
         text={title}
         filterIsOpen={open}
         toggleFilter={toggleFilter}
-        handleKeyDown={handleKeyDown}
       />
       {searchEnabled && (
         <FilterSearch
@@ -85,7 +78,6 @@ export const Filter = ({
         sortBy={sortBy}
         filterIsOpen={open}
         searchText={searchText}
-        handleKeyDown={handleKeyDown}
       />
     </div>
   );
