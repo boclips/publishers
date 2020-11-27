@@ -113,45 +113,47 @@ const CheckboxFilter = ({
       )}
       {open && (
         <div className="flex flex-col mb-1 mt-4">
-          {filterOptions
-            .filter(
-              (option) =>
-                !searchText ||
-                option.name.toLowerCase().includes(searchText.toLowerCase()),
-            )
-            .sort(sortByHitAndName)
-            .slice(
-              0,
-              allOptionsVisible
-                ? filterOptions.length
-                : DEFAULT_VISIBLE_OPTIONS,
-            )
-            .map((item) => (
-              <div key={item.id} className="mb-3">
-                <label
-                  htmlFor={item.id}
-                  className="flex items-center cursor-pointer text-gray-700"
-                >
-                  <input
-                    onChange={(event) => onSelectOption(event, item.id)}
-                    className="form-checkbox checked:bg-blue-800 w-5 h-5 hover:border-blue-800 hover:border-solid border-2"
-                    type="checkbox"
-                    value={item.id}
-                    checked={optionStates.indexOf(item.id) > -1}
-                    data-qa={`${item.id}-checkbox`}
-                    id={item.id}
-                  />
-                  <span
-                    className={c('text-sm ml-2 flex-grow', {
-                      'font-medium': optionStates.includes(item.id),
-                    })}
+          <div className={`overflow-y-scroll ${allOptionsVisible && 'h-64'}`}>
+            {filterOptions
+              .filter(
+                (option) =>
+                  !searchText ||
+                  option.name.toLowerCase().includes(searchText.toLowerCase()),
+              )
+              .sort(sortByHitAndName)
+              .slice(
+                0,
+                allOptionsVisible
+                  ? filterOptions.length
+                  : DEFAULT_VISIBLE_OPTIONS,
+              )
+              .map((item) => (
+                <div key={item.id} className="mb-3">
+                  <label
+                    htmlFor={item.id}
+                    className="flex items-center cursor-pointer text-gray-700"
                   >
-                    {item.name}
-                  </span>
-                  <span className="text-blue-700">{item.hits}</span>
-                </label>
-              </div>
-            ))}
+                    <input
+                      onChange={(event) => onSelectOption(event, item.id)}
+                      className="form-checkbox checked:bg-blue-800 w-5 h-5 hover:border-blue-800 hover:border-solid border-2"
+                      type="checkbox"
+                      value={item.id}
+                      checked={optionStates.indexOf(item.id) > -1}
+                      data-qa={`${item.id}-checkbox`}
+                      id={item.id}
+                    />
+                    <span
+                      className={c('text-sm ml-2 flex-grow', {
+                        'font-medium': optionStates.includes(item.id),
+                      })}
+                    >
+                      {item.name}
+                    </span>
+                    <span className="text-blue-700">{item.hits}</span>
+                  </label>
+                </div>
+              ))}
+          </div>
           {renderOptionsToggle()}
         </div>
       )}
