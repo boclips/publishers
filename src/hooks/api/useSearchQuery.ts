@@ -18,6 +18,8 @@ const doSearch = ({ query, page, pageSize, filters }: SearchQuery) =>
       size: pageSize,
       type: filters?.video_type,
       subject: filters?.subject,
+      channel: filters?.channel,
+      include_channel_facets: true,
     });
   });
 

@@ -1,1 +1,1 @@
-export type FilterKeys = 'video_type' | 'subject';
+export type FilterKeys = 'video_type' | 'subject' | 'channel';

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import FilterArrowUp from 'src/resources/filter-arrow-up.svg';
 import FilterArrowDown from 'src/resources/filter-arrow-down.svg';
+import SearchIconSVG from 'src/resources/search-icon.svg';
 import c from 'classnames';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { sortByHitAndName } from 'src/services/sortFacets';
@@ -24,7 +25,7 @@ const CheckboxFilter = ({
   filterName,
   initialValues,
   searchEnabled,
-  searchPlaceHolderText = "Search"
+  searchPlaceHolderText = 'Search',
 }: Props) => {
   const [open, setOpen] = useState<boolean>(true);
   const [searchText, setSearchText] = useState<string>();
@@ -53,7 +54,10 @@ const CheckboxFilter = ({
     }
   };
 
-  const toggleFilter = () => setOpen(!open);
+  const toggleFilter = () => {
+    setOpen(!open);
+    setSearchText('');
+  };
   const toggleOptions = () => setAllOptionsVisible(!allOptionsVisible);
 
   const handleKeyDown = (event, callback) => {
@@ -95,18 +99,26 @@ const CheckboxFilter = ({
         <span className="flex-grow">{title}</span>{' '}
         {open ? <FilterArrowUp /> : <FilterArrowDown />}
       </div>
-      {open && (searchEnabled && (<input
-              className="form-input"
-              placeholder={searchPlaceHolderText}
-              onChange={(e: any) => {
-                console.log(e.target.value);
-                setSearchText(e.target.value);
-              }}
-          // prefix={<SearchOutlined/>}
-          />)) &&
+      {open && searchEnabled && (
+        <div className="w-full h-8 bg-white mt-2 border-2 flex focus-within:shadow-outline hover:shadow-outline rounded">
+          <div className="w-4 h-4 m-1">
+            <SearchIconSVG className="stroke-current text-gray-600 stroke-2" />
+          </div>
+          <input
+            className="focus:outline-none outline-none active:outline-none border-none mt-1"
+            placeholder={searchPlaceHolderText}
+            onChange={(e: any) => setSearchText(e.target.value)}
+          />
+        </div>
+      )}
+      {open && (
         <div className="flex flex-col mb-1 mt-4">
           {filterOptions
-            .filter(option => !searchText || option.name.toLowerCase().includes(searchText.toLowerCase()))
+            .filter(
+              (option) =>
+                !searchText ||
+                option.name.toLowerCase().includes(searchText.toLowerCase()),
+            )
             .sort(sortByHitAndName)
             .slice(
               0,
@@ -141,7 +153,8 @@ const CheckboxFilter = ({
               </div>
             ))}
           {renderOptionsToggle()}
-        </div>}
+        </div>
+      )}
     </div>
   );
 };

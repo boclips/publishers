@@ -72,6 +72,7 @@ const SearchResultsView = () => {
                   handleFilter={handleFilter}
                   initialVideoTypeFilters={filters.video_type}
                   initialSubjectFilters={filters.subject}
+                  initialChannelFilters={filters.channel}
                   facets={data?.facets}
                 />
               )}
