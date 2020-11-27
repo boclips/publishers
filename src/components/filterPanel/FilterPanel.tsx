@@ -1,8 +1,8 @@
 import React from 'react';
 import { VideoFacets } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import { VideoTypeFilter } from 'src/components/filters/VideoTypeFilter';
-import { SubjectFilter } from 'src/components/filters/SubjectFilter';
-import CheckboxFilter from 'src/components/filters/CheckboxFilter';
+import { VideoTypeFilter } from 'src/components/filterPanel/VideoTypeFilter';
+import { SubjectFilter } from 'src/components/filterPanel/SubjectFilter';
+import { ChannelFilter } from 'src/components/filterPanel/ChannelFilter';
 
 interface Props {
   handleFilter: (filter: string, values: string[]) => void;
@@ -26,19 +26,15 @@ export const FilterPanel = ({
         options={facets?.videoTypes}
         initialValues={initialVideoTypeFilters}
       />
+      <ChannelFilter
+        options={facets?.channels}
+        handleFilter={handleFilter}
+        initialValues={initialChannelFilters}
+      />
       <SubjectFilter
         handleFilter={handleFilter}
         options={facets?.subjects}
         initialValues={initialSubjectFilters}
-      />
-      <CheckboxFilter
-        filters={facets?.channels}
-        title="Channel"
-        filterName="channel"
-        onFilter={handleFilter}
-        initialValues={initialChannelFilters}
-        searchPlaceHolderText="Search for channel"
-        searchEnabled
       />
     </div>
   );

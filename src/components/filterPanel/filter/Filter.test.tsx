@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import CheckboxFilter from './CheckboxFilter';
+import { Filter } from 'src/components/filterPanel/filter/Filter';
 
 describe(`filterPanel`, () => {
   const generateOptions = (optionNumber: number): Facet[] => {
@@ -63,8 +63,8 @@ describe(`filterPanel`, () => {
 
   it('renders the title, filters and facets provided', () => {
     const panel = render(
-      <CheckboxFilter
-        filters={videoTypes}
+      <Filter
+        filterOptions={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -83,8 +83,8 @@ describe(`filterPanel`, () => {
   it('calls onfilter with all selected values', () => {
     const onFilterSpy = jest.fn();
     const panel = render(
-      <CheckboxFilter
-        filters={videoTypes}
+      <Filter
+        filterOptions={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={onFilterSpy}
@@ -98,8 +98,8 @@ describe(`filterPanel`, () => {
 
   it('can hide the options if you collapse the panel', () => {
     const panel = render(
-      <CheckboxFilter
-        filters={videoTypes}
+      <Filter
+        filterOptions={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -114,8 +114,8 @@ describe(`filterPanel`, () => {
 
   it('can uncheck an option and others remain checked', () => {
     const panel = render(
-      <CheckboxFilter
-        filters={videoTypes}
+      <Filter
+        filterOptions={videoTypes}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -132,8 +132,8 @@ describe(`filterPanel`, () => {
   });
   it('renders a show more label with the correct number', () => {
     const panel = render(
-      <CheckboxFilter
-        filters={generateOptions(6)}
+      <Filter
+        filterOptions={generateOptions(6)}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -147,8 +147,8 @@ describe(`filterPanel`, () => {
 
   it('toggles the filter to show more results', () => {
     const panel = render(
-      <CheckboxFilter
-        filters={generateOptions(6)}
+      <Filter
+        filterOptions={generateOptions(6)}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -165,8 +165,8 @@ describe(`filterPanel`, () => {
 
   it('renders the search input with default placeholder when enabled', () => {
     const panel = render(
-      <CheckboxFilter
-        filters={channels}
+      <Filter
+        filterOptions={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
@@ -179,13 +179,13 @@ describe(`filterPanel`, () => {
 
   it('renders the search input with custom placeholder when passed in', () => {
     const panel = render(
-      <CheckboxFilter
-        filters={channels}
+      <Filter
+        filterOptions={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
         searchEnabled
-        searchPlaceHolderText="Search for channel"
+        searchPlaceholder="Search for channel"
       />,
     );
 
@@ -196,13 +196,13 @@ describe(`filterPanel`, () => {
 
   it('filters options based on the search input', () => {
     const panel = render(
-      <CheckboxFilter
-        filters={channels}
+      <Filter
+        filterOptions={channels}
         title="Video Types"
         filterName="test"
         onFilter={() => {}}
         searchEnabled
-        searchPlaceHolderText="Search for channel"
+        searchPlaceholder="Search for channel"
       />,
     );
 

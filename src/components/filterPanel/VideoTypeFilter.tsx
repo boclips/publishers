@@ -1,6 +1,6 @@
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import CheckboxFilter from 'src/components/filters/CheckboxFilter';
 import React from 'react';
+import { Filter } from 'src/components/filterPanel/filter/Filter';
 
 interface Props {
   handleFilter: (filter: string, values: string[]) => void;
@@ -28,8 +28,8 @@ export const VideoTypeFilter = ({
   options,
 }: Props) => {
   return (
-    <CheckboxFilter
-      filters={setLabels(options)}
+    <Filter
+      filterOptions={setLabels(options)}
       title="Video type"
       filterName="video_type"
       sortBy="SORT_BY_NAME"

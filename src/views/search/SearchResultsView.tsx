@@ -6,7 +6,7 @@ import {
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 import Navbar from 'src/components/layout/Navbar';
 import { PageLayout } from 'src/components/layout/PageLayout';
-import { FilterPanel } from 'src/components/filters/FilterPanel';
+import { FilterPanel } from 'src/components/filterPanel/FilterPanel';
 import { SearchResults } from 'src/components/searchResults/SearchResults';
 import { FilterKeys } from 'src/types/search/FilterKeys';
 
