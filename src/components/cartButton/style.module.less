@@ -1,0 +1,33 @@
+@import "~@boclips-ui/styles/src/_publishersColours";
+
+.cartButton {
+@apply flex flex-col items-center relative;
+  width: 50px;
+  cursor: pointer;
+  &:hover {
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -14px;
+      right: 0;
+      width: 50px;
+      background-color: @blue-700;
+      height: 6px;
+    }
+  }
+  a{
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+
+  }
+}
+
+.basketCounter {
+@apply absolute bg-blue-500 rounded-full items-center justify-center flex text-blue-800 font-bold;
+  top: -10px;
+  right: -14px;
+  width: 24px;
+  height: 24px;
+  font-size: 0.75rem;
+}
