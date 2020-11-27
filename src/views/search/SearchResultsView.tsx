@@ -63,7 +63,7 @@ const SearchResultsView = () => {
     <PageLayout navBar={<Navbar showSearchBar />}>
       <div className="grid grid-cols-12 gap-4">
         {isError ? (
-          <div className="col-span-12">{error}</div>
+          <div className="col-span-12">{error && error.message}</div>
         ) : (
           <>
             <div className="col-start-1 col-end-4">

@@ -1,12 +1,8 @@
 import { Video } from 'boclips-api-client/dist/types';
 import { List } from 'antd';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
-import { VideoCard } from '@boclips-ui/video-card';
-import { Player } from 'boclips-player-react';
-import playerOptions from 'src/Player/playerOptions';
-import { convertVideoFromApi } from 'src/services/convertVideoFromApi';
 import React from 'react';
-import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
+import { VideoCardWrapper } from 'src/components/searchResults/VideoCardWrapper';
 
 interface Props {
   videos: Video[];
@@ -35,26 +31,7 @@ export const VideoCardList = ({
       dataSource={videos}
       renderItem={(video: Video) => (
         <div className="mb-4">
-          <VideoCard
-            key={video.id}
-            videoPlayer={
-              <Player
-                videoUri={video.links.self.getOriginalLink()}
-                borderRadius="4px"
-                options={playerOptions}
-              />
-            }
-            videoActionButtons={[
-              <AddToCartButton key={video.channelId} videoId={video.id} />,
-            ]}
-            border="bottom"
-            video={convertVideoFromApi(video)}
-            authenticated
-            hideAttachments
-            hideBestFor
-            theme="publishers"
-            videoRoundedCorners
-          />
+          <VideoCardWrapper video={video} />
         </div>
       )}
     />

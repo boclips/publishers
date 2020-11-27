@@ -14,7 +14,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
   const { data: cart } = useCartQuery();
 
   const itemNotInBasket =
-    cart.items.filter((it) => it?.videoId === videoId).length === 0;
+    cart?.items?.filter((it) => it?.videoId === videoId)?.length === 0;
 
   const [mutateAddToCart] = useMutation(
     (id: string) => {
