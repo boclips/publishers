@@ -4,7 +4,7 @@
   "description": "The publishers frontend app, v2",
   "main": "index.tsx",
   "scripts": {
-    "test": "jest",
+    "test": "jest --forceExit",
     "dev": "webpack serve --config webpack/webpack.dev.js",
     "compile": "tsc -p . --noEmit",
     "ci-build": "npm ci && npm run test && npm run lint && npm run build && cp -R ./dist/ ../dist/html/ && cp application.conf Dockerfile ../dist",

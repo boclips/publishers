@@ -13,7 +13,7 @@ module.exports = merge(common, {
   entry: ['react-hot-loader/patch', srcPath],
   output: {
     filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
+    // chunkFilename: '[name].chunk.js',
   },
   devServer: {
     contentBase: distPath,

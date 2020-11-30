@@ -20,7 +20,7 @@ export function SearchResults({
   currentPage,
 }: Props) {
   return (
-    <>
+    <div className="col-start-7 col-end-26">
       <SearchResultsSummary
         count={results?.pageSpec?.totalElements}
         query={query}
@@ -35,6 +35,6 @@ export function SearchResults({
           totalSearchResults={results?.pageSpec?.totalElements}
         />
       )}
-    </>
+    </div>
   );
 }

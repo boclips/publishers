@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CartButton from 'src/components/cartButton/CartButton';
+import c from 'classnames';
 import MyAccountSVG from '../../resources/my-account-icon.svg';
 import BoclipsLogoSVG from '../../resources/boclips.svg';
 import { Search } from '../searchBar/SearchBar';
@@ -12,25 +13,29 @@ interface Props {
 
 const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
   return (
-    <nav className="shadow-md" aria-label="Boclips navigation bar">
-      <div className="container mx-auto ">
-        <div className={s.navbarWrapper}>
-          <div className="col-span-1 md:col-span-3">
-            <Link to="/" title="Boclips logo">
-              <BoclipsLogoSVG />
-            </Link>
-          </div>
-          <div className="col-span-1 md:col-span-6 flex justify-center">
-            {showSearchBar && <Search size="small" showIconOnly />}
-          </div>
-          <div className="col-span-1 md:col-span-3 flex justify-end">
-            <div className="flex flex-col items-center mr-6">
-              <MyAccountSVG />
-              <span className="text-xs mt-1">Profile</span>
-            </div>
-            <CartButton />
-          </div>
+    <nav
+      className={c(
+        s.navbar,
+        'col-start-1 col-end-27 gap-x-8 grid grid-cols-container',
+      )}
+      aria-label="Boclips navigation bar"
+    >
+      <div className="col-start-2 col-end-5">
+        <Link to="/" title="Boclips logo">
+          <BoclipsLogoSVG />
+        </Link>
+      </div>
+      {showSearchBar && (
+        <div className="col-start-7 col-end-13 flex justify-start">
+          <Search size="small" showIconOnly />
         </div>
+      )}
+      <div className="col-start-15 col-end-26 flex justify-end">
+        <div className="flex flex-col items-center mr-6">
+          <MyAccountSVG />
+          <span className="text-xs mt-1">Profile</span>
+        </div>
+        <CartButton />
       </div>
     </nav>
   );

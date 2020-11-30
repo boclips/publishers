@@ -20,7 +20,7 @@ export const FilterPanel = ({
   initialChannelFilters,
 }: Props) => {
   return (
-    <div>
+    <div className="col-start-2 col-end-7">
       <VideoTypeFilter
         handleFilter={handleFilter}
         options={facets?.videoTypes}

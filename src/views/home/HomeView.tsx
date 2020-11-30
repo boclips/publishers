@@ -1,12 +1,15 @@
 import React from 'react';
-import { PageLayout } from 'src/components/layout/PageLayout';
+import Navbar from 'src/components/layout/Navbar';
+import Footer from 'src/components/layout/Footer';
 import SearchHero from '../../components/searchHero/SearchHero';
 
 const HomeView = () => {
   return (
-    <PageLayout>
+    <div className="grid grid-rows-home grid-cols-container gap-8 container">
+      <Navbar showSearchBar={false} />
       <SearchHero />
-    </PageLayout>
+      <Footer />
+    </div>
   );
 };
 

@@ -7,17 +7,63 @@ module.exports = {
     purgeLayersByDefault: true,
   },
   purge: ['./src/**/*.html', './src/**/*.tsx'],
+  corePlugins: {
+    container: false,
+  },
   theme: {
     fontFamily: {
       sans: ['Rubik'],
     },
-    // screens: {
-    //   sm: '1080px',
-    //   md: '1280px',
-    //   lg: '1440px',
-    //   xl: '1920px',
-    // },
+    screens: {
+      sm: '1280px',
+      md: '1440px',
+      lg: '1680px',
+    },
     extend: {
+      gridTemplateRows: {
+        home: '75px minmax(0, 432px) 63px',
+        'search-view': '75px minmax(0, auto) 63px',
+      },
+      gridTemplateColumns: {
+        container:
+          'minmax(2rem, 1fr) repeat(24, minmax(0, 38px)) minmax(2rem, 1fr)',
+        content: 'repeat(24, minmax(0, 70px))',
+        24: 'repeat(24, 1fr)',
+      },
+      gridColumnStart: {
+        13: '13',
+        14: '14',
+        15: '15',
+        16: '16',
+        17: '17',
+        18: '18',
+        19: '19',
+        20: '20',
+        21: '21',
+        22: '22',
+        23: '23',
+        24: '24',
+        25: '25',
+        26: '26',
+        27: '27',
+      },
+      gridColumnEnd: {
+        13: '13',
+        14: '14',
+        15: '15',
+        16: '16',
+        17: '17',
+        18: '18',
+        19: '19',
+        20: '20',
+        21: '21',
+        22: '22',
+        23: '23',
+        24: '24',
+        25: '25',
+        26: '26',
+        27: '27',
+      },
       colors: {
         blue: {
           100: '#F9FBFF',
@@ -50,18 +96,20 @@ module.exports = {
       },
       fontSize: {
         xxs: '0.65rem',
+        h1: '2.5rem',
+        h2: '1.875rem',
+        h3: '1.25rem',
       },
       spacing: {
         14: '3.5rem',
       },
-      container: {
-        padding: {
-          default: '1rem',
-          sm: '2rem',
-          lg: '3rem',
-          xl: '4rem',
-        },
-      },
+      // container: {
+      //   padding: {
+      //     default: '2rem',
+      //     sm: '1rem',
+      //   },
+      //   maxWidth: '1600px',
+      // },
       boxShadow: {
         outline: '0 2px 8px 0 rgba(0,21,80,0.15)',
         'button-focus': '0 0 6px 0 #8BAAFF',
@@ -81,5 +129,15 @@ module.exports = {
       'checked',
     ],
   },
-  plugins: [customForms, debugScreens],
+  plugins: [
+    customForms,
+    debugScreens,
+    ({ addComponents }) => {
+      addComponents({
+        '.container': {
+          maxWidth: '100%',
+        },
+      });
+    },
+  ],
 };
