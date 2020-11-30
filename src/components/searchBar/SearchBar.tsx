@@ -2,7 +2,7 @@ import React from 'react';
 import SearchBar from '@boclips-ui/search-bar';
 import { useHistory } from 'react-router-dom';
 import { useLocationParams } from 'src/hooks/useLocationParams';
-import SearchIcon from '../../resources/search-icon.svg';
+import SearchIcon from '../../resources/icons/search-icon.svg';
 
 interface Props {
   size: 'big' | 'small';

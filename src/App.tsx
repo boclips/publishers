@@ -20,6 +20,8 @@ const SearchResultsView = lazy(
 );
 const HomeView = lazy(() => import('./views/home/HomeView'));
 
+const CartView = lazy(() => import('src/views/cart/CartView'));
+
 const App = () => {
   useEffect(() => {
     setupClient();
@@ -35,6 +37,9 @@ const App = () => {
             </Route>
             <Route path="/videos">
               <SearchResultsView />
+            </Route>
+            <Route path="/cart">
+              <CartView />
             </Route>
           </Suspense>
           <ReactQueryDevtools initialIsOpen={false} />

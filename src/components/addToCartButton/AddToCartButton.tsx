@@ -3,7 +3,7 @@ import { doAddToCart, useCartQuery } from 'src/hooks/api/cartQuery';
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import Button from '@boclips-ui/button';
 import React from 'react';
-import CartIcon from '../../resources/cart-icon.svg';
+import CartIcon from '../../resources/icons/cart-icon.svg';
 
 interface AddToCartButtonProps {
   videoId: string;

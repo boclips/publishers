@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchIconSVG from 'src/resources/search-icon.svg';
+import SearchIconSVG from 'resources/icons/search-icon.svg';
 
 interface Props {
   filterIsOpen: boolean;

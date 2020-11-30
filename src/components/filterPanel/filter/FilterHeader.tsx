@@ -1,6 +1,6 @@
 import React from 'react';
-import FilterArrowUp from 'src/resources/filter-arrow-up.svg';
-import FilterArrowDown from 'src/resources/filter-arrow-down.svg';
+import FilterArrowUp from 'src/resources/icons/filter-arrow-up.svg';
+import FilterArrowDown from 'src/resources/icons/filter-arrow-down.svg';
 import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
 
 interface Props {

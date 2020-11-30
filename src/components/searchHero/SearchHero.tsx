@@ -1,5 +1,5 @@
 import React from 'react';
-import HomeImageSVG from 'src/resources/home-search.svg';
+import HomeImageSVG from 'src/resources/icons/home-search.svg';
 import { Search } from 'src/components/searchBar/SearchBar';
 import { prefetchSearchQuery } from 'src/hooks/api/useSearchQuery';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';

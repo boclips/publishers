@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'antd/lib/style/themes/default.less';
+@layer base {
+  h1 {
+  @apply font-medium text-h1;
+  }
+
+  h2 {
+  @apply text-h2;
+    color: inherit !important;
+  }
+}
 
 @font-family: 'Rubik', Helvetica Neue, Helvetica, Arial, sans-serif;
 
@@ -12,5 +21,5 @@
 }
 
 body, html {
-  font-family: @font-family!important;
+  font-family: @font-family !important;
 }

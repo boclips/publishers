@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import CartButton from 'src/components/cartButton/CartButton';
 import c from 'classnames';
-import MyAccountSVG from '../../resources/my-account-icon.svg';
-import BoclipsLogoSVG from '../../resources/boclips.svg';
+import MyAccountSVG from 'resources/icons/my-account-icon.svg';
+import BoclipsLogoSVG from 'resources/icons/boclips.svg';
 import { Search } from '../searchBar/SearchBar';
 import s from './navbar.module.less';
 
