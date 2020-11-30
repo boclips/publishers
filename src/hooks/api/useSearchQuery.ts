@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { usePaginatedQuery } from 'react-query';
 import { VideoSearchResults } from 'boclips-api-client/dist/sub-clients/videos/model/VideoSearchResults';
 import { FilterKeys } from '../../types/search/FilterKeys';
 import { ApiClientWrapper } from '../../services/apiClientWrapper';
@@ -30,8 +30,9 @@ const generateSearchKey = ({ query, page, pageSize, filters }: SearchQuery) => [
 ];
 
 export const useSearchQuery = (searchQuery: SearchQuery) =>
-  useQuery<VideoSearchResults, any>(generateSearchKey(searchQuery), () =>
-    doSearch(searchQuery),
+  usePaginatedQuery<VideoSearchResults, any>(
+    generateSearchKey(searchQuery),
+    () => doSearch(searchQuery),
   );
 
 export const prefetchSearchQuery = (searchQuery: SearchQuery) =>

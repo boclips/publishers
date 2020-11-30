@@ -3,8 +3,6 @@ import React from 'react';
 import { Filter } from 'src/components/filterPanel/filter/Filter';
 
 interface Props {
-  handleFilter: (filter: string, values: string[]) => void;
-  initialValues: string[];
   options: Facet[];
 }
 
@@ -22,19 +20,13 @@ const setLabels = (filterOptions: Facet[]): Facet[] =>
     }
   });
 
-export const VideoTypeFilter = ({
-  handleFilter,
-  initialValues,
-  options,
-}: Props) => {
+export const VideoTypeFilter = ({ options = [] }: Props) => {
   return (
     <Filter
       options={setLabels(options)}
       title="Video type"
       filterName="video_type"
       sortBy="SORT_BY_NAME"
-      onFilter={handleFilter}
-      initialValues={initialValues}
     />
   );
 };

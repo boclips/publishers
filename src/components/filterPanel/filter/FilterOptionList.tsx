@@ -45,11 +45,13 @@ export const FilterOptionList = ({
               allExpanded ? filteredOptions.length : DEFAULT_VISIBLE_OPTIONS,
             )
             .map((option) => (
-              <FilterOption
-                option={option}
-                selected={selectedOptions.includes(option.id)}
-                onSelect={onSelect}
-              />
+              <span key={option.id}>
+                <FilterOption
+                  option={option}
+                  selected={selectedOptions.includes(option.id)}
+                  onSelect={onSelect}
+                />
+              </span>
             ))}
         </div>
         {tooManyOptions && (
