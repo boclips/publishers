@@ -26,11 +26,11 @@ const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
         </Link>
       </div>
       {showSearchBar && (
-        <div className="col-start-7 col-end-13 flex justify-start">
+        <div className="col-start-7 col-end-20 flex justify-start">
           <Search size="small" showIconOnly />
         </div>
       )}
-      <div className="col-start-15 col-end-26 flex justify-end">
+      <div className="col-start-20 col-end-26 flex justify-end">
         <div className="flex flex-col items-center mr-6">
           <MyAccountSVG />
           <span className="text-xs mt-1">Profile</span>

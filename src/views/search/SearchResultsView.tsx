@@ -57,7 +57,7 @@ const SearchResultsView = () => {
   };
 
   return (
-    <div className="grid grid-rows-search-view grid-cols-container gap-8 container">
+    <div className="grid grid-rows-search-view grid-cols-container gap-8">
       <Navbar showSearchBar />
       <FilterPanel
         facets={resolvedData?.facets}

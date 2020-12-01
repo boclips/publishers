@@ -10,7 +10,7 @@ interface Props {
   video: Video;
 }
 
-const playerOptions: Partial<PlayerOptions> = {
+export const playerOptions: Partial<PlayerOptions> = {
   interface: {
     controls: [
       'play-large',

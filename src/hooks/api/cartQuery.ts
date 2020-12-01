@@ -13,6 +13,3 @@ export const doAddToCart = (cart: Cart, videoId: string) =>
   });
 
 export const useCartQuery = () => useQuery('cart', () => doGetCart());
-
-// export const useAddToCartQuery = (cart: Cart, videoId: string) =>
-//   useQuery('addToCart', () => doAddToCart(cart, videoId));

@@ -9,21 +9,23 @@ import s from './style.module.less';
 const SearchHero = () => {
   return (
     <main className="col-start-2 col-end-26 row-start-2 row-end-2 bg-primary-light h-full rounded-lg">
-      <section className={c(s.heroContainer, 'grid grid-cols-12  h-full')}>
-        <div className="col-start-2 col-end-12 flex flex-row justify-self-center self-center items-center">
-          <div className="flex flex-col pr-20">
-            <h1 className="mb-8 text-4xl font-medium">
-              What video do you need today?
-            </h1>
-            <Search
-              size="big"
-              showIconOnly={false}
-              onSearch={(query) =>
-                prefetchSearchQuery({ query, page: 0, pageSize: PAGE_SIZE })
-              }
-            />
-          </div>
-          <div className={c(s.svgContainer, '')}>
+      <section
+        className={c(s.heroContainer, 'grid grid-cols-content gap-8  h-full')}
+      >
+        <div className="col-start-3 col-end-15 self-center lg:col-start-4 lg:col-end-16">
+          <h1 className="mb-8 text-4xl font-medium">
+            What video do you need today?
+          </h1>
+          <Search
+            size="big"
+            showIconOnly={false}
+            onSearch={(query) =>
+              prefetchSearchQuery({ query, page: 0, pageSize: PAGE_SIZE })
+            }
+          />
+        </div>
+        <div className="col-start-16 col-end-24 self-center justify-self-start">
+          <div className={c(s.svgContainer)}>
             <HomeImageSVG />
           </div>
         </div>
