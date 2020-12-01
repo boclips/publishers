@@ -1,6 +1,6 @@
 import React from 'react';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import { Filter } from 'src/components/filterPanel/filter/Filter';
+import { SearchableFilter } from 'src/components/filterPanel/filter/SearchableFilter';
 
 interface Props {
   options: Facet[];
@@ -9,13 +9,12 @@ interface Props {
 
 export const ChannelFilter = ({ options, handleChange }: Props) => {
   return (
-    <Filter
+    <SearchableFilter
       options={options}
       title="Channel"
       filterName="channel"
       handleChange={handleChange}
       searchPlaceholder="Search for channel"
-      searchEnabled
     />
   );
 };

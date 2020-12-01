@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FilterHeader } from 'src/components/filterPanel/filter/FilterHeader';
-import { FilterSearch } from 'src/components/filterPanel/filter/FilterSearch';
 import { FilterOptionList } from 'src/components/filterPanel/filter/FilterOptionList';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { SortBy } from 'src/types/SortBy';
@@ -11,9 +10,9 @@ interface Props {
   options: Facet[];
   filterName: string;
   handleChange: (filter: string, values: string[]) => void;
-  searchEnabled?: boolean;
-  searchPlaceholder?: string;
   sortBy?: SortBy;
+  filtersSearch?: React.ReactNode;
+  handleFilterToggle?: (isOpen: boolean) => void;
 }
 
 export const Filter = ({
@@ -21,13 +20,12 @@ export const Filter = ({
   options = [],
   filterName,
   handleChange,
-  searchEnabled,
-  searchPlaceholder,
+  filtersSearch,
   sortBy,
+  handleFilterToggle,
 }: Props) => {
   const [searchLocation] = useSearchQueryLocationParams();
   const [open, setOpen] = useState<boolean>(true);
-  const [searchText, setSearchText] = useState<string>();
   const [filtersTouched, setFiltersTouched] = useState<boolean>(false);
 
   const initialValues = searchLocation.filters[filterName];
@@ -52,8 +50,11 @@ export const Filter = ({
 
   const toggleFilter = () => {
     setOpen(!open);
-    setSearchText('');
+    if (handleFilterToggle) {
+      handleFilterToggle(!open);
+    }
   };
+
   return (
     <div className="bg-blue-100 mt-6 p-4 border-solid border border-blue-300 rounded ">
       <FilterHeader
@@ -63,18 +64,12 @@ export const Filter = ({
       />
       {open && (
         <>
-          {searchEnabled && (
-            <FilterSearch
-              placeholderText={searchPlaceholder}
-              onSearch={setSearchText}
-            />
-          )}
+          {filtersSearch}
           <FilterOptionList
             options={options}
             selectedOptions={optionStates}
             onSelect={onSelectOption}
             sortBy={sortBy}
-            searchText={searchText}
           />
         </>
       )}

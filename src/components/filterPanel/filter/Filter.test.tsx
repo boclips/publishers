@@ -29,38 +29,6 @@ describe(`filterPanel`, () => {
       name: 'News',
     },
   ];
-  const channels = [
-    {
-      hits: 10,
-      id: 'channel-1',
-      name: 'TED-ED',
-    },
-    {
-      hits: 5,
-      id: 'channel-2',
-      name: 'History channel',
-    },
-    {
-      hits: 5,
-      id: 'channel-3',
-      name: 'TED',
-    },
-    {
-      hits: 5,
-      id: 'channel-4',
-      name: 'TED-2',
-    },
-    {
-      hits: 5,
-      id: 'channel-5',
-      name: 'TED-3',
-    },
-    {
-      hits: 5,
-      id: 'channel-6',
-      name: 'TED-4',
-    },
-  ];
 
   it('renders the title, filters and facets provided', () => {
     const panel = renderWithLocation(
@@ -115,6 +83,7 @@ describe(`filterPanel`, () => {
     const stockCheckbox = panel.getByTestId('stock-checkbox');
     expect(stockCheckbox).toHaveProperty('checked', true);
   });
+
   it('renders a show more label with the correct number', () => {
     const panel = renderWithLocation(
       <Filter
@@ -146,59 +115,5 @@ describe(`filterPanel`, () => {
 
     expect(panel.queryByText('Option 5')).toBeVisible();
     expect(panel.getByText('Show less')).toBeVisible();
-  });
-
-  it('renders the search input with default placeholder when enabled', () => {
-    const panel = renderWithLocation(
-      <Filter
-        options={channels}
-        title="Video Types"
-        filterName="test"
-        searchEnabled
-        handleChange={() => {}}
-      />,
-    );
-
-    expect(panel.getByPlaceholderText('Search')).toBeInTheDocument();
-  });
-
-  it('renders the search input with custom placeholder when passed in', () => {
-    const panel = renderWithLocation(
-      <Filter
-        options={channels}
-        title="Video Types"
-        filterName="test"
-        searchEnabled
-        searchPlaceholder="Search for channel"
-        handleChange={() => {}}
-      />,
-    );
-
-    expect(
-      panel.getByPlaceholderText('Search for channel'),
-    ).toBeInTheDocument();
-  });
-
-  it('filters options based on the search input', () => {
-    const panel = renderWithLocation(
-      <Filter
-        options={channels}
-        title="Video Types"
-        filterName="test"
-        searchEnabled
-        searchPlaceholder="Search for channel"
-        handleChange={() => {}}
-      />,
-    );
-
-    const searchInput = panel.getByPlaceholderText('Search for channel');
-    expect(panel.getByText('Show all (6)')).toBeInTheDocument();
-
-    fireEvent.change(searchInput, { target: { value: 'TED' } });
-
-    expect(panel.queryByText('Show all (6)')).toBeNull();
-    expect(panel.getByText('TED')).toBeInTheDocument();
-    expect(panel.getByText('TED-ED')).toBeInTheDocument();
-    expect(panel.queryByText('History channel')).not.toBeInTheDocument();
   });
 });
