@@ -61,21 +61,23 @@ export const Filter = ({
         filterIsOpen={open}
         toggleFilter={toggleFilter}
       />
-      {searchEnabled && (
-        <FilterSearch
-          filterIsOpen={open}
-          placeholderText={searchPlaceholder}
-          onSearch={setSearchText}
-        />
+      {open && (
+        <>
+          {searchEnabled && (
+            <FilterSearch
+              placeholderText={searchPlaceholder}
+              onSearch={setSearchText}
+            />
+          )}
+          <FilterOptionList
+            options={options}
+            selectedOptions={optionStates}
+            onSelect={onSelectOption}
+            sortBy={sortBy}
+            searchText={searchText}
+          />
+        </>
       )}
-      <FilterOptionList
-        options={options}
-        selectedOptions={optionStates}
-        onSelect={onSelectOption}
-        sortBy={sortBy}
-        filterIsOpen={open}
-        searchText={searchText}
-      />
     </div>
   );
 };
