@@ -10,6 +10,7 @@ interface Props {
   title: string;
   options: Facet[];
   filterName: string;
+  handleChange: (filter: string, values: string[]) => void;
   searchEnabled?: boolean;
   searchPlaceholder?: string;
   sortBy?: SortBy;
@@ -19,13 +20,15 @@ export const Filter = ({
   title,
   options = [],
   filterName,
+  handleChange,
   searchEnabled,
   searchPlaceholder,
   sortBy,
 }: Props) => {
-  const [searchLocation, setSearchLocation] = useSearchQueryLocationParams();
+  const [searchLocation] = useSearchQueryLocationParams();
   const [open, setOpen] = useState<boolean>(true);
   const [searchText, setSearchText] = useState<string>();
+  const [filtersTouched, setFiltersTouched] = useState<boolean>(false);
 
   const initialValues = searchLocation.filters[filterName];
   const [optionStates, setOptionStates] = useState<string[]>(
@@ -33,20 +36,13 @@ export const Filter = ({
   );
 
   useEffect(() => {
-    const prevValues = searchLocation.filters[filterName] || [];
-    if (prevValues.length !== optionStates.length) {
-      setSearchLocation({
-        query: searchLocation.query,
-        page: 1,
-        filters: {
-          ...searchLocation.filters,
-          [filterName]: optionStates,
-        },
-      });
+    if (filtersTouched) {
+      handleChange(filterName, optionStates);
     }
-  }, [filterName, optionStates, searchLocation, setSearchLocation]);
+  }, [filtersTouched, filterName, optionStates, handleChange]);
 
   const onSelectOption = (_, item: string) => {
+    setFiltersTouched(true);
     if (optionStates.includes(item)) {
       setOptionStates((states) => states.filter((value) => value !== item));
     } else {

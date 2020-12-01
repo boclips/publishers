@@ -64,7 +64,12 @@ describe(`filterPanel`, () => {
 
   it('renders the title, filters and facets provided', () => {
     const panel = renderWithLocation(
-      <Filter options={videoTypes} title="Video Types" filterName="test" />,
+      <Filter
+        options={videoTypes}
+        title="Video Types"
+        filterName="test"
+        handleChange={() => {}}
+      />,
     );
 
     expect(panel.getByText('Video Types')).toBeInTheDocument();
@@ -78,7 +83,12 @@ describe(`filterPanel`, () => {
 
   it('can hide the options if you collapse the panel', () => {
     const panel = renderWithLocation(
-      <Filter options={videoTypes} title="Video Types" filterName="test" />,
+      <Filter
+        options={videoTypes}
+        title="Video Types"
+        filterName="test"
+        handleChange={() => {}}
+      />,
     );
 
     fireEvent.click(panel.getByText('Video Types'));
@@ -89,7 +99,12 @@ describe(`filterPanel`, () => {
 
   xit('can uncheck an option and others remain checked', () => {
     const panel = renderWithLocation(
-      <Filter options={videoTypes} title="Video Types" filterName="test" />,
+      <Filter
+        options={videoTypes}
+        title="Video Types"
+        filterName="test"
+        handleChange={() => {}}
+      />,
     );
 
     fireEvent.click(panel.getByText('News'));
@@ -106,6 +121,7 @@ describe(`filterPanel`, () => {
         options={generateOptions(6)}
         title="Video Types"
         filterName="test"
+        handleChange={() => {}}
       />,
     );
 
@@ -120,6 +136,7 @@ describe(`filterPanel`, () => {
         options={generateOptions(6)}
         title="Video Types"
         filterName="test"
+        handleChange={() => {}}
       />,
     );
 
@@ -138,6 +155,7 @@ describe(`filterPanel`, () => {
         title="Video Types"
         filterName="test"
         searchEnabled
+        handleChange={() => {}}
       />,
     );
 
@@ -152,6 +170,7 @@ describe(`filterPanel`, () => {
         filterName="test"
         searchEnabled
         searchPlaceholder="Search for channel"
+        handleChange={() => {}}
       />,
     );
 
@@ -168,6 +187,7 @@ describe(`filterPanel`, () => {
         filterName="test"
         searchEnabled
         searchPlaceholder="Search for channel"
+        handleChange={() => {}}
       />,
     );
 

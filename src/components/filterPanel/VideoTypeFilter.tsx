@@ -4,6 +4,7 @@ import { Filter } from 'src/components/filterPanel/filter/Filter';
 
 interface Props {
   options: Facet[];
+  handleChange?: (filter: string, values: string[]) => void;
 }
 
 const setLabels = (filterOptions: Facet[]): Facet[] =>
@@ -20,11 +21,12 @@ const setLabels = (filterOptions: Facet[]): Facet[] =>
     }
   });
 
-export const VideoTypeFilter = ({ options = [] }: Props) => {
+export const VideoTypeFilter = ({ options = [], handleChange }: Props) => {
   return (
     <Filter
       options={setLabels(options)}
       title="Video type"
+      handleChange={handleChange}
       filterName="video_type"
       sortBy="SORT_BY_NAME"
     />

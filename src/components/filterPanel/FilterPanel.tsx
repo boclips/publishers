@@ -6,14 +6,18 @@ import { ChannelFilter } from 'src/components/filterPanel/ChannelFilter';
 
 interface Props {
   facets?: VideoFacets;
+  handleChange: (filter: string, values: string[]) => void;
 }
 
-export const FilterPanel = ({ facets }: Props) => {
+export const FilterPanel = ({ facets, handleChange }: Props) => {
   return (
     <div className="col-start-2 col-end-7">
-      <VideoTypeFilter options={facets?.videoTypes} />
-      <ChannelFilter options={facets?.channels} />
-      <SubjectFilter options={facets?.subjects} />
+      <VideoTypeFilter
+        options={facets?.videoTypes}
+        handleChange={handleChange}
+      />
+      <ChannelFilter options={facets?.channels} handleChange={handleChange} />
+      <SubjectFilter options={facets?.subjects} handleChange={handleChange} />
     </div>
   );
 };
