@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { getFacetSorter } from 'src/services/sortFacets';
 import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { SortBy } from 'src/types/SortBy';
+import c from 'classnames';
 import { FilterOption } from 'src/components/filterPanel/filter/FilterOption';
 import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
+import s from './FilterOptionList.module.less';
 
 interface Props {
   options: Facet[];
@@ -37,7 +39,11 @@ export const FilterOptionList = ({
   return (
     filterIsOpen && (
       <div className="flex flex-col mb-1 mt-4">
-        <div className={`overflow-y-scroll ${allExpanded && 'h-64'}`}>
+        <div
+          className={c(s.filterOptions, {
+            'h-64': allExpanded && tooManyOptions,
+          })}
+        >
           {filteredOptions
             .sort(getFacetSorter(sortBy))
             .slice(
