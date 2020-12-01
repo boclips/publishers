@@ -12,7 +12,7 @@ export const FilterOption = ({ option, selected, onSelect }: Props) => {
     <div key={option.id} className="mb-3">
       <label
         htmlFor={option.id}
-        className="flex items-center cursor-pointer text-gray-700"
+        className="flex items-start cursor-pointer text-gray-700"
       >
         <input
           onChange={(event) => onSelect(event, option.id)}
@@ -24,7 +24,7 @@ export const FilterOption = ({ option, selected, onSelect }: Props) => {
           id={option.id}
         />
         <span
-          className={c('text-sm ml-2 flex-grow', {
+          className={c('text-sm ml-2 flex-grow text-left', {
             'font-medium': selected,
           })}
         >
