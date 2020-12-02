@@ -327,6 +327,60 @@ describe('SearchResults', () => {
     expect(await wrapper.queryByText('video 0')).not.toBeInTheDocument();
   });
 
+  describe(`channel filters`, () => {
+    it(`can filter channel filter options`, async () => {
+      videosClient.setFacets(
+        FacetsFactory.sample({
+          channels: [
+            FacetFactory.sample({ id: 'ted-id', hits: 1, name: 'Ted' }),
+            FacetFactory.sample({ id: 'getty-id', hits: 1, name: 'Getty' }),
+          ],
+        }),
+      );
+      const videos = [
+        VideoFactory.sample({
+          id: '1',
+          title: 'shark video',
+          channelId: 'getty-id',
+        }),
+        VideoFactory.sample({
+          id: '2',
+          title: 'whale video',
+          channelId: 'ted-id',
+        }),
+      ];
+
+      videos.forEach((v) => videosClient.insertVideo(v));
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=video']}>
+          <App />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('Video type')).toBeInTheDocument();
+
+      expect(await wrapper.findByText('Getty')).toBeInTheDocument();
+      expect(await wrapper.findByText('Ted')).toBeInTheDocument();
+
+      expect(await wrapper.findByText('whale video')).toBeInTheDocument();
+      expect(await wrapper.findByText('shark video')).toBeInTheDocument();
+
+      fireEvent.change(wrapper.getByPlaceholderText('Search for channel'), {
+        target: { value: 'get' },
+      });
+
+      expect(await wrapper.findByText('Get')).toHaveClass('font-medium');
+      expect(await wrapper.queryByText('Ted')).toBeNull();
+
+      fireEvent.click(wrapper.getByTestId('getty-id-checkbox'));
+
+      expect(await wrapper.findByText('shark video')).toBeVisible();
+
+      // await waitForElementToBeRemoved(() => wrapper.getByText('whale video'));
+    });
+  });
+
   describe('Subject filters', () => {
     it(`displays the subject filters and facet counts`, async () => {
       videosClient.setFacets(
