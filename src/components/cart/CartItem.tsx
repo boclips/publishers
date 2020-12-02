@@ -19,4 +19,3 @@ export const CartItem = ({ item }: Props) => (
     <div className="col-start-5 col-end-14 text-md">{item.title}</div>
   </>
 );
-git push
