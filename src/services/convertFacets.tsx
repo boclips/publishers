@@ -64,7 +64,7 @@ function boldMatchingText(text, shouldBeBold) {
         return (
           <>
             {item.toLowerCase().includes(shouldBeBold.toLowerCase()) ? (
-              <b>{item}</b>
+              <span className="font-medium">{item}</span>
             ) : (
               item
             )}

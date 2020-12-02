@@ -84,7 +84,7 @@ describe(`searchableFilter`, () => {
     fireEvent.change(searchInput, { target: { value: 'TED' } });
 
     expect(panel.queryByText('Show all (6)')).toBeNull();
-    expect(panel.getByText('TED')).toHaveStyle({ 'font-weight': 'bold' });
+    expect(panel.getByText('TED')).toHaveClass('font-medium');
     expect(panel.getByText('-ED')).toBeInTheDocument();
     expect(panel.queryByText('History channel')).not.toBeInTheDocument();
   });
