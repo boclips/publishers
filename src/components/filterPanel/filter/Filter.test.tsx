@@ -1,32 +1,32 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
-import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { Filter } from 'src/components/filterPanel/filter/Filter';
 import { renderWithLocation } from 'src/testSupport/renderWithLocation';
+import { FilterOption } from 'src/types/FilterOption';
 
 describe(`filterPanel`, () => {
-  const generateOptions = (optionNumber: number): Facet[] => {
-    const options = [];
+  const generateOptions = (optionNumber: number): FilterOption[] => {
+    const options: FilterOption[] = [];
     for (let i = 0; i < optionNumber; i++) {
       options.push({
         hits: 10 - i,
         id: `${i}-option`,
-        name: `Option ${i}`,
+        label: <span>Option {i}</span>,
       });
     }
     return options;
   };
 
-  const videoTypes = [
+  const videoTypes: FilterOption[] = [
     {
       hits: 10,
       id: 'stock',
-      name: 'Stock',
+      label: <span>Stock</span>,
     },
     {
       hits: 5,
       id: 'news',
-      name: 'News',
+      label: <span>News</span>,
     },
   ];
 

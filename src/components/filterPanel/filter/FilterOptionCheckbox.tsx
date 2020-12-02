@@ -1,13 +1,13 @@
 import React from 'react';
-import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import c from 'classnames';
+import { FilterOption } from 'src/types/FilterOption';
 
 interface Props {
-  option: Facet;
+  option: FilterOption;
   selected: boolean;
   onSelect: (event, item) => void;
 }
-export const FilterOption = ({ option, selected, onSelect }: Props) => {
+export const FilterOptionCheckbox = ({ option, selected, onSelect }: Props) => {
   return (
     <div key={option.id} className="mb-3">
       <label
@@ -28,7 +28,7 @@ export const FilterOption = ({ option, selected, onSelect }: Props) => {
             'font-medium': selected,
           })}
         >
-          {option.name}
+          {option.label}
         </span>
         <span className="text-blue-700">{option.hits}</span>
       </label>

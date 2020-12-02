@@ -3,6 +3,8 @@ import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFac
 import { SortBy } from 'src/types/SortBy';
 import { Filter } from 'src/components/filterPanel/filter/Filter';
 import { FilterSearch } from 'src/components/filterPanel/filter/FilterSearch';
+import { searchFilterOptions } from 'src/services/convertFacets';
+import { FilterOption } from 'src/types/FilterOption';
 
 interface Props {
   title: string;
@@ -23,13 +25,8 @@ export const SearchableFilter = ({
   const [searchText, setSearchText] = useState<string>();
 
   const filteredOptions = useMemo(
-    () =>
-      options.filter(
-        (option) =>
-          !searchText ||
-          option.name.toLowerCase().includes(searchText.toLowerCase()),
-      ),
-    [options, searchText],
+    (): FilterOption[] => searchFilterOptions(options, searchText, sortBy),
+    [options, searchText, sortBy],
   );
 
   return (
@@ -37,7 +34,6 @@ export const SearchableFilter = ({
       filterName={filterName}
       title={title}
       options={filteredOptions}
-      sortBy={sortBy}
       handleChange={handleChange}
       filtersSearch={
         <FilterSearch

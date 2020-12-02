@@ -1,5 +1,5 @@
-import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { SortBy } from 'src/types/SortBy';
+import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 
 export const getFacetSorter = (by: SortBy) => {
   if (by === 'SORT_BY_NAME') {

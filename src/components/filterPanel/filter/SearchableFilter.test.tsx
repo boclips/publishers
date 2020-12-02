@@ -18,22 +18,22 @@ describe(`searchableFilter`, () => {
     {
       hits: 5,
       id: 'channel-3',
-      name: 'TED',
+      name: 'geography',
     },
     {
       hits: 5,
       id: 'channel-4',
-      name: 'TED-2',
+      name: 'science',
     },
     {
       hits: 5,
       id: 'channel-5',
-      name: 'TED-3',
+      name: 'maths',
     },
     {
       hits: 5,
       id: 'channel-6',
-      name: 'TED-4',
+      name: 'music',
     },
   ];
 
@@ -67,7 +67,7 @@ describe(`searchableFilter`, () => {
     ).toBeInTheDocument();
   });
 
-  it('filters options based on the search input', () => {
+  it('filters and bolds options based on the search input', () => {
     const panel = renderWithLocation(
       <SearchableFilter
         searchPlaceholder="Search for channel"
@@ -84,8 +84,8 @@ describe(`searchableFilter`, () => {
     fireEvent.change(searchInput, { target: { value: 'TED' } });
 
     expect(panel.queryByText('Show all (6)')).toBeNull();
-    expect(panel.getByText('TED')).toBeInTheDocument();
-    expect(panel.getByText('TED-ED')).toBeInTheDocument();
+    expect(panel.getByText('TED')).toHaveStyle({ 'font-weight': 'bold' });
+    expect(panel.getByText('-ED')).toBeInTheDocument();
     expect(panel.queryByText('History channel')).not.toBeInTheDocument();
   });
 
@@ -108,6 +108,6 @@ describe(`searchableFilter`, () => {
     fireEvent.click(panel.getByText('Channels'));
 
     expect(panel.getByPlaceholderText('Search for channel')).toBeVisible();
-    expect(panel.getByText('TED')).toBeInTheDocument();
+    expect(panel.getByText('TED-ED')).toBeInTheDocument();
   });
 });

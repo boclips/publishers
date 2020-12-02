@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FilterHeader } from 'src/components/filterPanel/filter/FilterHeader';
 import { FilterOptionList } from 'src/components/filterPanel/filter/FilterOptionList';
-import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import { SortBy } from 'src/types/SortBy';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
+import { FilterOption } from 'src/types/FilterOption';
 
 interface Props {
   title: string;
-  options: Facet[];
+  options: FilterOption[];
   filterName: string;
   handleChange: (filter: string, values: string[]) => void;
-  sortBy?: SortBy;
   filtersSearch?: React.ReactNode;
   handleFilterToggle?: (isOpen: boolean) => void;
 }
@@ -21,7 +19,6 @@ export const Filter = ({
   filterName,
   handleChange,
   filtersSearch,
-  sortBy,
   handleFilterToggle,
 }: Props) => {
   const [searchLocation] = useSearchQueryLocationParams();
@@ -69,7 +66,6 @@ export const Filter = ({
             options={options}
             selectedOptions={optionStates}
             onSelect={onSelectOption}
-            sortBy={sortBy}
           />
         </>
       )}

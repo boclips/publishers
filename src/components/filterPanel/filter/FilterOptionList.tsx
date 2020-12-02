@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { getFacetSorter } from 'src/services/sortFacets';
-import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
-import { SortBy } from 'src/types/SortBy';
 import c from 'classnames';
-import { FilterOption } from 'src/components/filterPanel/filter/FilterOption';
 import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
+import { FilterOption } from 'src/types/FilterOption';
+import { FilterOptionCheckbox } from 'src/components/filterPanel/filter/FilterOptionCheckbox';
 import s from './FilterOptionList.module.less';
 
 interface Props {
-  options: Facet[];
+  options: FilterOption[];
   selectedOptions: string[];
   onSelect: (event, item) => void;
-  sortBy?: SortBy;
 }
 const DEFAULT_VISIBLE_OPTIONS = 5;
 
@@ -19,7 +16,6 @@ export const FilterOptionList = ({
   options,
   selectedOptions,
   onSelect,
-  sortBy = 'SORT_BY_HITS_AND_NAME',
 }: Props) => {
   const [allExpanded, setAllExpanded] = useState<boolean>(false);
 
@@ -35,11 +31,11 @@ export const FilterOptionList = ({
         })}
       >
         {options
-          .sort(getFacetSorter(sortBy))
+
           .slice(0, allExpanded ? options.length : DEFAULT_VISIBLE_OPTIONS)
           .map((option) => (
             <span key={option.id}>
-              <FilterOption
+              <FilterOptionCheckbox
                 option={option}
                 selected={selectedOptions.includes(option.id)}
                 onSelect={onSelect}
