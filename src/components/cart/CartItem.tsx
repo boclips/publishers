@@ -9,7 +9,7 @@ interface Props {
 
 export const CartItem = ({ item }: Props) => (
   <>
-    <div className="col-start-13 col-end-5">
+    <div className="col-start-1 col-end-5">
       <Player
         videoUri={item.links.self.getOriginalLink()}
         borderRadius="4px"
@@ -19,3 +19,4 @@ export const CartItem = ({ item }: Props) => (
     <div className="col-start-5 col-end-14 text-md">{item.title}</div>
   </>
 );
+git push
