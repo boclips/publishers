@@ -143,6 +143,7 @@ module.exports = {
     appearance: ['responsive', 'checked'],
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     border: ['responsive', 'hover', 'focus', 'focus-within', 'active'],
+    borderColor: ['responsive', 'hover', 'focus', 'focus-within', 'active'],
     backgroundColor: [
       'responsive',
       'hover',
