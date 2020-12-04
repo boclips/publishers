@@ -9,7 +9,7 @@ interface Props {
 }
 export const FilterOptionCheckbox = ({ option, selected, onSelect }: Props) => {
   return (
-    <div key={option.id} className="mb-3">
+    <div key={option.id} className="mb-2">
       <label
         htmlFor={option.id}
         className="flex items-start cursor-pointer text-gray-700"
