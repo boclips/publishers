@@ -25,6 +25,7 @@ export const useSearchQueryLocationParams = (): [
       video_type: locationParams.getAll('video_type'),
       subject: locationParams.getAll('subject'),
       channel: locationParams.getAll('channel'),
+      duration: locationParams.getAll('duration'),
     },
   };
 

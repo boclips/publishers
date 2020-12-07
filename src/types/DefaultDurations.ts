@@ -1,0 +1,7 @@
+export const DEFAULT_DURATIONS = [
+  'PT0S-PT1M',
+  'PT1M-PT5M',
+  'PT5M-PT10M',
+  'PT10M-PT20M',
+  'PT20M-PT24H',
+];

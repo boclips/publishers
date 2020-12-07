@@ -1,5 +1,6 @@
 import { usePaginatedQuery } from 'react-query';
 import { VideoSearchResults } from 'boclips-api-client/dist/sub-clients/videos/model/VideoSearchResults';
+import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { FilterKeys } from '../../types/search/FilterKeys';
 import { ApiClientWrapper } from '../../services/apiClientWrapper';
 import { ourQueryCache } from './queryCache';
@@ -20,6 +21,8 @@ const doSearch = ({ query, page, pageSize, filters }: SearchQuery) =>
       type: filters?.video_type,
       subject: filters?.subject,
       channel: filters?.channel,
+      duration: filters?.duration,
+      duration_facets: DEFAULT_DURATIONS,
       include_channel_facets: true,
     });
   });

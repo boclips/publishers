@@ -400,6 +400,38 @@ describe('SearchResults', () => {
     });
   });
 
+  describe('Duration filters', () => {
+    it(`displays the duration filters and facet counts`, async () => {
+      videosClient.setFacets(
+        FacetsFactory.sample({
+          durations: [
+            { id: 'PT0S-PT1M', name: 'PT0S-PT1M', hits: 10 },
+            { id: 'PT5M-PT10M', name: 'PT5M-PT10M', hits: 120 },
+            { id: 'PT20M-PT24H', name: 'PT20M-PT24H', hits: 80 },
+          ],
+        }),
+      );
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=video']}>
+          <App />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('Duration')).toBeInTheDocument();
+
+      expect(await wrapper.findByText('80')).toBeInTheDocument();
+      expect(await wrapper.findByText('120')).toBeInTheDocument();
+      expect(await wrapper.findByText('10')).toBeInTheDocument();
+
+      expect(await wrapper.findByText('Up to 1 min')).toBeInTheDocument();
+      expect(await wrapper.findByText('5 - 10 min')).toBeInTheDocument();
+      expect(await wrapper.findByText('20 min +')).toBeInTheDocument();
+      expect(await wrapper.queryByText('1 - 5 min')).not.toBeInTheDocument();
+      expect(await wrapper.queryByText('10 - 20 min')).not.toBeInTheDocument();
+    });
+  });
+
   describe('cart in video-card', () => {
     it(`displays add to cart button`, async () => {
       videosClient.insertVideo(

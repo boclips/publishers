@@ -3,6 +3,7 @@ import { VideoFacets } from 'boclips-api-client/dist/sub-clients/videos/model/Vi
 import { VideoTypeFilter } from 'src/components/filterPanel/VideoTypeFilter';
 import { SubjectFilter } from 'src/components/filterPanel/SubjectFilter';
 import { ChannelFilter } from 'src/components/filterPanel/ChannelFilter';
+import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 
 interface Props {
   facets?: VideoFacets;
@@ -16,6 +17,7 @@ export const FilterPanel = ({ facets, handleChange }: Props) => {
         options={facets?.videoTypes}
         handleChange={handleChange}
       />
+      <DurationFilter options={facets?.durations} handleChange={handleChange} />
       <ChannelFilter options={facets?.channels} handleChange={handleChange} />
       <SubjectFilter options={facets?.subjects} handleChange={handleChange} />
     </div>

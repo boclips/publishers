@@ -3,6 +3,7 @@ import { FilterOption } from 'src/types/FilterOption';
 import React from 'react';
 import { getFacetSorter } from 'src/services/sortFacets';
 import { SortBy } from 'src/types/SortBy';
+import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 
 const convertFacet = (facet: Facet): FilterOption => ({
   label: <span>{facet.name}</span>,
@@ -35,6 +36,32 @@ export const convertVideoTypes = (
     }),
     sortBy,
   );
+
+export const convertDurations = (
+  facets: Facet[],
+  sortBy: SortBy,
+): FilterOption[] => {
+  const filteredFacets = facets?.filter((facet) => facet.hits > 0);
+  return convertFacets(
+    filteredFacets?.map((option) => {
+      switch (option.name) {
+        case DEFAULT_DURATIONS[0]:
+          return { ...option, name: 'Up to 1 min' };
+        case DEFAULT_DURATIONS[1]:
+          return { ...option, name: '1 - 5 min' };
+        case DEFAULT_DURATIONS[2]:
+          return { ...option, name: '5 - 10 min' };
+        case DEFAULT_DURATIONS[3]:
+          return { ...option, name: '10 - 20 min' };
+        case DEFAULT_DURATIONS[4]:
+          return { ...option, name: '20 min +' };
+        default:
+          return option;
+      }
+    }),
+    sortBy,
+  );
+};
 
 export const searchFilterOptions = (
   options: Facet[],
