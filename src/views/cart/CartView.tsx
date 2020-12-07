@@ -38,7 +38,6 @@ const CartView = () => {
         </>
       );
     }
-
     return <EmptyCart />;
   };
 
