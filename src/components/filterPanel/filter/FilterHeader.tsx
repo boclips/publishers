@@ -13,7 +13,7 @@ export const FilterHeader = ({ text, filterIsOpen, toggleFilter }: Props) => {
     <div
       className="text-base text-blue-800 font-medium flex items-center cursor-pointer active:border-none"
       onClick={toggleFilter}
-      onKeyDown={(event) => handleEnterKeyDown(event, toggleFilter)}
+      onKeyPress={(event) => handleEnterKeyDown(event, toggleFilter)}
       tabIndex={0}
       role="listbox"
     >

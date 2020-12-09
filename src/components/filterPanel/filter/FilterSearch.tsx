@@ -33,7 +33,7 @@ export const FilterSearch = ({
           onClick={(_: any) => setText('')}
           role="button"
           tabIndex={0}
-          onKeyDown={(event) => handleEnterKeyDown(event, setText(''))}
+          onKeyPress={(event) => handleEnterKeyDown(event, setText(''))}
         >
           <CrossIconSVG className="stroke-current text-gray-600 stroke-2" />
         </div>

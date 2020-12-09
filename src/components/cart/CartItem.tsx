@@ -9,13 +9,15 @@ interface Props {
 
 export const CartItem = ({ item }: Props) => (
   <>
-    <div className="col-start-1 col-end-5">
-      <Player
-        videoUri={item.links.self.getOriginalLink()}
-        borderRadius="4px"
-        options={playerOptions}
-      />
+    <div className="flex flex-row border-t-2 border-blue-300 justify-start">
+      <div className=" my-3">
+        <Player
+          videoUri={item.links.self.getOriginalLink()}
+          borderRadius="4px"
+          options={playerOptions}
+        />
+      </div>
+      <span className="text-md mt-16 ml-3 ">{item.title}</span>
     </div>
-    <div className="col-start-5 col-end-14 text-md">{item.title}</div>
   </>
 );

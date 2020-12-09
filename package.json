@@ -94,6 +94,7 @@
     "rc-checkbox": "^2.3.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-modal": "^3.12.1",
     "react-query": "^2.26.2",
     "react-query-devtools": "^2.6.3",
     "react-router-dom": "^5.2.0",

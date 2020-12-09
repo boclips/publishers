@@ -48,7 +48,7 @@ export const FilterOptionList = ({
           role="button"
           tabIndex={0}
           onClick={() => setAllExpanded(!allExpanded)}
-          onKeyDown={(event) => handleEnterKeyDown(event, toggleOptions)}
+          onKeyPress={(event) => handleEnterKeyDown(event, toggleOptions)}
           className="text-blue-800 underline font-medium text-right focus:outline-none"
         >
           {allExpanded ? 'Show less' : `Show all (${options.length})`}

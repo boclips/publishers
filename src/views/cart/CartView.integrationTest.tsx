@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -51,6 +51,34 @@ describe('CartView', () => {
       expect(await wrapper.findByText('Shopping cart')).toBeInTheDocument();
       expect(await wrapper.findByText('(1 item)')).toBeInTheDocument();
       expect(await wrapper.findByText('news video')).toBeInTheDocument();
+    });
+  });
+
+  it(`displays order confirmation when place order button clicked`, async () => {
+    const video = VideoFactory.sample({
+      id: 'video-id',
+      title: 'news video',
+      types: [{ name: 'NEWS', id: 2 }],
+    });
+
+    videosClient.insertVideo(video);
+
+    cartClient.insertCartItem('video-id');
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/cart']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    wrapper
+      .findByText('Place an order')
+      .then((button) => fireEvent.click(button));
+
+    wrapper.findByTestId('order-modal').then(async (modal) => {
+      expect(await within(modal).findByText('news video')).toBeVisible();
+      expect(await within(modal).findByText('Confirm order')).toBeVisible();
+      expect(await within(modal).findByText('Go back to cart')).toBeVisible();
     });
   });
 });

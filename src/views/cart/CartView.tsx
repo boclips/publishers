@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
-
 import Navbar from 'src/components/layout/Navbar';
 import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
 import { Loading } from 'src/components/common/Loading';
 import Footer from 'src/components/layout/Footer';
 import { EmptyCart } from 'src/components/cart/EmptyCart';
 import { CartItem } from 'src/components/cart/CartItem';
+import { OrderModal } from 'src/components/orderModal/OrderModal';
 
 const CartView = () => {
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
-
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const itemsInCart = cart?.items?.length > 0;
   const videoIds = cart?.items?.map((it) => it.videoId);
 
@@ -23,18 +23,34 @@ const CartView = () => {
       return (
         <>
           <div className="grid col-start-2 col-end-21 grid-row-start-2 grid-row-end-2 grid-cols-12 gap-8">
-            <div className="col-start-1 col-end-12 flex flex-row">
+            <div className="col-start-1 col-end-21 flex flex-row">
               <h2 className="font-bold">Shopping cart</h2>
               <span className="text-3xl pl-3">
                 ({cart.items.length} item{cart.items.length > 1 ? 's' : ''})
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-12 gap-4 col-start-2 col-end-18 grid-row-start-3 border-t-2 border-blue-300 pt-4 font-medium">
-            {videos.map((item) => (
-              <CartItem item={item} key={item.id} />
-            ))}
+          <div className="col-start-2 col-end-20 pt-4 font-medium">
+            <div className="pt-4 font-medium col-start-2 col-span-10">
+              {videos.map((item) => (
+                <CartItem item={item} key={item.id} />
+              ))}
+            </div>
           </div>
+          <div className="col-start-20 col-end-26 border-blue-500 border-2 h-32 w-full flex flex-col items-center rounded">
+            <button
+              onClick={(_) => setModalOpen(!modalOpen)}
+              type="button"
+              className="h-10 w-5/6 bg-blue-800 rounded text-white mt-12"
+            >
+              Place an order
+            </button>
+          </div>
+          <OrderModal
+            setOpen={setModalOpen}
+            modalOpen={modalOpen}
+            videos={videos}
+          />
         </>
       );
     }
