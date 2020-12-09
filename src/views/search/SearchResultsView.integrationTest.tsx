@@ -225,8 +225,10 @@ describe('SearchResults', () => {
     expect(await wrapper.findByText('News')).toBeInTheDocument();
     expect(await wrapper.findByText('Raw Footage')).toBeInTheDocument();
 
-    expect(await wrapper.findByText('news video')).toBeInTheDocument();
-    expect(await wrapper.findByText('stock video')).toBeInTheDocument();
+    await waitFor(async () => {
+      expect(await wrapper.findByText('news video')).toBeInTheDocument();
+      expect(await wrapper.findByText('stock video')).toBeInTheDocument();
+    });
 
     const newsCheckbox = wrapper.getByTestId('NEWS-checkbox');
 
@@ -241,15 +243,12 @@ describe('SearchResults', () => {
     fireEvent.click(wrapper.getByTestId('NEWS-checkbox'));
     expect(newsCheckbox).toHaveProperty('checked', true);
 
-    expect(await wrapper.findByText('news video')).toBeVisible();
-
-    // below line fails and I don't know why - suspect something
-    // strange about react query but will need to dig more and fix this
-    // works fine in browser fwiw
-    // await waitForElementToBeRemoved(() => wrapper.getByText('stock video'));
-
-    expect(await wrapper.findByText('News')).toBeInTheDocument();
-    expect(await wrapper.queryByText('Raw Footage')).toBeNull();
+    await waitFor(async () => {
+      expect(await wrapper.findByText('News')).toBeInTheDocument();
+      expect(await wrapper.findByText('news video')).toBeInTheDocument();
+      expect(await wrapper.queryByText('Raw Footage')).toBeNull();
+      expect(await wrapper.queryByText('stock video')).toBeNull();
+    });
   });
 
   it(`applies filters from url on load`, async () => {
@@ -290,7 +289,11 @@ describe('SearchResults', () => {
   it(`persists queries between pages`, async () => {
     for (let i = 0; i < 11; i++) {
       videosClient.insertVideo(
-        VideoFactory.sample({ id: `video ${i}`, title: `video ${i}` }),
+        VideoFactory.sample({
+          id: `video ${i}`,
+          title: `video ${i}`,
+          types: [{ id: 1, name: 'NEWS' }],
+        }),
       );
     }
     videosClient.setFacets(
