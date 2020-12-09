@@ -65,7 +65,7 @@ describe(`filterPanel`, () => {
     expect(panel.getByText('Stock')).toBeVisible();
   });
 
-  xit('can uncheck an option and others remain checked', () => {
+  it('can uncheck an option and others remain checked', () => {
     const panel = renderWithLocation(
       <Filter
         options={videoTypes}
