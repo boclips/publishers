@@ -29,7 +29,7 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
       contentLabel="Order summary"
     >
       <div data-qa="order-modal">
-        <div className="flex flex-row justify-between text-2xl text-blue-900 font-medium w-full">
+        <div className="flex flex-row justify-between text-xl text-blue-900 font-medium w-full mb-3">
           Order summary
           <span
             onClick={(_) => setOpen(!modalOpen)}
@@ -49,7 +49,7 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
             <CartItem item={item} key={item.id} />
           ))}
         </div>
-        <div className="flex flex-row justify-end mr-3 mb-3">
+        <div className="flex flex-row justify-end mt-3">
           <button
             onClick={(_) => setOpen(!modalOpen)}
             className="border-2 border-blue-500 rounded w-32 h-10 mr-2"

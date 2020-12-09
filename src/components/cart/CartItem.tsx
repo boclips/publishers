@@ -9,7 +9,7 @@ interface Props {
 
 export const CartItem = ({ item }: Props) => (
   <>
-    <div className="flex flex-row border-t-2 border-blue-300 justify-start">
+    <div className="flex flex-row border-b-2 border-blue-300 justify-start">
       <div className=" my-3">
         <Player
           videoUri={item.links.self.getOriginalLink()}
@@ -17,7 +17,7 @@ export const CartItem = ({ item }: Props) => (
           options={playerOptions}
         />
       </div>
-      <span className="text-md mt-16 ml-3 ">{item.title}</span>
+      <span className="text-md mt-16 ml-3">{item.title}</span>
     </div>
   </>
 );
