@@ -25,6 +25,11 @@ describe('Video card', () => {
       playback: PlaybackFactory.sample({
         type: 'YOUTUBE',
       }),
+      price: {
+        amount: 100,
+        currency: 'USD',
+        displayValue: '$ 100',
+      },
     });
 
     const wrapper = render(<VideoCardWrapper video={video} />);
@@ -35,57 +40,6 @@ describe('Video card', () => {
     expect(wrapper.getByText('by BFI')).toBeVisible();
     expect(wrapper.getByText('geography')).toBeVisible();
     expect(wrapper.getByText('Ages 7-9')).toBeVisible();
-    expect(wrapper.getByText('$150')).toBeVisible();
-  });
-
-  describe('price', () => {
-    it('shows correct price for stock', () => {
-      const video = VideoFactory.sample({ types: [{ id: 0, name: 'Stock' }] });
-
-      const wrapper = render(<VideoCardWrapper video={video} />);
-
-      expect(wrapper.getByText('$150')).toBeVisible();
-    });
-
-    it('shows correct price for instructional', () => {
-      const video = VideoFactory.sample({
-        types: [{ id: 1, name: 'Instructional Clips' }],
-      });
-
-      const wrapper = render(<VideoCardWrapper video={video} />);
-
-      expect(wrapper.getByText('$600')).toBeVisible();
-    });
-
-    it('shows correct price for news', () => {
-      const video = VideoFactory.sample({ types: [{ id: 2, name: 'News' }] });
-
-      const wrapper = render(<VideoCardWrapper video={video} />);
-
-      expect(wrapper.getByText('$300')).toBeVisible();
-    });
-
-    it('shows most expensive price for video with multiple types', () => {
-      const video = VideoFactory.sample({
-        types: [
-          { id: 1, name: 'Instructional Clips' },
-          { id: 2, name: 'News' },
-        ],
-      });
-
-      const wrapper = render(<VideoCardWrapper video={video} />);
-
-      expect(wrapper.getByText('$600')).toBeVisible();
-    });
-
-    it('shows most expensive price for video with no types defined', () => {
-      const video = VideoFactory.sample({
-        types: undefined,
-      });
-
-      const wrapper = render(<VideoCardWrapper video={video} />);
-
-      expect(wrapper.getByText('$600')).toBeVisible();
-    });
+    expect(wrapper.getByText('$ 100')).toBeVisible();
   });
 });
