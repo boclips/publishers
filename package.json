@@ -73,7 +73,7 @@
     "axios": "^0.21.0",
     "babel-loader": "^8.1.0",
     "boclips-api-client": "^21.1.0",
-    "boclips-js-security": "^5.0.0",
+    "boclips-js-security": "^4.0.2",
     "boclips-player": "^6.3.2",
     "boclips-player-react": "1.2.4",
     "copy-webpack-plugin": "^6.2.1",
