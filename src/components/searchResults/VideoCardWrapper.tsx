@@ -1,10 +1,11 @@
 import React from 'react';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
-import { VideoCard } from '@boclips-ui/video-card';
 import { convertVideoFromApi } from 'src/services/convertVideoFromApi';
 import { PlayerOptions } from 'boclips-player';
 import { Player } from 'boclips-player-react';
 import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
+import { VideoCardV2 } from '@boclips-ui/video-card-v2';
+import { PriceBadge } from 'src/components/videoCard/PriceBadge';
 
 interface Props {
   video: Video;
@@ -30,9 +31,9 @@ export const playerOptions: Partial<PlayerOptions> = {
 
 export const VideoCardWrapper = ({ video }: Props) => {
   return (
-    <VideoCard
+    <VideoCardV2
       key={video.id}
-      price={video.price?.displayValue}
+      video={convertVideoFromApi(video)}
       videoPlayer={
         <Player
           videoUri={video.links.self.getOriginalLink()}
@@ -41,15 +42,9 @@ export const VideoCardWrapper = ({ video }: Props) => {
         />
       }
       border="bottom"
-      video={convertVideoFromApi(video)}
-      authenticated
-      hideAttachments
-      hideBestFor
       theme="publishers"
-      videoActionButtons={[
-        <AddToCartButton videoId={video.id} key="cart-button" />,
-      ]}
-      videoRoundedCorners
+      topBadge={<PriceBadge price={video.price?.displayValue} />}
+      actions={[<AddToCartButton videoId={video.id} key="cart-button" />]}
     />
   );
 };
