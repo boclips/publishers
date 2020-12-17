@@ -1,8 +1,8 @@
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
-import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { render } from '@testing-library/react';
 import React from 'react';
-import { VideoCardWrapper } from 'src/components/searchResults/VideoCardWrapper';
+import { VideoCardWrapper } from 'src/components/videoCard/VideoCardWrapper';
+import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 
 describe('Video card', () => {
   it('displays all the given information on a video card', () => {

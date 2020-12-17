@@ -2,7 +2,7 @@ import { Video } from 'boclips-api-client/dist/types';
 import { List } from 'antd';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
 import React from 'react';
-import { VideoCardWrapper } from 'src/components/searchResults/VideoCardWrapper';
+import { VideoCardWrapper } from 'src/components/videoCard/VideoCardWrapper';
 
 interface Props {
   videos: Video[];
