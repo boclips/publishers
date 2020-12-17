@@ -14,7 +14,7 @@ const SearchHero = () => {
       >
         <div className="col-start-3 col-end-15 self-center lg:col-start-4 lg:col-end-16">
           <h1 className="mb-8 text-4xl font-medium">
-            What video do you need today?
+            What videos do you need today?
           </h1>
           <Search
             size="big"
