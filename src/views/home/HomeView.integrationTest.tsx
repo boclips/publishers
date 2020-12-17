@@ -14,7 +14,7 @@ describe('HomeView', () => {
     );
 
     expect(
-      await wrapper.findByText('What video do you need today?'),
+      await wrapper.findByText('What videos do you need today?'),
     ).toBeInTheDocument();
   });
 
