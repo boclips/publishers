@@ -1,5 +1,9 @@
 import { useMutation, useQueryCache } from 'react-query';
-import { doAddToCart, useCartQuery } from 'src/hooks/api/cartQuery';
+import {
+  doAddToCart,
+  doDeleteFromCart,
+  useCartQuery,
+} from 'src/hooks/api/cartQuery';
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import Button from '@boclips-ui/button';
 import React from 'react';
@@ -13,15 +17,14 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
   const cache = useQueryCache();
   const { data: cart } = useCartQuery();
 
-  const itemNotInBasket =
-    cart?.items?.filter((it) => it?.videoId === videoId)?.length === 0;
+  const cartItem = cart?.items?.find((it) => it?.videoId === videoId);
 
   const [mutateAddToCart] = useMutation(
     (id: string) => {
-      if (itemNotInBasket) {
+      if (cartItem === undefined) {
         return doAddToCart(cart as Cart, id);
       }
-      return Promise.reject(new Error('Item already in basket'));
+      return Promise.reject(new Error('Item already in cart'));
     },
     {
       onSuccess: (it) => {
@@ -33,8 +36,25 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
     },
   );
 
+  const [mutateDeleteFromCart] = useMutation(
+    async (id: string) => {
+      if (cartItem) {
+        return doDeleteFromCart(cart as Cart, id);
+      }
+      return Promise.reject(new Error('Item is not in cart'));
+    },
+    {
+      onSuccess: (it) => {
+        cache.setQueryData('cart', (old: Cart) => ({
+          ...old,
+          items: [...old.items.filter((item) => item.id !== it)],
+        }));
+      },
+    },
+  );
+
   const displayButton = () => {
-    if (itemNotInBasket) {
+    if (cartItem === undefined) {
       return (
         <Button
           onClick={() => mutateAddToCart(videoId)}
@@ -47,7 +67,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
     }
     return (
       <Button
-        onClick={() => mutateAddToCart(videoId)}
+        onClick={() => mutateDeleteFromCart(cartItem.id)}
         theme="publishers"
         type="secondary"
         text="Remove from cart"

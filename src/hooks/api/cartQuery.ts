@@ -12,4 +12,11 @@ export const doAddToCart = (cart: Cart, videoId: string) =>
     return client.carts.addItemToCart(cart, videoId);
   });
 
+export const doDeleteFromCart = (cart: Cart, cartItemId: string) =>
+  ApiClientWrapper.get().then((client) => {
+    return client.carts
+      .deleteItemFromCart(cart, cartItemId)
+      .then((_) => cartItemId);
+  });
+
 export const useCartQuery = () => useQuery('cart', () => doGetCart());
