@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import CartButton from 'src/components/cartButton/CartButton';
 import c from 'classnames';
-import MyAccountSVG from 'resources/icons/my-account-icon.svg';
 import BoclipsLogoSVG from 'resources/icons/boclips.svg';
+import { AccountButton } from 'src/components/accountButton/AccountButton';
 import { Search } from '../searchBar/SearchBar';
 import s from './navbar.module.less';
 
@@ -31,10 +31,7 @@ const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
         </div>
       )}
       <div className="col-start-20 col-end-26 flex h-full justify-end">
-        <div className="flex flex-col items-center mr-6 justify-center">
-          <MyAccountSVG />
-          <span className="text-xs mt-1 font-medium">Account</span>
-        </div>
+        <AccountButton />
         <CartButton />
       </div>
     </nav>
