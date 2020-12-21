@@ -6,14 +6,25 @@ import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory
 import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
 import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/client/FakeCartsClient';
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
+import { FakeUsersClient } from 'boclips-api-client/dist/sub-clients/users/client/FakeUsersClient';
+import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
+import { FakeOrdersClient } from 'boclips-api-client/dist/sub-clients/orders/client/FakeOrdersClient';
 
 describe('CartView', () => {
   let videosClient: FakeVideosClient = null;
   let cartClient: FakeCartsClient = null;
+  let usersClient: FakeUsersClient = null;
+  let ordersClient: FakeOrdersClient = null;
 
   beforeEach(async () => {
     videosClient = (await FakeApiClient).videos;
     cartClient = (await FakeApiClient).carts;
+    usersClient = (await FakeApiClient).users;
+    ordersClient = (await FakeApiClient).orders;
+    videosClient.clear();
+    cartClient.clear();
+    usersClient.clear();
+    ordersClient.clear();
   });
 
   it('when no items in cart, displays empty cart view', async () => {
@@ -75,10 +86,65 @@ describe('CartView', () => {
       .findByText('Place an order')
       .then((button) => fireEvent.click(button));
 
-    wrapper.findByTestId('order-modal').then(async (modal) => {
-      expect(await within(modal).findByText('news video')).toBeVisible();
-      expect(await within(modal).findByText('Confirm order')).toBeVisible();
-      expect(await within(modal).findByText('Go back to cart')).toBeVisible();
+    const modal = await wrapper.findByTestId('order-modal');
+    expect(await within(modal).findByText('news video')).toBeVisible();
+    expect(await within(modal).findByText('Confirm order')).toBeVisible();
+    expect(await within(modal).findByText('Go back to cart')).toBeVisible();
+  });
+
+  it(`places order when confirmation button is clicked`, async () => {
+    ordersClient.clear();
+    const video = VideoFactory.sample({
+      id: 'video-id',
+      title: 'news video',
+      types: [{ name: 'NEWS', id: 2 }],
     });
+
+    const user = UserFactory.sample({ id: 'user-id' });
+    usersClient.insertCurrentUser(user);
+
+    videosClient.insertVideo(video);
+
+    cartClient.insertCartItem('video-id');
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/cart']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    await wrapper
+      .findByText('Place an order')
+      .then((button) => fireEvent.click(button));
+
+    const modal = await wrapper.findByTestId('order-modal');
+
+    await waitFor(async () =>
+      expect(
+        within(modal).getByText('Confirm order').closest('button'),
+      ).not.toBeDisabled(),
+    );
+
+    await within(modal)
+      .findByText('Confirm order')
+      .then((button) => fireEvent.click(button));
+
+    await wrapper.findByText('Loading');
+
+    const confirmation = await wrapper.findByTestId('order-confirmed');
+    expect(await ordersClient.getAll()).toHaveLength(1);
+    const placedOrder = await ordersClient.getAll().then((orders) => orders[0]);
+
+    expect(
+      within(confirmation).getByText('Your order is confirmed'),
+    ).toBeVisible();
+
+    expect(
+      within(confirmation).getByText('View order details').closest('a'),
+    ).toHaveAttribute('href', `/orders/${placedOrder.id}`);
+
+    expect(
+      within(confirmation).getByText('View all orders').closest('a'),
+    ).toHaveAttribute('href', `/orders`);
   });
 });

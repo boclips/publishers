@@ -7,9 +7,25 @@ import Footer from 'src/components/layout/Footer';
 import { EmptyCart } from 'src/components/cart/EmptyCart';
 import { CartItem } from 'src/components/cart/CartItem';
 import { OrderModal } from 'src/components/orderModal/OrderModal';
+import { useGetUserQuery } from 'src/hooks/api/userQuery';
+import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
+import { OrderConfirmed } from 'src/components/cart/OrderConfirmed';
+import { useQueryCache } from 'react-query';
+import { ErrorMessage } from 'src/components/common/ErrorMessage';
 
 const CartView = () => {
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
+  const { data: user, isLoading: isUserLoading } = useGetUserQuery();
+  const [orderLocation, setOrderLocation] = useState<string>(null);
+  const [errorMessage, setErrorMessage] = useState<string>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const cache = useQueryCache();
+  const [mutate] = usePlaceOrderQuery(
+    cache,
+    setLoading,
+    setOrderLocation,
+    setErrorMessage,
+  );
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const itemsInCart = cart?.items?.length > 0;
   const videoIds = cart?.items?.map((it) => it.videoId);
@@ -18,7 +34,31 @@ const CartView = () => {
     videoIds,
   );
 
+  const placeOrder = () => {
+    mutate({ cart, user });
+  };
+
   const cartToDisplay = () => {
+    if (loading) {
+      return (
+        <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 h-auto rounded-lg">
+          <Loading />
+        </div>
+      );
+    }
+
+    if (errorMessage) {
+      return (
+        <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg">
+          <ErrorMessage errorMessage={errorMessage} />
+        </div>
+      );
+    }
+
+    if (orderLocation) {
+      return <OrderConfirmed orderLocation={orderLocation} />;
+    }
+
     if (itemsInCart && videos) {
       return (
         <>
@@ -50,6 +90,8 @@ const CartView = () => {
             setOpen={setModalOpen}
             modalOpen={modalOpen}
             videos={videos}
+            placeOrder={placeOrder}
+            confirmDisabled={isUserLoading || !user}
           />
         </>
       );

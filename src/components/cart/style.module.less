@@ -1,7 +1,7 @@
 @import 'node_modules/@boclips-ui/styles/src/_publishersColours';
 
 .emptyCartView{
-  @apply grid grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg;
+@apply grid grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg;
   a {
     color: @blue-700 !important;
     text-decoration: underline !important;
@@ -11,4 +11,18 @@
     }
   }
   height: 432px;
+}
+
+.orderConfirmedView{
+@apply grid grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg;
+  a {
+    color: #002588 !important;
+    text-decoration: none !important;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+  height: 432px;
+  background-color: white;
 }

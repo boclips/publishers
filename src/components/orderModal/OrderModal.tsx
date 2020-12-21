@@ -9,9 +9,17 @@ export interface Props {
   setOpen: (boolean) => void;
   modalOpen: boolean;
   videos: Video[];
+  placeOrder: () => void;
+  confirmDisabled: boolean;
 }
 
-export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
+export const OrderModal = ({
+  setOpen,
+  modalOpen,
+  videos,
+  placeOrder,
+  confirmDisabled,
+}: Props) => {
   return (
     <Modal
       isOpen={modalOpen}
@@ -58,7 +66,11 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
             Go back to cart
           </button>
           <button
-            onClick={(_) => setOpen(!modalOpen)}
+            onClick={(_) => {
+              placeOrder();
+              setOpen(!modalOpen);
+            }}
+            disabled={confirmDisabled}
             className="w-32 h-10 bg-blue-800 rounded text-white"
             type="button"
           >
