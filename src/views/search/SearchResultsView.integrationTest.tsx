@@ -454,7 +454,7 @@ describe('SearchResults', () => {
       expect(await wrapper.findByText('Add to cart')).toBeVisible();
     });
 
-    it(`adds to cart when clicked`, async () => {
+    it(`adds and removes item from cart when clicked`, async () => {
       const video = VideoFactory.sample({
         id: 'video-id',
         title: 'news video',
@@ -488,6 +488,18 @@ describe('SearchResults', () => {
       });
 
       expect(wrapper.getByText('Remove from cart')).toBeInTheDocument();
+
+      fireEvent(
+        wrapper.getByText('Remove from cart'),
+        new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+
+      await waitFor(() => {
+        expect(cart.items).toHaveLength(0);
+      });
     });
 
     it(`basket counter goes up when item added to cart in navbar`, async () => {

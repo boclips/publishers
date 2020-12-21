@@ -86,18 +86,20 @@ export const searchFilterOptions = (
 function boldMatchingText(text, shouldBeBold) {
   const textArray = text.split(new RegExp(`(${shouldBeBold})`, 'i'));
   return (
-    <span>
+    <>
       {textArray.map((item) => {
         return (
-          <>
+          <React.Fragment key={item}>
             {item.toLowerCase().includes(shouldBeBold.toLowerCase()) ? (
-              <span className="font-medium">{item}</span>
+              <span key={item} className="font-medium">
+                {item}
+              </span>
             ) : (
               item
             )}
-          </>
+          </React.Fragment>
         );
       })}
-    </span>
+    </>
   );
 }

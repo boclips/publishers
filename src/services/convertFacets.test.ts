@@ -37,10 +37,10 @@ describe(`convertFacets`, () => {
     expect(options).toHaveLength(2);
 
     expect(renderToStaticMarkup(options[0].label)).toEqual(
-      '<span><span class="font-medium">el</span>ephant</span>',
+      '<span class="font-medium">el</span>ephant',
     );
     expect(renderToStaticMarkup(options[1].label)).toEqual(
-      '<span><span class="font-medium">el</span>ves</span>',
+      '<span class="font-medium">el</span>ves',
     );
   });
 
@@ -56,10 +56,10 @@ describe(`convertFacets`, () => {
     expect(options).toHaveLength(2);
 
     expect(renderToStaticMarkup(options[0].label)).toEqual(
-      '<span><span class="font-medium">El</span>ephant</span>',
+      '<span class="font-medium">El</span>ephant',
     );
     expect(renderToStaticMarkup(options[1].label)).toEqual(
-      '<span><span class="font-medium">El</span>ves</span>',
+      '<span class="font-medium">El</span>ves',
     );
   });
 });
