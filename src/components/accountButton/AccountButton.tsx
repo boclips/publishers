@@ -39,14 +39,14 @@ export const AccountButton = () => {
   const renderModal = () => {
     if (isLoading && displayModal) {
       return (
-        <div className={s.tooltip}>
+        <div ref={ref} className={s.tooltip}>
           <Loading />
         </div>
       );
     }
     return (
       displayModal && (
-        <div className={s.tooltip}>
+        <div ref={ref} className={s.tooltip}>
           <div className="font-medium">
             {data.firstName} {data.lastName}
           </div>
@@ -63,7 +63,6 @@ export const AccountButton = () => {
   return (
     <>
       <div
-        ref={ref}
         role="presentation"
         onMouseEnter={onMouseEnterAction}
         onMouseLeave={onMouseLeaveAction}
