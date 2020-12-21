@@ -4,28 +4,33 @@
 @apply flex flex-col items-center relative;
   width: 50px;
   cursor: pointer;
+  justify-content: center;
+
   &:hover {
     &::after {
       content: '';
       position: absolute;
-      bottom: -14px;
+      bottom: 0;
       right: 0;
       width: 50px;
       background-color: @blue-700;
       height: 6px;
+      border-radius:4px 4px 0px 0px;
     }
   }
   a{
     display: flex;
     flex-direction: column;
     color: inherit;
+    width: 100%;
+    align-items: center;
 
   }
 }
 
 .basketCounter {
 @apply absolute bg-blue-500 rounded-full items-center justify-center flex text-blue-800 font-bold;
-  top: -10px;
+  top: 5px;
   right: 0;
   width: 24px;
   height: 24px;

@@ -30,10 +30,10 @@ const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
           <Search size="small" showIconOnly />
         </div>
       )}
-      <div className="col-start-20 col-end-26 flex justify-end">
-        <div className="flex flex-col items-center mr-6">
+      <div className="col-start-20 col-end-26 flex h-full justify-end">
+        <div className="flex flex-col items-center mr-6 justify-center">
           <MyAccountSVG />
-          <span className="text-xs mt-1">Profile</span>
+          <span className="text-xs mt-1 font-medium">Account</span>
         </div>
         <CartButton />
       </div>
