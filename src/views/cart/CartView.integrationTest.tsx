@@ -21,6 +21,7 @@ describe('CartView', () => {
     cartClient = (await FakeApiClient).carts;
     usersClient = (await FakeApiClient).users;
     ordersClient = (await FakeApiClient).orders;
+
     videosClient.clear();
     cartClient.clear();
     usersClient.clear();
@@ -47,10 +48,8 @@ describe('CartView', () => {
       title: 'news video',
       types: [{ name: 'NEWS', id: 2 }],
     });
-
-    videosClient.insertVideo(video);
-
     cartClient.insertCartItem('video-id');
+    videosClient.insertVideo(video);
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/cart']}>
@@ -58,11 +57,16 @@ describe('CartView', () => {
       </MemoryRouter>,
     );
 
-    await waitFor(async () => {
-      expect(await wrapper.findByText('Shopping cart')).toBeInTheDocument();
-      expect(await wrapper.findByText('(1 item)')).toBeInTheDocument();
-      expect(await wrapper.findByText('news video')).toBeInTheDocument();
-    });
+    await waitFor(
+      async () => {
+        expect(await wrapper.findByText('Shopping cart')).toBeInTheDocument();
+        expect(await wrapper.findByText('(1 item)')).toBeInTheDocument();
+        expect(await wrapper.findByText('news video')).toBeInTheDocument();
+      },
+      {
+        timeout: 5000,
+      },
+    );
   });
 
   it(`displays order confirmation when place order button clicked`, async () => {
@@ -93,7 +97,6 @@ describe('CartView', () => {
   });
 
   it(`places order when confirmation button is clicked`, async () => {
-    ordersClient.clear();
     const video = VideoFactory.sample({
       id: 'video-id',
       title: 'news video',
