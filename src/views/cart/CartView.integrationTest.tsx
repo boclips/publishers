@@ -1,4 +1,10 @@
-import { fireEvent, render, waitFor, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  RenderResult,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -17,6 +23,12 @@ describe('CartView', () => {
   let usersClient: FakeUsersClient = null;
   let ordersClient: FakeOrdersClient = null;
 
+  const video = VideoFactory.sample({
+    id: 'video-id',
+    title: 'news video',
+    types: [{ name: 'NEWS', id: 2 }],
+  });
+
   beforeEach(async () => {
     videosClient = (await FakeApiClient).videos;
     cartClient = (await FakeApiClient).carts;
@@ -30,11 +42,7 @@ describe('CartView', () => {
   });
 
   it('when no items in cart, displays empty cart view', async () => {
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/cart']}>
-        <App />
-      </MemoryRouter>,
-    );
+    const wrapper = renderCartView();
 
     await waitFor(async () => {
       expect(
@@ -44,19 +52,10 @@ describe('CartView', () => {
   });
 
   it('when videos in cart, displays video player with title ', async () => {
-    const video = VideoFactory.sample({
-      id: 'video-id',
-      title: 'news video',
-      types: [{ name: 'NEWS', id: 2 }],
-    });
-    cartClient.insertCartItem('video-id');
     videosClient.insertVideo(video);
+    cartClient.insertCartItem('video-id');
 
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/cart']}>
-        <App />
-      </MemoryRouter>,
-    );
+    const wrapper = renderCartView();
 
     await waitFor(
       async () => {
@@ -71,21 +70,10 @@ describe('CartView', () => {
   });
 
   it(`displays order confirmation when place order button clicked`, async () => {
-    const video = VideoFactory.sample({
-      id: 'video-id',
-      title: 'news video',
-      types: [{ name: 'NEWS', id: 2 }],
-    });
-
     videosClient.insertVideo(video);
-
     cartClient.insertCartItem('video-id');
 
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/cart']}>
-        <App />
-      </MemoryRouter>,
-    );
+    const wrapper = renderCartView();
 
     wrapper
       .findByText('Place an order')
@@ -98,42 +86,14 @@ describe('CartView', () => {
   });
 
   it(`places order when confirmation button is clicked`, async () => {
-    const video = VideoFactory.sample({
-      id: 'video-id',
-      title: 'news video',
-      types: [{ name: 'NEWS', id: 2 }],
-    });
-
-    const user = UserFactory.sample({ id: 'user-id' });
-    usersClient.insertCurrentUser(user);
-
+    usersClient.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
     videosClient.insertVideo(video);
-
     cartClient.insertCartItem('video-id');
 
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/cart']}>
-        <App />
-      </MemoryRouter>,
-    );
+    const wrapper = renderCartView();
+    await placeAndConfirmOrder(wrapper);
 
-    await wrapper
-      .findByText('Place an order')
-      .then((button) => fireEvent.click(button));
-
-    const modal = await wrapper.findByTestId('order-modal');
-
-    await waitFor(async () =>
-      expect(
-        within(modal).getByText('Confirm order').closest('button'),
-      ).not.toBeDisabled(),
-    );
-
-    await within(modal)
-      .findByText('Confirm order')
-      .then((button) => fireEvent.click(button));
-
-    await wrapper.findByText('Loading');
+    expect(await wrapper.findByText('Loading')).toBeVisible();
 
     const confirmation = await wrapper.findByTestId('order-confirmed');
     expect(await ordersClient.getAll()).toHaveLength(1);
@@ -153,30 +113,29 @@ describe('CartView', () => {
   });
 
   it(`displays error page when error while placing order`, async () => {
-    ordersClient.clear();
-    const video = VideoFactory.sample({
-      id: 'video-id',
-      title: 'news video',
-      types: [{ name: 'NEWS', id: 2 }],
-    });
-
-    const user = UserFactory.sample({ id: 'user-id' });
-    usersClient.insertCurrentUser(user);
-
+    usersClient.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
     videosClient.insertVideo(video);
-
     cartClient.insertCartItem('video-id');
-
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/cart']}>
-        <App />
-      </MemoryRouter>,
-    );
-
     ordersClient.rejectNextPlaceOrder(
       BoclipsApiErrorFactory.sample({ message: 'channel is missing price' }),
     );
 
+    const wrapper = renderCartView();
+    await placeAndConfirmOrder(wrapper);
+
+    expect(await wrapper.findByText('Did not work dude!')).toBeVisible();
+    expect(wrapper.getByText(/channel is missing price/)).toBeVisible();
+  });
+
+  function renderCartView() {
+    return render(
+      <MemoryRouter initialEntries={['/cart']}>
+        <App />
+      </MemoryRouter>,
+    );
+  }
+
+  async function placeAndConfirmOrder(wrapper: RenderResult) {
     await wrapper
       .findByText('Place an order')
       .then((button) => fireEvent.click(button));
@@ -192,10 +151,5 @@ describe('CartView', () => {
     await within(modal)
       .findByText('Confirm order')
       .then((button) => fireEvent.click(button));
-
-    await wrapper.findByText('Loading');
-
-    expect(await wrapper.findByText('Did not work dude!')).toBeVisible();
-    expect(wrapper.getByText(/channel is missing price/)).toBeVisible();
-  });
+  }
 });
