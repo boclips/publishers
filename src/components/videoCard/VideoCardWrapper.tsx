@@ -19,7 +19,6 @@ export const VideoCardWrapper = ({ video }: Props) => {
         video={convertVideoFromApi(video)}
         videoPlayer={<VideoPlayer video={video} />}
         border="bottom"
-        theme="publishers"
         topBadge={<PriceBadge price={video.price?.displayValue} />}
         actions={[<AddToCartButton videoId={video.id} key="cart-button" />]}
       />
