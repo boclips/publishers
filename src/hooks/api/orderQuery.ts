@@ -1,7 +1,12 @@
-import { QueryCache, useMutation } from 'react-query';
+import { QueryCache, useMutation, useQuery } from 'react-query';
 import { ApiClientWrapper } from 'src/services/apiClientWrapper';
 import { User } from 'boclips-api-client/dist/sub-clients/organisations/model/User';
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
+
+export interface OrdersQuery {
+  page: number;
+  size: number;
+}
 
 export const doPlaceOrder = ({ cart, user }) =>
   ApiClientWrapper.get().then((client) => {
@@ -12,6 +17,11 @@ export const doPlaceOrder = ({ cart, user }) =>
       })),
       user,
     );
+  });
+
+export const getOrders = ({ page, size }: OrdersQuery) =>
+  ApiClientWrapper.get().then((client) => {
+    return client.orders.getUserOrders(page, size);
   });
 
 export const usePlaceOrderQuery = (
@@ -42,3 +52,13 @@ export interface PlaceOrderQueryRequest {
   cart: Cart;
   user: User;
 }
+
+export const useGetOrdersQuery = (
+  ordersQuery: OrdersQuery,
+  setErrorMessage: (location: string) => void,
+) =>
+  useQuery(['orders', ordersQuery], () => getOrders(ordersQuery), {
+    onError: (error) => {
+      setErrorMessage(JSON.stringify(error));
+    },
+  });

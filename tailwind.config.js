@@ -44,6 +44,7 @@ module.exports = {
       gridTemplateRows: {
         home: '75px minmax(0, 458px) 63px',
         'search-view': '75px minmax(0, auto) 63px',
+        'orders-view': '75px 50px minmax(0, auto) 63px',
         'cart-view': '75px 50px minmax(0, auto) 63px',
       },
       gridTemplateColumns: {
