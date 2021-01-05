@@ -138,6 +138,12 @@ module.exports = {
         outline: '0 2px 8px 0 rgba(0,21,80,0.15)',
         'button-focus': '0 0 6px 0 #8BAAFF',
       },
+      height: {
+        9: '2.25rem',
+        10: '2.5rem',
+        11: '2.75rem',
+        12: '3rem',
+      },
     },
   },
   variants: {

@@ -1,4 +1,4 @@
-import { CartItem } from 'src/components/cart/CartItem';
+import CartItem from 'src/components/cart/CartItem';
 import React from 'react';
 import { Video } from 'boclips-api-client/dist/types';
 import CloseIconSVG from 'src/resources/icons/cross-icon.svg';

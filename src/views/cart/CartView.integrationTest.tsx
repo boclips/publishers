@@ -51,7 +51,7 @@ describe('CartView', () => {
     });
   });
 
-  it('when videos in cart, displays video player with title ', async () => {
+  it('when videos in cart, displays video player with title and additional services ', async () => {
     videosClient.insertVideo(video);
     cartClient.insertCartItem('video-id');
 
@@ -62,6 +62,10 @@ describe('CartView', () => {
         expect(await wrapper.findByText('Shopping cart')).toBeInTheDocument();
         expect(await wrapper.findByText('(1 item)')).toBeInTheDocument();
         expect(await wrapper.findByText('news video')).toBeInTheDocument();
+        expect(
+          await wrapper.findByText('Additional services'),
+        ).toBeInTheDocument();
+        expect(await wrapper.findByText('Trim video')).toBeInTheDocument();
       },
       {
         timeout: 5000,

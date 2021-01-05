@@ -5,7 +5,7 @@ import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
 import { Loading } from 'src/components/common/Loading';
 import Footer from 'src/components/layout/Footer';
 import { EmptyCart } from 'src/components/cart/EmptyCart';
-import { CartItem } from 'src/components/cart/CartItem';
+import CartItem from 'src/components/cart/CartItem';
 import { OrderModal } from 'src/components/orderModal/OrderModal';
 import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
