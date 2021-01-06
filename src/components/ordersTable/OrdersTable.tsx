@@ -11,7 +11,7 @@ export const PAGE_SIZE = 10;
 export const OrdersTable = () => {
   const [page, setPage] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string>(null);
-  const { isLoading, isFetching, isError, data } = useGetOrdersQuery(
+  const { isLoading, isError, data } = useGetOrdersQuery(
     {
       page: page || 0,
       size: PAGE_SIZE,
@@ -31,7 +31,7 @@ export const OrdersTable = () => {
         <ErrorMessage errorMessage={errorMessage} />
       ) : (
         <>
-          {isLoading || isFetching ? (
+          {isLoading ? (
             <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 h-auto rounded-lg">
               <Loading />
             </div>
