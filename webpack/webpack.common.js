@@ -9,6 +9,7 @@ const resourcePath = path.resolve(__dirname, '../src/resources');
 
 module.exports = {
   entry: path.resolve(srcPath, 'index.tsx'),
+
   // Allows ts(x) and js files to be imported without extension
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.less'],
