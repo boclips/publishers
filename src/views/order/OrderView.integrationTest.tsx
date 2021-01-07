@@ -10,14 +10,18 @@ import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import { FakeOrdersClient } from 'boclips-api-client/dist/sub-clients/orders/client/FakeOrdersClient';
 import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { Link } from 'boclips-api-client/dist/types';
+import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
+import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 
 describe('order table', () => {
   let ordersClient: FakeOrdersClient = null;
+  let videosClient: FakeVideosClient = null;
 
   beforeEach(async () => {
     ordersClient = (await FakeApiClient).orders;
+    videosClient = (await FakeApiClient).videos;
   });
-  it('renders a order with an id that matches query', async () => {
+  it('renders the order header with an id that matches query', async () => {
     const orders = [
       OrdersFactory.sample({ id: 'not-the-id' }),
       OrdersFactory.sample({
@@ -33,14 +37,26 @@ describe('order table', () => {
       </MemoryRouter>,
     );
 
-    expect(await wrapper.findByText('Order i-am-the-id')).toBeVisible();
+    const order = await wrapper.findAllByText('Order i-am-the-id');
+
+    expect(order.length).toEqual(2);
+    expect(await wrapper.findByText('Your orders')).toBeVisible();
     expect(await wrapper.queryByText('not-the-id')).not.toBeInTheDocument();
   });
 
   it('renders a order with items', async () => {
+    const video = VideoFactory.sample({
+      id: 'video-id-1',
+      price: {
+        displayValue: '$600',
+        currency: 'USD',
+        amount: 600,
+      },
+    });
+
     const item = OrderItemFactory.sample({
       video: {
-        title: 'item-1-title',
+        title: 'video-1-title',
         id: 'video-id-1',
         captionStatus: OrderCaptionStatus.PROCESSING,
         maxResolutionAvailable: true,
@@ -60,12 +76,13 @@ describe('order table', () => {
     });
     const orders = [
       OrdersFactory.sample({
-        id: 'not-the-id',
+        id: 'i-am-the-id',
         items: [item],
       }),
     ];
 
     orders.forEach((order) => ordersClient.insertOrderFixture(order));
+    videosClient.insertVideo(video);
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/i-am-the-id']}>
@@ -73,9 +90,9 @@ describe('order table', () => {
       </MemoryRouter>,
     );
 
-    expect(await wrapper.getByText('item-1-title')).toBeVisible();
-    expect(await wrapper.getByAltText('thumbnail')).toBeVisible();
-    expect(await wrapper.getByText('$600')).toBeVisible();
-    expect(await wrapper.getByText('video-id-1')).toBeVisible();
+    expect(await wrapper.findByText('video-1-title')).toBeVisible();
+    expect(await wrapper.findByAltText('thumbnail')).toBeVisible();
+    expect(await wrapper.findByText('$600')).toBeVisible();
+    expect(await wrapper.findByText('ID: video-id-1')).toBeVisible();
   });
 });

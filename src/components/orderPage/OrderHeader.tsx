@@ -5,8 +5,8 @@ import React from 'react';
 export const OrderHeader = ({ id }) => {
   return (
     <>
-      <div className="flex flex-row items-end mb-4 text-black-700">
-        <Link to="/orders" className="text-sm mr-4">
+      <div className="flex flex-row items-end mb-4">
+        <Link to="/orders" className="text-sm mr-4 text-black">
           Your orders
         </Link>
         <RightArrow className="w-2  mr-4 self-center" />

@@ -2,6 +2,8 @@ import { QueryCache, useMutation, useQuery } from 'react-query';
 import { ApiClientWrapper } from 'src/services/apiClientWrapper';
 import { User } from 'boclips-api-client/dist/sub-clients/organisations/model/User';
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
+import { ourQueryCache } from 'src/hooks/api/queryCache';
+import { Order } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 
 export interface OrdersQuery {
   page: number;
@@ -68,13 +70,11 @@ export const useGetOrdersQuery = (
     },
   });
 
-export const useGetOrderQuery = (
-  orderId: string,
-  setErrorMessage?: (location: string) => void,
-) =>
-  useQuery(['orders', orderId], () => getOrder(orderId), {
-    onError: (error) => {
-      setErrorMessage(JSON.stringify(error));
-    },
-  });
+const getCachedOrders = () => {
+  return ourQueryCache.getQueryData('orders') as Order[];
+};
 
+export const useFindOrder = (orderId: string) =>
+  useQuery(['order', orderId], () => getOrder(orderId), {
+    initialData: () => getCachedOrders()?.find((d) => d.id === orderId),
+  });
