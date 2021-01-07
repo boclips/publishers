@@ -12,7 +12,7 @@ export const OrderConfirmation = ({ orderId }: OrderConfirmationProps) => (
       <div className="col-start-5 col-end-10 flex justify-center items-center">
         <OrderConfirmedBueno />
       </div>
-      <div className="col-start-12 col-end-26 text-blue-800 flex flex-col justify-center">
+      <div className="col-start-12 col-end-21 text-blue-800 flex flex-col justify-center">
         <div className="text-4xl text-blue-800 font-medium">
           Your order is confirmed
         </div>
