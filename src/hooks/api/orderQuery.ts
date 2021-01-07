@@ -24,6 +24,11 @@ export const getOrders = ({ page, size }: OrdersQuery) =>
     return client.orders.getUserOrders(page, size);
   });
 
+export const getOrder = (id: string) =>
+  ApiClientWrapper.get().then((client) => {
+    return client.orders.get(id);
+  });
+
 export const usePlaceOrderQuery = (
   cache: QueryCache,
   setLoading: (isLoading: boolean) => void,
@@ -62,3 +67,14 @@ export const useGetOrdersQuery = (
       setErrorMessage(JSON.stringify(error));
     },
   });
+
+export const useGetOrderQuery = (
+  orderId: string,
+  setErrorMessage?: (location: string) => void,
+) =>
+  useQuery(['orders', orderId], () => getOrder(orderId), {
+    onError: (error) => {
+      setErrorMessage(JSON.stringify(error));
+    },
+  });
+

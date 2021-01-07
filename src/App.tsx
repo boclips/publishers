@@ -24,6 +24,8 @@ const CartView = lazy(() => import('src/views/cart/CartView'));
 
 const OrdersView = lazy(() => import('src/views/orders/OrdersView'));
 
+const OrderView = lazy(() => import('src/views/order/OrderView'));
+
 const OrderConfirmationView = lazy(
   () => import('src/views/orders/orderConfirmation/OrderConfirmationView'),
 );
@@ -41,14 +43,17 @@ const App = () => {
             <Route exact path="/">
               <HomeView />
             </Route>
-            <Route path="/videos">
+            <Route exact path="/videos">
               <SearchResultsView />
             </Route>
-            <Route path="/cart">
+            <Route exact path="/cart">
               <CartView />
             </Route>
-            <Route path="/orders">
+            <Route exact path="/orders">
               <OrdersView />
+            </Route>
+            <Route exact path="/orders/:id">
+              <OrderView />
             </Route>
             <Route
               path="/order-confirmed"
