@@ -140,9 +140,8 @@ describe('CartView', () => {
   }
 
   async function placeAndConfirmOrder(wrapper: RenderResult) {
-    await wrapper
-      .findByText('Place an order')
-      .then((button) => fireEvent.click(button));
+    await wrapper.findByText('Place an order');
+    fireEvent.click(wrapper.getByText('Place an order'));
 
     const modal = await wrapper.findByTestId('order-modal');
 

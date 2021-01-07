@@ -24,6 +24,10 @@ const CartView = lazy(() => import('src/views/cart/CartView'));
 
 const OrdersView = lazy(() => import('src/views/orders/OrdersView'));
 
+const OrderConfirmationView = lazy(
+  () => import('src/views/orders/orderConfirmation/OrderConfirmationView'),
+);
+
 const App = () => {
   useEffect(() => {
     setupClient();
@@ -46,6 +50,12 @@ const App = () => {
             <Route path="/orders">
               <OrdersView />
             </Route>
+            <Route
+              path="/order-confirmed"
+              render={({ location }) => (
+                <OrderConfirmationView state={location?.state} />
+              )}
+            />
           </Suspense>
           <ReactQueryDevtools initialIsOpen={false} />
         </ReactQueryCacheProvider>

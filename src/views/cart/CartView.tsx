@@ -9,11 +9,12 @@ import CartItem from 'src/components/cart/CartItem';
 import { OrderModal } from 'src/components/orderModal/OrderModal';
 import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
-import { OrderConfirmed } from 'src/components/cart/OrderConfirmed';
 import { useQueryCache } from 'react-query';
 import { ErrorMessage } from 'src/components/common/ErrorMessage';
+import { useHistory } from 'react-router-dom';
 
 const CartView = () => {
+  const history = useHistory();
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
   const { data: user, isLoading: isUserLoading } = useGetUserQuery();
   const [orderLocation, setOrderLocation] = useState<string>(null);
@@ -56,7 +57,7 @@ const CartView = () => {
     }
 
     if (orderLocation) {
-      return <OrderConfirmed orderLocation={orderLocation} />;
+      return history.push({ pathname: '/order-confirmed' }, { orderLocation });
     }
 
     if (itemsInCart && videos) {
@@ -109,7 +110,7 @@ const CartView = () => {
 
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">
-      <Navbar showSearchBar={false} />
+      <Navbar showSearchBar />
       {cartToDisplay()}
       <Footer />
     </div>
