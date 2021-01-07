@@ -10,7 +10,6 @@ import { OrderHeader } from 'src/components/orderPage/OrderHeader';
 import { getOrder } from 'src/hooks/api/orderQuery';
 
 export const OrderPage = () => {
-  return null;
   const orders = ourQueryCache.getQueryData('orders') as Order[];
   const location = useLocation();
   const orderId = location.pathname.split('/orders/')[1];
