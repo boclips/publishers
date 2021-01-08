@@ -9,7 +9,7 @@ describe('CartItem', () => {
       id: '123',
       title: 'this is cart item test',
     });
-    const wrapper = render(<CartItem item={video} />);
+    const wrapper = render(<CartItem videoItem={video} />);
 
     expect(
       await wrapper.findByText('this is cart item test'),
@@ -23,7 +23,7 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const wrapper = render(<CartItem item={video} />);
+    const wrapper = render(<CartItem videoItem={video} />);
 
     fireEvent.click(await wrapper.findByText('Trim video'));
 

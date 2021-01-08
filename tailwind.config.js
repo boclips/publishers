@@ -15,7 +15,7 @@ module.exports = {
       default: {
         checkbox: {
           '&:checked': {
-            backgroundSize: '68%',
+            backgroundSize: '70%',
             backgroundRepeat: 'no-repeat',
           },
           icon:

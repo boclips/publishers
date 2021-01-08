@@ -46,7 +46,7 @@ export const OrderModal = ({
           Do you confirm you want to place the following order:
           <div className={s.modalBody}>
             {videos.map((item) => (
-              <CartItem item={item} key={item.id} />
+              <CartItem videoItem={item} key={item.id} />
             ))}
           </div>
           <div className={s.buttons}>

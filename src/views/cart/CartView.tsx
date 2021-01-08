@@ -74,7 +74,7 @@ const CartView = () => {
           <div className="col-start-2 col-end-20 pt-4 font-medium">
             <div className="pt-4 font-medium col-start-2 col-span-10">
               {videos.map((item) => (
-                <CartItem item={item} key={item.id} />
+                <CartItem videoItem={item} key={item.id} />
               ))}
             </div>
           </div>
