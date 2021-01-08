@@ -8,20 +8,24 @@ interface Props {
 
 const AdditionalServices = ({ videoItem }: Props) => {
   const [checked, setChecked] = useState(false);
+  const [trim, setTrim] = useState({
+    from: '00:00',
+    to: videoItem.playback.duration.format('mm:ss'),
+  });
 
-  const onChange = (e) => {
+  const onChangeCheckbox = (e) => {
     setChecked(e.currentTarget.checked);
   };
 
-  const onKeyDown = (e) => {
-    if (
-      (e.keyCode <= 57 && e.keyCode >= 48) ||
-      e.keyCode === 186 ||
-      e.keyCode === 8
-    ) {
-      return true;
+  const onChangeTrimInput = (e) => {
+    const regExp = /^[0-9:\b]{0,5}$/;
+    if (e.currentTarget.value === '' || regExp.test(e.currentTarget.value)) {
+      const value = { [e.currentTarget.id]: e.currentTarget.value };
+      setTrim((prevState) => ({
+        ...prevState,
+        ...value,
+      }));
     }
-    return e.preventDefault();
   };
 
   return (
@@ -33,7 +37,7 @@ const AdditionalServices = ({ videoItem }: Props) => {
           htmlFor={videoItem.id}
         >
           <input
-            onChange={onChange}
+            onChange={onChangeCheckbox}
             id={videoItem.id}
             checked={checked}
             type="checkbox"
@@ -51,18 +55,19 @@ const AdditionalServices = ({ videoItem }: Props) => {
           <div className="h-full flex items-center font-normal">
             From:
             <input
-              onKeyDown={onKeyDown}
+              id="from"
+              onChange={onChangeTrimInput}
               className="border-blue-300 border outline-none w-16 h-full ml-2 mr-6 px-2 text-center"
               type="text"
-              pattern="[0-9]"
-              defaultValue="00:00"
+              value={trim.from}
             />
             To:
             <input
-              onKeyDown={onKeyDown}
-              className="border-blue-300 border outline-none ml-2 w-16 h-full px-2 text-center"
+              id="to"
+              onChange={onChangeTrimInput}
+              className="border-blue-300 border outline-none w-16 h-full ml-2 mr-6 px-2 text-center"
               type="text"
-              defaultValue={videoItem.playback.duration.format('mm:ss')}
+              value={trim.to}
             />
           </div>
         )}
