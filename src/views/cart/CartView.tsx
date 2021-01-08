@@ -12,6 +12,7 @@ import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
 import { useQueryCache } from 'react-query';
 import { ErrorMessage } from 'src/components/common/ErrorMessage';
 import { useHistory } from 'react-router-dom';
+import Button from '@boclips-ui/button';
 
 const CartView = () => {
   const history = useHistory();
@@ -78,14 +79,15 @@ const CartView = () => {
               ))}
             </div>
           </div>
-          <div className="col-start-20 col-end-26 border-blue-500 border-2 h-32 w-full flex flex-col items-center rounded">
-            <button
-              onClick={(_) => setModalOpen(!modalOpen)}
-              type="button"
-              className="h-10 w-5/6 bg-blue-800 rounded text-white mt-12"
-            >
-              Place an order
-            </button>
+          <div className="col-start-20 col-end-26 border-blue-500 border-2 h-32 p-5 w-full justify-end flex flex-col  rounded">
+            <Button
+              onClick={() => setModalOpen(!modalOpen)}
+              type="primary"
+              theme="publishers"
+              text="Place an order"
+              height="44px"
+              width="100%"
+            />
           </div>
           <OrderModal
             setOpen={setModalOpen}
