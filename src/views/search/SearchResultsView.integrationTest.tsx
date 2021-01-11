@@ -525,5 +525,27 @@ describe('SearchResults', () => {
         expect(cartCounter).toBe(cart.items.length.toString());
       });
     });
+
+    it(`directs to video page when card is clicked`, async () => {
+      const video = VideoFactory.sample({
+        id: 'video-id',
+        title: 'news video',
+        types: [{ name: 'NEWS', id: 2 }],
+      });
+
+      videosClient.insertVideo(video);
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=vid']}>
+          <App />
+        </MemoryRouter>,
+      );
+
+      fireEvent.click(await wrapper.findByTestId('video-card-wrapper'));
+
+      await waitFor(() => {
+        expect(wrapper.getByText('Back to search results')).toBeVisible();
+      });
+    });
   });
 });

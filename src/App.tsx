@@ -26,6 +26,8 @@ const OrdersView = lazy(() => import('src/views/orders/OrdersView'));
 
 const OrderView = lazy(() => import('src/views/order/OrderView'));
 
+const VideoView = lazy(() => import('src/views/video/VideoView'));
+
 const OrderConfirmationView = lazy(
   () => import('src/views/orders/orderConfirmation/OrderConfirmationView'),
 );
@@ -45,6 +47,9 @@ const App = () => {
             </Route>
             <Route exact path="/videos">
               <SearchResultsView />
+            </Route>
+            <Route exact path="/videos/:id">
+              <VideoView />
             </Route>
             <Route exact path="/cart">
               <CartView />

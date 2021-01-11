@@ -20,6 +20,9 @@ describe('order table', () => {
   beforeEach(async () => {
     ordersClient = (await FakeApiClient).orders;
     videosClient = (await FakeApiClient).videos;
+
+    ordersClient.clear();
+    videosClient.clear();
   });
   it('renders the order header with an id that matches query', async () => {
     const orders = [

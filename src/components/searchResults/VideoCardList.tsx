@@ -3,6 +3,8 @@ import { List } from 'antd';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
 import React from 'react';
 import { VideoCardWrapper } from 'src/components/videoCard/VideoCardWrapper';
+import s from 'src/components/videoCard/VideoCardWrapper.module.less';
+import { Link } from 'react-router-dom';
 
 interface Props {
   videos: Video[];
@@ -30,9 +32,13 @@ export const VideoCardList = ({
       }}
       dataSource={videos}
       renderItem={(video: Video) => (
-        <div className="mb-4">
+        <Link
+          className="mb-4"
+          data-qa="video-card-wrapper"
+          to={`videos/${video.id}`}
+        >
           <VideoCardWrapper video={video} />
-        </div>
+        </Link>
       )}
     />
   );
