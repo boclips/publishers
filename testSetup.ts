@@ -2,9 +2,14 @@ import '@testing-library/jest-dom/extend-expect';
 import * as ReactTestingLibrary from '@testing-library/react';
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 
-ReactTestingLibrary.configure({ testIdAttribute: 'data-qa' });
+const jestTimeout = 5000;
 
-jest.setTimeout(30000);
+ReactTestingLibrary.configure({
+  testIdAttribute: 'data-qa',
+  asyncUtilTimeout: jestTimeout - 1000,
+});
+
+jest.setTimeout(jestTimeout);
 
 // JSDom doesn't implement scrollTo
 window.scrollTo = jest.fn();
