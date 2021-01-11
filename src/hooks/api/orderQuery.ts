@@ -3,7 +3,6 @@ import { ApiClientWrapper } from 'src/services/apiClientWrapper';
 import { User } from 'boclips-api-client/dist/sub-clients/organisations/model/User';
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import { ourQueryCache } from 'src/hooks/api/queryCache';
-import { Order } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 
 export interface OrdersQuery {
   page: number;
@@ -70,11 +69,11 @@ export const useGetOrdersQuery = (
     },
   });
 
-const getCachedOrders = () => {
-  return ourQueryCache.getQueryData('orders') as Order[];
+export const getCachedData = (cache: string) => {
+  return ourQueryCache.getQueryData(cache) as any[];
 };
 
-export const useFindOrder = (orderId: string) =>
+export const useFindOrGetOrder = (orderId: string) =>
   useQuery(['order', orderId], () => getOrder(orderId), {
-    initialData: () => getCachedOrders()?.find((d) => d.id === orderId),
+    initialData: () => getCachedData('orders')?.find((d) => d.id === orderId),
   });

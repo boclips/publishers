@@ -30,7 +30,7 @@ export const VideoCardList = ({
       }}
       dataSource={videos}
       renderItem={(video: Video) => (
-        <div className="mb-4">
+        <div className="mb-4" data-qa="video-card-wrapper">
           <VideoCardWrapper video={video} />
         </div>
       )}

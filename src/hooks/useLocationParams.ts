@@ -57,3 +57,8 @@ const convertToURLSearchParams = (
   );
   return params;
 };
+
+export const useGetIdFromLocation = (path: string) => {
+  const location = useLocation();
+  return location.pathname.split(`/${path}/`)[1];
+};

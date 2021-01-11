@@ -1,7 +1,6 @@
 import React from 'react';
-import FilterArrowUp from 'src/resources/icons/filter-arrow-up.svg';
-import FilterArrowDown from 'src/resources/icons/filter-arrow-down.svg';
 import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
+import FilterArrow from '../../../resources/icons/blue-arrow.svg';
 
 interface Props {
   text: string;
@@ -18,7 +17,9 @@ export const FilterHeader = ({ text, filterIsOpen, toggleFilter }: Props) => {
       role="listbox"
     >
       <span className="flex-grow">{text}</span>{' '}
-      {filterIsOpen ? <FilterArrowUp /> : <FilterArrowDown />}
+      <FilterArrow
+        className={`${filterIsOpen ? 'transform rotate-180' : ''}`}
+      />
     </div>
   );
 };

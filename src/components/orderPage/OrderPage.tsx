@@ -1,16 +1,14 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { OrderItem } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { Loading } from 'src/components/common/Loading';
 import { OrderItemCard } from 'src/components/orderPage/OrderItemCard';
 import { OrderHeader } from 'src/components/orderPage/OrderHeader';
-import { useFindOrder } from 'src/hooks/api/orderQuery';
+import { useFindOrGetOrder } from 'src/hooks/api/orderQuery';
+import { useGetIdFromLocation } from 'src/hooks/useLocationParams';
 
 export const OrderPage = () => {
-  const location = useLocation();
-  const orderId = location.pathname.split('/orders/')[1];
-
-  const { data, isLoading } = useFindOrder(orderId);
+  const orderId = useGetIdFromLocation('orders');
+  const { data, isLoading } = useFindOrGetOrder(orderId);
 
   return (
     <>
