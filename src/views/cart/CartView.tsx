@@ -13,9 +13,13 @@ import { useQueryCache } from 'react-query';
 import { ErrorMessage } from 'src/components/common/ErrorMessage';
 import { useHistory } from 'react-router-dom';
 import Button from '@boclips-ui/button';
+import {useBoclipsClient} from "src/components/common/BoclipsClientProvider";
 
-const CartView = ({apiClient}) => {
+const CartView = () => {
   const history = useHistory();
+
+  const blah = useBoclipsClient();
+  console.log(blah.users)
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
   const { data: user, isLoading: isUserLoading } = useGetUserQuery();
   const [orderLocation, setOrderLocation] = useState<string>(null);
@@ -23,7 +27,6 @@ const CartView = ({apiClient}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const cache = useQueryCache();
   const [mutate] = usePlaceOrderQuery(
-    apiClient,
     cache,
     setLoading,
     setOrderLocation,
@@ -62,6 +65,7 @@ const CartView = ({apiClient}) => {
       return history.push({ pathname: '/order-confirmed' }, { orderLocation });
     }
 
+    console.log(user);
     if (itemsInCart && videos) {
       return (
         <>

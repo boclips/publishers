@@ -9,15 +9,17 @@ import { FilterPanel } from 'src/components/filterPanel/FilterPanel';
 import { SearchResults } from 'src/components/searchResults/SearchResults';
 import Footer from 'src/components/layout/Footer';
 import { FilterKeys } from 'src/types/search/FilterKeys';
+import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
 export const PAGE_SIZE = 10;
 
-const SearchResultsView = ({apiClient}) => {
+const SearchResultsView = () => {
+  const boclipsClient = useBoclipsClient();
+
   const [searchLocation, setSearchLocation] = useSearchQueryLocationParams();
   const { query, page: currentPage, filters } = searchLocation;
 
   const { resolvedData, isError, error, isLoading } = useSearchQuery({
-    apiClient,
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
@@ -26,14 +28,13 @@ const SearchResultsView = ({apiClient}) => {
 
   useEffect(() => {
     // Prefetch the next page of data
-    prefetchSearchQuery({
-      apiClient,
+    prefetchSearchQuery(boclipsClient, {
       query,
       pageSize: PAGE_SIZE,
       page: currentPage,
       filters,
     });
-  }, [currentPage, query, filters]);
+  }, [currentPage, query, filters, boclipsClient]);
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });

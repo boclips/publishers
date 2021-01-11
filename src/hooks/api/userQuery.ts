@@ -1,12 +1,13 @@
-import { ApiClientWrapper } from 'src/services/apiClientWrapper';
+import { BoclipsClient } from 'boclips-api-client';
 import { useQuery } from 'react-query';
+import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
-export const doGetUser = () => {
-  return ApiClientWrapper.get().then((client) => {
-    return client.users.getCurrentUser();
-  });
+const doGetUser = (boclipsClient: BoclipsClient) => {
+  console.log(boclipsClient.users);
+  return boclipsClient.users.getCurrentUser();
 };
 
 export const useGetUserQuery = () => {
-  return useQuery('user', async () => doGetUser());
+  const boclipsClient = useBoclipsClient();
+  return useQuery('user', () => doGetUser(boclipsClient));
 };

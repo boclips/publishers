@@ -3,13 +3,15 @@ import { MemoryRouter } from 'react-router-dom';
 import Navbar from 'src/components/layout/Navbar';
 import React from 'react';
 import { FakeUsersClient } from 'boclips-api-client/dist/sub-clients/users/client/FakeUsersClient';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 
 describe('account button', () => {
+  let fakeClient: FakeBoclipsClient = null;
   let userClient: FakeUsersClient = null;
 
-  beforeAll(async () => {
-    userClient = (await FakeApiClient).users;
+  beforeEach(() => {
+    fakeClient = new FakeBoclipsClient();
+    userClient = fakeClient.users;
   });
 
   it('opens the tooltip when clicked and close the tooltip when clicked on the body', async () => {

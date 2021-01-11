@@ -2,18 +2,19 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
-import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
+import {
+  FakeBoclipsClient,
+  OrdersFactory,
+} from 'boclips-api-client/dist/test-support';
 import { FakeOrdersClient } from 'boclips-api-client/dist/sub-clients/orders/client/FakeOrdersClient';
-import { OrdersFactory } from 'boclips-api-client/dist/test-support';
 
 describe('OrderView', () => {
   let fakeClient: FakeBoclipsClient = null;
   let ordersClient: FakeOrdersClient = null;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     fakeClient = new FakeBoclipsClient();
-    ordersClient = (await FakeApiClient).orders;
+    ordersClient = fakeClient.orders;
   });
 
   it('loads the order view', async () => {

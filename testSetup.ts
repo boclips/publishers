@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
 import * as ReactTestingLibrary from '@testing-library/react';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 
 const jestTimeout = 5000;
 
@@ -28,5 +27,4 @@ window.matchMedia =
 
 afterEach(async () => {
   ReactTestingLibrary.cleanup();
-  (await FakeApiClient).clear();
 });

@@ -5,8 +5,11 @@ import { prefetchSearchQuery } from 'src/hooks/api/useSearchQuery';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
 import c from 'classnames';
 import s from './style.module.less';
+import { useBoclipsClient } from '../common/BoclipsClientProvider';
 
-const SearchHero = ({apiClient}) => {
+const SearchHero = () => {
+  const boclipsClient = useBoclipsClient();
+
   return (
     <main className="h-full rounded-lg col-start-2 col-end-26 row-start-2 row-end-2 bg-primary-light">
       <section
@@ -20,7 +23,11 @@ const SearchHero = ({apiClient}) => {
             size="big"
             showIconOnly={false}
             onSearch={(query) =>
-              prefetchSearchQuery({ apiClient, query, page: 0, pageSize: PAGE_SIZE })
+              prefetchSearchQuery(boclipsClient, {
+                query,
+                page: 0,
+                pageSize: PAGE_SIZE,
+              })
             }
           />
         </div>

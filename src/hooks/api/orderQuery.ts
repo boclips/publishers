@@ -3,7 +3,7 @@ import { User } from 'boclips-api-client/dist/sub-clients/organisations/model/Us
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import { ourQueryCache } from 'src/hooks/api/queryCache';
 import { Order } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
-import { BoclipsClient } from 'boclips-api-client';
+import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
 export interface OrdersQuery {
   page: number;
@@ -25,14 +25,15 @@ export const getOrders = (apiClient, { page, size }: OrdersQuery) =>
 export const getOrder = (apiClient, id: string) => apiClient.orders.get(id);
 
 export const usePlaceOrderQuery = (
-  apiClient: BoclipsClient,
   cache: QueryCache,
   setLoading: (isLoading: boolean) => void,
   setLocation: (location: string) => void,
   setErrorMessage: (location: string) => void,
-) =>
-  useMutation(
-    (request: PlaceOrderQueryRequest) => doPlaceOrder(apiClient, request),
+) => {
+  const boclipsClient = useBoclipsClient();
+
+  return useMutation(
+    (request: PlaceOrderQueryRequest) => doPlaceOrder(boclipsClient, request),
     {
       onSuccess: (orderLocation: string) => {
         setLocation(orderLocation);
@@ -51,6 +52,7 @@ export const usePlaceOrderQuery = (
       },
     },
   );
+};
 
 export interface PlaceOrderQueryRequest {
   cart: Cart;
@@ -58,21 +60,30 @@ export interface PlaceOrderQueryRequest {
 }
 
 export const useGetOrdersQuery = (
-  apiClient: BoclipsClient,
   ordersQuery: OrdersQuery,
   setErrorMessage: (location: string) => void,
-) =>
-  useQuery(['orders', ordersQuery], () => getOrders(apiClient, ordersQuery), {
-    onError: (error) => {
-      setErrorMessage(JSON.stringify(error));
+) => {
+  const boclipsClient = useBoclipsClient();
+
+  return useQuery(
+    ['orders', ordersQuery],
+    () => getOrders(boclipsClient, ordersQuery),
+    {
+      onError: (error) => {
+        setErrorMessage(JSON.stringify(error));
+      },
     },
-  });
+  );
+};
 
 const getCachedOrders = () => {
   return ourQueryCache.getQueryData('orders') as Order[];
 };
 
-export const useFindOrder = (apiClient, orderId: string) =>
-  useQuery(['order', orderId], () => getOrder(apiClient, orderId), {
+export const useFindOrder = (orderId: string) => {
+  const boclipsClient = useBoclipsClient();
+
+  return useQuery(['order', orderId], () => getOrder(boclipsClient, orderId), {
     initialData: () => getCachedOrders()?.find((d) => d.id === orderId),
   });
+};

@@ -3,7 +3,6 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 
 describe('HomeView', () => {
@@ -26,8 +25,8 @@ describe('HomeView', () => {
   });
 
   describe('Navigating to search', () => {
-    beforeEach(async () => {
-      const fakeVideosClient = (await FakeApiClient).videos;
+    beforeEach(() => {
+      const fakeVideosClient = fakeClient.videos;
       fakeVideosClient.insertVideo(
         VideoFactory.sample({
           title: 'elephants',

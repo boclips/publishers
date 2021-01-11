@@ -10,77 +10,44 @@ import App from 'src/App';
 import React from 'react';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
-import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
-import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/client/FakeCartsClient';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
-import { FakeUsersClient } from 'boclips-api-client/dist/sub-clients/users/client/FakeUsersClient';
 import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
-import { FakeOrdersClient } from 'boclips-api-client/dist/sub-clients/orders/client/FakeOrdersClient';
 import { BoclipsApiErrorFactory } from 'boclips-api-client/dist/test-support/BoclipsApiErrorFactory';
 
 describe('CartView', () => {
-  let videosClient: FakeVideosClient = null;
-  let cartClient: FakeCartsClient = null;
-  let usersClient: FakeUsersClient = null;
-  let ordersClient: FakeOrdersClient = null;
-  let fakeClient: FakeBoclipsClient = null;
-
   const video = VideoFactory.sample({
     id: 'video-id',
     title: 'news video',
     types: [{ name: 'NEWS', id: 2 }],
   });
 
-  beforeEach(async () => {
-    fakeClient = new FakeBoclipsClient();
-    videosClient = (await FakeApiClient).videos;
-    cartClient = (await FakeApiClient).carts;
-    usersClient = (await FakeApiClient).users;
-    ordersClient = (await FakeApiClient).orders;
-
-    videosClient.clear();
-    cartClient.clear();
-    usersClient.clear();
-    ordersClient.clear();
-  });
-
   it('when no items in cart, displays empty cart view', async () => {
-    const wrapper = renderCartView();
+    const wrapper = renderCartView(new FakeBoclipsClient());
 
-    await waitFor(async () => {
-      expect(
-        await wrapper.findByText('There are no items in your shopping cart'),
-      ).toBeInTheDocument();
-    });
+    expect(
+      await wrapper.findByText('There are no items in your shopping cart'),
+    ).toBeInTheDocument();
   });
 
   it('when videos in cart, displays video player with title and additional services ', async () => {
-    videosClient.insertVideo(video);
-    cartClient.insertCartItem('video-id');
+    const client = new FakeBoclipsClient();
+    client.videos.insertVideo(video);
+    client.carts.insertCartItem('video-id');
 
-    const wrapper = renderCartView();
+    const wrapper = renderCartView(client);
 
-    await waitFor(
-      async () => {
-        expect(await wrapper.findByText('Shopping cart')).toBeInTheDocument();
-        expect(await wrapper.findByText('(1 item)')).toBeInTheDocument();
-        expect(await wrapper.findByText('news video')).toBeInTheDocument();
-        expect(
-          await wrapper.findByText('Additional services'),
-        ).toBeInTheDocument();
-        expect(await wrapper.findByText('Trim video')).toBeInTheDocument();
-      },
-      {
-        timeout: 5000,
-      },
-    );
+    expect(await wrapper.findByText('Shopping cart')).toBeInTheDocument();
+    expect(await wrapper.findByText('(1 item)')).toBeInTheDocument();
+    expect(await wrapper.findByText('news video')).toBeInTheDocument();
+    expect(await wrapper.findByText('Additional services')).toBeInTheDocument();
+    expect(await wrapper.findByText('Trim video')).toBeInTheDocument();
   });
 
   it(`displays order confirmation when place order button clicked`, async () => {
-    videosClient.insertVideo(video);
-    cartClient.insertCartItem('video-id');
+    const client = new FakeBoclipsClient();
+    client.videos.insertVideo(video);
+    client.carts.insertCartItem('video-id');
 
-    const wrapper = renderCartView();
+    const wrapper = renderCartView(client);
 
     wrapper
       .findByText('Place an order')
@@ -93,18 +60,23 @@ describe('CartView', () => {
   });
 
   it(`places order when confirmation button is clicked`, async () => {
-    usersClient.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
-    videosClient.insertVideo(video);
-    cartClient.insertCartItem('video-id');
+    const fakeClient = new FakeBoclipsClient();
+    fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
+    fakeClient.videos.insertVideo(video);
+    fakeClient.carts.insertCartItem('video-id');
 
-    const wrapper = renderCartView();
+    console.log(fakeClient.carts);
+
+    const wrapper = renderCartView(fakeClient);
     await placeAndConfirmOrder(wrapper);
 
     expect(await wrapper.findByText('Loading')).toBeVisible();
 
     const confirmation = await wrapper.findByTestId('order-confirmed');
-    expect(await ordersClient.getAll()).toHaveLength(1);
-    const placedOrder = await ordersClient.getAll().then((orders) => orders[0]);
+    expect(await fakeClient.orders.getAll()).toHaveLength(1);
+    const placedOrder = await fakeClient.orders
+      .getAll()
+      .then((orders) => orders[0]);
 
     expect(
       within(confirmation).getByText('Your order is confirmed'),
@@ -120,21 +92,23 @@ describe('CartView', () => {
   });
 
   it(`displays error page when error while placing order`, async () => {
-    usersClient.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
-    videosClient.insertVideo(video);
-    cartClient.insertCartItem('video-id');
-    ordersClient.rejectNextPlaceOrder(
+    const client = new FakeBoclipsClient();
+    client.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
+    client.videos.insertVideo(video);
+    client.carts.insertCartItem('video-id');
+    client.orders.rejectNextPlaceOrder(
       BoclipsApiErrorFactory.sample({ message: 'channel is missing price' }),
     );
 
-    const wrapper = renderCartView();
+    console.log(client.users);
+    const wrapper = renderCartView(client);
     await placeAndConfirmOrder(wrapper);
 
     expect(await wrapper.findByText('Did not work dude!')).toBeVisible();
     expect(wrapper.getByText(/channel is missing price/)).toBeVisible();
   });
 
-  function renderCartView() {
+  function renderCartView(fakeClient) {
     return render(
       <MemoryRouter initialEntries={['/cart']}>
         <App apiClient={fakeClient} />
@@ -148,11 +122,10 @@ describe('CartView', () => {
 
     const modal = await wrapper.findByTestId('order-modal');
 
-    await waitFor(async () =>
-      expect(
-        within(modal).getByText('Confirm order').closest('button'),
-      ).not.toBeDisabled(),
-    );
+    await waitFor(async () => {
+      const confirmOrder = await within(modal).findByText('Confirm order');
+      return expect(confirmOrder.closest('button')).not.toBeDisabled();
+    });
 
     await within(modal)
       .findByText('Confirm order')
