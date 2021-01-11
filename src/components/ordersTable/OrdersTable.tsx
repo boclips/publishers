@@ -8,10 +8,11 @@ import { ErrorMessage } from 'src/components/common/ErrorMessage';
 
 export const PAGE_SIZE = 10;
 
-export const OrdersTable = () => {
+export const OrdersTable = (apiClient) => {
   const [page, setPage] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string>(null);
   const { isLoading, isError, data } = useGetOrdersQuery(
+    apiClient,
     {
       page: page || 0,
       size: PAGE_SIZE,
@@ -26,13 +27,13 @@ export const OrdersTable = () => {
 
   return (
     <div className="col-start-2 col-end-26 row-start-2 row-end-4">
-      <div className="font-bold text-lg">Your Orders</div>
+      <div className="text-lg font-bold">Your Orders</div>
       {isError ? (
         <ErrorMessage errorMessage={errorMessage} />
       ) : (
         <>
           {isLoading ? (
-            <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 h-auto rounded-lg">
+            <div className="h-auto rounded-lg grid-cols-24 row-span-3 col-start-2 col-end-26">
               <Loading />
             </div>
           ) : (

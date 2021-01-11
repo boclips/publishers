@@ -6,21 +6,24 @@ import {
   OrderItemFactory,
   OrdersFactory,
 } from 'boclips-api-client/dist/test-support';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import { FakeOrdersClient } from 'boclips-api-client/dist/sub-clients/orders/client/FakeOrdersClient';
 import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { Link } from 'boclips-api-client/dist/types';
 import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 
 describe('order table', () => {
+  let fakeClient: FakeBoclipsClient = null;
   let ordersClient: FakeOrdersClient = null;
   let videosClient: FakeVideosClient = null;
 
-  beforeEach(async () => {
-    ordersClient = (await FakeApiClient).orders;
-    videosClient = (await FakeApiClient).videos;
+  beforeEach(() => {
+    fakeClient = new FakeBoclipsClient();
+    ordersClient = fakeClient.orders;
+    videosClient = fakeClient.videos;
   });
+
   it('renders the order header with an id that matches query', async () => {
     const orders = [
       OrdersFactory.sample({ id: 'not-the-id' }),
@@ -33,7 +36,7 @@ describe('order table', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/i-am-the-id']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -86,7 +89,7 @@ describe('order table', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/i-am-the-id']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 

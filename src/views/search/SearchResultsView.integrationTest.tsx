@@ -2,7 +2,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import App from 'src/App';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
@@ -14,15 +14,17 @@ import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/clien
 import Navbar from 'src/components/layout/Navbar';
 
 describe('SearchResults', () => {
+  let fakeClient: FakeBoclipsClient = null;
   let videosClient: FakeVideosClient = null;
   let cartClient: FakeCartsClient = null;
 
   beforeEach(async () => {
-    videosClient = (await FakeApiClient).videos;
-    cartClient = (await FakeApiClient).carts;
+    fakeClient = new FakeBoclipsClient();
+    videosClient = fakeClient.videos;
+    cartClient = fakeClient.carts;
   });
 
-  it('renders a list of videos that match the search query', async () => {
+  fit('renders a list of videos that match the search query', async () => {
     const videos = [
       VideoFactory.sample({ id: '1', title: '1' }),
       VideoFactory.sample({
@@ -50,7 +52,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=hello']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -75,7 +77,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=art']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -113,7 +115,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=dogs']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -145,7 +147,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -175,7 +177,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -215,7 +217,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -278,7 +280,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video&video_type=STOCK']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -306,7 +308,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -357,7 +359,7 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -393,7 +395,7 @@ describe('SearchResults', () => {
       );
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -417,7 +419,7 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -447,7 +449,7 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -465,7 +467,7 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=vid']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 

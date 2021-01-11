@@ -2,12 +2,19 @@ import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import SearchHero from './SearchHero';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 
 describe('SearchBar', () => {
+  let fakeClient: FakeBoclipsClient = null;
+
+  beforeEach(() => {
+    fakeClient = new FakeBoclipsClient();
+  });
+
   it('renders a search input and a button', () => {
     const wrapper = render(
       <MemoryRouter>
-        <SearchHero />
+        <SearchHero apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -23,7 +30,7 @@ describe('SearchBar', () => {
   it('can take user input', () => {
     const wrapper = render(
       <MemoryRouter>
-        <SearchHero />
+        <SearchHero apiClient={fakeClient} />
       </MemoryRouter>,
     );
 

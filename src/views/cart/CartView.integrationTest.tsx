@@ -9,6 +9,7 @@ import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
 import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/client/FakeCartsClient';
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
@@ -22,6 +23,7 @@ describe('CartView', () => {
   let cartClient: FakeCartsClient = null;
   let usersClient: FakeUsersClient = null;
   let ordersClient: FakeOrdersClient = null;
+  let fakeClient: FakeBoclipsClient = null;
 
   const video = VideoFactory.sample({
     id: 'video-id',
@@ -30,6 +32,7 @@ describe('CartView', () => {
   });
 
   beforeEach(async () => {
+    fakeClient = new FakeBoclipsClient();
     videosClient = (await FakeApiClient).videos;
     cartClient = (await FakeApiClient).carts;
     usersClient = (await FakeApiClient).users;
@@ -134,7 +137,7 @@ describe('CartView', () => {
   function renderCartView() {
     return render(
       <MemoryRouter initialEntries={['/cart']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
   }

@@ -12,6 +12,7 @@ class ApiClient {
   }
 
   public get = (): Promise<BoclipsClient> => {
+    throw new Error('Used the wrapper!');
     if (!this.client) {
       throw new Error('ApiClient not set yet');
     }

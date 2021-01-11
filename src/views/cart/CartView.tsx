@@ -14,7 +14,7 @@ import { ErrorMessage } from 'src/components/common/ErrorMessage';
 import { useHistory } from 'react-router-dom';
 import Button from '@boclips-ui/button';
 
-const CartView = () => {
+const CartView = ({apiClient}) => {
   const history = useHistory();
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
   const { data: user, isLoading: isUserLoading } = useGetUserQuery();
@@ -23,6 +23,7 @@ const CartView = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const cache = useQueryCache();
   const [mutate] = usePlaceOrderQuery(
+    apiClient,
     cache,
     setLoading,
     setOrderLocation,
@@ -43,7 +44,7 @@ const CartView = () => {
   const cartToDisplay = () => {
     if (loading) {
       return (
-        <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 h-auto rounded-lg">
+        <div className="h-auto rounded-lg grid-cols-24 row-span-3 col-start-2 col-end-26">
           <Loading />
         </div>
       );
@@ -51,7 +52,7 @@ const CartView = () => {
 
     if (errorMessage) {
       return (
-        <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg">
+        <div className="h-auto rounded-lg grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light">
           <ErrorMessage errorMessage={errorMessage} />
         </div>
       );
@@ -65,21 +66,21 @@ const CartView = () => {
       return (
         <>
           <div className="grid col-start-2 col-end-21 grid-row-start-2 grid-row-end-2 grid-cols-12 gap-8">
-            <div className="col-start-1 col-end-21 flex flex-row">
+            <div className="flex flex-row col-start-1 col-end-21">
               <h2 className="font-bold">Shopping cart</h2>
-              <span className="text-3xl pl-3">
+              <span className="pl-3 text-3xl">
                 ({cart.items.length} item{cart.items.length > 1 ? 's' : ''})
               </span>
             </div>
           </div>
-          <div className="col-start-2 col-end-20 pt-4 font-medium">
+          <div className="pt-4 font-medium col-start-2 col-end-20">
             <div className="pt-4 font-medium col-start-2 col-span-10">
               {videos.map((item) => (
                 <CartItem videoItem={item} key={item.id} />
               ))}
             </div>
           </div>
-          <div className="col-start-20 col-end-26 border-blue-500 border-2 h-32 p-5 w-full justify-end flex flex-col  rounded">
+          <div className="flex flex-col justify-end w-full h-32 p-5 border-2 border-blue-500 rounded col-start-20 col-end-26">
             <Button
               onClick={() => setModalOpen(!modalOpen)}
               type="primary"

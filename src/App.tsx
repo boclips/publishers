@@ -1,19 +1,11 @@
-import axios from 'axios';
-
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { ApiBoclipsClient } from 'boclips-api-client';
 import { ReactQueryDevtools } from 'react-query-devtools';
 import { Loading } from 'src/components/common/Loading';
 import { hot } from 'react-hot-loader/root';
 import { ReactQueryCacheProvider } from 'react-query';
-import { ApiClientWrapper } from './services/apiClientWrapper';
-import { Constants } from './AppConstants';
 import { ourQueryCache } from './hooks/api/queryCache';
-
-export const setupClient = () => {
-  ApiClientWrapper.set(ApiBoclipsClient.create(axios, Constants.API_PREFIX));
-};
+import { BoclipsClient } from 'boclips-api-client'
 
 const SearchResultsView = lazy(
   () => import('./views/search/SearchResultsView'),
@@ -30,35 +22,35 @@ const OrderConfirmationView = lazy(
   () => import('src/views/orders/orderConfirmation/OrderConfirmationView'),
 );
 
-const App = () => {
-  useEffect(() => {
-    setupClient();
-  }, []);
+interface AppOptions {
+  apiClient: BoclipsClient
+}
 
+const App = (props: AppOptions) => {
   return (
     <>
       <Switch>
         <ReactQueryCacheProvider queryCache={ourQueryCache}>
           <Suspense fallback={<Loading />}>
             <Route exact path="/">
-              <HomeView />
+              <HomeView apiClient={props.apiClient} />
             </Route>
             <Route exact path="/videos">
-              <SearchResultsView />
+              <SearchResultsView apiClient={props.apiClient} />
             </Route>
             <Route exact path="/cart">
-              <CartView />
+              <CartView apiClient={props.apiClient} />
             </Route>
             <Route exact path="/orders">
-              <OrdersView />
+              <OrdersView apiClient={props.apiClient} />
             </Route>
             <Route exact path="/orders/:id">
-              <OrderView />
+              <OrderView apiClient={props.apiClient} />
             </Route>
             <Route
               path="/order-confirmed"
               render={({ location }) => (
-                <OrderConfirmationView state={location?.state} />
+                <OrderConfirmationView state={location?.state} apiClient={props.apiClient} />
               )}
             />
           </Suspense>

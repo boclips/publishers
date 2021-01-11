@@ -4,12 +4,19 @@ import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 
 describe('HomeView', () => {
+  let fakeClient: FakeBoclipsClient = null;
+
+  beforeEach(() => {
+    fakeClient = new FakeBoclipsClient();
+  });
+
   it('loads the home view text', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -32,7 +39,7 @@ describe('HomeView', () => {
     it('goes to the search results page on enter', async () => {
       const wrapper = render(
         <MemoryRouter initialEntries={['/']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -49,7 +56,7 @@ describe('HomeView', () => {
     it('goes to the search results page when clicking button', async () => {
       const wrapper = render(
         <MemoryRouter initialEntries={['/']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 

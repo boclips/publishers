@@ -12,11 +12,12 @@ import { FilterKeys } from 'src/types/search/FilterKeys';
 
 export const PAGE_SIZE = 10;
 
-const SearchResultsView = () => {
+const SearchResultsView = ({apiClient}) => {
   const [searchLocation, setSearchLocation] = useSearchQueryLocationParams();
   const { query, page: currentPage, filters } = searchLocation;
 
   const { resolvedData, isError, error, isLoading } = useSearchQuery({
+    apiClient,
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
@@ -26,6 +27,7 @@ const SearchResultsView = () => {
   useEffect(() => {
     // Prefetch the next page of data
     prefetchSearchQuery({
+      apiClient,
       query,
       pageSize: PAGE_SIZE,
       page: currentPage,

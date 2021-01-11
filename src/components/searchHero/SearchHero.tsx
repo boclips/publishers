@@ -6,13 +6,13 @@ import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
 import c from 'classnames';
 import s from './style.module.less';
 
-const SearchHero = () => {
+const SearchHero = ({apiClient}) => {
   return (
-    <main className="col-start-2 col-end-26 row-start-2 row-end-2 bg-primary-light h-full rounded-lg">
+    <main className="h-full rounded-lg col-start-2 col-end-26 row-start-2 row-end-2 bg-primary-light">
       <section
         className={c(s.heroContainer, 'grid grid-cols-content gap-8  h-full')}
       >
-        <div className="col-start-3 col-end-15 self-center lg:col-start-4 lg:col-end-16">
+        <div className="self-center col-start-3 col-end-15 lg:col-start-4 lg:col-end-16">
           <h1 className="mb-8 text-4xl font-medium">
             What videos do you need today?
           </h1>
@@ -20,11 +20,11 @@ const SearchHero = () => {
             size="big"
             showIconOnly={false}
             onSearch={(query) =>
-              prefetchSearchQuery({ query, page: 0, pageSize: PAGE_SIZE })
+              prefetchSearchQuery({ apiClient, query, page: 0, pageSize: PAGE_SIZE })
             }
           />
         </div>
-        <div className="col-start-16 col-end-24 self-center justify-self-start">
+        <div className="self-center col-start-16 col-end-24 justify-self-start">
           <div className={c(s.svgContainer)}>
             <HomeImageSVG />
           </div>
