@@ -1,4 +1,5 @@
 node_modules
 dist
+fly-dist
 webpack-config
 ts-compiler-dump.*
