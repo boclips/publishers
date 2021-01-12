@@ -32,8 +32,8 @@ describe('Video View', () => {
       releasedOn: new Date('2015-12-17'),
       createdBy: 'cool videos r us',
       price: {
-        currency: '$',
-        amount: 600,
+        currency: 'USD',
+        amount: 600.5,
         displayValue: '$600',
       },
     });
@@ -52,6 +52,7 @@ describe('Video View', () => {
     ).toBeVisible();
     expect(await wrapper.findByText('this is so cool')).toBeVisible();
     expect(await wrapper.findByText('Ages 10-14')).toBeVisible();
+    expect(await wrapper.findByText('$600.50')).toBeVisible();
     expect(await wrapper.findByText('history')).toBeVisible();
     expect(await wrapper.findByText('cool videos r us')).toBeVisible();
     expect(
