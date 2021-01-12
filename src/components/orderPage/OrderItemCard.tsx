@@ -1,6 +1,7 @@
 import { OrderItem } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
 import React from 'react';
+import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 
 interface Props {
   item: OrderItem;
@@ -22,7 +23,12 @@ export const OrderItemCard = ({ item }: Props) => {
               <div className="font-medium">{item?.video?.title}</div>
               <div>ID: {item?.video?.id}</div>
             </div>
-            <div>{video[0].price.displayValue}</div>
+            <div>
+              {createPriceDisplayValue(
+                video[0]?.price?.amount,
+                video[0]?.price?.currency,
+              )}
+            </div>
           </div>
         </>
       )}

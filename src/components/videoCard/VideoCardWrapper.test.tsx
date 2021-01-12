@@ -29,7 +29,6 @@ describe('Video card', () => {
       price: {
         amount: 100,
         currency: 'USD',
-        displayValue: '$ 100',
       },
     });
 
@@ -45,6 +44,6 @@ describe('Video card', () => {
     expect(wrapper.getByText('by BFI')).toBeVisible();
     expect(wrapper.getByText('geography')).toBeVisible();
     expect(wrapper.getByText('Ages 7-9')).toBeVisible();
-    expect(wrapper.getByText('$ 100')).toBeVisible();
+    expect(wrapper.getByText('$100')).toBeVisible();
   });
 });

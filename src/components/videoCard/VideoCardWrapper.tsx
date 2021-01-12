@@ -6,6 +6,7 @@ import { VideoCardV2 } from '@boclips-ui/video-card-v2';
 import { PriceBadge } from 'src/components/videoCard/PriceBadge';
 import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
 import { Link } from 'react-router-dom';
+import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import s from './VideoCardWrapper.module.less';
 
 interface Props {
@@ -20,7 +21,14 @@ export const VideoCardWrapper = ({ video }: Props) => {
         video={convertVideoFromApi(video)}
         videoPlayer={<VideoPlayer video={video} />}
         border="bottom"
-        topBadge={<PriceBadge price={video.price?.displayValue} />}
+        topBadge={
+          <PriceBadge
+            price={createPriceDisplayValue(
+              video.price?.amount,
+              video.price?.currency,
+            )}
+          />
+        }
         title={
           <Link
             className="no-underline text-black hover:text-black"

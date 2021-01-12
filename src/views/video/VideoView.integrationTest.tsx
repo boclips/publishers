@@ -34,7 +34,6 @@ describe('Video View', () => {
       price: {
         currency: 'USD',
         amount: 600,
-        displayValue: '$600',
       },
     });
 

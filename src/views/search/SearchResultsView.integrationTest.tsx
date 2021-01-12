@@ -20,6 +20,9 @@ describe('SearchResults', () => {
   beforeEach(async () => {
     videosClient = (await FakeApiClient).videos;
     cartClient = (await FakeApiClient).carts;
+
+    videosClient.clear();
+    cartClient.clear();
   });
 
   it('renders a list of videos that match the search query', async () => {

@@ -51,7 +51,6 @@ describe('order table', () => {
     const video = VideoFactory.sample({
       id: 'video-id-1',
       price: {
-        displayValue: '$600',
         currency: 'USD',
         amount: 600,
       },
