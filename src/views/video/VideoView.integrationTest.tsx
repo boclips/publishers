@@ -32,7 +32,7 @@ describe('Video View', () => {
       releasedOn: new Date('2015-12-17'),
       createdBy: 'cool videos r us',
       price: {
-        currency: '$',
+        currency: 'USD',
         amount: 600,
         displayValue: '$600',
       },

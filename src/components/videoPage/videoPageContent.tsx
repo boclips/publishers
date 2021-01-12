@@ -5,6 +5,7 @@ import SubjectBadge from '@boclips-ui/subject-badge';
 import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 import React from 'react';
 import dateFormat from 'dateformat';
+import { createPriceDisplayValue } from '../../services/createPriceDisplayValue';
 
 interface Props {
   video: Video;
@@ -41,7 +42,9 @@ export const VideoHeader = ({ video }: Props) => {
         )} by`}</div>
         <div className="font-medium ml-1">{video?.createdBy}</div>
       </div>
-      <div className="font-medium text-2xl">{video?.price?.displayValue}</div>
+      <div className="font-medium text-2xl">
+        {createPriceDisplayValue(video?.price?.amount, video?.price?.currency)}
+      </div>
       <AddToCartButton videoId={video?.id} />
     </div>
   );
