@@ -26,6 +26,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
             price={createPriceDisplayValue(
               video.price?.amount,
               video.price?.currency,
+              navigator.language,
             )}
           />
         }

@@ -27,6 +27,7 @@ export const OrderItemCard = ({ item }: Props) => {
               {createPriceDisplayValue(
                 video[0]?.price?.amount,
                 video[0]?.price?.currency,
+                navigator.language,
               )}
             </div>
           </div>

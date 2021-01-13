@@ -43,7 +43,11 @@ export const VideoHeader = ({ video }: Props) => {
         <div className="font-medium ml-1">{video?.createdBy}</div>
       </div>
       <div className="font-medium text-2xl">
-        {createPriceDisplayValue(video?.price?.amount, video?.price?.currency)}
+        {createPriceDisplayValue(
+          video?.price?.amount,
+          video?.price?.currency,
+          navigator.language,
+        )}
       </div>
       <AddToCartButton videoId={video?.id} />
     </div>
