@@ -547,7 +547,7 @@ describe('SearchResults', () => {
       fireEvent.click(await wrapper.findByText('news video'));
 
       await waitFor(() => {
-        expect(wrapper.getByText('Back to search results')).toBeVisible();
+        expect(wrapper.getByTestId('video-page')).toBeVisible();
       });
     });
   });

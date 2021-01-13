@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -56,27 +56,5 @@ describe('Video View', () => {
     expect(
       await wrapper.findByText('Released on Dec 17, 2015 by'),
     ).toBeVisible();
-  });
-
-  it(`directs to video results page when back to search results is clicked`, async () => {
-    const video = VideoFactory.sample({
-      id: 'video-id',
-      title: 'news video',
-      types: [{ name: 'NEWS', id: 2 }],
-    });
-
-    videosClient.insertVideo(video);
-
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/videos/video-id']}>
-        <App />
-      </MemoryRouter>,
-    );
-
-    fireEvent.click(await wrapper.findByText('Back to search results'));
-
-    waitFor(async () => {
-      expect(await wrapper.findByTestId('video-card-wrapper')).toBeVisible();
-    });
   });
 });
