@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from 'src/components/layout/Navbar';
 import Footer from 'src/components/layout/Footer';
 import { useHistory } from 'react-router-dom';
@@ -11,9 +11,14 @@ interface OrderConfirmedInterface {
 const OrderConfirmationView = ({ state }: OrderConfirmedInterface) => {
   const history = useHistory();
 
+  useEffect(() => {
+    if (!state || !state.orderLocation) {
+      history.push('/');
+    }
+  }, [state, history]);
+
   if (!state || !state.orderLocation) {
-    history.push('/');
-    return null;
+    return <div />;
   }
 
   const orderId = state.orderLocation.substring(

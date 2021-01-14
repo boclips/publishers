@@ -2,11 +2,11 @@ import '@testing-library/jest-dom/extend-expect';
 import * as ReactTestingLibrary from '@testing-library/react';
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 
-const jestTimeout = 5000;
+const jestTimeout = 7000;
 
 ReactTestingLibrary.configure({
   testIdAttribute: 'data-qa',
-  asyncUtilTimeout: jestTimeout - 1000,
+  asyncUtilTimeout: jestTimeout - 2000,
 });
 
 jest.setTimeout(jestTimeout);
