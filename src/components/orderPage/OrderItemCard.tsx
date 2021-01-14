@@ -6,8 +6,9 @@ import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 interface Props {
   item: OrderItem;
 }
+
 export const OrderItemCard = ({ item }: Props) => {
-  const { data: video } = useGetVideosQuery(item.video.id);
+  const { data: video } = useGetVideosQuery([item.video.id]);
 
   return (
     <div className="flex flex-row mb-4 pb-4 border-b-2">

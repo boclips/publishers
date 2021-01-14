@@ -1,34 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
 import Navbar from 'src/components/layout/Navbar';
 import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
 import { Loading } from 'src/components/common/Loading';
 import Footer from 'src/components/layout/Footer';
 import { EmptyCart } from 'src/components/cart/EmptyCart';
-import CartItem from 'src/components/cart/CartItem';
-import { OrderModal } from 'src/components/orderModal/OrderModal';
-import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
-import { useQueryCache } from 'react-query';
 import { ErrorMessage } from 'src/components/common/ErrorMessage';
 import { useHistory } from 'react-router-dom';
-import Button from '@boclips-ui/button';
+import { Cart } from 'src/components/cart/Cart';
 
 const CartView = () => {
   const history = useHistory();
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
-  const { data: user, isLoading: isUserLoading } = useGetUserQuery();
-  const [orderLocation, setOrderLocation] = useState<string>(null);
   const [errorMessage, setErrorMessage] = useState<string>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const cache = useQueryCache();
-  const [mutate] = usePlaceOrderQuery(
-    cache,
-    setLoading,
-    setOrderLocation,
-    setErrorMessage,
-  );
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [newOrderLocation, setNewOrderLocation] = useState<string>();
+
   const itemsInCart = cart?.items?.length > 0;
   const videoIds = cart?.items?.map((it) => it.videoId);
 
@@ -36,9 +24,24 @@ const CartView = () => {
     videoIds,
   );
 
-  const placeOrder = () => {
+  const [mutate] = usePlaceOrderQuery(
+    setLoading,
+    setNewOrderLocation,
+    setErrorMessage,
+  );
+
+  const placeOrder = (user) => {
     mutate({ cart, user });
   };
+
+  useEffect(() => {
+    if (newOrderLocation) {
+      history.push(
+        { pathname: '/order-confirmed' },
+        { orderLocation: newOrderLocation },
+      );
+    }
+  }, [newOrderLocation, history]);
 
   const cartToDisplay = () => {
     if (loading) {
@@ -57,48 +60,10 @@ const CartView = () => {
       );
     }
 
-    if (orderLocation) {
-      return history.push({ pathname: '/order-confirmed' }, { orderLocation });
+    if (itemsInCart && videos) {
+      return <Cart cart={cart} videos={videos} onPlaceOrder={placeOrder} />;
     }
 
-    if (itemsInCart && videos) {
-      return (
-        <>
-          <div className="grid col-start-2 col-end-21 grid-row-start-2 grid-row-end-2 grid-cols-12 gap-8">
-            <div className="col-start-1 col-end-21 flex flex-row">
-              <h2 className="font-bold">Shopping cart</h2>
-              <span className="text-3xl pl-3">
-                ({cart.items.length} item{cart.items.length > 1 ? 's' : ''})
-              </span>
-            </div>
-          </div>
-          <div className="col-start-2 col-end-20 pt-4 font-medium">
-            <div className="pt-4 font-medium col-start-2 col-span-10">
-              {videos.map((item) => (
-                <CartItem videoItem={item} key={item.id} />
-              ))}
-            </div>
-          </div>
-          <div className="col-start-20 col-end-26 border-blue-500 border-2 h-32 p-5 w-full justify-end flex flex-col  rounded">
-            <Button
-              onClick={() => setModalOpen(!modalOpen)}
-              type="primary"
-              theme="publishers"
-              text="Place an order"
-              height="44px"
-              width="100%"
-            />
-          </div>
-          <OrderModal
-            setOpen={setModalOpen}
-            modalOpen={modalOpen}
-            videos={videos}
-            placeOrder={placeOrder}
-            confirmDisabled={isUserLoading || !user}
-          />
-        </>
-      );
-    }
     return <EmptyCart />;
   };
 

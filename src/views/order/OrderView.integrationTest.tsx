@@ -24,6 +24,7 @@ describe('order table', () => {
     ordersClient.clear();
     videosClient.clear();
   });
+
   it('renders the order header with an id that matches query', async () => {
     const orders = [
       OrdersFactory.sample({ id: 'not-the-id' }),
