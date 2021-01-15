@@ -1,15 +1,11 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { render } from 'src/testSupport/render';
 import SearchHero from './SearchHero';
 
-describe('SearchBar', () => {
+describe('SearchHero', () => {
   it('renders a search input and a button', () => {
-    const wrapper = render(
-      <MemoryRouter>
-        <SearchHero />
-      </MemoryRouter>,
-    );
+    const wrapper = render(<SearchHero />);
 
     expect(
       wrapper.getByRole('button', { name: /search/i }),
@@ -21,11 +17,7 @@ describe('SearchBar', () => {
   });
 
   it('can take user input', () => {
-    const wrapper = render(
-      <MemoryRouter>
-        <SearchHero />
-      </MemoryRouter>,
-    );
+    const wrapper = render(<SearchHero />);
 
     const searchBar = wrapper.getByRole('combobox', {
       name: /search/i,

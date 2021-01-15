@@ -12,6 +12,8 @@ import {
 } from 'boclips-api-client/dist/test-support/FacetsFactory';
 import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/client/FakeCartsClient';
 import Navbar from 'src/components/layout/Navbar';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 
 describe('SearchResults', () => {
   let videosClient: FakeVideosClient = null;
@@ -313,7 +315,7 @@ describe('SearchResults', () => {
       </MemoryRouter>,
     );
 
-    fireEvent.click(wrapper.getByTestId('NEWS-checkbox'));
+    fireEvent.click(await wrapper.findByTestId('NEWS-checkbox'));
     expect(wrapper.getByTestId('NEWS-checkbox')).toHaveProperty(
       'checked',
       true,
@@ -516,7 +518,9 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=vid']}>
-          <Navbar />
+          <QueryClientProvider client={new QueryClient(queryClientConfig)}>
+            <Navbar />
+          </QueryClientProvider>
         </MemoryRouter>,
       );
 

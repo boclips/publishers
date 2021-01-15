@@ -1,6 +1,7 @@
-import { useQuery } from 'react-query';
+import { QueryClient, useQuery } from 'react-query';
 import { ApiClientWrapper } from 'src/services/apiClientWrapper';
-import { getCachedData } from 'src/hooks/api/orderQuery';
+import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
+import Pageable from 'boclips-api-client/dist/sub-clients/common/model/Pageable';
 
 export const doGetVideos = (videoIds: string[]) => {
   return ApiClientWrapper.get()
@@ -23,8 +24,12 @@ export const useGetVideosQuery = (videoIds: string[]) => {
   });
 };
 
-export const useFindOrGetVideo = (videoId: string) => {
+export const useFindOrGetVideo = (
+  queryClient: QueryClient,
+  videoId: string,
+) => {
+  const cachedVideos = queryClient.getQueryData<Pageable<Video>>('videos');
   return useQuery(['videos', videoId], () => doGetVideo(videoId), {
-    initialData: () => getCachedData('videos')?.find((v) => v.id === videoId),
+    initialData: () => cachedVideos?.page.find((v) => v.id === videoId),
   });
 };

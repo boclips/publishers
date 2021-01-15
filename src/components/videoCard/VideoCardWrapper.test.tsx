@@ -1,9 +1,8 @@
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
-import { render } from '@testing-library/react';
 import React from 'react';
 import { VideoCardWrapper } from 'src/components/videoCard/VideoCardWrapper';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
-import { MemoryRouter } from 'react-router-dom';
+import { render } from 'src/testSupport/render';
 
 describe('Video card', () => {
   it('displays all the given information on a video card', () => {
@@ -32,11 +31,7 @@ describe('Video card', () => {
       },
     });
 
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/']}>
-        <VideoCardWrapper video={video} />
-      </MemoryRouter>,
-    );
+    const wrapper = render(<VideoCardWrapper video={video} />);
 
     expect(wrapper.getByText('hello i am a title')).toBeVisible();
     expect(wrapper.getByText('wow what a video hansen')).toBeVisible();

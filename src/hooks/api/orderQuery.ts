@@ -1,8 +1,8 @@
-import { useMutation, useQuery, useQueryCache } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { ApiClientWrapper } from 'src/services/apiClientWrapper';
 import { User } from 'boclips-api-client/dist/sub-clients/organisations/model/User';
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
-import { ourQueryCache } from 'src/hooks/api/queryCache';
+import { OrdersPage } from 'boclips-api-client/dist/sub-clients/orders/model/OrdersPage';
 
 export interface OrdersQuery {
   page: number;
@@ -35,14 +35,13 @@ export const usePlaceOrderQuery = (
   onOrderPlaced: (location: string) => void,
   setErrorMessage: (location: string) => void,
 ) => {
-  const cache = useQueryCache();
-
+  const queryClient = useQueryClient();
   return useMutation(
     (request: PlaceOrderQueryRequest) => doPlaceOrder(request),
     {
       onSuccess: (orderLocation) => {
         onOrderPlaced(orderLocation);
-        cache.setQueryData('cart', () => ({
+        queryClient.setQueryData('cart', () => ({
           items: [],
         }));
       },
@@ -72,11 +71,13 @@ export const useGetOrdersQuery = (
     },
   });
 
-export const getCachedData = (cache: string) => {
-  return ourQueryCache.getQueryData(cache) as any[];
-};
+export const useFindOrGetOrder = (orderId: string) => {
+  const queryClient = useQueryClient();
 
-export const useFindOrGetOrder = (orderId: string) =>
-  useQuery(['order', orderId], () => getOrder(orderId), {
-    initialData: () => getCachedData('orders')?.find((d) => d.id === orderId),
+  return useQuery(['order', orderId], () => getOrder(orderId), {
+    initialData: () =>
+      queryClient
+        .getQueryData<OrdersPage>('orders')
+        ?.orders.find((d) => d.id === orderId),
   });
+};

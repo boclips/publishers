@@ -1,15 +1,15 @@
 import axios from 'axios';
 
 import React, { lazy, Suspense, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { ApiBoclipsClient } from 'boclips-api-client';
-import { ReactQueryDevtools } from 'react-query-devtools';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Loading } from 'src/components/common/Loading';
 import { hot } from 'react-hot-loader/root';
-import { ReactQueryCacheProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { ApiClientWrapper } from './services/apiClientWrapper';
 import { Constants } from './AppConstants';
-import { ourQueryCache } from './hooks/api/queryCache';
 
 export const setupClient = () => {
   ApiClientWrapper.set(ApiBoclipsClient.create(axios, Constants.API_PREFIX));
@@ -40,7 +40,7 @@ const App = () => {
   return (
     <>
       <Switch>
-        <ReactQueryCacheProvider queryCache={ourQueryCache}>
+        <QueryClientProvider client={new QueryClient(queryClientConfig)}>
           <Suspense fallback={<Loading />}>
             <Route exact path="/">
               <HomeView />
@@ -68,7 +68,7 @@ const App = () => {
             />
           </Suspense>
           <ReactQueryDevtools initialIsOpen={false} />
-        </ReactQueryCacheProvider>
+        </QueryClientProvider>
       </Switch>
     </>
   );

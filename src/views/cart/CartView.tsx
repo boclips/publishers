@@ -24,7 +24,7 @@ const CartView = () => {
     videoIds,
   );
 
-  const [mutate] = usePlaceOrderQuery(
+  const { mutate } = usePlaceOrderQuery(
     setLoading,
     setNewOrderLocation,
     setErrorMessage,

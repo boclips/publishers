@@ -1,9 +1,8 @@
-import { usePaginatedQuery } from 'react-query';
+import { QueryClient, useQuery } from 'react-query';
 import { VideoSearchResults } from 'boclips-api-client/dist/sub-clients/videos/model/VideoSearchResults';
 import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { FilterKeys } from '../../types/search/FilterKeys';
 import { ApiClientWrapper } from '../../services/apiClientWrapper';
-import { ourQueryCache } from './queryCache';
 
 export interface SearchQuery {
   query: string;
@@ -33,12 +32,18 @@ const generateSearchKey = ({ query, page, pageSize, filters }: SearchQuery) => [
 ];
 
 export const useSearchQuery = (searchQuery: SearchQuery) =>
-  usePaginatedQuery<VideoSearchResults, any>(
+  useQuery<VideoSearchResults, any>(
     generateSearchKey(searchQuery),
     () => doSearch(searchQuery),
+    {
+      keepPreviousData: true,
+    },
   );
 
-export const prefetchSearchQuery = (searchQuery: SearchQuery) =>
-  ourQueryCache.prefetchQuery(generateSearchKey(searchQuery), () =>
+export const prefetchSearchQuery = (
+  queryClient: QueryClient,
+  searchQuery: SearchQuery,
+) =>
+  queryClient.prefetchQuery(generateSearchKey(searchQuery), () =>
     doSearch(searchQuery),
   );

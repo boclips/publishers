@@ -1,9 +1,9 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { fireEvent, waitFor } from '@testing-library/react';
 import Navbar from 'src/components/layout/Navbar';
 import React from 'react';
 import { FakeUsersClient } from 'boclips-api-client/dist/sub-clients/users/client/FakeUsersClient';
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
+import { render } from 'src/testSupport/render';
 
 describe('account button', () => {
   let userClient: FakeUsersClient = null;
@@ -29,11 +29,7 @@ describe('account button', () => {
 
     userClient.insertCurrentUser(user);
 
-    const navbar = render(
-      <MemoryRouter>
-        <Navbar />
-      </MemoryRouter>,
-    );
+    const navbar = render(<Navbar />);
 
     expect(navbar.getByText('Account')).toBeInTheDocument();
 

@@ -4,9 +4,11 @@ import { Search } from 'src/components/searchBar/SearchBar';
 import { prefetchSearchQuery } from 'src/hooks/api/useSearchQuery';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
 import c from 'classnames';
+import { useQueryClient } from 'react-query';
 import s from './style.module.less';
 
 const SearchHero = () => {
+  const queryClient = useQueryClient();
   return (
     <main className="col-start-2 col-end-26 row-start-2 row-end-2 bg-primary-light h-full rounded-lg">
       <section
@@ -20,7 +22,11 @@ const SearchHero = () => {
             size="big"
             showIconOnly={false}
             onSearch={(query) =>
-              prefetchSearchQuery({ query, page: 0, pageSize: PAGE_SIZE })
+              prefetchSearchQuery(queryClient, {
+                query,
+                page: 0,
+                pageSize: PAGE_SIZE,
+              })
             }
           />
         </div>

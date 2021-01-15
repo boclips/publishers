@@ -7,10 +7,12 @@ import {
 } from 'src/components/videoPage/videoPageContent';
 import { useFindOrGetVideo } from 'src/hooks/api/videoQuery';
 import { useGetIdFromLocation } from 'src/hooks/useLocationParams';
+import { useQueryClient } from 'react-query';
 
 export const VideoPage = () => {
+  const queryClient = useQueryClient();
   const videoId = useGetIdFromLocation('videos');
-  const { data, isLoading } = useFindOrGetVideo(videoId);
+  const { data, isLoading } = useFindOrGetVideo(queryClient, videoId);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useMutation, useQueryCache } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import {
   doAddToCart,
   doDeleteFromCart,
@@ -14,12 +14,12 @@ interface AddToCartButtonProps {
 }
 
 const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
-  const cache = useQueryCache();
+  const queryClient = useQueryClient();
   const { data: cart } = useCartQuery();
 
   const cartItem = cart?.items?.find((it) => it?.videoId === videoId);
 
-  const [mutateAddToCart] = useMutation(
+  const { mutate: mutateAddToCart } = useMutation(
     (id: string) => {
       if (cartItem === undefined) {
         return doAddToCart(cart as Cart, id);
@@ -28,7 +28,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
     },
     {
       onSuccess: (it) => {
-        cache.setQueryData('cart', (old: Cart) => ({
+        queryClient.setQueryData('cart', (old: Cart) => ({
           ...old,
           items: [...old.items, it],
         }));
@@ -36,7 +36,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
     },
   );
 
-  const [mutateDeleteFromCart] = useMutation(
+  const { mutate: mutateDeleteFromCart } = useMutation(
     async (id: string) => {
       if (cartItem) {
         return doDeleteFromCart(cart as Cart, id);
@@ -45,7 +45,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
     },
     {
       onSuccess: (it) => {
-        cache.setQueryData('cart', (old: Cart) => ({
+        queryClient.setQueryData('cart', (old: Cart) => ({
           ...old,
           items: [...old.items.filter((item) => item.id !== it)],
         }));
