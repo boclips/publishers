@@ -31,11 +31,8 @@ export const VideoCardWrapper = ({ video }: Props) => {
           />
         }
         title={
-          <Link
-            className="no-underline hover:text-grey-900 text-grey-900 visited:text-grey-900 active:text-grey-900"
-            to={`videos/${video.id}`}
-          >
-            {video?.title}
+          <Link to={`/videos/${video.id}`}>
+            <div className="text-grey-900">{video?.title}</div>
           </Link>
         }
         actions={[<AddToCartButton videoId={video.id} key="cart-button" />]}
