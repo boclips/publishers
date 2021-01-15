@@ -6,7 +6,7 @@ export const OrderHeader = ({ id }) => {
   return (
     <>
       <div className="flex flex-row items-end mb-4">
-        <Link to="/orders" className="text-sm mr-4 text-black">
+        <Link to="/orders" className="text-base mr-4 text-grey-800">
           Your orders
         </Link>
         <Arrow className="w-2  mr-4 self-center" />
