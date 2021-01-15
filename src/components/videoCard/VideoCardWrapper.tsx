@@ -32,7 +32,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
         }
         title={
           <Link
-            className="no-underline text-black hover:text-black"
+            className="no-underline text-grey-900 hover:text-black"
             to={`videos/${video.id}`}
           >
             {video?.title}

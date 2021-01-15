@@ -44,8 +44,8 @@ describe('order table', () => {
     const order = await wrapper.findAllByText('Order i-am-the-id');
 
     expect(order.length).toEqual(2);
-    expect(await wrapper.findByText('Your orders')).toBeVisible();
-    expect(await wrapper.queryByText('not-the-id')).not.toBeInTheDocument();
+    expect(wrapper.getByText('Your orders')).toBeVisible();
+    expect(wrapper.queryByText('not-the-id')).not.toBeInTheDocument();
   });
 
   it('renders a order with items', async () => {
