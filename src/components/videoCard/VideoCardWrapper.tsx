@@ -32,7 +32,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
         }
         title={
           <Link to={`/videos/${video.id}`}>
-            <div className="text-grey-900">{video?.title}</div>
+            <div className="text-gray-900">{video?.title}</div>
           </Link>
         }
         actions={[<AddToCartButton videoId={video.id} key="cart-button" />]}

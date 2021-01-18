@@ -34,18 +34,18 @@ export const VideoDetails = ({ video }: Props) => {
 export const VideoHeader = ({ video }: Props) => {
   return (
     <div className="w-1/3 ml-4">
-      <div className="text-lg font-medium text-grey-900 mb-2">
+      <div className="text-lg font-medium text-gray-900 mb-2">
         {video?.title}
       </div>
-      <div className="font-extralight mb-1 text-grey-700">{`ID: ${video?.id}`}</div>
-      <div className="flex flex-row mb-6 text-grey-700">
+      <div className="font-extralight mb-1 text-gray-700">{`ID: ${video?.id}`}</div>
+      <div className="flex flex-row mb-6 text-gray-700">
         <div>{`Released on ${dateFormat(
           video?.releasedOn,
           'mediumDate',
         )} by`}</div>
         <div className="font-medium ml-1">{video?.createdBy}</div>
       </div>
-      <div className="font-bold text-2xl text-grey-900">
+      <div className="font-bold text-2xl text-gray-900">
         {createPriceDisplayValue(
           video?.price?.amount,
           video?.price?.currency,
