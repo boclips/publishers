@@ -56,6 +56,7 @@ const AdditionalServices = ({ videoItem }: Props) => {
             From:
             <input
               id="from"
+              aria-label="trim-from"
               onChange={onChangeTrimInput}
               className="border-blue-300 border outline-none w-16 h-full ml-2 mr-6 px-2 text-center"
               type="text"
@@ -63,6 +64,7 @@ const AdditionalServices = ({ videoItem }: Props) => {
             />
             To:
             <input
+              aria-label="trim-to"
               id="to"
               onChange={onChangeTrimInput}
               className="border-blue-300 border outline-none w-16 h-full ml-2 mr-6 px-2 text-center"
