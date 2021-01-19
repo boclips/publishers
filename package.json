@@ -11,7 +11,8 @@
     "build": "NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "analyse": "NODE_ENV=production webpack --config webpack/webpack.analyse.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "cypress:open": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,9 @@
     "@tailwindcss/custom-forms": "^0.2.1",
     "css-loader": "^5.0.0",
     "css-minimizer-webpack-plugin": "^1.1.5",
+    "cypress": "^6.2.1",
+    "cypress-react-unit-test": "^4.17.2",
+    "cypress-webpack-preprocessor-v5": "^5.0.0-alpha.1",
     "html-webpack-plugin": "^4.5.0",
     "i": "^0.3.6",
     "less": "^3.12.2",
