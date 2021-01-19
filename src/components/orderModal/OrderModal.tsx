@@ -1,10 +1,10 @@
-import CartItem from 'src/components/cart/CartItem';
 import React from 'react';
 import { Video } from 'boclips-api-client/dist/types';
 import CloseIconSVG from 'src/resources/icons/cross-icon.svg';
 import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
 import Button from '@boclips-ui/button';
 import c from 'classnames';
+import { CartItemOrderPreview } from 'src/components/cart/CartItemOrderPreview/CartItemOrderPreview';
 import s from './style.module.less';
 
 export interface Props {
@@ -45,9 +45,7 @@ export const OrderModal = ({
           </div>
           Do you confirm you want to place the following order:
           <div className={s.modalBody}>
-            {videos.map((item) => (
-              <CartItem videoItem={item} key={item.id} />
-            ))}
+            <CartItemOrderPreview videos={videos} />
           </div>
           <div className={s.buttons}>
             <Button
