@@ -15,6 +15,7 @@ export const doPlaceOrder = ({ cart, user }) =>
       cart.items.map((cartItem) => ({
         id: cartItem.id,
         videoId: cartItem.videoId,
+        additionalServices: cartItem.additionalServices,
       })),
       user,
     );
