@@ -4,6 +4,11 @@ import React from 'react';
 import { FakeUsersClient } from 'boclips-api-client/dist/sub-clients/users/client/FakeUsersClient';
 import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import { render } from 'src/testSupport/render';
+import { MemoryRouter } from 'react-router-dom';
+import App from 'src/App';
+import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
+import BoclipsSecurity from 'boclips-js-security';
+import { Constants } from 'src/AppConstants';
 
 describe('account button', () => {
   let userClient: FakeUsersClient = null;
@@ -40,6 +45,38 @@ describe('account button', () => {
       expect(navbar.getByText('eddie@10thplanetjj.com')).toBeInTheDocument();
       expect(navbar.getByText('Your orders')).toBeInTheDocument();
       expect(navbar.getByText('Log out')).toBeInTheDocument();
+    });
+  });
+
+  /**
+   * I'm not sure this actually tests anything.
+   * Ideally we'd test that we'd actually get back to the home page, somehow.
+   */
+  it('redirects to / on logout', async () => {
+    userClient.insertCurrentUser(UserFactory.sample());
+
+    const logoutMock = jest.fn();
+
+    jest.spyOn(BoclipsSecurity, 'getInstance').mockImplementation(() => ({
+      logout: logoutMock,
+      isAuthenticated: () => false,
+      getTokenFactory: jest.fn(),
+      configureAxios: jest.fn(),
+      ssoLogin: jest.fn(),
+    }));
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/cart']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(await wrapper.findByText('Account'));
+
+    fireEvent.click(await wrapper.findByText('Log out'));
+
+    expect(logoutMock).toHaveBeenCalledWith({
+      redirectUri: `${Constants.HOST}/`,
     });
   });
 });

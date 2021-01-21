@@ -6,7 +6,7 @@ declare global {
 
 window.Environment = window.Environment || {};
 
-class AppConstants {
+export class AppConstants {
   private window: Window;
 
   public constructor(window: Window) {
@@ -19,6 +19,12 @@ class AppConstants {
 
   public get API_PREFIX(): string {
     return this.window.Environment.API_PREFIX;
+  }
+
+  public get HOST(): string {
+    return `${this.window.location.protocol}//${this.window.location.hostname}${
+      this.window.location.port ? `:${this.window.location.port}` : ''
+    }`;
   }
 }
 

@@ -9,7 +9,7 @@ import { Constants } from './AppConstants';
 
 const authOptions = {
   realm: 'boclips',
-  clientId: 'publishers',
+  clientId: 'boclips-web-app',
   requireLoginPage: true,
   authEndpoint: Constants.AUTH_ENDPOINT,
   onLogin: () => {

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { Loading } from 'src/components/common/Loading';
 import c from 'classnames';
 import s from './style.module.less';
+import BoclipsSecurity from 'boclips-js-security';
+import { Constants } from 'src/AppConstants';
 
 export const AccountButton = () => {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
@@ -54,7 +56,18 @@ export const AccountButton = () => {
           <div className="pt-4 text-sm">
             <Link to="/orders">Your orders</Link>
           </div>
-          <div className="pt-1 text-sm">Log out</div>
+          <div className="pt-1 text-sm">
+            <button
+              type="button"
+              onClick={() =>
+                BoclipsSecurity.getInstance().logout({
+                  redirectUri: `${Constants.HOST}/`,
+                })
+              }
+            >
+              Log out
+            </button>
+          </div>
         </div>
       )
     );
