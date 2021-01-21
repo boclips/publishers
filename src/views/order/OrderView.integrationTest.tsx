@@ -3,29 +3,18 @@ import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
 import {
+  FakeBoclipsClient,
   OrderItemFactory,
   OrdersFactory,
 } from 'boclips-api-client/dist/test-support';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
-import { FakeOrdersClient } from 'boclips-api-client/dist/sub-clients/orders/client/FakeOrdersClient';
 import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { Link } from 'boclips-api-client/dist/types';
-import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 
 describe('order table', () => {
-  let ordersClient: FakeOrdersClient = null;
-  let videosClient: FakeVideosClient = null;
-
-  beforeEach(async () => {
-    ordersClient = (await FakeApiClient).orders;
-    videosClient = (await FakeApiClient).videos;
-
-    ordersClient.clear();
-    videosClient.clear();
-  });
-
   it('renders the order header with an id that matches query', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
     const orders = [
       OrdersFactory.sample({ id: 'not-the-id' }),
       OrdersFactory.sample({
@@ -33,11 +22,11 @@ describe('order table', () => {
       }),
     ];
 
-    orders.forEach((order) => ordersClient.insertOrderFixture(order));
+    orders.forEach((order) => fakeClient.orders.insertOrderFixture(order));
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/i-am-the-id']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -49,6 +38,8 @@ describe('order table', () => {
   });
 
   it('renders a order with items', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
     const video = VideoFactory.sample({
       id: 'video-id-1',
       price: {
@@ -84,12 +75,12 @@ describe('order table', () => {
       }),
     ];
 
-    orders.forEach((order) => ordersClient.insertOrderFixture(order));
-    videosClient.insertVideo(video);
+    orders.forEach((order) => fakeClient.orders.insertOrderFixture(order));
+    fakeClient.videos.insertVideo(video);
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/i-am-the-id']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 

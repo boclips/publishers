@@ -2,31 +2,11 @@ import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import CartItem from 'src/components/cart/CartItem/CartItem';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
-import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
-import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/client/FakeCartsClient';
-import { FakeUsersClient } from 'boclips-api-client/dist/sub-clients/users/client/FakeUsersClient';
-import { FakeOrdersClient } from 'boclips-api-client/dist/sub-clients/orders/client/FakeOrdersClient';
 import { Link } from 'boclips-api-client/dist/sub-clients/common/model/LinkEntity';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
 
 describe('CartItem', () => {
-  let videosClient: FakeVideosClient = null;
-  let cartClient: FakeCartsClient = null;
-  let usersClient: FakeUsersClient = null;
-  let ordersClient: FakeOrdersClient = null;
-
-  beforeEach(async () => {
-    videosClient = (await FakeApiClient).videos;
-    cartClient = (await FakeApiClient).carts;
-    usersClient = (await FakeApiClient).users;
-    ordersClient = (await FakeApiClient).orders;
-
-    videosClient.clear();
-    cartClient.clear();
-    usersClient.clear();
-    ordersClient.clear();
-  });
-
   it('displays cart item with title and additional services', async () => {
     const cartItem = {
       id: 'cart-item-id-1',
@@ -42,7 +22,12 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const wrapper = render(<CartItem videoItem={video} cartItem={cartItem} />);
+    const wrapper = render(
+      <BoclipsClientProvider client={new FakeBoclipsClient()}>
+        {' '}
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
 
     wrapper.debug(wrapper.baseElement, 20000000);
 
@@ -71,7 +56,11 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const wrapper = render(<CartItem videoItem={video} cartItem={cartItem} />);
+    const wrapper = render(
+      <BoclipsClientProvider client={new FakeBoclipsClient()}>
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
 
@@ -85,12 +74,19 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    let cart = await cartClient.getCart();
+    const fakeClient = new FakeBoclipsClient();
 
-    const cartItemFromCart = await cartClient.addItemToCart(cart, video.id);
+    let cart = await fakeClient.carts.getCart();
+
+    const cartItemFromCart = await fakeClient.carts.addItemToCart(
+      cart,
+      video.id,
+    );
 
     const wrapper = render(
-      <CartItem videoItem={video} cartItem={cartItemFromCart} />,
+      <BoclipsClientProvider client={fakeClient}>
+        <CartItem videoItem={video} cartItem={cartItemFromCart} />
+      </BoclipsClientProvider>,
     );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
@@ -107,7 +103,7 @@ describe('CartItem', () => {
 
     fireEvent.blur(await wrapper.findByLabelText('trim-to'));
 
-    cart = await cartClient.getCart();
+    cart = await fakeClient.carts.getCart();
 
     expect(cart.items[0].additionalServices?.trim.from).toEqual('00:21');
     expect(cart.items[0].additionalServices?.trim.to).toEqual('02:21');
@@ -133,7 +129,11 @@ describe('CartItem', () => {
       },
     };
 
-    const wrapper = render(<CartItem videoItem={video} cartItem={cartItem} />);
+    const wrapper = render(
+      <BoclipsClientProvider client={new FakeBoclipsClient()}>
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
 
     expect(wrapper.getByLabelText('trim-from').getAttribute('value')).toEqual(
       '1:21',
@@ -164,14 +164,20 @@ describe('CartItem', () => {
       },
     };
 
-    const wrapper = render(<CartItem videoItem={video} cartItem={cartItem} />);
+    const fakeClient = new FakeBoclipsClient();
+
+    const wrapper = render(
+      <BoclipsClientProvider client={fakeClient}>
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
 
     expect(wrapper.queryByText(/From:/)).not.toBeInTheDocument();
     expect(wrapper.queryByText(/To:/)).not.toBeInTheDocument();
 
-    const cart = await cartClient.getCart();
+    const cart = await fakeClient.carts.getCart();
 
     const updatedCartItem = cart.items.find((it) => it.id === cartItem.id);
 

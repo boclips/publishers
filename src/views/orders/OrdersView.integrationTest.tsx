@@ -2,24 +2,17 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
-import { FakeOrdersClient } from 'boclips-api-client/dist/sub-clients/orders/client/FakeOrdersClient';
-import { OrdersFactory } from 'boclips-api-client/dist/test-support';
+import {
+  FakeBoclipsClient,
+  OrdersFactory,
+} from 'boclips-api-client/dist/test-support';
 import { OrderStatus } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 
 describe('OrderView', () => {
-  let ordersClient: FakeOrdersClient = null;
-
-  beforeEach(async () => {
-    ordersClient = (await FakeApiClient).orders;
-
-    ordersClient.clear();
-  });
-
   it('loads the order view', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App />
+        <App apiClient={new FakeBoclipsClient()} />
       </MemoryRouter>,
     );
 
@@ -27,6 +20,7 @@ describe('OrderView', () => {
   });
 
   it('loads the order cards', async () => {
+    const fakeClient = new FakeBoclipsClient();
     const orders = [
       OrdersFactory.sample({
         id: 'woop-woop-im-an-id',
@@ -40,11 +34,11 @@ describe('OrderView', () => {
       }),
     ];
 
-    orders.forEach((v) => ordersClient.insertOrderFixture(v));
+    orders.forEach((v) => fakeClient.orders.insertOrderFixture(v));
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -67,7 +61,7 @@ describe('OrderView', () => {
   it('if no orders are there it shows no orders', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App />
+        <App apiClient={new FakeBoclipsClient()} />
       </MemoryRouter>,
     );
 
@@ -75,6 +69,7 @@ describe('OrderView', () => {
   });
 
   it('if there is no deliveryDate it shows a dash', async () => {
+    const fakeClient = new FakeBoclipsClient();
     const orders = [
       OrdersFactory.sample({
         id: 'woop-woop-im-an-id',
@@ -82,11 +77,11 @@ describe('OrderView', () => {
       }),
     ];
 
-    orders.forEach((v) => ordersClient.insertOrderFixture(v));
+    orders.forEach((v) => fakeClient.orders.insertOrderFixture(v));
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 

@@ -10,6 +10,7 @@ import { SearchResults } from 'src/components/searchResults/SearchResults';
 import Footer from 'src/components/layout/Footer';
 import { FilterKeys } from 'src/types/search/FilterKeys';
 import { useQueryClient } from 'react-query';
+import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
 export const PAGE_SIZE = 10;
 
@@ -17,6 +18,7 @@ const SearchResultsView = () => {
   const queryClient = useQueryClient();
   const [searchLocation, setSearchLocation] = useSearchQueryLocationParams();
   const { query, page: currentPage, filters } = searchLocation;
+  const boclipsClient = useBoclipsClient();
 
   const { data, isError, error, isLoading } = useSearchQuery({
     query,
@@ -27,13 +29,17 @@ const SearchResultsView = () => {
 
   useEffect(() => {
     // Prefetch the next page of data
-    prefetchSearchQuery(queryClient, {
-      query,
-      pageSize: PAGE_SIZE,
-      page: currentPage,
-      filters,
-    });
-  }, [currentPage, query, filters, queryClient]);
+    prefetchSearchQuery(
+      queryClient,
+      {
+        query,
+        pageSize: PAGE_SIZE,
+        page: currentPage,
+        filters,
+      },
+      boclipsClient,
+    );
+  }, [currentPage, query, filters, queryClient, boclipsClient]);
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });

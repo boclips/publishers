@@ -3,6 +3,8 @@ import React from 'react';
 import { VideoCardWrapper } from 'src/components/videoCard/VideoCardWrapper';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { render } from 'src/testSupport/render';
+import { BoclipsClientProvider } from '../common/BoclipsClientProvider';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 
 describe('Video card', () => {
   it('displays all the given information on a video card', () => {
@@ -31,7 +33,11 @@ describe('Video card', () => {
       },
     });
 
-    const wrapper = render(<VideoCardWrapper video={video} />);
+    const wrapper = render(
+      <BoclipsClientProvider client={new FakeBoclipsClient()}>
+        <VideoCardWrapper video={video} />
+      </BoclipsClientProvider>,
+    );
 
     expect(wrapper.getByText('hello i am a title')).toBeVisible();
     expect(wrapper.getByText('wow what a video hansen')).toBeVisible();

@@ -4,6 +4,7 @@ import { AdditionalServices as AdditionalServicesApi } from 'boclips-api-client/
 import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import c from 'classnames';
+import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
 interface Props {
   videoItem: Video;
@@ -15,6 +16,8 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
     cartItem.additionalServices === null
       ? false
       : cartItem.additionalServices.trim !== null;
+
+  const boclipsClient = useBoclipsClient();
 
   const [trimChecked, setTrimChecked] = useState(hasTrim);
   const [additionalServices, setAdditionalServices] = useState<
@@ -31,7 +34,7 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
   const onChangeCheckbox = (e) => {
     setTrimChecked(e.currentTarget.checked);
     if (!e.currentTarget.checked) {
-      doUpdateCartItem(cartItem, { trim: null });
+      doUpdateCartItem(cartItem, { trim: null }, boclipsClient);
       setAdditionalServices((prevState) => {
         return {
           ...prevState,
@@ -58,7 +61,7 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
   };
 
   const onBlur = () => {
-    doUpdateCartItem(cartItem, additionalServices);
+    doUpdateCartItem(cartItem, additionalServices, boclipsClient);
   };
 
   return (
