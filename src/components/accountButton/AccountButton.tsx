@@ -4,9 +4,9 @@ import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { Link } from 'react-router-dom';
 import { Loading } from 'src/components/common/Loading';
 import c from 'classnames';
-import s from './style.module.less';
 import BoclipsSecurity from 'boclips-js-security';
 import { Constants } from 'src/AppConstants';
+import s from './style.module.less';
 
 export const AccountButton = () => {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
