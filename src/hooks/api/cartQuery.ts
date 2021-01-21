@@ -1,36 +1,33 @@
 import { useQuery } from 'react-query';
-import { ApiClientWrapper } from 'src/services/apiClientWrapper';
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { AdditionalServices } from 'boclips-api-client/dist/sub-clients/carts/model/AdditionalServices';
+import { BoclipsClient } from 'boclips-api-client';
+import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
-const doGetCart = () =>
-  ApiClientWrapper.get().then((client) => {
-    return client.carts.getCart();
-  });
+const doGetCart = (client: BoclipsClient) => client.carts.getCart();
 
-export const doAddToCart = (cart: Cart, videoId: string) =>
-  ApiClientWrapper.get().then((client) => {
-    return client.carts.addItemToCart(cart, videoId);
-  });
+export const doAddToCart = (
+  cart: Cart,
+  videoId: string,
+  client: BoclipsClient,
+) => client.carts.addItemToCart(cart, videoId);
 
-export const doDeleteFromCart = (cart: Cart, cartItemId: string) =>
-  ApiClientWrapper.get().then((client) => {
-    return client.carts
-      .deleteItemFromCart(cart, cartItemId)
-      .then((_) => cartItemId);
-  });
+export const doDeleteFromCart = (
+  cart: Cart,
+  cartItemId: string,
+  client: BoclipsClient,
+) => client.carts.deleteItemFromCart(cart, cartItemId).then((_) => cartItemId);
 
 export const doUpdateCartItem = (
   cartItem: CartItem,
   additionalServices: AdditionalServices,
+  client: BoclipsClient,
 ) => {
-  ApiClientWrapper.get().then((client) => {
-    return client.carts.updateCartItemAdditionalServices(
-      cartItem,
-      additionalServices,
-    );
-  });
+  client.carts.updateCartItemAdditionalServices(cartItem, additionalServices);
 };
 
-export const useCartQuery = () => useQuery('cart', () => doGetCart());
+export const useCartQuery = () => {
+  const client = useBoclipsClient();
+  return useQuery('cart', () => doGetCart(client));
+};

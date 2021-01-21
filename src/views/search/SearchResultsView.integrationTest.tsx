@@ -2,32 +2,21 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import App from 'src/App';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
-import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
 import {
   FacetFactory,
   FacetsFactory,
 } from 'boclips-api-client/dist/test-support/FacetsFactory';
-import { FakeCartsClient } from 'boclips-api-client/dist/sub-clients/carts/client/FakeCartsClient';
 import Navbar from 'src/components/layout/Navbar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
 
 describe('SearchResults', () => {
-  let videosClient: FakeVideosClient = null;
-  let cartClient: FakeCartsClient = null;
-
-  beforeEach(async () => {
-    videosClient = (await FakeApiClient).videos;
-    cartClient = (await FakeApiClient).carts;
-
-    videosClient.clear();
-    cartClient.clear();
-  });
-
   it('renders a list of videos that match the search query', async () => {
+    const fakeClient = new FakeBoclipsClient();
     const videos = [
       VideoFactory.sample({ id: '1', title: '1' }),
       VideoFactory.sample({
@@ -51,11 +40,11 @@ describe('SearchResults', () => {
       }),
     ];
 
-    videos.forEach((v) => videosClient.insertVideo(v));
+    videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=hello']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -68,6 +57,7 @@ describe('SearchResults', () => {
   });
 
   it('renders a hits count that is updated after new search', async () => {
+    const fakeClient = new FakeBoclipsClient();
     const videos = [
       VideoFactory.sample({ id: '1', title: 'art' }),
       VideoFactory.sample({
@@ -76,11 +66,11 @@ describe('SearchResults', () => {
       }),
     ];
 
-    videos.forEach((v) => videosClient.insertVideo(v));
+    videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=art']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -101,6 +91,7 @@ describe('SearchResults', () => {
   });
 
   it('can search for a new query', async () => {
+    const fakeClient = new FakeBoclipsClient();
     const videos = [
       VideoFactory.sample({
         id: '1',
@@ -114,11 +105,11 @@ describe('SearchResults', () => {
       }),
     ];
 
-    videos.forEach((v) => videosClient.insertVideo(v));
+    videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=dogs']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -136,6 +127,8 @@ describe('SearchResults', () => {
   });
 
   it('renders the pagination', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
     const videos = [];
     for (let i = 0; i < 11; i++) {
       videos.push(
@@ -146,11 +139,11 @@ describe('SearchResults', () => {
       );
     }
 
-    videos.forEach((v) => videosClient.insertVideo(v));
+    videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -164,7 +157,9 @@ describe('SearchResults', () => {
   });
 
   it(`displays the video type filters and facet counts`, async () => {
-    videosClient.setFacets(
+    const fakeClient = new FakeBoclipsClient();
+
+    fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
           FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 1234321 }),
@@ -180,7 +175,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -195,7 +190,9 @@ describe('SearchResults', () => {
   });
 
   it(`can filter videos by type`, async () => {
-    videosClient.setFacets(
+    const fakeClient = new FakeBoclipsClient();
+
+    fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
           FacetFactory.sample({ id: 'STOCK', hits: 1, name: 'Stock' }),
@@ -216,11 +213,11 @@ describe('SearchResults', () => {
       }),
     ];
 
-    videos.forEach((v) => videosClient.insertVideo(v));
+    videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -237,7 +234,7 @@ describe('SearchResults', () => {
 
     const newsCheckbox = wrapper.getByTestId('NEWS-checkbox');
 
-    videosClient.setFacets(
+    fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
           FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 10 }),
@@ -257,7 +254,8 @@ describe('SearchResults', () => {
   });
 
   it(`applies filters from url on load`, async () => {
-    videosClient.setFacets(
+    const fakeClient = new FakeBoclipsClient();
+    fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
           FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 1 }),
@@ -266,14 +264,14 @@ describe('SearchResults', () => {
       }),
     );
 
-    videosClient.insertVideo(
+    fakeClient.videos.insertVideo(
       VideoFactory.sample({
         id: '1',
         title: 'stock video',
         types: [{ name: 'STOCK', id: 1 }],
       }),
     );
-    videosClient.insertVideo(
+    fakeClient.videos.insertVideo(
       VideoFactory.sample({
         id: '2',
         title: 'news video',
@@ -283,7 +281,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video&video_type=STOCK']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -292,8 +290,10 @@ describe('SearchResults', () => {
   });
 
   it(`persists queries between pages`, async () => {
+    const fakeClient = new FakeBoclipsClient();
+
     for (let i = 0; i < 11; i++) {
-      videosClient.insertVideo(
+      fakeClient.videos.insertVideo(
         VideoFactory.sample({
           id: `video ${i}`,
           title: `video ${i}`,
@@ -301,7 +301,7 @@ describe('SearchResults', () => {
         }),
       );
     }
-    videosClient.setFacets(
+    fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
           FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 1 }),
@@ -311,7 +311,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
@@ -337,7 +337,9 @@ describe('SearchResults', () => {
 
   describe(`channel filters`, () => {
     it(`can filter channel filter options`, async () => {
-      videosClient.setFacets(
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.setFacets(
         FacetsFactory.sample({
           channels: [
             FacetFactory.sample({ id: 'ted-id', hits: 1, name: 'Ted' }),
@@ -358,11 +360,11 @@ describe('SearchResults', () => {
         }),
       ];
 
-      videos.forEach((v) => videosClient.insertVideo(v));
+      videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -391,14 +393,16 @@ describe('SearchResults', () => {
 
   describe('Subject filters', () => {
     it(`displays the subject filters and facet counts`, async () => {
-      videosClient.setFacets(
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.setFacets(
         FacetsFactory.sample({
           subjects: [{ id: 'subject1', name: 'History', hits: 12 }],
         }),
       );
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -410,7 +414,9 @@ describe('SearchResults', () => {
 
   describe('Duration filters', () => {
     it(`displays the duration filters and facet counts`, async () => {
-      videosClient.setFacets(
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.setFacets(
         FacetsFactory.sample({
           durations: [
             { id: 'PT0S-PT1M', name: 'PT0S-PT1M', hits: 10 },
@@ -422,7 +428,7 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -442,7 +448,9 @@ describe('SearchResults', () => {
 
   describe('cart in video-card', () => {
     it(`displays add to cart button`, async () => {
-      videosClient.insertVideo(
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.insertVideo(
         VideoFactory.sample({
           id: '2',
           title: 'news video',
@@ -452,7 +460,7 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -460,17 +468,19 @@ describe('SearchResults', () => {
     });
 
     it(`adds and removes item from cart when clicked`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+
       const video = VideoFactory.sample({
         id: 'video-id',
         title: 'news video',
         types: [{ name: 'NEWS', id: 2 }],
       });
 
-      videosClient.insertVideo(video);
+      fakeClient.videos.insertVideo(video);
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=vid']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 
@@ -486,7 +496,7 @@ describe('SearchResults', () => {
         }),
       );
 
-      const cart = await cartClient.getCart();
+      const cart = await fakeClient.carts.getCart();
 
       await waitFor(() => {
         expect(cart.items).toHaveLength(1);
@@ -508,24 +518,28 @@ describe('SearchResults', () => {
     });
 
     it(`basket counter goes up when item added to cart in navbar`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+
       const video = VideoFactory.sample({
         id: 'video-id',
         title: 'news video',
         types: [{ name: 'NEWS', id: 2 }],
       });
 
-      videosClient.insertVideo(video);
+      fakeClient.videos.insertVideo(video);
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=vid']}>
-          <QueryClientProvider client={new QueryClient(queryClientConfig)}>
-            <Navbar />
-          </QueryClientProvider>
+          <BoclipsClientProvider client={fakeClient}>
+            <QueryClientProvider client={new QueryClient(queryClientConfig)}>
+              <Navbar />
+            </QueryClientProvider>
+          </BoclipsClientProvider>
         </MemoryRouter>,
       );
 
-      cartClient.insertCartItem('video-id');
-      const cart = await cartClient.getCart();
+      fakeClient.carts.insertCartItem('video-id');
+      const cart = await fakeClient.carts.getCart();
 
       await waitFor(() => {
         const cartCounter = wrapper.getByTestId('cart-counter').innerHTML;
@@ -534,17 +548,19 @@ describe('SearchResults', () => {
     });
 
     it(`directs to video page when card is clicked`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+
       const video = VideoFactory.sample({
         id: 'video-id',
         title: 'news video',
         types: [{ name: 'NEWS', id: 2 }],
       });
 
-      videosClient.insertVideo(video);
+      fakeClient.videos.insertVideo(video);
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=vid']}>
-          <App />
+          <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
 

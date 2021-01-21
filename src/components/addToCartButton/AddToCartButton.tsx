@@ -8,6 +8,7 @@ import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import Button from '@boclips-ui/button';
 import React from 'react';
 import CartIcon from '../../resources/icons/cart-icon.svg';
+import { useBoclipsClient } from '../common/BoclipsClientProvider';
 
 interface AddToCartButtonProps {
   videoId: string;
@@ -15,6 +16,7 @@ interface AddToCartButtonProps {
 
 const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
   const queryClient = useQueryClient();
+  const boclipsClient = useBoclipsClient();
   const { data: cart } = useCartQuery();
 
   const cartItem = cart?.items?.find((it) => it?.videoId === videoId);
@@ -22,7 +24,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
   const { mutate: mutateAddToCart } = useMutation(
     (id: string) => {
       if (cartItem === undefined) {
-        return doAddToCart(cart as Cart, id);
+        return doAddToCart(cart as Cart, id, boclipsClient);
       }
       return Promise.reject(new Error('Item already in cart'));
     },
@@ -39,7 +41,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
   const { mutate: mutateDeleteFromCart } = useMutation(
     async (id: string) => {
       if (cartItem) {
-        return doDeleteFromCart(cart as Cart, id);
+        return doDeleteFromCart(cart as Cart, id, boclipsClient);
       }
       return Promise.reject(new Error('Item is not in cart'));
     },

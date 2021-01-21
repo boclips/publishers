@@ -1,35 +1,38 @@
 import { QueryClient, useQuery } from 'react-query';
-import { ApiClientWrapper } from 'src/services/apiClientWrapper';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import Pageable from 'boclips-api-client/dist/sub-clients/common/model/Pageable';
+import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { BoclipsClient } from 'boclips-api-client';
 
-export const doGetVideos = (videoIds: string[]) => {
-  return ApiClientWrapper.get()
-    .then((client) => {
-      return client.videos.search({
-        id: videoIds,
-      });
+export const doGetVideos = (videoIds: string[], apiClient: BoclipsClient) => {
+  return apiClient.videos
+    .search({
+      id: videoIds,
     })
     .then((items) => items.page);
 };
 
-export const doGetVideo = (id: string) =>
-  ApiClientWrapper.get().then((client) => {
-    return client.videos.get(id);
-  });
+export const doGetVideo = (id: string, apiClient: BoclipsClient) =>
+  apiClient.videos.get(id);
 
 export const useGetVideosQuery = (videoIds: string[]) => {
-  return useQuery(['videos', videoIds], () => doGetVideos(videoIds), {
-    enabled: !!videoIds,
-  });
+  const apiClient = useBoclipsClient();
+  return useQuery(
+    ['videos', videoIds],
+    () => doGetVideos(videoIds, apiClient),
+    {
+      enabled: !!videoIds,
+    },
+  );
 };
 
 export const useFindOrGetVideo = (
   queryClient: QueryClient,
   videoId: string,
 ) => {
+  const apiClient = useBoclipsClient();
   const cachedVideos = queryClient.getQueryData<Pageable<Video>>('videos');
-  return useQuery(['videos', videoId], () => doGetVideo(videoId), {
+  return useQuery(['videos', videoId], () => doGetVideo(videoId, apiClient), {
     initialData: () => cachedVideos?.page.find((v) => v.id === videoId),
   });
 };

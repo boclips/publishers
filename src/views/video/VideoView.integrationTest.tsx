@@ -2,19 +2,17 @@ import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
-import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/client/FakeVideosClient';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
-import { SubjectFactory } from 'boclips-api-client/dist/test-support';
+
+import {
+  FakeBoclipsClient,
+  SubjectFactory,
+} from 'boclips-api-client/dist/test-support';
 
 describe('Video View', () => {
-  let videosClient: FakeVideosClient = null;
-  beforeEach(async () => {
-    videosClient = (await FakeApiClient).videos;
-    videosClient.clear();
-  });
-
   it('on video page video details are rendered', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
     const subject = SubjectFactory.sample({
       name: 'history',
     });
@@ -37,11 +35,11 @@ describe('Video View', () => {
       },
     });
 
-    videosClient.insertVideo(video);
+    fakeClient.videos.insertVideo(video);
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos/video-id']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 

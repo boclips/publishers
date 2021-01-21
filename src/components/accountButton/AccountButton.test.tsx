@@ -2,22 +2,18 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import Navbar from 'src/components/layout/Navbar';
 import React from 'react';
 import { FakeUsersClient } from 'boclips-api-client/dist/sub-clients/users/client/FakeUsersClient';
-import { FakeApiClient } from 'src/testSupport/fakeApiClient';
 import { render } from 'src/testSupport/render';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 import BoclipsSecurity from 'boclips-js-security';
 import { Constants } from 'src/AppConstants';
+import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { BoclipsClientProvider } from '../common/BoclipsClientProvider';
 
 describe('account button', () => {
-  let userClient: FakeUsersClient = null;
-
-  beforeAll(async () => {
-    userClient = (await FakeApiClient).users;
-  });
-
   it('opens the tooltip when clicked and close the tooltip when clicked on the body', async () => {
+    const fakeClient = new FakeBoclipsClient();
     const user = {
       id: '123',
       firstName: 'Eddie',
@@ -32,9 +28,13 @@ describe('account button', () => {
       },
     };
 
-    userClient.insertCurrentUser(user);
+    fakeClient.users.insertCurrentUser(user);
 
-    const navbar = render(<Navbar />);
+    const navbar = render(
+      <BoclipsClientProvider client={fakeClient}>
+        <Navbar />
+      </BoclipsClientProvider>,
+    );
 
     expect(navbar.getByText('Account')).toBeInTheDocument();
 
@@ -53,7 +53,9 @@ describe('account button', () => {
    * Ideally we'd test that we'd actually get back to the home page, somehow.
    */
   it('redirects to / on logout', async () => {
-    userClient.insertCurrentUser(UserFactory.sample());
+    const fakeClient = new FakeBoclipsClient();
+
+    fakeClient.users.insertCurrentUser(UserFactory.sample());
 
     const logoutMock = jest.fn();
 
@@ -67,7 +69,7 @@ describe('account button', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/cart']}>
-        <App />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
