@@ -29,8 +29,6 @@ describe('CartItem', () => {
       </BoclipsClientProvider>,
     );
 
-    wrapper.debug(wrapper.baseElement, 20000000);
-
     expect(
       await wrapper.findByText('this is cart item test'),
     ).toBeInTheDocument();
