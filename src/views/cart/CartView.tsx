@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useCartQuery } from 'src/hooks/api/cartQuery';
+import { doUpdateCartNote, useCartQuery } from 'src/hooks/api/cartQuery';
 import Navbar from 'src/components/layout/Navbar';
 import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
 import { Loading } from 'src/components/common/Loading';
@@ -9,6 +9,7 @@ import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
 import { ErrorMessage } from 'src/components/common/ErrorMessage';
 import { useHistory } from 'react-router-dom';
 import { Cart } from 'src/components/cart/Cart';
+import { useMutation } from 'react-query';
 
 const CartView = () => {
   const history = useHistory();
@@ -22,6 +23,18 @@ const CartView = () => {
 
   const { isLoading: areVideosLoading, data: videos } = useGetVideosQuery(
     videoIds,
+  );
+
+  const { mutate: mutateAddCartNote } = useMutation(
+    async (note: string) => {
+      return doUpdateCartNote(note);
+    },
+    {
+      onSuccess: (it) => {
+        console.log('succesfully added note');
+        console.log(it.note);
+      },
+    },
   );
 
   const { mutate } = usePlaceOrderQuery(
@@ -61,7 +74,14 @@ const CartView = () => {
     }
 
     if (itemsInCart && videos) {
-      return <Cart cart={cart} videos={videos} onPlaceOrder={placeOrder} />;
+      return (
+        <Cart
+          cart={cart}
+          videos={videos}
+          onPlaceOrder={placeOrder}
+          onUpdateNote={mutateAddCartNote}
+        />
+      );
     }
 
     return <EmptyCart />;

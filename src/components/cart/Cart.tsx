@@ -9,13 +9,14 @@ interface Props {
   cart: ApiCart;
   videos: Video[];
   onPlaceOrder: (user) => void;
+  onUpdateNote: (note) => void;
 }
 
-export const Cart = ({ cart, videos, onPlaceOrder }: Props) => {
+export const Cart = ({ cart, videos, onPlaceOrder, onUpdateNote }: Props) => {
   return (
     <>
       <CartSummary cart={cart} />
-      <CartItemList videos={videos} />
+      <CartItemList videos={videos} onUpdateNote={onUpdateNote} />
       <CartOrderSummary videos={videos} onPlaceOrder={onPlaceOrder} />
     </>
   );

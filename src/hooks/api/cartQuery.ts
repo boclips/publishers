@@ -33,4 +33,10 @@ export const doUpdateCartItem = (
   });
 };
 
+export const doUpdateCartNote = (note: string): Promise<Cart> => {
+  return ApiClientWrapper.get().then((client) => {
+    return client.carts.updateCart(note);
+  });
+};
+
 export const useCartQuery = () => useQuery('cart', () => doGetCart());

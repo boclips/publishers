@@ -131,6 +131,36 @@ describe('CartView', () => {
     expect(wrapper.getByText(/channel is missing price/)).toBeVisible();
   });
 
+  it('displays a notes field', async () => {
+    cartClient.insertCartItem('video-id');
+
+    const wrapper = renderCartView();
+
+    expect(
+      await wrapper.findByPlaceholderText(
+        'Add a note about this order (optional)',
+      ),
+    ).toBeVisible();
+  });
+  it('saves a note on the cart', async () => {
+    cartClient.insertCartItem('video-id');
+
+    const wrapper = renderCartView();
+
+    const input = await wrapper.findByPlaceholderText(
+      'Add a note about this order (optional)',
+    );
+
+    fireEvent.change(input, { target: { value: 'i am a note' } });
+    const changedInput = await wrapper.findByDisplayValue('i am a note');
+    expect(changedInput).toBeVisible();
+
+    const cart = await cartClient.getCart();
+
+    await waitFor(() => {
+      expect(cart.note).toEqual('i am a note');
+    });
+  }, 70000);
   function renderCartView() {
     return render(
       <MemoryRouter initialEntries={['/cart']}>
