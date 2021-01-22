@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { User } from 'boclips-api-client/dist/sub-clients/organisations/model/User';
-import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import { OrdersPage } from 'boclips-api-client/dist/sub-clients/orders/model/OrdersPage';
+import { PlaceOrderRequest } from 'boclips-api-client/dist/sub-clients/orders/model/PlaceOrderRequest';
 import { BoclipsClient } from 'boclips-api-client';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
@@ -10,15 +9,10 @@ export interface OrdersQuery {
   size: number;
 }
 
-export const doPlaceOrder = ({ cart, user }, client: BoclipsClient) =>
-  client.orders.placeOrder(
-    cart.items.map((cartItem) => ({
-      id: cartItem.id,
-      videoId: cartItem.videoId,
-      additionalServices: cartItem.additionalServices,
-    })),
-    user,
-  );
+export const doPlaceOrder = (
+  request: PlaceOrderRequest,
+  client: BoclipsClient,
+) => client.orders.placeOrder(request);
 
 export const getOrders = ({ page, size }: OrdersQuery, client: BoclipsClient) =>
   client.orders.getUserOrders(page, size);
@@ -33,8 +27,9 @@ export const usePlaceOrderQuery = (
 ) => {
   const queryClient = useQueryClient();
   const boclipsClient = useBoclipsClient();
+
   return useMutation(
-    (request: PlaceOrderQueryRequest) => doPlaceOrder(request, boclipsClient),
+    (request: PlaceOrderRequest) => doPlaceOrder(request, boclipsClient),
     {
       onSuccess: (orderLocation) => {
         onOrderPlaced(orderLocation);
@@ -52,11 +47,6 @@ export const usePlaceOrderQuery = (
     },
   );
 };
-
-export interface PlaceOrderQueryRequest {
-  cart: Cart;
-  user: User;
-}
 
 export const useGetOrdersQuery = (
   ordersQuery: OrdersQuery,

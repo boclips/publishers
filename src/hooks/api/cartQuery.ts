@@ -31,3 +31,6 @@ export const useCartQuery = () => {
   const client = useBoclipsClient();
   return useQuery('cart', () => doGetCart(client));
 };
+
+export const doUpdateCartNote = (note: string, client: BoclipsClient) =>
+  client.carts.updateCart(note);

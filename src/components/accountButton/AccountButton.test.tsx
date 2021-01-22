@@ -1,7 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import Navbar from 'src/components/layout/Navbar';
 import React from 'react';
-import { FakeUsersClient } from 'boclips-api-client/dist/sub-clients/users/client/FakeUsersClient';
 import { render } from 'src/testSupport/render';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
