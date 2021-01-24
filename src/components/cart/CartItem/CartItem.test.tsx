@@ -24,7 +24,6 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
-        {' '}
         <CartItem videoItem={video} cartItem={cartItem} />
       </BoclipsClientProvider>,
     );
@@ -90,21 +89,21 @@ describe('CartItem', () => {
     fireEvent.click(await wrapper.findByText('Trim video'));
 
     fireEvent.change(await wrapper.findByLabelText('trim-from'), {
-      target: { value: '00:21' },
+      target: { value: '2' },
     });
 
     fireEvent.blur(await wrapper.findByLabelText('trim-from'));
 
     fireEvent.change(await wrapper.findByLabelText('trim-to'), {
-      target: { value: '02:21' },
+      target: { value: '3' },
     });
 
     fireEvent.blur(await wrapper.findByLabelText('trim-to'));
 
     cart = await fakeClient.carts.getCart();
 
-    expect(cart.items[0].additionalServices?.trim.from).toEqual('00:21');
-    expect(cart.items[0].additionalServices?.trim.to).toEqual('02:21');
+    expect(cart.items[0].additionalServices?.trim.from).toEqual('02:00');
+    expect(cart.items[0].additionalServices?.trim.to).toEqual('03:00');
   });
 
   it('displays the trim values if cart item has trim info specified', async () => {
@@ -118,8 +117,8 @@ describe('CartItem', () => {
       videoId: '123',
       additionalServices: {
         trim: {
-          from: '1:21',
-          to: '2:21',
+          from: '01:21',
+          to: '02:21',
         },
       },
       links: {
@@ -134,11 +133,11 @@ describe('CartItem', () => {
     );
 
     expect(wrapper.getByLabelText('trim-from').getAttribute('value')).toEqual(
-      '1:21',
+      '01:21',
     );
 
     expect(wrapper.getByLabelText('trim-to').getAttribute('value')).toEqual(
-      '2:21',
+      '02:21',
     );
   });
 

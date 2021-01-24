@@ -53,7 +53,7 @@ export const Filter = ({
   };
 
   return (
-    <div className="bg-blue-100 mt-6 p-4 border-solid border border-blue-300 rounded ">
+    <div className="bg-blue-100 mt-6 p-4 border-solid border border-blue-300 rounded">
       <FilterHeader
         text={title}
         filterIsOpen={open}

@@ -97,6 +97,7 @@
     "react-dom": "^16.14.0",
     "react-query": "^3.5.12",
     "react-router-dom": "^5.2.0",
+    "react-simple-timefield": "^3.2.3",
     "simple-currency-format": "^2.1.0",
     "svg-react-loader": "^0.4.6",
     "ts-import-plugin": "^1.6.6",

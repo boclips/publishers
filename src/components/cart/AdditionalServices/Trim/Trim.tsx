@@ -3,6 +3,7 @@ import { doUpdateCartItem } from 'src/hooks/api/cartQuery';
 import { AdditionalServices as AdditionalServicesApi } from 'boclips-api-client/dist/sub-clients/carts/model/AdditionalServices';
 import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
+import TimeField from 'react-simple-timefield';
 import c from 'classnames';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
@@ -11,44 +12,59 @@ interface Props {
   cartItem: CartItem;
 }
 
+const BASE_FROM_DURATION = '00:00';
+
 export const TrimService = ({ videoItem, cartItem }: Props) => {
+  const boclipsClient = useBoclipsClient();
+
   const hasTrim =
     cartItem.additionalServices === null
       ? false
       : cartItem.additionalServices.trim !== null;
 
-  const boclipsClient = useBoclipsClient();
-
   const [trimChecked, setTrimChecked] = useState(hasTrim);
+
+  const safeToDuration = () => {
+    const duration = videoItem.playback.duration;
+
+    if (duration.seconds()) {
+      return duration.format('mm:ss');
+    }
+
+    return duration.format('mm');
+  };
+
   const [additionalServices, setAdditionalServices] = useState<
     AdditionalServicesApi
   >({
     trim: {
-      from: cartItem.additionalServices?.trim?.from || '0:00',
-      to:
-        cartItem.additionalServices?.trim?.to ||
-        videoItem.playback.duration.format('mm:ss'),
+      from: cartItem.additionalServices?.trim?.from || BASE_FROM_DURATION,
+      to: cartItem.additionalServices?.trim?.to || safeToDuration(),
     },
   });
 
   const onChangeCheckbox = (e) => {
     setTrimChecked(e.currentTarget.checked);
+
     if (!e.currentTarget.checked) {
       doUpdateCartItem(cartItem, { trim: null }, boclipsClient);
+
       setAdditionalServices((prevState) => {
         return {
           ...prevState,
           trim: {
-            from: '0:00',
-            to: videoItem.playback.duration.format('mm:ss'),
+            from: BASE_FROM_DURATION,
+            to: safeToDuration(),
           },
         };
       });
     }
   };
 
-  const onChangeTrimInput = (e, trimValue) => {
-    const value = { [trimValue]: e.currentTarget.value };
+  const onChangeTrimInput = (e, trimCheckpoint) => {
+    const trimValue = e.target.value;
+
+    const value = { [trimCheckpoint]: trimValue };
     setAdditionalServices((prevState) => {
       return {
         ...prevState,
@@ -85,22 +101,32 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
       {trimChecked && (
         <div className="h-full flex items-center font-normal">
           From:
-          <input
-            aria-label="trim-from"
+          <TimeField
             onChange={(e) => onChangeTrimInput(e, 'from')}
-            className="border-blue-300 border outline-none w-16 h-full ml-2 mr-6 px-2 text-center"
-            type="text"
-            onBlur={onBlur}
             value={additionalServices.trim.from}
+            colon=":"
+            input={
+              <input
+                aria-label="trim-from"
+                className="border-blue-300 border rounded outline-none w-16 h-full ml-2 mr-6 px-2 text-center"
+                type="text"
+                onBlur={onBlur}
+              />
+            }
           />
           To:
-          <input
-            aria-label="trim-to"
+          <TimeField
             onChange={(e) => onChangeTrimInput(e, 'to')}
-            className="border-blue-300 border outline-none w-16 h-full ml-2 mr-6 px-2 text-center"
-            type="text"
-            onBlur={onBlur}
             value={additionalServices.trim.to}
+            colon=":"
+            input={
+              <input
+                aria-label="trim-to"
+                className="border-blue-300 border rounded outline-none w-16 h-full ml-2 mr-6 px-2 text-center"
+                type="text"
+                onBlur={onBlur}
+              />
+            }
           />
         </div>
       )}
