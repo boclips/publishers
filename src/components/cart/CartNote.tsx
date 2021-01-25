@@ -14,7 +14,7 @@ export const CartNote = ({ currentNote, onUpdateNote }: Props) => {
   };
 
   useEffect(() => {
-    if (debouncedValue) {
+    if (debouncedValue || debouncedValue === '') {
       onUpdateNote(debouncedValue);
     }
   }, [debouncedValue, onUpdateNote]);
