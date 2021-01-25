@@ -202,8 +202,8 @@ describe('CartItem', () => {
           from: '2:00',
           to: '3:00',
         },
+        transcriptRequested: false,
       },
-      transcriptRequested: false,
       links: {
         self: new Link({ href: 'www.example.com' }),
       },
@@ -238,5 +238,55 @@ describe('CartItem', () => {
     expect(updatedCartItem.additionalServices.transcriptRequested).toEqual(
       false,
     );
+  });
+
+  it('sets captions request to true when checkbox is checked and to false when is unchecked', async () => {
+    const video = VideoFactory.sample({
+      id: 'captions-test', // this id must be unique for the test
+      title: 'this is cart item test',
+    });
+
+    const cartItem = {
+      id: 'cart-item-id-1',
+      videoId: 'captions-test', // this needs to be the same as in video.id
+      additionalServices: {
+        trim: {
+          from: '2:00',
+          to: '3:00',
+        },
+        transcriptRequested: false,
+        captionsRequested: false,
+      },
+
+      links: {
+        self: new Link({ href: 'www.example.com' }),
+      },
+    };
+
+    const fakeClient = new FakeBoclipsClient();
+
+    const wrapper = render(
+      <BoclipsClientProvider client={fakeClient}>
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
+
+    fireEvent.click(await wrapper.findByText('Request English captions'));
+
+    let cart = await fakeClient.carts.getCart();
+
+    let updatedCartItem = cart.items.find(
+      (it) => it.videoId === cartItem.videoId,
+    );
+
+    expect(updatedCartItem.additionalServices.captionsRequested).toEqual(true);
+
+    fireEvent.click(await wrapper.findByText('Request English captions'));
+
+    cart = await fakeClient.carts.getCart();
+
+    updatedCartItem = cart.items.find((it) => it.videoId === cartItem.videoId);
+
+    expect(updatedCartItem.additionalServices.captionsRequested).toEqual(false);
   });
 });
