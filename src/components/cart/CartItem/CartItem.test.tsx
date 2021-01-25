@@ -33,6 +33,8 @@ describe('CartItem', () => {
     ).toBeInTheDocument();
     expect(await wrapper.findByText('Additional services')).toBeInTheDocument();
     expect(await wrapper.findByText('Trim video')).toBeInTheDocument();
+    expect(await wrapper.findByText('Request transcripts')).toBeInTheDocument();
+
     // queryBy doesn't throw and error when cannot be found
     expect(wrapper.queryByText(/From:/)).not.toBeInTheDocument();
     expect(wrapper.queryByText(/To:/)).not.toBeInTheDocument();
@@ -43,6 +45,7 @@ describe('CartItem', () => {
       id: 'cart-item-id-1',
       videoId: '123',
       additionalServices: null,
+      transcriptRequested: false,
       links: {
         self: new Link({ href: 'www.example.com' }),
       },
@@ -67,7 +70,7 @@ describe('CartItem', () => {
 
   it('saves the trim information on onBlur event', async () => {
     const video = VideoFactory.sample({
-      id: '123',
+      id: 'test-video-id',
       title: 'this is cart item test',
     });
 
@@ -102,8 +105,10 @@ describe('CartItem', () => {
 
     cart = await fakeClient.carts.getCart();
 
-    expect(cart.items[0].additionalServices?.trim.from).toEqual('02:00');
-    expect(cart.items[0].additionalServices?.trim.to).toEqual('03:00');
+    const cartItem = cart.items.find((it) => it.videoId === video.id);
+
+    expect(cartItem.additionalServices?.trim.from).toEqual('02:00');
+    expect(cartItem.additionalServices?.trim.to).toEqual('03:00');
   });
 
   it('displays the trim values if cart item has trim info specified', async () => {
@@ -143,13 +148,13 @@ describe('CartItem', () => {
 
   it('sets trim to null when trim checkbox is unset', async () => {
     const video = VideoFactory.sample({
-      id: '123',
+      id: 'trim-null-id-1',
       title: 'this is cart item test',
     });
 
     const cartItem = {
       id: 'cart-item-id-1',
-      videoId: '123',
+      videoId: 'trim-null-id-1',
       additionalServices: {
         trim: {
           from: '2:00',
@@ -176,8 +181,62 @@ describe('CartItem', () => {
 
     const cart = await fakeClient.carts.getCart();
 
-    const updatedCartItem = cart.items.find((it) => it.id === cartItem.id);
+    const updatedCartItem = cart.items.find(
+      (it) => it.videoId === cartItem.videoId,
+    );
 
     expect(updatedCartItem.additionalServices.trim).toEqual(null);
+  });
+
+  it('sets transcript request to true when checkbox is checked and to false when is unchecked', async () => {
+    const video = VideoFactory.sample({
+      id: 'transcript-test',
+      title: 'this is cart item test',
+    });
+
+    const cartItem = {
+      id: 'cart-item-id-1',
+      videoId: 'transcript-test',
+      additionalServices: {
+        trim: {
+          from: '2:00',
+          to: '3:00',
+        },
+      },
+      transcriptRequested: false,
+      links: {
+        self: new Link({ href: 'www.example.com' }),
+      },
+    };
+
+    const fakeClient = new FakeBoclipsClient();
+
+    const wrapper = render(
+      <BoclipsClientProvider client={fakeClient}>
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
+
+    fireEvent.click(await wrapper.findByText('Request transcripts'));
+
+    let cart = await fakeClient.carts.getCart();
+
+    let updatedCartItem = cart.items.find(
+      (it) => it.videoId === cartItem.videoId,
+    );
+
+    expect(updatedCartItem.additionalServices.transcriptRequested).toEqual(
+      true,
+    );
+
+    fireEvent.click(await wrapper.findByText('Request transcripts'));
+
+    cart = await fakeClient.carts.getCart();
+
+    updatedCartItem = cart.items.find((it) => it.videoId === cartItem.videoId);
+
+    expect(updatedCartItem.additionalServices.transcriptRequested).toEqual(
+      false,
+    );
   });
 });

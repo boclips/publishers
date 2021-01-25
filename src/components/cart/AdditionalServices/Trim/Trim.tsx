@@ -34,9 +34,7 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
     return duration.format('mm');
   };
 
-  const [additionalServices, setAdditionalServices] = useState<
-    AdditionalServicesApi
-  >({
+  const [trimValue, setTrimValue] = useState<AdditionalServicesApi>({
     trim: {
       from: cartItem.additionalServices?.trim?.from || BASE_FROM_DURATION,
       to: cartItem.additionalServices?.trim?.to || safeToDuration(),
@@ -49,7 +47,7 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
     if (!e.currentTarget.checked) {
       doUpdateCartItem(cartItem, { trim: null }, boclipsClient);
 
-      setAdditionalServices((prevState) => {
+      setTrimValue((prevState) => {
         return {
           ...prevState,
           trim: {
@@ -62,10 +60,10 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
   };
 
   const onChangeTrimInput = (e, trimCheckpoint) => {
-    const trimValue = e.target.value;
+    const trim = e.target.value;
 
-    const value = { [trimCheckpoint]: trimValue };
-    setAdditionalServices((prevState) => {
+    const value = { [trimCheckpoint]: trim };
+    setTrimValue((prevState) => {
       return {
         ...prevState,
         trim: {
@@ -77,7 +75,7 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
   };
 
   const onBlur = () => {
-    doUpdateCartItem(cartItem, additionalServices, boclipsClient);
+    doUpdateCartItem(cartItem, trimValue, boclipsClient);
   };
 
   return (
@@ -103,7 +101,7 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
           From:
           <TimeField
             onChange={(e) => onChangeTrimInput(e, 'from')}
-            value={additionalServices.trim.from}
+            value={trimValue.trim.from}
             colon=":"
             input={
               <input
@@ -117,7 +115,7 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
           To:
           <TimeField
             onChange={(e) => onChangeTrimInput(e, 'to')}
-            value={additionalServices.trim.to}
+            value={trimValue.trim.to}
             colon=":"
             input={
               <input

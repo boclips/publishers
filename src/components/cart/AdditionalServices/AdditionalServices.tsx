@@ -3,6 +3,7 @@ import { Video } from 'boclips-api-client/dist/types';
 
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { TrimService } from 'src/components/cart/AdditionalServices/Trim/Trim';
+import TranscriptRequested from 'src/components/cart/AdditionalServices/TranscriptRequested/TranscriptRequested';
 
 interface Props {
   videoItem: Video;
@@ -14,6 +15,7 @@ const AdditionalServices = ({ videoItem, cartItem }: Props) => {
     <div className="text-gray-700">
       <div className="text-base ">Additional services</div>
       <TrimService videoItem={videoItem} cartItem={cartItem} />
+      <TranscriptRequested videoItem={videoItem} cartItem={cartItem} />
     </div>
   );
 };
