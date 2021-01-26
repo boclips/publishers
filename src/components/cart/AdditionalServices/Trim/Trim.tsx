@@ -17,12 +17,8 @@ const BASE_FROM_DURATION = '00:00';
 export const TrimService = ({ videoItem, cartItem }: Props) => {
   const boclipsClient = useBoclipsClient();
 
-  const hasTrim =
-    cartItem.additionalServices === null
-      ? false
-      : cartItem.additionalServices.trim !== null;
-
-  const [trimChecked, setTrimChecked] = useState(hasTrim);
+  const trimSet = !!cartItem?.additionalServices?.trim
+  const [trimChecked, setTrimChecked] = useState(trimSet);
 
   const safeToDuration = () => {
     const duration = videoItem.playback.duration;
