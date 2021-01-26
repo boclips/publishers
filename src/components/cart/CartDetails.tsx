@@ -1,7 +1,7 @@
 import React from 'react';
 import { Video } from 'boclips-api-client/dist/types';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
-import { CartNote } from 'src/components/cart/CartNote';
+import { InputWithDebounce as CartNote } from 'src/components/cart/InputWithDebounce';
 import CartItem from './CartItem/CartItem';
 
 interface Props {
@@ -17,9 +17,13 @@ export const CartDetails = ({ videos, onUpdateNote }: Props) => {
   };
 
   return (
-    <div className="col-start-2 col-end-20 font-medium row-start-3 row-end-3 flex flex-col">
-      <CartNote onUpdateNote={onUpdateNote} currentNote={cart.note} />
-      <div className="pt-4 font-medium col-start-2 col-span-10">
+    <div className="col-start-2 col-end-20 font-medium text-md row-start-3 row-end-3 flex flex-col">
+      <CartNote
+        currentValue={cart.note || undefined}
+        onUpdate={onUpdateNote}
+        placeholder="Add a note about this order (optional)"
+      />
+      <div className="pt-4 font-medium text-sm col-start-2 col-span-10">
         {videos.map((item) => (
           <CartItem
             videoItem={item}

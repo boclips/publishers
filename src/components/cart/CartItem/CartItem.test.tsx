@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import React from 'react';
 import CartItem from 'src/components/cart/CartItem/CartItem';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
@@ -30,6 +30,9 @@ describe('CartItem', () => {
     expect(await wrapper.findByText('Additional services')).toBeInTheDocument();
     expect(await wrapper.findByText('Trim video')).toBeInTheDocument();
     expect(await wrapper.findByText('Request transcripts')).toBeInTheDocument();
+    expect(
+      await wrapper.findByText('Request other type of editing'),
+    ).toBeInTheDocument();
 
     // queryBy doesn't throw and error when cannot be found
     expect(wrapper.queryByText(/From:/)).not.toBeInTheDocument();
@@ -266,5 +269,128 @@ describe('CartItem', () => {
     updatedCartItem = cart.items.find((it) => it.videoId === cartItem.videoId);
 
     expect(updatedCartItem.additionalServices.captionsRequested).toEqual(false);
+  });
+
+  it('Opens a input box when you tick edit request', async () => {
+    const video = VideoFactory.sample({
+      id: 'edit-request-id-1',
+      title: 'this is cart item test',
+    });
+
+    const cartItem = CartItemFactory.sample({
+      id: 'edit-request-id-1',
+      videoId: 'captions-test',
+      additionalServices: {
+        trim: {
+          from: '2:00',
+          to: '3:00',
+        },
+        transcriptRequested: false,
+        captionsRequested: false,
+      },
+    });
+
+    const fakeClient = new FakeBoclipsClient();
+
+    const wrapper = render(
+      <BoclipsClientProvider client={fakeClient}>
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
+
+    fireEvent.click(await wrapper.findByText('Request other type of editing'));
+
+    expect(
+      await wrapper.findByPlaceholderText(
+        "Please describe how you'd like to edit this video",
+      ),
+    );
+  });
+  it('Saves edit request to cart', async () => {
+    const video = VideoFactory.sample({
+      id: 'edit-request-id-2',
+      title: 'this is cart item test',
+    });
+
+    const cartItem = CartItemFactory.sample({
+      id: 'edit-request-id-2',
+      videoId: 'edit-request-id-2',
+    });
+
+    const fakeClient = new FakeBoclipsClient();
+
+    const wrapper = render(
+      <BoclipsClientProvider client={fakeClient}>
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
+
+    fireEvent.click(await wrapper.findByText('Request other type of editing'));
+
+    const input = await wrapper.findByPlaceholderText(
+      "Please describe how you'd like to edit this video",
+    );
+
+    fireEvent.change(input, {
+      target: { value: 'please do some lovely editing' },
+    });
+    const changedInput = await wrapper.findByDisplayValue(
+      'please do some lovely editing',
+    );
+
+    expect(changedInput).toBeVisible();
+
+    waitFor(async () => {
+      const cart = await fakeClient.carts.getCart();
+      const updatedCartItem = cart.items.find(
+        (it) => it.videoId === cartItem.videoId,
+      );
+      expect(updatedCartItem?.additionalServices.editRequest).toEqual(
+        'please do some lovely editing',
+      );
+    });
+  });
+
+  it('Can set an edit request to null', async () => {
+    const video = VideoFactory.sample({
+      id: 'edit-request-id-3',
+      title: 'this is cart item test',
+    });
+
+    const cartItem = CartItemFactory.sample({
+      id: 'edit-request-id-3',
+      videoId: 'edit-request-id-3',
+      additionalServices: {
+        editRequest: 'this was a mistake',
+      },
+    });
+
+    const fakeClient = new FakeBoclipsClient();
+
+    const wrapper = render(
+      <BoclipsClientProvider client={fakeClient}>
+        <CartItem videoItem={video} cartItem={cartItem} />
+      </BoclipsClientProvider>,
+    );
+
+    fireEvent.click(await wrapper.findByText('Request other type of editing'));
+
+    waitFor(async () => {
+      const input = await wrapper.findByDisplayValue('this was a mistake');
+      fireEvent.change(input, {
+        target: { value: null },
+      });
+      const changedInput = await wrapper.findByDisplayValue(
+        "Please describe how you'd like to edit this video",
+      );
+
+      expect(changedInput).toBeVisible();
+
+      const cart = await fakeClient.carts.getCart();
+      const updatedCartItem = cart.items.find(
+        (it) => it.videoId === cartItem.videoId,
+      );
+      expect(updatedCartItem?.additionalServices.editRequest).toBeNull();
+    });
   });
 });

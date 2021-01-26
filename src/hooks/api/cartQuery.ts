@@ -24,7 +24,10 @@ export const doUpdateCartItem = (
   additionalServices: AdditionalServices,
   client: BoclipsClient,
 ) => {
-  client.carts.updateCartItemAdditionalServices(cartItem, additionalServices);
+  return client.carts.updateCartItemAdditionalServices(
+    cartItem,
+    additionalServices,
+  );
 };
 
 export const useCartQuery = () => {

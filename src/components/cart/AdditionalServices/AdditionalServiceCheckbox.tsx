@@ -7,7 +7,7 @@ import { AdditionalServices } from 'boclips-api-client/dist/sub-clients/carts/mo
 
 interface Props {
   label: string;
-  type: keyof Omit<AdditionalServices, 'trim'>;
+  type: keyof Omit<AdditionalServices, 'trim' | 'editRequest'>;
   cartItem: CartItem;
 }
 

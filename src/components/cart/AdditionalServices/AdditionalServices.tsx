@@ -4,6 +4,7 @@ import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { TrimService } from 'src/components/cart/AdditionalServices/Trim/Trim';
 import AdditionalServiceCheckbox from 'src/components/cart/AdditionalServices/AdditionalServiceCheckbox';
+import { EditRequest } from 'src/components/cart/AdditionalServices/editRequest/editRequest';
 
 interface Props {
   videoItem: Video;
@@ -13,7 +14,7 @@ interface Props {
 const AdditionalServices = ({ videoItem, cartItem }: Props) => {
   return (
     <div className="text-gray-700">
-      <div className="text-base ">Additional services</div>
+      <div className="text-base">Additional services</div>
       <TrimService videoItem={videoItem} cartItem={cartItem} />
       <AdditionalServiceCheckbox
         cartItem={cartItem}
@@ -25,6 +26,7 @@ const AdditionalServices = ({ videoItem, cartItem }: Props) => {
         type="captionsRequested"
         label="Request English captions"
       />
+      <EditRequest cartItem={cartItem} label="Request other type of editing" />
     </div>
   );
 };
