@@ -27,8 +27,12 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
   const safeToDuration = () => {
     const duration = videoItem.playback.duration;
 
-    if (duration.seconds()) {
+    if (duration.seconds() && duration.minutes()) {
       return duration.format('mm:ss');
+    }
+
+    if (duration.seconds() && !duration.minutes()) {
+      return duration.format('00:ss');
     }
 
     return duration.format('mm');
