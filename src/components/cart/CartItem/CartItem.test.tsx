@@ -2,20 +2,16 @@ import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import CartItem from 'src/components/cart/CartItem/CartItem';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
-import { Link } from 'boclips-api-client/dist/sub-clients/common/model/LinkEntity';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
+import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
 
 describe('CartItem', () => {
   it('displays cart item with title and additional services', async () => {
-    const cartItem = {
+    const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',
       videoId: '123',
-      additionalServices: null,
-      links: {
-        self: new Link({ href: 'www.example.com' }),
-      },
-    };
+    });
 
     const video = VideoFactory.sample({
       id: '123',
@@ -41,15 +37,10 @@ describe('CartItem', () => {
   });
 
   it('opens trim video options on when checkbox is checked', async () => {
-    const cartItem = {
+    const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',
       videoId: '123',
-      additionalServices: null,
-      transcriptRequested: false,
-      links: {
-        self: new Link({ href: 'www.example.com' }),
-      },
-    };
+    });
 
     const video = VideoFactory.sample({
       id: '123',
@@ -117,7 +108,7 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const cartItem = {
+    const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',
       videoId: '123',
       additionalServices: {
@@ -126,10 +117,7 @@ describe('CartItem', () => {
           to: '02:21',
         },
       },
-      links: {
-        self: new Link({ href: 'www.example.com' }),
-      },
-    };
+    });
 
     const wrapper = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
@@ -152,7 +140,7 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const cartItem = {
+    const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',
       videoId: 'trim-null-id-1',
       additionalServices: {
@@ -161,10 +149,7 @@ describe('CartItem', () => {
           to: '3:00',
         },
       },
-      links: {
-        self: new Link({ href: 'www.example.com' }),
-      },
-    };
+    });
 
     const fakeClient = new FakeBoclipsClient();
 
@@ -194,7 +179,7 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const cartItem = {
+    const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',
       videoId: 'transcript-test',
       additionalServices: {
@@ -204,10 +189,7 @@ describe('CartItem', () => {
         },
         transcriptRequested: false,
       },
-      links: {
-        self: new Link({ href: 'www.example.com' }),
-      },
-    };
+    });
 
     const fakeClient = new FakeBoclipsClient();
 
@@ -246,7 +228,7 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const cartItem = {
+    const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',
       videoId: 'captions-test', // this needs to be the same as in video.id
       additionalServices: {
@@ -257,11 +239,7 @@ describe('CartItem', () => {
         transcriptRequested: false,
         captionsRequested: false,
       },
-
-      links: {
-        self: new Link({ href: 'www.example.com' }),
-      },
-    };
+    });
 
     const fakeClient = new FakeBoclipsClient();
 

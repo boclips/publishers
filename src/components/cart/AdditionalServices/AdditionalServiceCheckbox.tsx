@@ -14,7 +14,7 @@ interface Props {
 const AdditionalServicesCheckbox = ({ label, type, cartItem }: Props) => {
   const boclipsClient = useBoclipsClient();
   const id = cartItem.videoId + type;
-  const isChecked = cartItem?.additionalServices?.[type];
+  const isChecked = Boolean(cartItem?.additionalServices?.[type]);
 
   const [serviceRequested, setServiceRequested] = useState<boolean>(isChecked);
 
