@@ -1,11 +1,12 @@
-import React, { lazy, Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { BoclipsClient } from 'boclips-api-client';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Loading } from 'src/components/common/Loading';
 import { hot } from 'react-hot-loader/root';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
+import { TrackPageRendered } from 'src/services/analytics/HttpBoclipsAnalytics';
 import { BoclipsClientProvider } from './components/common/BoclipsClientProvider';
 
 const SearchResultsView = lazy(
@@ -30,6 +31,14 @@ interface Props {
 }
 
 const App = ({ apiClient }: Props) => {
+  const history = useHistory();
+
+  useEffect(() => {
+    apiClient.events.trackPageRendered({
+      url: `${window.location.host}${history.location.pathname}${history.location.search}`,
+    });
+  }, [apiClient, history]);
+
   return (
     <>
       <Switch>
