@@ -1,35 +1,25 @@
 import React from 'react';
 import { getFacetSorter } from 'src/services/sortFacets';
 import { SortBy } from 'src/types/SortBy';
-import { FilterOption, FilterOptionWithLabel } from 'src/types/FilterOption';
-
-const addLabel = (option: FilterOption): FilterOptionWithLabel => ({
-  label: <span>{option.name}</span>,
-  hits: option.hits,
-  id: option.id,
-  isSelected: false,
-});
+import { FilterOption } from 'src/types/FilterOption';
 
 export const convertFilterOptions = (
   options: FilterOption[],
   sortBy: SortBy = 'SORT_BY_HITS_AND_NAME',
-): FilterOptionWithLabel[] =>
-  options?.sort(getFacetSorter(sortBy))?.map(addLabel);
+): FilterOption[] => options?.sort(getFacetSorter(sortBy));
 
 export const searchFilterOptions = (
   options: FilterOption[],
   searchText?: string,
   sortBy: SortBy = 'SORT_BY_HITS_AND_NAME',
-): FilterOptionWithLabel[] =>
+): FilterOption[] =>
   options.sort(getFacetSorter(sortBy)).reduce((acc, option) => {
     if (!searchText) {
-      acc.push(addLabel(option));
+      acc.push(option);
     } else if (option.name.toLowerCase().includes(searchText.toLowerCase())) {
-      const filterOption: FilterOptionWithLabel = {
-        id: option.id,
-        hits: option.hits,
+      const filterOption: FilterOption = {
+        ...option,
         label: boldMatchingText(option.name, searchText),
-        isSelected: false,
       };
 
       acc.push(filterOption);

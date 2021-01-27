@@ -3,45 +3,41 @@ import { fireEvent } from '@testing-library/react';
 import React from 'react';
 import { SearchableFilter } from 'src/components/filterPanel/filter/SearchableFilter';
 import { FilterOption } from 'src/types/FilterOption';
+import { FilterOptionFactory } from 'src/testSupport/FilterOptionFactory';
 
 describe(`searchableFilter`, () => {
   const channels: FilterOption[] = [
-    {
-      hits: 10,
+    FilterOptionFactory.sample({
       id: 'channel-1',
       name: 'TED-ED',
-      isSelected: false,
-    },
-    {
-      hits: 5,
+      label: <span>TED-ED</span>,
+      hits: 10,
+    }),
+    FilterOptionFactory.sample({
       id: 'channel-2',
       name: 'History channel',
-      isSelected: false,
-    },
-    {
       hits: 5,
+    }),
+    FilterOptionFactory.sample({
       id: 'channel-3',
       name: 'geography',
-      isSelected: false,
-    },
-    {
       hits: 5,
+    }),
+    FilterOptionFactory.sample({
       id: 'channel-4',
       name: 'science',
-      isSelected: false,
-    },
-    {
       hits: 5,
+    }),
+    FilterOptionFactory.sample({
       id: 'channel-5',
       name: 'maths',
-      isSelected: false,
-    },
-    {
       hits: 5,
+    }),
+    FilterOptionFactory.sample({
       id: 'channel-6',
       name: 'music',
-      isSelected: false,
-    },
+      hits: 5,
+    }),
   ];
 
   it('renders the search input with default placeholder when enabled', () => {

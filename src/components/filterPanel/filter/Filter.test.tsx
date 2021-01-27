@@ -2,35 +2,35 @@ import React from 'react';
 import { fireEvent } from '@testing-library/react';
 import { Filter } from 'src/components/filterPanel/filter/Filter';
 import { renderWithLocation } from 'src/testSupport/renderWithLocation';
-import { FilterOptionWithLabel } from 'src/types/FilterOption';
+import { FilterOption } from 'src/types/FilterOption';
+import { FilterOptionFactory } from 'src/testSupport/FilterOptionFactory';
 
 describe(`filterPanel`, () => {
-  const generateOptions = (optionNumber: number): FilterOptionWithLabel[] => {
-    const options: FilterOptionWithLabel[] = [];
+  const generateOptions = (optionNumber: number): FilterOption[] => {
+    const options: FilterOption[] = [];
     for (let i = 0; i < optionNumber; i++) {
-      options.push({
-        hits: 10 - i,
-        id: `${i}-option`,
-        label: <span>Option {i}</span>,
-        isSelected: false,
-      });
+      options.push(
+        FilterOptionFactory.sample({
+          hits: 10 - i,
+          id: `${i}-option`,
+          label: <span>Option {i}</span>,
+        }),
+      );
     }
     return options;
   };
 
-  const videoTypes: FilterOptionWithLabel[] = [
-    {
+  const videoTypes: FilterOption[] = [
+    FilterOptionFactory.sample({
       hits: 10,
       id: 'stock',
       label: <span>Stock</span>,
-      isSelected: false,
-    },
-    {
+    }),
+    FilterOptionFactory.sample({
       hits: 5,
       id: 'news',
       label: <span>News</span>,
-      isSelected: false,
-    },
+    }),
   ];
 
   it('renders the title, filters and facets provided', () => {

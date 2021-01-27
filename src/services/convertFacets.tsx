@@ -2,6 +2,7 @@ import {
   Facet,
   VideoFacets,
 } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
+import React from 'react';
 import { Filters } from 'src/hooks/useFilterOptions';
 import { SearchFilters } from 'src/hooks/useLocationParams';
 import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
@@ -38,12 +39,16 @@ const convertFacet = (
   facet: Facet,
   selectedIds: string[] = [],
   convertName?: (rawName: string) => string,
-): FilterOption => ({
-  name: convertName ? convertName(facet.name) : facet.name,
-  hits: facet.hits,
-  id: facet.id,
-  isSelected: selectedIds.includes(facet.id),
-});
+): FilterOption => {
+  const name = convertName ? convertName(facet.name) : facet.name;
+  return {
+    name,
+    label: <span>{name}</span>,
+    hits: facet.hits,
+    id: facet.id,
+    isSelected: selectedIds.includes(facet.id),
+  };
+};
 
 const getVideoTypeLabel = (name: string): string => {
   switch (name.toUpperCase()) {

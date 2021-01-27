@@ -5,11 +5,5 @@ export interface FilterOption {
   name: string;
   hits: number;
   isSelected: boolean;
-}
-
-export interface FilterOptionWithLabel {
-  id: string;
   label: ReactElement;
-  hits: number;
-  isSelected: boolean;
 }

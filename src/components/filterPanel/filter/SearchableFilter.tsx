@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Filter } from 'src/components/filterPanel/filter/Filter';
 import { FilterSearch } from 'src/components/filterPanel/filter/FilterSearch';
-import { FilterOption, FilterOptionWithLabel } from 'src/types/FilterOption';
+import { FilterOption } from 'src/types/FilterOption';
 import { searchFilterOptions } from 'src/services/convertFilterOptions';
 
 interface Props {
@@ -21,7 +21,7 @@ export const SearchableFilter = ({
   const [searchText, setSearchText] = useState<string>();
 
   const filteredOptions = useMemo(
-    (): FilterOptionWithLabel[] => searchFilterOptions(options, searchText),
+    (): FilterOption[] => searchFilterOptions(options, searchText),
     [options, searchText],
   );
 

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { FilterHeader } from 'src/components/filterPanel/filter/FilterHeader';
 import { FilterOptionList } from 'src/components/filterPanel/filter/FilterOptionList';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
-import { FilterOptionWithLabel } from 'src/types/FilterOption';
+import { FilterOption } from 'src/types/FilterOption';
 
 interface Props {
   title: string;
-  options: FilterOptionWithLabel[];
+  options: FilterOption[];
   filterName: string;
   handleChange: (filter: string, values: string[]) => void;
   filtersSearch?: React.ReactNode;

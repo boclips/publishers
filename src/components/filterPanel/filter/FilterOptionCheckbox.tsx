@@ -1,9 +1,9 @@
 import React from 'react';
 import c from 'classnames';
-import { FilterOptionWithLabel } from 'src/types/FilterOption';
+import { FilterOption } from 'src/types/FilterOption';
 
 interface Props {
-  option: FilterOptionWithLabel;
+  option: FilterOption;
   selected: boolean;
   onSelect: (event, item) => void;
 }
