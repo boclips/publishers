@@ -17,6 +17,10 @@ describe('CartView', () => {
   const video = VideoFactory.sample({
     id: 'video-id',
     title: 'news video',
+    price: {
+      amount: 600,
+      currency: 'USD',
+    },
     types: [{ name: 'NEWS', id: 2 }],
   });
 
@@ -101,6 +105,27 @@ describe('CartView', () => {
     expect(
       within(confirmation).getByText('View all orders').closest('a'),
     ).toHaveAttribute('href', `/orders`);
+  });
+
+  it(`has the 'video(s) total' label`, async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
+    fakeClient.videos.insertVideo(video);
+    fakeClient.carts.insertCartItem(video.id);
+
+    fakeClient.videos.insertVideo(
+      VideoFactory.sample({
+        price: { amount: 300, currency: 'USD' },
+        id: 'video-id-2',
+      }),
+    );
+    fakeClient.carts.insertCartItem('video-id-2');
+
+    const wrapper = renderCartView(fakeClient);
+
+    expect(await wrapper.findByText('video(s) total')).toBeVisible();
+    expect(await wrapper.findByText('$900')).toBeVisible();
   });
 
   it(`displays error page when error while placing order`, async () => {
