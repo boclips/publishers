@@ -2,38 +2,45 @@ import { renderWithLocation } from 'src/testSupport/renderWithLocation';
 import { fireEvent } from '@testing-library/react';
 import React from 'react';
 import { SearchableFilter } from 'src/components/filterPanel/filter/SearchableFilter';
+import { FilterOption } from 'src/types/FilterOption';
 
 describe(`searchableFilter`, () => {
-  const channels = [
+  const channels: FilterOption[] = [
     {
       hits: 10,
       id: 'channel-1',
       name: 'TED-ED',
+      isSelected: false,
     },
     {
       hits: 5,
       id: 'channel-2',
       name: 'History channel',
+      isSelected: false,
     },
     {
       hits: 5,
       id: 'channel-3',
       name: 'geography',
+      isSelected: false,
     },
     {
       hits: 5,
       id: 'channel-4',
       name: 'science',
+      isSelected: false,
     },
     {
       hits: 5,
       id: 'channel-5',
       name: 'maths',
+      isSelected: false,
     },
     {
       hits: 5,
       id: 'channel-6',
       name: 'music',
+      isSelected: false,
     },
   ];
 

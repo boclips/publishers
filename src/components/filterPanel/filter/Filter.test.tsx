@@ -2,31 +2,34 @@ import React from 'react';
 import { fireEvent } from '@testing-library/react';
 import { Filter } from 'src/components/filterPanel/filter/Filter';
 import { renderWithLocation } from 'src/testSupport/renderWithLocation';
-import { FilterOption } from 'src/types/FilterOption';
+import { FilterOptionWithLabel } from 'src/types/FilterOption';
 
 describe(`filterPanel`, () => {
-  const generateOptions = (optionNumber: number): FilterOption[] => {
-    const options: FilterOption[] = [];
+  const generateOptions = (optionNumber: number): FilterOptionWithLabel[] => {
+    const options: FilterOptionWithLabel[] = [];
     for (let i = 0; i < optionNumber; i++) {
       options.push({
         hits: 10 - i,
         id: `${i}-option`,
         label: <span>Option {i}</span>,
+        isSelected: false,
       });
     }
     return options;
   };
 
-  const videoTypes: FilterOption[] = [
+  const videoTypes: FilterOptionWithLabel[] = [
     {
       hits: 10,
       id: 'stock',
       label: <span>Stock</span>,
+      isSelected: false,
     },
     {
       hits: 5,
       id: 'news',
       label: <span>News</span>,
+      isSelected: false,
     },
   ];
 

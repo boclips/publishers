@@ -1,9 +1,9 @@
 import React from 'react';
-import { Facet } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { SearchableFilter } from 'src/components/filterPanel/filter/SearchableFilter';
+import { FilterOption } from 'src/types/FilterOption';
 
 interface Props {
-  options: Facet[];
+  options: FilterOption[];
   handleChange: (filter: string, values: string[]) => void;
 }
 

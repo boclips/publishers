@@ -25,6 +25,6 @@ window.matchMedia =
     };
   };
 
-afterEach(async () => {
+afterEach(() => {
   ReactTestingLibrary.cleanup();
 });

@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor, within } from '@testing-library/react';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
@@ -54,6 +54,7 @@ describe('SearchResults', () => {
     expect(await wrapper.findByText('by BFI')).toBeVisible();
     expect(await wrapper.findByText('geography')).toBeVisible();
     expect(await wrapper.findByText('Ages 7-9')).toBeVisible();
+    expect(wrapper.queryByText('Selected filters')).not.toBeInTheDocument();
   });
 
   it('renders a hits count that is updated after new search', async () => {
@@ -123,7 +124,7 @@ describe('SearchResults', () => {
     fireEvent.keyDown(searchBar, { key: 'Enter', code: 'Enter' });
 
     expect(await wrapper.findByText('cats have nine lives')).toBeVisible();
-    expect(await wrapper.queryByText('dogs are nice')).not.toBeInTheDocument();
+    expect(wrapper.queryByText('dogs are nice')).not.toBeInTheDocument();
   });
 
   it('renders the pagination', async () => {
@@ -148,12 +149,12 @@ describe('SearchResults', () => {
     );
 
     expect(await wrapper.findByText('video 0')).toBeVisible();
-    expect(await wrapper.queryByText('video 10')).not.toBeInTheDocument();
+    expect(wrapper.queryByText('video 10')).not.toBeInTheDocument();
 
     fireEvent.click(wrapper.getByText('2'));
 
     expect(await wrapper.findByText('video 10')).toBeVisible();
-    expect(await wrapper.queryByText('video 0')).not.toBeInTheDocument();
+    expect(wrapper.queryByText('video 0')).not.toBeInTheDocument();
   });
 
   it(`displays the video type filters and facet counts`, async () => {
@@ -195,8 +196,8 @@ describe('SearchResults', () => {
     fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
-          FacetFactory.sample({ id: 'STOCK', hits: 1, name: 'Stock' }),
-          FacetFactory.sample({ id: 'NEWS', hits: 1, name: 'News' }),
+          FacetFactory.sample({ id: 'STOCK', hits: 1, name: 'STOCK' }),
+          FacetFactory.sample({ id: 'NEWS', hits: 1, name: 'NEWS' }),
         ],
       }),
     );
@@ -223,7 +224,7 @@ describe('SearchResults', () => {
 
     expect(await wrapper.findByText('Video type')).toBeInTheDocument();
 
-    expect(await wrapper.queryByText('Educational')).toBeNull();
+    expect(wrapper.queryByText('Educational')).toBeNull();
     expect(await wrapper.findByText('News')).toBeInTheDocument();
     expect(await wrapper.findByText('Raw Footage')).toBeInTheDocument();
 
@@ -237,7 +238,7 @@ describe('SearchResults', () => {
     fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
-          FacetFactory.sample({ name: 'News', id: 'NEWS', hits: 10 }),
+          FacetFactory.sample({ name: 'NEWS', id: 'NEWS', hits: 10 }),
         ],
       }),
     );
@@ -245,12 +246,15 @@ describe('SearchResults', () => {
     fireEvent.click(wrapper.getByTestId('NEWS-checkbox'));
     expect(newsCheckbox).toHaveProperty('checked', true);
 
-    await waitFor(async () => {
-      expect(await wrapper.findByText('News')).toBeInTheDocument();
-      expect(await wrapper.findByText('news video')).toBeInTheDocument();
-      expect(await wrapper.queryByText('Raw Footage')).toBeNull();
-      expect(await wrapper.queryByText('stock video')).toBeNull();
-    });
+    expect(await wrapper.findByLabelText(/News/)).toBeInTheDocument();
+    expect(await wrapper.findByText('news video')).toBeInTheDocument();
+    expect(wrapper.queryByText('Raw Footage')).toBeNull();
+    expect(wrapper.queryByText('stock video')).toBeNull();
+
+    const selectedFiltersSection = wrapper.getByText('Selected filters')
+      .parentElement;
+
+    expect(within(selectedFiltersSection).getByText('News')).toBeVisible();
   });
 
   it(`applies filters from url on load`, async () => {
@@ -287,6 +291,7 @@ describe('SearchResults', () => {
 
     const stockCheckbox = await wrapper.findByTestId('STOCK-checkbox');
     expect(stockCheckbox).toHaveProperty('checked', true);
+    expect(await wrapper.findByText('Selected filters')).toBeVisible();
   });
 
   it(`persists queries between pages`, async () => {
@@ -322,7 +327,7 @@ describe('SearchResults', () => {
     );
 
     expect(await wrapper.findByText('video 0')).toBeVisible();
-    expect(await wrapper.queryByText('video 10')).not.toBeInTheDocument();
+    expect(wrapper.queryByText('video 10')).not.toBeInTheDocument();
 
     fireEvent.click(wrapper.getByText('2'));
 
@@ -332,7 +337,7 @@ describe('SearchResults', () => {
     );
 
     expect(await wrapper.findByText('video 10')).toBeVisible();
-    expect(await wrapper.queryByText('video 0')).not.toBeInTheDocument();
+    expect(wrapper.queryByText('video 0')).not.toBeInTheDocument();
   });
 
   describe(`channel filters`, () => {
@@ -381,13 +386,11 @@ describe('SearchResults', () => {
       });
 
       expect(await wrapper.findByText('Get')).toHaveClass('font-medium');
-      expect(await wrapper.queryByText('Ted')).toBeNull();
+      expect(wrapper.queryByText('Ted')).toBeNull();
 
       fireEvent.click(wrapper.getByTestId('getty-id-checkbox'));
 
       expect(await wrapper.findByText('shark video')).toBeVisible();
-
-      // await waitForElementToBeRemoved(() => wrapper.getByText('whale video'));
     });
   });
 
@@ -441,8 +444,8 @@ describe('SearchResults', () => {
       expect(await wrapper.findByText('Up to 1 min')).toBeInTheDocument();
       expect(await wrapper.findByText('5 - 10 min')).toBeInTheDocument();
       expect(await wrapper.findByText('20 min +')).toBeInTheDocument();
-      expect(await wrapper.queryByText('1 - 5 min')).not.toBeInTheDocument();
-      expect(await wrapper.queryByText('10 - 20 min')).not.toBeInTheDocument();
+      expect(wrapper.queryByText('1 - 5 min')).not.toBeInTheDocument();
+      expect(wrapper.queryByText('10 - 20 min')).not.toBeInTheDocument();
     });
   });
 
@@ -484,9 +487,7 @@ describe('SearchResults', () => {
         </MemoryRouter>,
       );
 
-      await waitFor(() => {
-        expect(wrapper.getByText('Add to cart')).toBeInTheDocument();
-      });
+      expect(await wrapper.findByText('Add to cart')).toBeInTheDocument();
 
       fireEvent(
         wrapper.getByText('Add to cart'),

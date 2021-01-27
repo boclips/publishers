@@ -7,10 +7,12 @@ export const useLocationParams = () => {
   return new URLSearchParams(location.search);
 };
 
+export type SearchFilters = { [key in FilterKeys]: string[] };
+
 export interface SearchQueryLocationParams {
   query: string;
   page: number;
-  filters: { [key in FilterKeys]: string[] };
+  filters: SearchFilters;
 }
 
 export const useSearchQueryLocationParams = (): [
