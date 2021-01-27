@@ -14,4 +14,21 @@ describe('get totalPrice display value', () => {
   it('returns empty value for the unlikely scenario of no videos', () => {
     expect(getTotalPriceDisplayValue([])).toBe('');
   });
+
+  it('returns empty value for the unlikely scenario of undefined', () => {
+    expect(getTotalPriceDisplayValue(undefined)).toBe('');
+  });
+
+  it('skips videos without prices', () => {
+    const videos = [
+      VideoFactory.sample({ price: undefined }),
+      VideoFactory.sample({ price: { amount: 530.5, currency: 'USD' } }),
+    ];
+    expect(getTotalPriceDisplayValue(videos)).toBe('$530.50');
+  });
+
+  it('returns empty value when none of videos have prices', () => {
+    const videos = [VideoFactory.sample({ price: undefined })];
+    expect(getTotalPriceDisplayValue(videos)).toBe('');
+  });
 });

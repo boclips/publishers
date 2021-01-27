@@ -2,17 +2,19 @@ import { Video } from 'boclips-api-client/dist/types';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 
 export const getTotalPriceDisplayValue = (videos: Video[]): string => {
-  if (!videos || videos.length < 1) {
+  const videosWithPrices = videos?.filter((video) => Boolean(video.price));
+
+  if (!videosWithPrices || videosWithPrices.length < 1) {
     return '';
   }
 
-  const totalPrice = videos
-    .map((video) => video.price!!.amount)
+  const totalPrice = videosWithPrices
+    .map((video) => video.price.amount)
     .reduce((accumulator, currentValue) => accumulator + currentValue);
 
   return createPriceDisplayValue(
     totalPrice,
-    videos[0].price!!.currency,
+    videosWithPrices[0].price.currency,
     navigator.language,
   );
 };
