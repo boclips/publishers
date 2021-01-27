@@ -6,6 +6,7 @@ import React, { ReactElement } from 'react';
 import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
 import { orderDeliveryStatus } from 'src/components/ordersTable/OrderDeliveryStatus';
+import Button from '@boclips-ui/button';
 
 interface Props {
   order: Order;
@@ -18,7 +19,7 @@ interface ItemProps {
 
 const Item = ({ header, value }: ItemProps) => {
   return (
-    <div className="flex flex-col text-xs my-8">
+    <div className="flex flex-col text-sm my-8">
       <div className="text-sm text-grey-700 font-medium">{header}</div>
       {value}
     </div>
@@ -36,7 +37,7 @@ export const OrdersCard = ({ order }: Props) => {
       <div
         className={`${
           deliveryStatus === 'PROCESSING' ? 'text-blue-700' : 'text-gray-800'
-        } text-sm font-medium`}
+        } text-base font-medium`}
       >
         {deliveryStatus}
       </div>
@@ -44,11 +45,11 @@ export const OrdersCard = ({ order }: Props) => {
   };
 
   return (
-    <div className="col-start-2 col-end-26 flex flex-row border-b-2 text-grey-700 justify-between">
+    <div className="col-start-2 col-end-26 flex flex-row border-b-2 text-grey-700 justify-between items-center">
       <Item
         header="Order date"
         value={
-          <div className="text-gray-800 text-sm">
+          <div className="text-gray-800 text-base">
             {dateFormat(order.createdAt, 'dd/mm/yy')}
           </div>
         }
@@ -57,7 +58,7 @@ export const OrdersCard = ({ order }: Props) => {
         header="Order number"
         value={
           <Link data-qa="order-id" to={`/orders/${order.id}`}>
-            <div className="text-blue-800 text-sm underline">{order.id}</div>
+            <div className="text-blue-800 text-base underline">{order.id}</div>
           </Link>
         }
       />
@@ -65,13 +66,23 @@ export const OrdersCard = ({ order }: Props) => {
       <Item
         header="Delivery date"
         value={
-          <div className="text-gray-800 text-sm" data-qa="delivery-date">
+          <div className="text-gray-800 text-base" data-qa="delivery-date">
             {order.deliveryDate
               ? dateFormat(order.deliveryDate, 'dd/mm/yy')
               : '-'}
           </div>
         }
       />
+      <div className="h-12 text-base">
+        <Link to={`/orders/${order.id}`}>
+          <Button
+            theme="publishers"
+            type="primary"
+            text="View order"
+            onClick={null}
+          />
+        </Link>
+      </div>
     </div>
   );
 };

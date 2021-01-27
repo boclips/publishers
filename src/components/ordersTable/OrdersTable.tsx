@@ -26,7 +26,7 @@ export const OrdersTable = () => {
 
   return (
     <div className="col-start-2 col-end-26 row-start-2 row-end-4">
-      <div className="font-bold text-lg text-grey-800">Your Orders</div>
+      <div className="font-bold text-2xl text-grey-800">Your Orders</div>
       {isError ? (
         <ErrorMessage errorMessage={errorMessage} />
       ) : (

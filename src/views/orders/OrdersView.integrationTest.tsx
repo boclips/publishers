@@ -1,15 +1,16 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import {
   FakeBoclipsClient,
+  OrderItemFactory,
   OrdersFactory,
 } from 'boclips-api-client/dist/test-support';
 import { OrderStatus } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 
 describe('OrderView', () => {
-  it('loads the order view', async () => {
+  it('loads the orders view', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
         <App apiClient={new FakeBoclipsClient()} />
@@ -17,6 +18,32 @@ describe('OrderView', () => {
     );
 
     expect(await wrapper.findByText('Your Orders')).toBeVisible();
+  });
+
+  it('navigates to order view when view order is clicked', async () => {
+    const fakeClient = new FakeBoclipsClient();
+    const items = OrderItemFactory.sample({
+      id: 'i am the id you are looking for...',
+    });
+    const order = OrdersFactory.sample({
+      items: [items],
+    });
+
+    fakeClient.orders.insertOrderFixture(order);
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/orders']}>
+        <App apiClient={new FakeBoclipsClient()} />
+      </MemoryRouter>,
+    );
+
+    waitFor(async () => {
+      const button = await wrapper.getByText('View order');
+      fireEvent.click(button);
+      expect(
+        await wrapper.findByText('i am the id you are looking for...'),
+      ).toBeVisible();
+    });
   });
 
   it('loads the order cards', async () => {
@@ -56,6 +83,7 @@ describe('OrderView', () => {
     expect((await wrapper.findAllByText('Status')).length).toEqual(2);
     expect(await wrapper.findByText('PROCESSING')).toBeVisible();
     expect(await wrapper.findByText('DELIVERED')).toBeVisible();
+    expect((await wrapper.findAllByText('View order')).length).toEqual(2);
   });
 
   it('if no orders are there it shows no orders', async () => {

@@ -6,13 +6,16 @@ export const OrderHeader = ({ id }) => {
   return (
     <>
       <div className="flex flex-row items-end mb-4">
-        <Link to="/orders" className="text-base mr-4 text-grey-800">
+        <Link
+          to="/orders"
+          className="text-sm mr-4 text-gray-800 hover:text-gray-800"
+        >
           Your orders
         </Link>
         <Arrow className="w-2  mr-4 self-center" />
         <div className="text-base">{`Order ${id}`}</div>
       </div>
-      <div className="text-2xl font-bold text-grey-800 mb-4">{`Order ${id}`}</div>
+      <div className="text-2xl font-bold text-gray-800 mb-4">{`Order ${id}`}</div>
     </>
   );
 };
