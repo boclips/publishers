@@ -2,45 +2,20 @@
 @font-family: 'Rubik', Helvetica Neue, Helvetica, Arial, sans-serif;
 
 .pagination{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    height:35px;
-
-    :global(.ant-pagination-item-ellipsis){
-      border: solid 2px var(--gray-300) !important;
-      color: var(--blue-800) !important;
-      border-radius: 4px;
-      height:35px !important;
-
-    }
+  display:flex;
+  justify-content:center;
 
     :global(.ant-pagination-item ){
       border:none;
-      height:100% !important;
     }
 
-    :global(.ant-pagination-item a){
-      font-family: @font-family;
-      color: var(--blue-800);
-      background-color: white;
-      border: solid 2px var(--gray-300) !important;
-      font-weight: bold;
-      border-radius: 4px;
-    }
-
-    :global(.ant-pagination-item-active a) {
+    :global(.ant-pagination-item-active div span) {
       color: white !important;
-      border: none !important;
-      padding-top:2px;
-      height:33px;
-      background-color: var(--blue-800) !important;
-      border-bottom: solid 3px var(--blue-800) !important;
     }
-
-    :global(.ant-pagination-prev), :global(.ant-pagination-next) {
-      height:38px;
+    :global(.ant-pagination-item-active div ) {
+      background-color: var(--blue-800) !important;
+      border: none !important;
+      height:35px !important;
     }
 }
 
