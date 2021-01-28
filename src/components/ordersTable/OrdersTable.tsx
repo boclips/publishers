@@ -5,6 +5,8 @@ import { OrdersCard } from 'src/components/ordersTable/OrdersCard';
 import { Order } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 import { Loading } from 'src/components/common/Loading';
 import { ErrorMessage } from 'src/components/common/ErrorMessage';
+import { PaginationButtons } from 'src/components/common/PaginationButtons';
+import s from '../common/pagination.module.less';
 
 export const PAGE_SIZE = 10;
 
@@ -47,6 +49,8 @@ export const OrdersTable = () => {
                     showSizeChanger: false,
                     onChange: handlePageChange,
                     current: data?.page?.number,
+                    className: s.pagination,
+                    itemRender: PaginationButtons,
                   }}
                   dataSource={data?.orders}
                   renderItem={(order: Order) => (
