@@ -57,7 +57,7 @@ export const EditRequest = ({ label, cartItem }: Props) => {
           <InputWithDebounce
             currentValue={cartItem.additionalServices?.editRequest || undefined}
             onUpdate={updateEditRequest}
-            placeholder={"Please describe how you'd like to edit this video"}
+            placeholder="eg. Remove front and end credits"
           />
         )}
       </label>

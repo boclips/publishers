@@ -319,9 +319,7 @@ describe('CartItem', () => {
     fireEvent.click(await wrapper.findByText('Request other type of editing'));
 
     expect(
-      await wrapper.findByPlaceholderText(
-        "Please describe how you'd like to edit this video",
-      ),
+      await wrapper.findByPlaceholderText('eg. Remove front and end credits'),
     );
   });
   it('Saves edit request to cart', async () => {
@@ -348,7 +346,7 @@ describe('CartItem', () => {
     fireEvent.click(await wrapper.findByText('Request other type of editing'));
 
     const input = await wrapper.findByPlaceholderText(
-      "Please describe how you'd like to edit this video",
+      'eg. Remove front and end credits',
     );
 
     fireEvent.change(input, {
@@ -403,7 +401,7 @@ describe('CartItem', () => {
         target: { value: null },
       });
       const changedInput = await wrapper.findByDisplayValue(
-        "Please describe how you'd like to edit this video",
+        'eg. Remove front and end credits',
       );
 
       expect(changedInput).toBeVisible();
