@@ -4,9 +4,11 @@ import CartItem from 'src/components/cart/CartItem/CartItem';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
 
 describe('CartItem', () => {
+  const client = new QueryClient();
   it('displays cart item with title and additional services', async () => {
     const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',
@@ -20,7 +22,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -52,7 +56,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -79,7 +85,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={fakeClient}>
-        <CartItem videoItem={video} cartItem={cartItemFromCart} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItemFromCart} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -124,7 +132,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -158,7 +168,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={fakeClient}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -198,7 +210,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={fakeClient}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -248,7 +262,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={fakeClient}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -294,7 +310,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={fakeClient}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -321,7 +339,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={fakeClient}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
@@ -369,7 +389,9 @@ describe('CartItem', () => {
 
     const wrapper = render(
       <BoclipsClientProvider client={fakeClient}>
-        <CartItem videoItem={video} cartItem={cartItem} />
+        <QueryClientProvider client={client}>
+          <CartItem videoItem={video} cartItem={cartItem} />
+        </QueryClientProvider>
       </BoclipsClientProvider>,
     );
 
