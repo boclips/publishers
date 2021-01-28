@@ -9,7 +9,7 @@ interface Props {
 
 export const RemovedCartItem = ({ state }: Props) => {
   return (
-    <div className=" h-32 bg-white transition-all absolute w-7/12 z-10">
+    <div className=" h-32 bg-white transition-all absolute w-5/12 z-10">
       <div className="flex justify-center transition-opacity duration-1000 mt-4">
         <DoneSpinnerSVG
           className={c(
@@ -21,7 +21,7 @@ export const RemovedCartItem = ({ state }: Props) => {
         />
         <SpinnerSVG
           className={c(
-            'absolute animate-spin transition-opacity duration-500 ease-in',
+            'absolute animate-spin transition-opacity duration-500 ease-in opacity-0',
             { hidden: state !== 'loading' },
           )}
         />
