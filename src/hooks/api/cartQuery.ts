@@ -38,13 +38,17 @@ export const useCartQuery = () => {
 export const doUpdateCartNote = (note: string, client: BoclipsClient) =>
   client.carts.updateCart(note);
 
-export const useDeleteFromCartQuery = () => {
+export const useDeleteFromCartQuery = (
+  setDeleteState: (state: 'loading' | 'done') => void = () => {},
+  delay: number = 0,
+) => {
   const queryClient = useQueryClient();
   const boclipsClient = useBoclipsClient();
   const { data: cart } = useCartQuery();
 
   return useMutation(
     async (id: string) => {
+      setDeleteState('loading');
       if (cart.items.find((item) => item.id === id)) {
         return doDeleteFromCart(cart as Cart, id, boclipsClient);
       }
@@ -52,6 +56,10 @@ export const useDeleteFromCartQuery = () => {
     },
     {
       onSuccess: async (it) => {
+        await new Promise((r) => setTimeout(r, delay));
+        setDeleteState('done');
+        await new Promise((r) => setTimeout(r, delay));
+
         queryClient.setQueryData('cart', (old: Cart) => ({
           ...old,
           items: [...old.items.filter((item) => item.id !== it)],

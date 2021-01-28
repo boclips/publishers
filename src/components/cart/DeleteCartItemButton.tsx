@@ -9,19 +9,14 @@ interface Props {
 }
 
 const DeleteCartItemButton = ({ cartItem, setDeletingState }: Props) => {
-  const { mutate: deleteFromCart } = useDeleteFromCartQuery();
-
-  const deleteVideo = async () => {
-    setDeletingState('loading');
-    await new Promise((r) => setTimeout(r, 1000));
-    deleteFromCart(cartItem.id);
-    setDeletingState('done');
-    await new Promise((r) => setTimeout(r, 1000));
-  };
+  const { mutate: deleteFromCart } = useDeleteFromCartQuery(
+    setDeletingState,
+    1000,
+  );
 
   return (
     <button
-      onClick={() => deleteVideo()}
+      onClick={() => deleteFromCart(cartItem.id)}
       type="button"
       className="text-blue-800 text-md cursor-pointer flex flex-row justify-between w-24 my-2 py-2 px-1 rounded hover:bg-blue-300 active:bg-blue-400 active:outline-none active:border-none focus:outline-none"
     >

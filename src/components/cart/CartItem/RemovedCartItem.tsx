@@ -21,7 +21,7 @@ export const RemovedCartItem = ({ state }: Props) => {
         />
         <SpinnerSVG
           className={c(
-            'absolute animate-spin transition-opacity duration-500 ease-in opacity-0',
+            'absolute animate-spin transition-opacity duration-500 ease-in',
             { hidden: state !== 'loading' },
           )}
         />
