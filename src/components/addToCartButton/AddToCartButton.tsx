@@ -1,7 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query';
 import {
-  doAddToCart,
-  doDeleteFromCart,
   useAddToCartQuery,
   useCartQuery,
   useDeleteFromCartQuery,

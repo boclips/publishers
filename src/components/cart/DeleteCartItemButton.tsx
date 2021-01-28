@@ -23,7 +23,7 @@ const DeleteCartItemButton = ({ cartItem, setDeletingState }: Props) => {
     <button
       onClick={() => deleteVideo()}
       type="button"
-      className="text-blue-800 text-md cursor-pointer flex flex-row justify-between w-24 my-2 py-2 px-1 rounded hover:bg-blue-300"
+      className="text-blue-800 text-md cursor-pointer flex flex-row justify-between w-24 my-2 py-2 px-1 rounded hover:bg-blue-300 active:bg-blue-400 active:outline-none active:border-none focus:outline-none"
     >
       <DeleteIconSVG />
       <span className="ml-2.5 leading-5">Remove</span>

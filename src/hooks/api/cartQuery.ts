@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useQueryClient} from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { AdditionalServices } from 'boclips-api-client/dist/sub-clients/carts/model/AdditionalServices';
@@ -59,7 +59,7 @@ export const useDeleteFromCartQuery = () => {
       },
     },
   );
-}
+};
 
 export const useAddToCartQuery = () => {
   const queryClient = useQueryClient();
@@ -82,4 +82,4 @@ export const useAddToCartQuery = () => {
       },
     },
   );
-}
+};
