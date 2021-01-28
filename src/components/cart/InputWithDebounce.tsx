@@ -26,7 +26,7 @@ export const InputWithDebounce = ({
 
   return (
     <textarea
-      className="border-2 border-blue-300 rounded text-gray-600 h-52 p-3 bg-scroll resize-none"
+      className="border-2 border-blue-300 rounded  placeholder-gray-600 text-gray-900 h-52 p-3 bg-scroll resize-none"
       placeholder={placeholder}
       onChange={handleOnChange}
       value={value}
