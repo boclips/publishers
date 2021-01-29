@@ -122,7 +122,7 @@ describe('CartView', () => {
     ).toHaveAttribute('href', `/orders`);
   });
 
-  it(`has the 'video(s) total' label`, async () => {
+  it(`has the 'Video(s) total' label`, async () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
@@ -139,7 +139,7 @@ describe('CartView', () => {
 
     const wrapper = renderCartView(fakeClient);
 
-    expect(await wrapper.findByText('video(s) total')).toBeVisible();
+    expect(await wrapper.findByText('Video(s) total')).toBeVisible();
     expect(await wrapper.findByText('$900')).toBeVisible();
   });
 
