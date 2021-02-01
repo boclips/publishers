@@ -9,7 +9,7 @@ interface Props {
 
 const ItemsCount = ({ items }: Props) => {
   return (
-    <div className="flex flex-col text-sm text-white absolute text-center mt-3 z-10">
+    <div className="flex flex-col text-sm text-white absolute text-center z-10">
       {items && items.length > 0 && (
         <>
           <div data-qa="order-item-count" className="font-bold text-5xl">
@@ -41,12 +41,15 @@ export const ItemsThumbnail = ({ items }: Props) => {
     <div className="flex justify-center items-start">
       <ItemsCount items={items} />
       {videos && (
-        <img
-          data-qa="order-item-thumbnail"
-          className="rounded-md w-48 h-32 bg-blue-900 opacity-55"
-          src={getFirstValidThumbnail(videos)}
-          alt="thumbnail"
-        />
+        <>
+          <div className="bg-blue-900 h-28 w-44 opacity-55 absolute rounded-md" />
+          <img
+            data-qa="order-item-thumbnail"
+            className="h-28 w-44 rounded-md"
+            src={getFirstValidThumbnail(videos)}
+            alt="thumbnail"
+          />
+        </>
       )}
     </div>
   );
