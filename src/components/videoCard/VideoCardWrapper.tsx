@@ -1,7 +1,7 @@
 import React from 'react';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import { convertVideoFromApi } from 'src/services/convertVideoFromApi';
-import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
+import VideoCardAddCartButton from 'src/components/videoCardAddCartButton/VideoCardAddCartButton';
 import { VideoCardV2 } from '@boclips-ui/video-card-v2';
 import { PriceBadge } from 'src/components/videoCard/PriceBadge';
 import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
@@ -35,7 +35,9 @@ export const VideoCardWrapper = ({ video }: Props) => {
             <div className="text-gray-900">{video?.title}</div>
           </Link>
         }
-        actions={[<AddToCartButton videoId={video.id} key="cart-button" />]}
+        actions={[
+          <VideoCardAddCartButton videoId={video.id} key="cart-button" />,
+        ]}
       />
     </div>
   );

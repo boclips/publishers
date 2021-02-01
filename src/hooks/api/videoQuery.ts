@@ -17,12 +17,8 @@ export const doGetVideo = (id: string, apiClient: BoclipsClient) =>
 
 export const useGetVideosQuery = (videoIds: string[]) => {
   const apiClient = useBoclipsClient();
-  return useQuery(
-    ['videos', videoIds],
-    () => doGetVideos(videoIds, apiClient),
-    {
-      enabled: !!videoIds,
-    },
+  return useQuery(['videos', videoIds], () =>
+    videoIds?.length > 0 ? doGetVideos(videoIds, apiClient) : null,
   );
 };
 

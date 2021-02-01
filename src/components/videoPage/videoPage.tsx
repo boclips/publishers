@@ -12,11 +12,11 @@ import { useQueryClient } from 'react-query';
 export const VideoPage = () => {
   const queryClient = useQueryClient();
   const videoId = useGetIdFromLocation('videos');
-  const { data, isLoading } = useFindOrGetVideo(queryClient, videoId);
+  const { data: video, isLoading } = useFindOrGetVideo(queryClient, videoId);
 
   return (
     <>
-      {isLoading && !data ? (
+      {isLoading && !video ? (
         <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 h-auto rounded-lg">
           <Loading />
         </div>
@@ -27,11 +27,11 @@ export const VideoPage = () => {
         >
           <div className="w-2/3">
             <div className="mb-4">
-              <VideoPlayer video={data} />
+              <VideoPlayer video={video} />
             </div>
-            <VideoDetails video={data} />
+            <VideoDetails video={video} />
           </div>
-          <VideoHeader video={data} />
+          <VideoHeader video={video} />
         </div>
       )}
     </>

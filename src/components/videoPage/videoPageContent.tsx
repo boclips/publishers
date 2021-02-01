@@ -2,7 +2,7 @@ import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import AgeRangeBadge from '@boclips-ui/age-range-badge';
 import AgeRange from '@boclips-ui/age-range';
 import SubjectBadge from '@boclips-ui/subject-badge';
-import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
+import VideoCardAddCartButton from 'src/components/videoCardAddCartButton/VideoCardAddCartButton';
 import React from 'react';
 import dateFormat from 'dateformat';
 import { createPriceDisplayValue } from '../../services/createPriceDisplayValue';
@@ -52,7 +52,7 @@ export const VideoHeader = ({ video }: Props) => {
           navigator.language,
         )}
       </div>
-      <AddToCartButton videoId={video?.id} />
+      <VideoCardAddCartButton videoId={video?.id} />
     </div>
   );
 };

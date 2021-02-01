@@ -4,11 +4,16 @@ import CartItem from 'src/components/cart/CartItem/CartItem';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 describe('CartItem', () => {
-  const client = new QueryClient();
+  let client: any;
+
+  beforeEach(() => {
+    client = new QueryClient();
+  });
+
   it('displays cart item with title and additional services', async () => {
     const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',

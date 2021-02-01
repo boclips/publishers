@@ -1,16 +1,24 @@
 import React from 'react';
-import { Video } from 'boclips-api-client/dist/types';
-import { useCartQuery } from 'src/hooks/api/cartQuery';
+import { doUpdateCartNote, useCartQuery } from 'src/hooks/api/cartQuery';
 import { InputWithDebounce as CartNote } from 'src/components/cart/InputWithDebounce';
+import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useMutation } from 'react-query';
+import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
 import CartItem from './CartItem/CartItem';
 
 interface Props {
-  videos: Video[];
-  onUpdateNote: (note) => void;
+  videoIds: string[];
 }
 
-export const CartDetails = ({ videos, onUpdateNote }: Props) => {
+export const CartDetails = ({ videoIds }: Props) => {
   const { data: cart } = useCartQuery();
+  const { data: videos } = useGetVideosQuery(videoIds);
+
+  const apiClient = useBoclipsClient();
+
+  const { mutate: onUpdateNote } = useMutation((note: string) =>
+    doUpdateCartNote(note, apiClient),
+  );
 
   const singleCartItem = (videoId: string) => {
     return cart.items?.find((it) => it.videoId === videoId);

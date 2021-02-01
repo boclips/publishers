@@ -12,7 +12,7 @@ export const InputWithDebounce = ({
   placeholder,
 }: Props) => {
   const [value, setValue] = useState(currentValue);
-  const debouncedValue = useDebounce(value, 1500);
+  const debouncedValue = useDebounce(value, 1000);
 
   const handleOnChange = (e: any) => {
     setValue(e.target.value);

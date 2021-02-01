@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import Button from '@boclips-ui/button';
-import { Video } from 'boclips-api-client/dist/types';
-import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { getTotalPriceDisplayValue } from 'src/services/getTotalPriceDisplayValue';
+import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
 import { OrderModal } from '../orderModal/OrderModal';
 
 interface Props {
-  videos: Video[];
-  onPlaceOrder: (user) => void;
+  videoIds: string[];
 }
 
-export const CartOrderSummary = ({ videos, onPlaceOrder }: Props) => {
+export const CartOrderSummary = ({ videoIds }: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const { data: user, isLoading: isUserLoading } = useGetUserQuery();
+  const { data: videos } = useGetVideosQuery(videoIds);
+
   return (
     <>
       <div className="col-start-20 col-end-26 border-blue-500 border-2 h-32 p-5 w-full justify-end flex flex-col rounded">
@@ -22,8 +21,6 @@ export const CartOrderSummary = ({ videos, onPlaceOrder }: Props) => {
         </div>
         <Button
           onClick={() => setModalOpen(!modalOpen)}
-          type="primary"
-          theme="publishers"
           text="Place an order"
           height="44px"
           width="100%"
@@ -33,10 +30,6 @@ export const CartOrderSummary = ({ videos, onPlaceOrder }: Props) => {
         setOpen={setModalOpen}
         modalOpen={modalOpen}
         videos={videos}
-        placeOrder={() => {
-          onPlaceOrder(user);
-        }}
-        confirmDisabled={isUserLoading || !user}
       />
     </>
   );

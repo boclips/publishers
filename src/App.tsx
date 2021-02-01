@@ -26,6 +26,8 @@ const OrderConfirmationView = lazy(
   () => import('src/views/orders/orderConfirmation/OrderConfirmationView'),
 );
 
+const ErrorView = lazy(() => import('src/views/error/ErrorView'));
+
 interface Props {
   apiClient: BoclipsClient;
 }
@@ -61,6 +63,13 @@ const App = ({ apiClient }: Props) => {
               <Route exact path="/orders/:id">
                 <OrderView />
               </Route>
+              <Route
+                exact
+                path="/error"
+                render={({ location }) => (
+                  <ErrorView error={location?.state.error} />
+                )}
+              />
               <Route
                 path="/order-confirmed"
                 render={({ location }) => (

@@ -24,12 +24,7 @@ export const OrdersCard = ({ order }: Props) => {
       <OrderDeliveredDateField deliveredAt={order.deliveredAt} />
       <div className="h-12 text-base">
         <Link to={`/orders/${order.id}`}>
-          <Button
-            theme="publishers"
-            type="primary"
-            text="View order"
-            onClick={null}
-          />
+          <Button text="View order" onClick={null} />
         </Link>
       </div>
     </div>

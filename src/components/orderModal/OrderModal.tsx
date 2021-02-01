@@ -1,27 +1,51 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Video } from 'boclips-api-client/dist/types';
 import CloseIconSVG from 'src/resources/icons/cross-icon.svg';
 import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
 import Button from '@boclips-ui/button';
 import c from 'classnames';
 import { CartItemOrderPreview } from 'src/components/cart/CartItemOrderPreview/CartItemOrderPreview';
+import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
+import { useGetUserQuery } from 'src/hooks/api/userQuery';
+import { useCartQuery } from 'src/hooks/api/cartQuery';
+import { useHistory } from 'react-router-dom';
 import s from './style.module.less';
 
 export interface Props {
   setOpen: (boolean) => void;
   modalOpen: boolean;
   videos: Video[];
-  placeOrder: () => void;
-  confirmDisabled: boolean;
 }
 
-export const OrderModal = ({
-  setOpen,
-  modalOpen,
-  videos,
-  placeOrder,
-  confirmDisabled,
-}: Props) => {
+export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
+  const history = useHistory();
+
+  const { data: user, isLoading: isUserLoading } = useGetUserQuery();
+  const { data: cart } = useCartQuery();
+
+  const {
+    mutate: placeOrder,
+    data: orderLocation,
+    isSuccess,
+    error,
+  } = usePlaceOrderQuery();
+
+  const onClick = () => {
+    placeOrder({ cart, user });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      history.push({ pathname: '/order-confirmed' }, { orderLocation });
+    }
+  }, [history, isSuccess, orderLocation]);
+
+  useEffect(() => {
+    if (error) {
+      history.push({ pathname: '/error' }, { error });
+    }
+  }, [history, error, orderLocation]);
+
   if (modalOpen) {
     return (
       <div
@@ -50,24 +74,19 @@ export const OrderModal = ({
           <div className={s.buttons}>
             <Button
               onClick={() => setOpen(!modalOpen)}
-              theme="publishers"
-              type="secondary"
+              type="outline"
               text="Go back to cart"
             />
             <Button
-              onClick={() => {
-                placeOrder();
-                setOpen(!modalOpen);
-              }}
-              theme="publishers"
-              type="primary"
+              onClick={onClick}
               text="Confirm order"
-              disabled={confirmDisabled}
+              disabled={isUserLoading || !user}
             />
           </div>
         </div>
       </div>
     );
   }
+
   return null;
 };

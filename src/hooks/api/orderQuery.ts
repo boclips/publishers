@@ -20,31 +20,11 @@ export const getOrders = ({ page, size }: OrdersQuery, client: BoclipsClient) =>
 export const getOrder = (id: string, client: BoclipsClient) =>
   client.orders.get(id);
 
-export const usePlaceOrderQuery = (
-  setLoading: (isLoading: boolean) => void,
-  onOrderPlaced: (location: string) => void,
-  setErrorMessage: (location: string) => void,
-) => {
-  const queryClient = useQueryClient();
+export const usePlaceOrderQuery = () => {
   const boclipsClient = useBoclipsClient();
 
-  return useMutation(
-    (request: PlaceOrderRequest) => doPlaceOrder(request, boclipsClient),
-    {
-      onSuccess: (orderLocation) => {
-        onOrderPlaced(orderLocation);
-        queryClient.setQueryData('cart', () => ({
-          items: [],
-        }));
-      },
-      onError: (error) => {
-        setErrorMessage(JSON.stringify(error));
-        setLoading(false);
-      },
-      onMutate: () => {
-        setLoading(true);
-      },
-    },
+  return useMutation((request: PlaceOrderRequest) =>
+    doPlaceOrder(request, boclipsClient),
   );
 };
 

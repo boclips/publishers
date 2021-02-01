@@ -1,57 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { doUpdateCartNote, useCartQuery } from 'src/hooks/api/cartQuery';
 import Navbar from 'src/components/layout/Navbar';
-import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
-import { Loading } from 'src/components/common/Loading';
 import Footer from 'src/components/layout/Footer';
-import { EmptyCart } from 'src/components/cart/EmptyCart';
-import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
-import { ErrorMessage } from 'src/components/common/ErrorMessage';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { useCartQuery } from 'src/hooks/api/cartQuery';
+import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
 import { Cart } from 'src/components/cart/Cart';
-import { useMutation } from 'react-query';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { Loading } from 'src/components/common/Loading';
+import { EmptyCart } from 'src/components/cart/EmptyCart';
 
 const CartView = () => {
-  const history = useHistory();
-  const apiClient = useBoclipsClient();
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
-  const [errorMessage, setErrorMessage] = useState<string>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [newOrderLocation, setNewOrderLocation] = useState<string>();
-
-  const itemsInCart = cart?.items?.length > 0;
   const videoIds = cart?.items?.map((it) => it.videoId);
 
-  const { isLoading: areVideosLoading, data: videos } = useGetVideosQuery(
+  const { data: videos, isLoading: areVideosLoading } = useGetVideosQuery(
     videoIds,
   );
 
-  const { mutate: mutateAddCartNote } = useMutation((note: string) =>
-    doUpdateCartNote(note, apiClient),
-  );
-
-  const { mutate } = usePlaceOrderQuery(
-    setLoading,
-    setNewOrderLocation,
-    setErrorMessage,
-  );
-
-  const placeOrder = (user) => {
-    mutate({ cart, user });
-  };
-
-  useEffect(() => {
-    if (newOrderLocation) {
-      history.push(
-        { pathname: '/order-confirmed' },
-        { orderLocation: newOrderLocation },
-      );
-    }
-  }, [newOrderLocation, history]);
+  const itemsInCart = cart?.items?.length > 0;
 
   const cartToDisplay = () => {
-    if (loading) {
+    if (itemsInCart && videos) {
+      return <Cart cart={cart} videoIds={videoIds} />;
+    }
+
+    if (areVideosLoading || isCartLoading) {
       return (
         <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 h-auto rounded-lg">
           <Loading />
@@ -59,35 +30,8 @@ const CartView = () => {
       );
     }
 
-    if (errorMessage) {
-      return (
-        <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg">
-          <ErrorMessage errorMessage={errorMessage} />
-        </div>
-      );
-    }
-
-    if (itemsInCart && videos) {
-      return (
-        <Cart
-          cart={cart}
-          videos={videos}
-          onPlaceOrder={placeOrder}
-          onUpdateNote={mutateAddCartNote}
-        />
-      );
-    }
-
     return <EmptyCart />;
   };
-
-  if (isCartLoading || areVideosLoading) {
-    return (
-      <div className="col-start-2 col-end-26">
-        <Loading />
-      </div>
-    );
-  }
 
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">

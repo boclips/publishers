@@ -1,8 +1,7 @@
 @import 'node_modules/@boclips-ui/styles/src/_publishersColours';
 
 .emptyCartView {
-@apply grid grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg transition transition-opacity duration-1000 ease-in;
-
+  @apply grid grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg;
   a {
     color: @blue-700 !important;
     text-decoration: underline !important;
@@ -11,24 +10,11 @@
       text-decoration: none !important;
     }
   }
-
   height: 432px;
-  animation: fadeInAnimation ease 2s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-
-  @keyframes fadeInAnimation {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
 }
 
 .orderConfirmedView {
-  @apply grid grid-cols-24 row-span-3 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg;
+  @apply grid grid-cols-24 row-start-2 row-end-4 col-start-2 col-end-26 bg-primary-light h-auto rounded-lg;
   a {
     color: #002588 !important;
     text-decoration: none !important;

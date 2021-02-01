@@ -3,7 +3,6 @@ import {
   render,
   RenderResult,
   waitFor,
-  waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -33,20 +32,6 @@ describe('CartView', () => {
         await wrapper.findByText('There are no items in your shopping cart'),
       ).toBeInTheDocument();
     });
-  });
-
-  it(`removes an item from cart when remove button is clicked and displays the empty cart screen`, async () => {
-    const fakeClient = new FakeBoclipsClient();
-    fakeClient.carts.clear();
-    fakeClient.carts.insertCartItem('video-id');
-    fakeClient.videos.insertVideo(video);
-    const wrapper = renderCartView(fakeClient);
-
-    fireEvent.click(await wrapper.findByText('Remove'));
-    await waitForElementToBeRemoved(() => wrapper.queryByText('news video'));
-    expect(
-      wrapper.getByText('There are no items in your shopping cart'),
-    ).toBeInTheDocument();
   });
 
   it('when videos in cart, displays video player with title and additional services ', async () => {
