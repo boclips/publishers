@@ -100,7 +100,7 @@ describe('order table', () => {
     const order = OrdersFactory.sample({
       id: 'order-id',
       createdAt: new Date('2021-02-01 14:56:21.800Z'),
-      deliveryDate: new Date('2021-02-03 14:56:21.800Z'),
+      deliveredAt: new Date('2021-02-03 14:56:21.800Z'),
       status: OrderStatus.READY,
       note: 'i am a note',
       totalPrice: {
