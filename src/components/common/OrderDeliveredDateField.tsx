@@ -3,14 +3,14 @@ import dateFormat from 'dateformat';
 import { OrderInformationField } from './OrderInformationField';
 
 interface Props {
-  deliveryDate: Date;
+  deliveredAt: Date;
 }
-export const OrderDeliveryDateField = ({ deliveryDate }: Props) => (
+export const OrderDeliveredDateField = ({ deliveredAt }: Props) => (
   <OrderInformationField
     label="Delivery date"
     value={
       <div className="text-gray-800 text-base" data-qa="delivery-date">
-        {deliveryDate ? dateFormat(deliveryDate, 'dd/mm/yy') : '-'}
+        {deliveredAt ? dateFormat(deliveredAt, 'dd/mm/yy') : '-'}
       </div>
     }
   />

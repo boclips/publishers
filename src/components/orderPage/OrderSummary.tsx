@@ -4,8 +4,8 @@ import React from 'react';
 import { OrderDateField } from 'src/components/common/OrderDateField';
 import { OrderInformationField } from 'src/components/common/OrderInformationField';
 import { OrderTotalValueField } from 'src/components/common/OrderTotalValueField';
-import { OrderDeliveryDateField } from 'src/components/common/OrderDeliveryDateField';
 import { OrderStatusField } from 'src/components/common/OrderStatusField';
+import { OrderDeliveredDateField } from 'src/components/common/OrderDeliveredDateField';
 
 interface Props {
   order: Order;
@@ -24,7 +24,7 @@ export const OrderSummary = ({ order }: Props) => {
       />
       <OrderTotalValueField price={order.totalPrice} />
       <OrderStatusField orderStatus={order.status} />
-      <OrderDeliveryDateField deliveryDate={order.deliveryDate} />
+      <OrderDeliveredDateField deliveredAt={order.deliveredAt} />
       <OrderInformationField
         label="Notes"
         value={

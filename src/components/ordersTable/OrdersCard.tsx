@@ -6,8 +6,8 @@ import { ItemsThumbnail } from 'src/components/ordersTable/OrderThumbnail';
 import { OrderDateField } from 'src/components/common/OrderDateField';
 import { OrderNumberField } from 'src/components/common/OrderNumberField';
 import { OrderTotalValueField } from 'src/components/common/OrderTotalValueField';
-import { OrderDeliveryDateField } from 'src/components/common/OrderDeliveryDateField';
 import { OrderStatusField } from 'src/components/common/OrderStatusField';
+import { OrderDeliveredDateField } from 'src/components/common/OrderDeliveredDateField';
 
 interface Props {
   order: Order;
@@ -21,7 +21,7 @@ export const OrdersCard = ({ order }: Props) => {
       <OrderNumberField id={order.id} isLink />
       <OrderTotalValueField price={order.totalPrice} />
       <OrderStatusField orderStatus={order.status} />
-      <OrderDeliveryDateField deliveryDate={order.deliveryDate} />
+      <OrderDeliveredDateField deliveredAt={order.deliveredAt} />
       <div className="h-12 text-base">
         <Link to={`/orders/${order.id}`}>
           <Button

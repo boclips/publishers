@@ -50,7 +50,7 @@ describe('OrderView', () => {
     const orders = [
       OrdersFactory.sample({
         id: 'woop-woop-im-an-id',
-        deliveryDate: new Date('2021-01-15 14:56:21.800Z'),
+        deliveredAt: new Date('2021-01-15 14:56:21.800Z'),
         createdAt: new Date('2021-01-10 14:56:21.800Z'),
         status: OrderStatus.DELIVERED,
       }),
@@ -99,7 +99,7 @@ describe('OrderView', () => {
     const fakeClient = new FakeBoclipsClient();
     const order = OrdersFactory.sample({
       id: 'woop-woop-im-an-id',
-      deliveryDate: null,
+      deliveredAt: null,
     });
 
     fakeClient.orders.insertOrderFixture(order);
@@ -128,7 +128,7 @@ describe('OrderView', () => {
     ];
     const order = OrdersFactory.sample({
       id: 'woop-woop-im-an-id',
-      deliveryDate: null,
+      deliveredAt: null,
       items,
     });
 
@@ -199,7 +199,7 @@ describe('OrderView', () => {
     ];
     const order = OrdersFactory.sample({
       id: 'woop-woop-im-an-id',
-      deliveryDate: null,
+      deliveredAt: null,
       items,
     });
 
