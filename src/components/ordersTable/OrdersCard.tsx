@@ -21,7 +21,7 @@ export const OrdersCard = ({ order }: Props) => {
       <OrderNumberField id={order.id} isLink />
       <OrderTotalValueField price={order.totalPrice} />
       <OrderStatusField orderStatus={order.status} />
-      <OrderDeliveryDateField deliveredAt={order.deliveredAt} />
+      <OrderDeliveryDateField deliveryDate={order.deliveryDate} />
       <div className="h-12 text-base">
         <Link to={`/orders/${order.id}`}>
           <Button

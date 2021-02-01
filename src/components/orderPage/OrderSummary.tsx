@@ -24,7 +24,7 @@ export const OrderSummary = ({ order }: Props) => {
       />
       <OrderTotalValueField price={order.totalPrice} />
       <OrderStatusField orderStatus={order.status} />
-      <OrderDeliveryDateField deliveredAt={order.deliveredAt} />
+      <OrderDeliveryDateField deliveryDate={order.deliveryDate} />
       <OrderInformationField
         label="Notes"
         value={
