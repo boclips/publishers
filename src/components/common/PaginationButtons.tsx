@@ -25,7 +25,7 @@ const CustomPaginationButton = ({
     </div>
   );
 };
-export const PaginationButtons = (_current, type, originalElement) => {
+export const PaginationButtons = (current, type, _originalElement) => {
   if (type === 'prev') {
     return (
       <CustomPaginationButton largeButton theme="gray">
@@ -44,7 +44,7 @@ export const PaginationButtons = (_current, type, originalElement) => {
   if (type === 'page') {
     return (
       <CustomPaginationButton>
-        <span>{_current}</span>
+        <span>{current}</span>
       </CustomPaginationButton>
     );
   }
@@ -56,5 +56,5 @@ export const PaginationButtons = (_current, type, originalElement) => {
       </CustomPaginationButton>
     );
   }
-  return originalElement;
+  return null;
 };
