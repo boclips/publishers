@@ -1,0 +1,53 @@
+import React from 'react';
+import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
+import { OrderItem } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
+import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
+
+interface Props {
+  items: OrderItem[];
+}
+
+const ItemsCount = ({ items }: Props) => {
+  return (
+    <div className="flex flex-col text-sm text-white absolute text-center mt-3 z-10">
+      {items && items.length > 0 && (
+        <>
+          <div data-qa="order-item-count" className="font-bold text-5xl">
+            {items?.length}
+          </div>
+          <span className="text-xl">
+            {items.length > 1 ? 'videos' : 'video'}
+          </span>
+        </>
+      )}
+    </div>
+  );
+};
+
+export const ItemsThumbnail = ({ items }: Props) => {
+  const videoIds = items.map((it: OrderItem) => it.video.id);
+  const { data: videos } = useGetVideosQuery(videoIds);
+
+  const getFirstValidThumbnail = (videoList: Video[]): string => {
+    const thumbnailLinks = videoList?.map((it) =>
+      it.playback?.links?.thumbnail.getOriginalLink(),
+    );
+    return thumbnailLinks.find(
+      (thumbnail) => thumbnail !== null && thumbnail !== '',
+    );
+  };
+
+  return (
+    <div className="flex justify-center items-start">
+      <ItemsCount items={items} />
+      {videos && (
+        <img
+          data-qa="order-item-thumbnail"
+          className="rounded-md w-48 h-32 bg-blue-900 opacity-55"
+          src={getFirstValidThumbnail(videos)}
+          alt="thumbnail"
+        />
+      )}
+    </div>
+  );
+};

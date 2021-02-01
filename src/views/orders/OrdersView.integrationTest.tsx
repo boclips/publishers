@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
@@ -8,6 +8,10 @@ import {
   OrdersFactory,
 } from 'boclips-api-client/dist/test-support';
 import { OrderStatus } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
+import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
+import { Link } from 'boclips-api-client/dist/types';
+import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
+import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 
 describe('OrderView', () => {
   it('loads the orders view', async () => {
@@ -22,28 +26,23 @@ describe('OrderView', () => {
 
   it('navigates to order view when view order is clicked', async () => {
     const fakeClient = new FakeBoclipsClient();
-    const items = OrderItemFactory.sample({
-      id: 'i am the id you are looking for...',
-    });
     const order = OrdersFactory.sample({
-      items: [items],
+      id: 'look for me',
     });
 
     fakeClient.orders.insertOrderFixture(order);
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App apiClient={new FakeBoclipsClient()} />
+        <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
 
-    waitFor(async () => {
-      const button = await wrapper.getByText('View order');
-      fireEvent.click(button);
-      expect(
-        await wrapper.findByText('i am the id you are looking for...'),
-      ).toBeVisible();
-    });
+    const button = await wrapper.findByText('View order');
+    fireEvent.click(button);
+    expect((await wrapper.findAllByText('Order look for me')).length).toEqual(
+      2,
+    );
   });
 
   it('loads the order cards', async () => {
@@ -98,14 +97,12 @@ describe('OrderView', () => {
 
   it('if there is no deliveryDate it shows a dash', async () => {
     const fakeClient = new FakeBoclipsClient();
-    const orders = [
-      OrdersFactory.sample({
-        id: 'woop-woop-im-an-id',
-        deliveryDate: null,
-      }),
-    ];
+    const order = OrdersFactory.sample({
+      id: 'woop-woop-im-an-id',
+      deliveryDate: null,
+    });
 
-    orders.forEach((v) => fakeClient.orders.insertOrderFixture(v));
+    fakeClient.orders.insertOrderFixture(order);
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
@@ -116,5 +113,107 @@ describe('OrderView', () => {
     expect((await wrapper.findByTestId('delivery-date')).innerHTML).toEqual(
       '-',
     );
+  });
+
+  it('shows video count', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    const items = [
+      OrderItemFactory.sample({
+        id: 'item-1',
+      }),
+      OrderItemFactory.sample({
+        id: 'item-2',
+      }),
+    ];
+    const order = OrdersFactory.sample({
+      id: 'woop-woop-im-an-id',
+      deliveryDate: null,
+      items,
+    });
+
+    fakeClient.orders.insertOrderFixture(order);
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/orders']}>
+        <App apiClient={fakeClient} />
+      </MemoryRouter>,
+    );
+
+    expect(await wrapper.findByText('videos')).toBeVisible();
+    expect((await wrapper.findByTestId('order-item-count')).innerHTML).toEqual(
+      '2',
+    );
+  });
+
+  it('shows first available thumbnail', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    const videos = [
+      VideoFactory.sample({
+        id: '123',
+        playback: PlaybackFactory.sample({
+          links: {
+            thumbnail: new Link({ href: null, templated: true }),
+            createPlayerInteractedWithEvent: new Link({
+              href: 'player interacted with',
+              templated: true,
+            }),
+          },
+        }),
+      }),
+      VideoFactory.sample({
+        id: '123',
+        playback: PlaybackFactory.sample({
+          links: {
+            thumbnail: new Link({ href: 'find me!!', templated: true }),
+            createPlayerInteractedWithEvent: new Link({
+              href: 'player interacted with',
+              templated: true,
+            }),
+          },
+        }),
+      }),
+    ];
+
+    const items = [
+      OrderItemFactory.sample({
+        id: 'item-1',
+        video: {
+          id: '123',
+          types: ['123'],
+          title: 'videoooo',
+          videoReference: 'i am a reference',
+          maxResolutionAvailable: true,
+          captionStatus: OrderCaptionStatus.PROCESSING,
+          _links: {
+            fullProjection: new Link({ href: 'i am a link', templated: true }),
+            videoUpload: new Link({ href: 'i am a link', templated: true }),
+            captionAdmin: new Link({ href: 'i am a link', templated: true }),
+          },
+        },
+      }),
+      OrderItemFactory.sample({
+        id: 'item-2',
+      }),
+    ];
+    const order = OrdersFactory.sample({
+      id: 'woop-woop-im-an-id',
+      deliveryDate: null,
+      items,
+    });
+
+    fakeClient.orders.insertOrderFixture(order);
+    videos.forEach((video) => fakeClient.videos.insertVideo(video));
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/orders']}>
+        <App apiClient={fakeClient} />
+      </MemoryRouter>,
+    );
+
+    expect(
+      (await wrapper.findByTestId('order-item-thumbnail')) as HTMLImageElement,
+    ).toHaveAttribute('src', 'find me!!');
   });
 });

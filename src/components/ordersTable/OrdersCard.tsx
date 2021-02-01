@@ -7,6 +7,7 @@ import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
 import { orderDeliveryStatus } from 'src/components/ordersTable/OrderDeliveryStatus';
 import Button from '@boclips-ui/button';
+import { ItemsThumbnail } from 'src/components/ordersTable/OrderThumbnail';
 
 interface Props {
   order: Order;
@@ -45,7 +46,8 @@ export const OrdersCard = ({ order }: Props) => {
   };
 
   return (
-    <div className="col-start-2 col-end-26 flex flex-row border-b-2 text-grey-700 justify-between items-center">
+    <div className="col-start-2 col-end-26 flex flex-row border-b-2 py-8 text-grey-700 justify-between items-center">
+      <ItemsThumbnail items={order.items} />
       <Item
         header="Order date"
         value={

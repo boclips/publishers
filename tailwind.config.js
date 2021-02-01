@@ -124,6 +124,9 @@ module.exports = {
         footer: '#616577',
         focus: '#63b3ed',
       },
+      opacity: {
+        55: '0.55',
+      },
       fontSize: {
         xxs: '0.65rem',
         md: '1rem',
