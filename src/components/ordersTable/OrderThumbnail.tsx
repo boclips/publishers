@@ -38,7 +38,7 @@ export const ItemsThumbnail = ({ items }: Props) => {
   };
 
   return (
-    <div className="flex justify-center items-start">
+    <div className="flex justify-center items-start mr-6">
       <ItemsCount items={items} />
       {videos && (
         <>

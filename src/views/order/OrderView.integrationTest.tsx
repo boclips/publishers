@@ -10,6 +10,7 @@ import {
 import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { Link } from 'boclips-api-client/dist/types';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
+import { OrderStatus } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 
 describe('order table', () => {
   it('renders the order header with an id that matches query', async () => {
@@ -88,5 +89,48 @@ describe('order table', () => {
     expect(await wrapper.findByAltText('thumbnail')).toBeVisible();
     expect(await wrapper.findByText('$600')).toBeVisible();
     expect(await wrapper.findByText('ID: video-id-1')).toBeVisible();
+  });
+
+  it('renders order summary', async () => {
+    const fakeClient = new FakeBoclipsClient();
+    const items = [
+      OrderItemFactory.sample({ id: '1' }),
+      OrderItemFactory.sample({ id: '2' }),
+    ];
+    const order = OrdersFactory.sample({
+      id: 'order-id',
+      createdAt: new Date('2021-02-01 14:56:21.800Z'),
+      deliveryDate: new Date('2021-02-03 14:56:21.800Z'),
+      status: OrderStatus.READY,
+      note: 'i am a note',
+      totalPrice: {
+        value: 700.5,
+        currency: 'USD',
+        displayValue: 'USD 700.5',
+      },
+      items,
+    });
+    fakeClient.orders.insertOrderFixture(order);
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/orders/order-id']}>
+        <App apiClient={fakeClient} />
+      </MemoryRouter>,
+    );
+
+    expect(await wrapper.findByText('Order date')).toBeVisible();
+    expect(await wrapper.findByText('Video quantity')).toBeVisible();
+    expect(await wrapper.findByText('Total value')).toBeVisible();
+    expect(await wrapper.findByText('Status')).toBeVisible();
+    expect(await wrapper.findByText('Delivery date')).toBeVisible();
+    expect(await wrapper.findByText('Notes')).toBeVisible();
+
+    expect(await wrapper.findByText('$700.50')).toBeVisible();
+    expect(await wrapper.findByText('01/02/21')).toBeVisible();
+    expect(await wrapper.findByText('PROCESSING')).toBeVisible();
+    expect(await wrapper.findByText('03/02/21')).toBeVisible();
+    expect((await wrapper.findByTestId('video-quantity')).innerHTML).toEqual(
+      '2',
+    );
+    expect(await wrapper.findByText('i am a note')).toBeVisible();
   });
 });
