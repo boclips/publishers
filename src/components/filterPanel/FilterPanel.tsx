@@ -38,11 +38,11 @@ export const FilterPanel = ({ facets, handleChange }: Props) => {
         options={filterOptions?.channels}
         handleChange={handleChange}
       />
+      <PriceFilter options={filterOptions.prices} handleChange={handleChange} />
       <SubjectFilter
         options={filterOptions?.subjects}
         handleChange={handleChange}
       />
-      <PriceFilter options={filterOptions.prices} handleChange={handleChange} />
     </div>
   );
 };
