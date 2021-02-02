@@ -31,6 +31,7 @@ const ErrorView = lazy(() => import('src/views/error/ErrorView'));
 interface Props {
   apiClient: BoclipsClient;
 }
+const queryClient = new QueryClient(queryClientConfig);
 
 const App = ({ apiClient }: Props) => {
   const currentLocation = useLocation();
@@ -38,50 +39,47 @@ const App = ({ apiClient }: Props) => {
   useEffect(() => {
     trackPageRendered(currentLocation, apiClient);
   }, [currentLocation, apiClient]);
-
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Switch>
         <BoclipsClientProvider client={apiClient}>
-          <QueryClientProvider client={new QueryClient(queryClientConfig)}>
-            <Suspense fallback={<Loading />}>
-              <Route exact path="/">
-                <HomeView />
-              </Route>
-              <Route exact path="/videos">
-                <SearchResultsView />
-              </Route>
-              <Route exact path="/videos/:id">
-                <VideoView />
-              </Route>
-              <Route exact path="/cart">
-                <CartView />
-              </Route>
-              <Route exact path="/orders">
-                <OrdersView />
-              </Route>
-              <Route exact path="/orders/:id">
-                <OrderView />
-              </Route>
-              <Route
-                exact
-                path="/error"
-                render={({ location }) => (
-                  <ErrorView error={location?.state.error} />
-                )}
-              />
-              <Route
-                path="/order-confirmed"
-                render={({ location }) => (
-                  <OrderConfirmationView state={location?.state} />
-                )}
-              />
-            </Suspense>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
+          <Suspense fallback={<Loading />}>
+            <Route exact path="/">
+              <HomeView />
+            </Route>
+            <Route exact path="/videos">
+              <SearchResultsView />
+            </Route>
+            <Route exact path="/videos/:id">
+              <VideoView />
+            </Route>
+            <Route exact path="/cart">
+              <CartView />
+            </Route>
+            <Route exact path="/orders">
+              <OrdersView />
+            </Route>
+            <Route exact path="/orders/:id">
+              <OrderView />
+            </Route>
+            <Route
+              exact
+              path="/error"
+              render={({ location }) => (
+                <ErrorView error={location?.state.error} />
+              )}
+            />
+            <Route
+              path="/order-confirmed"
+              render={({ location }) => (
+                <OrderConfirmationView state={location?.state} />
+              )}
+            />
+          </Suspense>
+          <ReactQueryDevtools initialIsOpen={false} />
         </BoclipsClientProvider>
       </Switch>
-    </>
+    </QueryClientProvider>
   );
 };
 

@@ -1,4 +1,4 @@
-import { QueryClient, useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import Pageable from 'boclips-api-client/dist/sub-clients/common/model/Pageable';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
@@ -22,12 +22,12 @@ export const useGetVideosQuery = (videoIds: string[]) => {
   );
 };
 
-export const useFindOrGetVideo = (
-  queryClient: QueryClient,
-  videoId: string,
-) => {
+export const useFindOrGetVideo = (videoId: string) => {
+  const queryClient = useQueryClient();
   const apiClient = useBoclipsClient();
-  const cachedVideos = queryClient.getQueryData<Pageable<Video>>('videos');
+  const cachedVideos = queryClient.getQueryData<Pageable<Video>>(
+    'videosSearch',
+  );
 
   return useQuery(['videos', videoId], () => doGetVideo(videoId, apiClient), {
     initialData: () => cachedVideos?.page.find((v) => v.id === videoId),
