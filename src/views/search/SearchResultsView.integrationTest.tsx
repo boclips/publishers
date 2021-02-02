@@ -449,6 +449,100 @@ describe('SearchResults', () => {
     });
   });
 
+  describe(`price filters`, () => {
+    it(`displays the price filters and facet counts`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.setFacets(
+        FacetsFactory.sample({
+          prices: [
+            { id: '10000', name: '10000', hits: 10 },
+            { id: '20000', name: '20000', hits: 120 },
+            { id: '30000', name: '30000', hits: 80 },
+          ],
+        }),
+      );
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=video']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('Price')).toBeInTheDocument();
+      expect(await wrapper.findByText('$100')).toBeInTheDocument();
+      expect(await wrapper.findByText('$200')).toBeInTheDocument();
+      expect(await wrapper.findByText('$300')).toBeInTheDocument();
+    });
+
+    it(`can filter videos by price`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.setFacets(
+        FacetsFactory.sample({
+          prices: [
+            FacetFactory.sample({ id: '10000', hits: 1, name: '10000' }),
+            FacetFactory.sample({ id: '20000', hits: 1, name: '20000' }),
+          ],
+        }),
+      );
+      const videos = [
+        VideoFactory.sample({
+          id: '1',
+          title: 'cheap video',
+          types: [{ name: 'STOCK', id: 1 }],
+          price: { amount: 10000, currency: 'USD' },
+        }),
+        VideoFactory.sample({
+          id: '2',
+          title: 'expensive video',
+          types: [{ name: 'NEWS', id: 2 }],
+          price: { amount: 20000, currency: 'USD' },
+        }),
+      ];
+
+      videos.forEach((v) => fakeClient.videos.insertVideo(v));
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=video']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('Price')).toBeInTheDocument();
+
+      expect(await wrapper.findByText('$100')).toBeInTheDocument();
+      expect(await wrapper.findByText('$200')).toBeInTheDocument();
+
+      await waitFor(async () => {
+        expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
+        expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
+      });
+
+      const hundredDollarCheckbox = wrapper.getByTestId('10000-checkbox');
+
+      fakeClient.videos.setFacets(
+        FacetsFactory.sample({
+          prices: [
+            FacetFactory.sample({ name: '10000', id: '10000', hits: 10 }),
+          ],
+        }),
+      );
+
+      fireEvent.click(wrapper.getByTestId('10000-checkbox'));
+      expect(hundredDollarCheckbox).toHaveProperty('checked', true);
+
+      expect(await wrapper.findByLabelText(/100/)).toBeInTheDocument();
+      expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
+      expect(await wrapper.queryByText('expensive video')).toBeNull();
+
+      const selectedFiltersSection = wrapper.getByText('Selected filters')
+        .parentElement;
+
+      expect(within(selectedFiltersSection).getByText('$100')).toBeVisible();
+    });
+  });
+
   describe('cart in video-card', () => {
     it(`displays add to cart button`, async () => {
       const fakeClient = new FakeBoclipsClient();

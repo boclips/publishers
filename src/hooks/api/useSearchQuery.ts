@@ -20,6 +20,7 @@ const doSearch = (
     query,
     page,
     size: pageSize,
+    prices: filters?.prices,
     type: filters?.video_type,
     subject: filters?.subject,
     channel: filters?.channel,

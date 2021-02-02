@@ -8,6 +8,7 @@ export interface Filters {
   durations: FilterOption[];
   channels: FilterOption[];
   videoTypes: FilterOption[];
+  prices: FilterOption[];
 }
 
 export const useFilterOptions = (facets: VideoFacets): Filters => {

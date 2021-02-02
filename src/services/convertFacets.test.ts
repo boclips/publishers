@@ -12,6 +12,7 @@ describe('convertFacets', () => {
       durations: [FacetFactory.sample({ id: '2' })],
       videoTypes: [FacetFactory.sample({ id: '3' })],
       channels: [FacetFactory.sample({ id: '4' })],
+      prices: [FacetFactory.sample({ id: '5' })],
     });
 
     const searchFilters: SearchFilters = {
@@ -19,6 +20,7 @@ describe('convertFacets', () => {
       channel: [],
       subject: [],
       duration: [],
+      prices: [],
     };
 
     const filterOptions = convertFacets(facets, searchFilters);
@@ -26,6 +28,7 @@ describe('convertFacets', () => {
     expect(filterOptions.videoTypes[0].id).toEqual('3');
     expect(filterOptions.durations[0].id).toEqual('2');
     expect(filterOptions.subjects[0].id).toEqual('1');
+    expect(filterOptions.prices[0].id).toEqual('5');
   });
 
   it('can specify if a filter is selected', () => {
@@ -37,6 +40,7 @@ describe('convertFacets', () => {
       durations: [FacetFactory.sample({ id: '1' })],
       videoTypes: [FacetFactory.sample({ id: '1' })],
       channels: [FacetFactory.sample({ id: '1' })],
+      prices: [FacetFactory.sample({ id: '5' })],
     });
 
     const searchFilters: SearchFilters = {
@@ -44,6 +48,7 @@ describe('convertFacets', () => {
       video_type: ['1'],
       channel: ['1'],
       duration: ['1'],
+      prices: ['5'],
     };
 
     const filterOptions = convertFacets(facets, searchFilters);
@@ -53,6 +58,7 @@ describe('convertFacets', () => {
     expect(filterOptions.videoTypes[0].isSelected).toEqual(true);
     expect(filterOptions.channels[0].isSelected).toEqual(true);
     expect(filterOptions.durations[0].isSelected).toEqual(true);
+    expect(filterOptions.prices[0].isSelected).toEqual(true);
   });
 
   it(`returns empty lists when facets are null`, () => {
@@ -62,6 +68,7 @@ describe('convertFacets', () => {
     expect(filterOptions.videoTypes).toHaveLength(0);
     expect(filterOptions.channels).toHaveLength(0);
     expect(filterOptions.durations).toHaveLength(0);
+    expect(filterOptions.prices).toHaveLength(0);
   });
 
   it(`converts video type facet name to display name`, () => {
@@ -96,5 +103,24 @@ describe('convertFacets', () => {
     expect(filterOptions.durations[2].name).toEqual('5 - 10 min');
     expect(filterOptions.durations[3].name).toEqual('10 - 20 min');
     expect(filterOptions.durations[4].name).toEqual('20 min +');
+  });
+
+  it(`converts price facet name to display price`, () => {
+    const facets = FacetsFactory.sample({
+      prices: [
+        FacetFactory.sample({ name: '10000' }),
+        FacetFactory.sample({ name: '20000' }),
+        FacetFactory.sample({ name: '30000' }),
+        FacetFactory.sample({ name: '40000' }),
+        FacetFactory.sample({ name: '50000' }),
+      ],
+    });
+
+    const filterOptions = convertFacets(facets, null);
+    expect(filterOptions.prices[0].name).toEqual('$100');
+    expect(filterOptions.prices[1].name).toEqual('$200');
+    expect(filterOptions.prices[2].name).toEqual('$300');
+    expect(filterOptions.prices[3].name).toEqual('$400');
+    expect(filterOptions.prices[4].name).toEqual('$500');
   });
 });

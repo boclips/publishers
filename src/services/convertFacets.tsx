@@ -7,6 +7,7 @@ import { Filters } from 'src/hooks/useFilterOptions';
 import { SearchFilters } from 'src/hooks/useLocationParams';
 import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { FilterOption } from 'src/types/FilterOption';
+import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 
 export const convertFacets = (
   facets?: VideoFacets,
@@ -17,6 +18,7 @@ export const convertFacets = (
     subjects: facets?.subjects || [],
     videoTypes: facets?.videoTypes || [],
     durations: facets?.durations || [],
+    prices: facets?.prices || [],
   };
 
   return {
@@ -31,6 +33,9 @@ export const convertFacets = (
     ),
     durations: safeFacets.durations.map((it) =>
       convertFacet(it, filters?.duration, getDurationLabel),
+    ),
+    prices: safeFacets.prices.map((price) =>
+      convertFacet(price, filters?.prices, getPriceLabel),
     ),
   };
 };
@@ -78,4 +83,11 @@ const getDurationLabel = (name: string): string => {
     default:
       return name;
   }
+};
+
+const getPriceLabel = (name: string): string => {
+  const price = `${name.slice(0, name.length - 2)}.${name.slice(
+    name.length - 2,
+  )}`;
+  return createPriceDisplayValue(parseFloat(price), 'USD') || name;
 };

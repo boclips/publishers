@@ -6,6 +6,7 @@ import { ChannelFilter } from 'src/components/filterPanel/ChannelFilter';
 import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 import { Filters, useFilterOptions } from 'src/hooks/useFilterOptions';
 import { FilterOption } from 'src/types/FilterOption';
+import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import { SelectedFilters } from './SelectedFilters';
 
 interface Props {
@@ -41,6 +42,7 @@ export const FilterPanel = ({ facets, handleChange }: Props) => {
         options={filterOptions?.subjects}
         handleChange={handleChange}
       />
+      <PriceFilter options={filterOptions.prices} handleChange={handleChange} />
     </div>
   );
 };
@@ -51,5 +53,6 @@ const getSelectedFilterOptions = (filterOptions: Filters): FilterOption[] => {
     ...filterOptions.subjects.filter((option) => option.isSelected),
     ...filterOptions.videoTypes.filter((option) => option.isSelected),
     ...filterOptions.durations.filter((option) => option.isSelected),
+    ...filterOptions.prices.filter((option) => option.isSelected),
   ];
 };
