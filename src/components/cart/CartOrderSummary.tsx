@@ -15,8 +15,10 @@ export const CartOrderSummary = ({ videoIds }: Props) => {
   return (
     <>
       <div className="col-start-20 col-end-26 border-blue-500 border-2 h-32 p-5 w-full justify-end flex flex-col rounded">
-        <div className="flex justify-between mb-6 font-normal ">
-          <div>Video(s) total</div>
+        <div className="flex justify-between mb-6 font-normal text-base">
+          <div>
+            Vide<span className="tracking-tightestest">o(s)</span> total
+          </div>
           <div>{getTotalPriceDisplayValue(videos)}</div>
         </div>
         <Button

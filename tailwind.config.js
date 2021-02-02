@@ -35,6 +35,9 @@ module.exports = {
     fontFamily: {
       sans: ['Rubik'],
     },
+    letterSpacing: {
+      tightestest: '-.15em',
+    },
     screens: {
       sm: '1280px',
       md: '1440px',

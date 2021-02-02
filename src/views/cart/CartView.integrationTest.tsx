@@ -124,7 +124,7 @@ describe('CartView', () => {
 
     const wrapper = renderCartView(fakeClient);
 
-    expect(await wrapper.findByText('Video(s) total')).toBeVisible();
+    expect(await wrapper.findByText(' total', { exact: false })).toBeVisible();
     expect(await wrapper.findByText('$900')).toBeVisible();
   });
 
