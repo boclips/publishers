@@ -12,7 +12,7 @@ interface Props {
 
 export const CartDetails = ({ videoIds }: Props) => {
   const { data: cart } = useCartQuery();
-  const { data: videos } = useGetVideosQuery(videoIds);
+  const { data: videos, isLoading } = useGetVideosQuery(videoIds);
 
   const apiClient = useBoclipsClient();
 
@@ -32,13 +32,14 @@ export const CartDetails = ({ videoIds }: Props) => {
         placeholder="Add a note about this order (optional)"
       />
       <div className="pt-4 font-medium text-sm col-start-2 col-span-10">
-        {videos.map((item) => (
-          <CartItem
-            videoItem={item}
-            key={item.id}
-            cartItem={singleCartItem(item.id)}
-          />
-        ))}
+        {!isLoading &&
+          videos.map((item) => (
+            <CartItem
+              videoItem={item}
+              key={item.id}
+              cartItem={singleCartItem(item.id)}
+            />
+          ))}
       </div>
     </div>
   );

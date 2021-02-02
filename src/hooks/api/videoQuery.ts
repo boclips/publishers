@@ -17,7 +17,7 @@ export const doGetVideo = (id: string, apiClient: BoclipsClient) =>
 
 export const useGetVideosQuery = (videoIds: string[]) => {
   const apiClient = useBoclipsClient();
-  return useQuery(['videos', videoIds], () =>
+  return useQuery('cartItemVideos', () =>
     videoIds?.length > 0 ? doGetVideos(videoIds, apiClient) : null,
   );
 };
@@ -28,6 +28,7 @@ export const useFindOrGetVideo = (
 ) => {
   const apiClient = useBoclipsClient();
   const cachedVideos = queryClient.getQueryData<Pageable<Video>>('videos');
+
   return useQuery(['videos', videoId], () => doGetVideo(videoId, apiClient), {
     initialData: () => cachedVideos?.page.find((v) => v.id === videoId),
   });

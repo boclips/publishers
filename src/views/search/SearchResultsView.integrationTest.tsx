@@ -391,6 +391,7 @@ describe('SearchResults', () => {
       fireEvent.click(wrapper.getByTestId('getty-id-checkbox'));
 
       expect(await wrapper.findByText('shark video')).toBeVisible();
+      expect(await wrapper.queryByText('whale video')).toBeNull();
     });
   });
 
