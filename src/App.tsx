@@ -30,17 +30,19 @@ const ErrorView = lazy(() => import('src/views/error/ErrorView'));
 
 interface Props {
   apiClient: BoclipsClient;
+  reactQueryClient?: QueryClient;
 }
+
 const queryClient = new QueryClient(queryClientConfig);
 
-const App = ({ apiClient }: Props) => {
+const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
   const currentLocation = useLocation();
 
   useEffect(() => {
     trackPageRendered(currentLocation, apiClient);
   }, [currentLocation, apiClient]);
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={reactQueryClient}>
       <Switch>
         <BoclipsClientProvider client={apiClient}>
           <Suspense fallback={<Loading />}>

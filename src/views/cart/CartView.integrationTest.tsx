@@ -12,6 +12,8 @@ import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory
 import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 import { BoclipsApiErrorFactory } from 'boclips-api-client/dist/test-support/BoclipsApiErrorFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
+import { QueryClient } from 'react-query';
 
 describe('CartView', () => {
   const video = VideoFactory.sample({
@@ -110,16 +112,21 @@ describe('CartView', () => {
   it(`has the 'Video(s) total' label`, async () => {
     const fakeClient = new FakeBoclipsClient();
 
-    fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
-    fakeClient.videos.insertVideo(video);
-    fakeClient.carts.insertCartItem(video.id);
-
     fakeClient.videos.insertVideo(
       VideoFactory.sample({
         price: { amount: 300, currency: 'USD' },
+        id: 'video-id-1',
+      }),
+    );
+
+    fakeClient.videos.insertVideo(
+      VideoFactory.sample({
+        price: { amount: 600, currency: 'USD' },
         id: 'video-id-2',
       }),
     );
+
+    fakeClient.carts.insertCartItem('video-id-1');
     fakeClient.carts.insertCartItem('video-id-2');
 
     const wrapper = renderCartView(fakeClient);
@@ -179,10 +186,26 @@ describe('CartView', () => {
     });
   });
 
+  it('removes item from cart', async () => {
+    const fakeClient = new FakeBoclipsClient();
+    fakeClient.videos.insertVideo(video);
+    fakeClient.carts.insertCartItem(video.id);
+
+    const wrapper = renderCartView(fakeClient);
+    const removeButton = await wrapper.findByText('Remove');
+    fireEvent.click(removeButton);
+    expect(
+      await wrapper.findByText('There are no items in your shopping cart'),
+    ).toBeInTheDocument();
+  });
+
   function renderCartView(client) {
     return render(
       <MemoryRouter initialEntries={['/cart']}>
-        <App apiClient={client} />
+        <App
+          apiClient={client}
+          reactQueryClient={new QueryClient(queryClientConfig)}
+        />
       </MemoryRouter>,
     );
   }
