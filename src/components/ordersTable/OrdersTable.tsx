@@ -48,7 +48,7 @@ export const OrdersTable = () => {
                     pageSize: 10,
                     showSizeChanger: false,
                     onChange: handlePageChange,
-                    current: data?.page?.number,
+                    current: data?.page?.number + 1,
                     className: s.pagination,
                     itemRender: PaginationButtons,
                   }}
