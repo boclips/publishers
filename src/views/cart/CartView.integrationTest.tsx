@@ -179,6 +179,25 @@ describe('CartView', () => {
     });
   });
 
+  it('removes item from cart cart', async () => {
+    const fakeClient2 = new FakeBoclipsClient();
+
+    fakeClient2.videos.insertVideo(video);
+    fakeClient2.carts.insertCartItem(video.id);
+
+    const wrapper = renderCartView(fakeClient2);
+
+    await wrapper.findByText(video.title);
+
+    fireEvent.click(await wrapper.findByText('Remove'));
+
+    wrapper.debug(wrapper.baseElement, 2000);
+
+    expect(
+      await wrapper.findByText('There are no items in your shopping cart'),
+    ).toBeInTheDocument();
+  });
+
   function renderCartView(client) {
     return render(
       <MemoryRouter initialEntries={['/cart']}>
