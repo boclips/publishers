@@ -8,7 +8,7 @@ const Footer = () => {
     >
       <div className="border-t text-xxs text-footer pt-4 font-thin ">
         <div>
-          <span> Copyright © 2020 Boclips. All rights reserved. </span>
+          <span> Copyright © 2021 Boclips. All rights reserved. </span>
           <span className="pl-6">
             <a
               rel="noopener noreferrer"
