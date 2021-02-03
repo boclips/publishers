@@ -1,19 +1,19 @@
 import React from 'react';
-import { doUpdateCartNote, useCartQuery } from 'src/hooks/api/cartQuery';
+import { doUpdateCartNote } from 'src/hooks/api/cartQuery';
 import { InputWithDebounce as CartNote } from 'src/components/cart/InputWithDebounce';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 import { useMutation } from 'react-query';
-import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
+import { Video } from 'boclips-api-client/dist/types';
+import { Cart as ApiCart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import CartItem from './CartItem/CartItem';
 
 interface Props {
-  videoIds: string[];
+  cartItemVideos: Video[];
+  cart: ApiCart;
+  isLoading: Boolean;
 }
 
-export const CartDetails = ({ videoIds }: Props) => {
-  const { data: cart } = useCartQuery();
-  const { data: videos, isLoading } = useGetVideosQuery(videoIds);
-
+export const CartDetails = ({ cartItemVideos, cart, isLoading }: Props) => {
   const apiClient = useBoclipsClient();
 
   const { mutate: onUpdateNote } = useMutation((note: string) =>
@@ -27,13 +27,13 @@ export const CartDetails = ({ videoIds }: Props) => {
   return (
     <div className="col-start-2 col-end-20 font-medium text-md row-start-3 row-end-3 flex flex-col">
       <CartNote
-        currentValue={cart.note || undefined}
+        currentValue={cart?.note}
         onUpdate={onUpdateNote}
         placeholder="Add a note about this order (optional)"
       />
       <div className="pt-4 font-medium text-sm col-start-2 col-span-10">
         {!isLoading &&
-          videos.map((item) => (
+          cartItemVideos.map((item) => (
             <CartItem
               videoItem={item}
               key={item.id}

@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import Button from '@boclips-ui/button';
 import { getTotalPriceDisplayValue } from 'src/services/getTotalPriceDisplayValue';
-import { useGetVideosQuery } from 'src/hooks/api/videoQuery';
+import { Video } from 'boclips-api-client/dist/types';
 import { OrderModal } from '../orderModal/OrderModal';
 
 interface Props {
-  videoIds: string[];
+  videos: Video[];
 }
 
-export const CartOrderSummary = ({ videoIds }: Props) => {
+export const CartOrderSummary = ({ videos }: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const { data: videos } = useGetVideosQuery(videoIds);
 
   return (
     <>

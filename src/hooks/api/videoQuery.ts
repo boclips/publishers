@@ -15,11 +15,11 @@ export const doGetVideos = (videoIds: string[], apiClient: BoclipsClient) => {
 export const doGetVideo = (id: string, apiClient: BoclipsClient) =>
   apiClient.videos.get(id);
 
-export const useGetVideosQuery = (videoIds: string[]) => {
+export const useGetVideos = (videoIds: string[]) => {
   const apiClient = useBoclipsClient();
-  return useQuery('cartItemVideos', () =>
-    videoIds?.length > 0 ? doGetVideos(videoIds, apiClient) : null,
-  );
+  return useQuery('cartItemVideos', () => doGetVideos(videoIds, apiClient), {
+    enabled: !!videoIds,
+  });
 };
 
 export const useFindOrGetVideo = (videoId: string) => {

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { doUpdateCartItem } from 'src/hooks/api/cartQuery';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { InputWithDebounce } from 'src/components/cart/InputWithDebounce';
+import c from 'classnames';
 
 interface Props {
   label: string;
@@ -10,21 +11,17 @@ interface Props {
 }
 
 export const EditRequest = ({ label, cartItem }: Props) => {
-  const [isChecked, setIsChecked] = useState(false);
-
   const boclipsClient = useBoclipsClient();
+  const isChecked = !!cartItem?.additionalServices?.editRequest;
+  const id = `${cartItem.videoId}editingRequested`;
 
-  useEffect(() => {
-    if (cartItem?.additionalServices?.editRequest) {
-      setIsChecked(true);
-    }
-  }, [cartItem]);
+  const [serviceRequested, setServiceRequested] = useState(isChecked);
 
-  const handleChange = () => {
-    if (isChecked) {
+  const handleChange = (e) => {
+    if (!e.currentTarget.checked) {
       updateEditRequest(null);
     }
-    setIsChecked(!isChecked);
+    setServiceRequested(e.currentTarget.checked);
   };
 
   const updateEditRequest = (editRequest: string | null) => {
@@ -41,21 +38,27 @@ export const EditRequest = ({ label, cartItem }: Props) => {
     <div className="mt-2 flex flex-row items-center">
       <label
         className="cursor-pointer flex flex-col font-normal mr-8 w-full"
-        htmlFor={`${cartItem.videoId}editingRequested`}
+        htmlFor={id}
       >
         <div className=" flex flex-row mb-3 text-sm">
           <input
-            onChange={() => handleChange()}
-            checked={isChecked}
+            onChange={handleChange}
+            checked={serviceRequested}
             type="checkbox"
-            id={`${cartItem.videoId}editingRequested`}
+            id={id}
             className="form-checkbox checked:bg-blue-800 w-5 h-5 mr-2 hover:border-blue-800 hover:border-solid border-2 cursor-pointer"
           />
-          <span className={`${isChecked && 'font-medium'}`}>{label}</span>
+          <span
+            className={c({
+              'font-medium': serviceRequested,
+            })}
+          >
+            {label}
+          </span>
         </div>
-        {isChecked && (
+        {serviceRequested && (
           <InputWithDebounce
-            currentValue={cartItem.additionalServices?.editRequest || undefined}
+            currentValue={cartItem.additionalServices?.editRequest}
             onUpdate={updateEditRequest}
             placeholder="eg. Remove front and end credits"
           />

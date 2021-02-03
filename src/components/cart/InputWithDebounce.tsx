@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'src/hooks/useDebounce';
 
 interface Props {
-  currentValue: string | undefined;
+  currentValue?: string;
   onUpdate: (note: string) => void;
   placeholder: string;
 }
@@ -11,7 +11,7 @@ export const InputWithDebounce = ({
   onUpdate,
   placeholder,
 }: Props) => {
-  const [value, setValue] = useState(currentValue);
+  const [value, setValue] = useState(currentValue || '');
   const debouncedValue = useDebounce(value, 1000);
 
   const handleOnChange = (e: any) => {

@@ -5,16 +5,28 @@ import { useCartQuery } from 'src/hooks/api/cartQuery';
 import { Cart } from 'src/components/cart/Cart';
 import { Loading } from 'src/components/common/Loading';
 import { EmptyCart } from 'src/components/cart/EmptyCart';
+import { useGetVideos } from 'src/hooks/api/videoQuery';
 
 const CartView = () => {
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
   const videoIds = cart?.items?.map((it) => it.videoId);
 
+  const {
+    data: cartItemVideos,
+    isLoading: isCartItemVideosLoading,
+  } = useGetVideos(videoIds);
+
   const itemsInCart = cart?.items?.length > 0;
 
   const cartToDisplay = () => {
     if (itemsInCart && videoIds) {
-      return <Cart cart={cart} videoIds={videoIds} />;
+      return (
+        <Cart
+          cart={cart}
+          cartItemVideos={cartItemVideos}
+          isCartItemVideosLoading={isCartItemVideosLoading}
+        />
+      );
     }
 
     if (isCartLoading) {
