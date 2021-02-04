@@ -33,15 +33,13 @@ const boldMatchingText = (text, shouldBeBold) => {
     <>
       {textArray.map((item) => {
         return (
-          <React.Fragment key={item}>
-            {item.toLowerCase().includes(shouldBeBold.toLowerCase()) ? (
-              <span key={item} className="font-medium">
-                {item}
-              </span>
+          <>
+            {item.toLowerCase() === shouldBeBold.toLowerCase() ? (
+              <span className="font-medium">{item}</span>
             ) : (
               item
             )}
-          </React.Fragment>
+          </>
         );
       })}
     </>
