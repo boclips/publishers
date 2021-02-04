@@ -29,16 +29,10 @@ const CartView = () => {
       );
     }
 
-    if (isCartLoading) {
-      return (
-        <div className="grid-cols-24 row-span-3 col-start-2 col-end-26 h-auto rounded-lg">
-          <Loading />
-        </div>
-      );
-    }
-
     return <EmptyCart />;
   };
+
+  if (isCartLoading || isCartItemVideosLoading) return <Loading />;
 
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">

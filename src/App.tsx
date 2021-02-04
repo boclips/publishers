@@ -41,6 +41,7 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
   useEffect(() => {
     trackPageRendered(currentLocation, apiClient);
   }, [currentLocation, apiClient]);
+
   return (
     <QueryClientProvider client={reactQueryClient}>
       <Switch>
