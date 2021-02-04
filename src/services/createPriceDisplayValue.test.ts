@@ -5,6 +5,9 @@ describe('get price display value', () => {
     expect(createPriceDisplayValue()).toBeNull();
   });
   describe('US Browser', () => {
+    it('converts 0 USD', () => {
+      expect(createPriceDisplayValue(0, 'USD', 'en-US')).toEqual('$0');
+    });
     it('converts 300.5 GBP', () => {
       expect(createPriceDisplayValue(300.5, 'GBP', 'en-US')).toEqual('£300.50');
     });
@@ -16,6 +19,9 @@ describe('get price display value', () => {
     });
   });
   describe('UK Browser', () => {
+    it('converts 0 USD', () => {
+      expect(createPriceDisplayValue(0, 'USD', 'en-US')).toEqual('$0');
+    });
     it('converts 300.5 GBP', () => {
       expect(createPriceDisplayValue(300.5, 'GBP', 'en-GB')).toEqual('£300.50');
     });
@@ -27,6 +33,9 @@ describe('get price display value', () => {
     });
   });
   describe('German Browser', () => {
+    it('converts 0 USD', () => {
+      expect(createPriceDisplayValue(0, 'USD', 'en-US')).toEqual('$0');
+    });
     it('converts 300.5 GBP', () => {
       expect(createPriceDisplayValue(300.5, 'GBP', 'de-DE')).toEqual(
         '300,50 £',

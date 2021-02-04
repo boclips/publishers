@@ -5,7 +5,7 @@ export const createPriceDisplayValue = (
   currency?: any,
   language?: any,
 ): string => {
-  if (!amount || !currency) {
+  if (!currency) {
     return null;
   }
   const isDecimal = amount % 1 !== 0;
