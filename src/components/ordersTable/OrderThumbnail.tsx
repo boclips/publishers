@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetVideos } from 'src/hooks/api/videoQuery';
+import { useGetOrderedVideos } from 'src/hooks/api/videoQuery';
 import { OrderItem } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 
@@ -26,7 +26,7 @@ const ItemsCount = ({ items }: Props) => {
 
 export const ItemsThumbnail = ({ items }: Props) => {
   const videoIds = items.map((it: OrderItem) => it.video.id);
-  const { data: videos } = useGetVideos(videoIds);
+  const { data: videos } = useGetOrderedVideos(videoIds);
 
   const getFirstValidThumbnail = (videoList: Video[]): string => {
     const thumbnailLinks = videoList?.map((it) =>
