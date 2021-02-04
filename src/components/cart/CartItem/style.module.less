@@ -14,3 +14,56 @@
   --bo-ui-button-background-color-active: @blue-300;
   --bo-ui-button-svg-stroke-clour: @blue-900;
 }
+
+.cartItemWrapper {
+  @apply flex py-3 flex-row border-t-2 border-blue-300 justify-start relative;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 339px;
+    background: white;
+    z-index: 1;
+    animation-duration: 0.2s;
+  }
+
+  &.cartAnimationWrapper {
+    &:before {
+      display: block;
+      animation-name: fadeIn;
+    }
+  }
+  &.shrink {
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    animation-name: shrink;
+  }
+}
+
+@keyframes shrink {
+  from {
+    max-height: 339px;
+    opacity: 1;
+  }
+
+  to {
+    max-height: 0px;
+    padding: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

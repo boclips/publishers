@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Video } from 'boclips-api-client/dist/types';
 import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
 import AdditionalServices from 'src/components/cart/AdditionalServices/AdditionalServices';
@@ -6,6 +6,7 @@ import { CartItem as ApiCartItem } from 'boclips-api-client/dist/sub-clients/car
 import Button from '@boclips-ui/button';
 import RemoveFromCartIcon from 'src/resources/icons/bin.svg';
 import { useCartMutation } from 'src/hooks/api/cartQuery';
+import c from 'classnames';
 import s from './style.module.less';
 
 interface Props {
@@ -14,10 +15,36 @@ interface Props {
 }
 
 const CartItem = ({ videoItem, cartItem }: Props) => {
-  const { mutate: mutateDeleteFromCart } = useCartMutation();
+  const [startAnimation, setStartAnimation] = useState<boolean>(false);
+  const [shrinkAnimation, setShrinkAnimation] = useState<boolean>(false);
+
+  const { mutate: mutateDeleteFromCart, error } = useCartMutation();
+
+  const cartItemAnimate = () => {
+    setStartAnimation(true);
+    setTimeout(() => {
+      setShrinkAnimation(true);
+    }, 200);
+
+    setTimeout(() => {
+      mutateDeleteFromCart(cartItem.id);
+    }, 600);
+  };
+
+  useEffect(() => {
+    if (error) {
+      setStartAnimation(false);
+      setShrinkAnimation(false);
+    }
+  }, [error]);
 
   return (
-    <div className="flex py-3 flex-row border-t-2 border-blue-300 justify-start ">
+    <div
+      className={c(s.cartItemWrapper, {
+        [s.cartAnimationWrapper]: startAnimation,
+        [s.shrink]: shrinkAnimation,
+      })}
+    >
       <VideoPlayer video={videoItem} />
 
       <div className="flex flex-col w-full ml-3">
@@ -25,7 +52,7 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
 
         <div className={s.textButton}>
           <Button
-            onClick={() => mutateDeleteFromCart(cartItem.id)}
+            onClick={cartItemAnimate}
             text="Remove"
             icon={<RemoveFromCartIcon />}
           />

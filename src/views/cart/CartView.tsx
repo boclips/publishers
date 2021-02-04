@@ -10,6 +10,7 @@ import { useGetVideos } from 'src/hooks/api/videoQuery';
 const CartView = () => {
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
   const videoIds = cart?.items?.map((it) => it.videoId);
+  console.log(videoIds, cart);
 
   const {
     data: cartItemVideos,
@@ -17,6 +18,8 @@ const CartView = () => {
   } = useGetVideos(videoIds);
 
   const itemsInCart = cart?.items?.length > 0;
+
+  if (isCartLoading || isCartItemVideosLoading || !videoIds) return <Loading />;
 
   const cartToDisplay = () => {
     if (itemsInCart && videoIds) {
@@ -31,8 +34,6 @@ const CartView = () => {
 
     return <EmptyCart />;
   };
-
-  if (isCartLoading || isCartItemVideosLoading) return <Loading />;
 
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">

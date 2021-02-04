@@ -1,5 +1,6 @@
 import React from 'react';
 import { Cart as ApiCart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
+import c from 'classnames';
 
 interface Props {
   cart: ApiCart;
@@ -7,7 +8,11 @@ interface Props {
 
 export const CartSummary = ({ cart }: Props) => {
   return (
-    <div className="grid col-start-2 col-end-21 grid-row-start-2 grid-row-end-2 grid-cols-12 gap-8">
+    <div
+      className={c(
+        'grid col-start-2 col-end-21 grid-row-start-2 grid-row-end-2 grid-cols-12 gap-8',
+      )}
+    >
       <div className="col-start-1 col-end-21 flex flex-row">
         <h2 className="font-bold">Shopping cart</h2>
         <span className="text-3xl pl-3">

@@ -1,11 +1,12 @@
 import EmptyCartCharacter from 'src/resources/icons/empty-cart-character.svg';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import c from 'classnames';
 import s from './style.module.less';
 
 export const EmptyCart = () => {
   return (
-    <div className={s.emptyCartView}>
+    <div className={c(s.emptyCartView, { [s.fadeIn]: true })}>
       <div className="col-start-5 col-end-10 flex justify-center items-center">
         <EmptyCartCharacter />
       </div>
