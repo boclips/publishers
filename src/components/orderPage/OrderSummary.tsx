@@ -22,7 +22,7 @@ export const OrderSummary = ({ order }: Props) => {
           </div>
         }
       />
-      <OrderTotalValueField price={order.totalPrice} />
+      <OrderTotalValueField price={order.totalPrice} highlighted />
       <OrderStatusField orderStatus={order.status} />
       <OrderDeliveredDateField deliveredAt={order.deliveredAt} />
       <OrderInformationField
