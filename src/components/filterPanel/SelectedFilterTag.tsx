@@ -12,17 +12,18 @@ export const SelectedFilterTag = ({ filter, removeFilter }: Props) => {
   return (
     <span
       key={`${filter.name}-${filter.id}`}
-      className="py-1 px-2 mr-2 mb-2 border-solid border-2 border-blue-700 rounded flex flex-nowrap"
+      className="py-1 px-2 mr-2 mb-2 border-solid border-2 border-blue-700 rounded flex flex-nowrap items-center"
     >
       {filter.name}
       <span
         role="button"
         data-qa="remove-filter"
+        className="ml-2"
         tabIndex={0}
         onKeyPress={(_) => removeFilter(filter.key, filter.id)}
         onClick={() => removeFilter(filter.key, filter.id)}
       >
-        <CrossIconSVG />
+        <CrossIconSVG classname="text-blue-700 stroke-current stroke-2" />
       </span>
     </span>
   );

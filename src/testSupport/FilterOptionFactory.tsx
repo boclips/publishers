@@ -9,6 +9,7 @@ export class FilterOptionFactory {
       label: <span>My filter label</span>,
       hits: 12,
       isSelected: false,
+      key: 'channel',
       ...option,
     };
   }
