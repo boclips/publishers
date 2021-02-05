@@ -133,4 +133,20 @@ describe('order table', () => {
     );
     expect(await wrapper.findByText('i am a note')).toBeVisible();
   });
+  it('does not render notes field if there is no note', async () => {
+    const fakeClient = new FakeBoclipsClient();
+    const order = OrdersFactory.sample({
+      id: 'order-id-no-note',
+      note: '',
+    });
+    fakeClient.orders.insertOrderFixture(order);
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/orders/order-id-no-note']}>
+        <App apiClient={fakeClient} />
+      </MemoryRouter>,
+    );
+
+    expect(await wrapper.findByText('Order date')).toBeVisible();
+    expect(wrapper.queryByText('Notes')).not.toBeInTheDocument();
+  });
 });
