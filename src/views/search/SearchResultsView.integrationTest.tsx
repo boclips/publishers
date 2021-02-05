@@ -451,7 +451,7 @@ describe('SearchResults', () => {
   });
 
   describe(`price filters`, () => {
-    it(`displays the price filters and facet counts`, async () => {
+    it(`displays the price filters and facet counts when hits > 0`, async () => {
       const fakeClient = new FakeBoclipsClient();
 
       fakeClient.videos.setFacets(
@@ -460,6 +460,7 @@ describe('SearchResults', () => {
             { id: '10000', name: '10000', hits: 10 },
             { id: '20000', name: '20000', hits: 120 },
             { id: '30000', name: '30000', hits: 80 },
+            { id: '50000', name: '50000', hits: 0 },
           ],
         }),
       );
@@ -472,8 +473,9 @@ describe('SearchResults', () => {
 
       expect(await wrapper.findByText('Price')).toBeInTheDocument();
       expect(await wrapper.findByText('$100')).toBeInTheDocument();
-      expect(await wrapper.findByText('$200')).toBeInTheDocument();
-      expect(await wrapper.findByText('$300')).toBeInTheDocument();
+      expect(wrapper.getByText('$200')).toBeInTheDocument();
+      expect(wrapper.getByText('$300')).toBeInTheDocument();
+      expect(wrapper.queryByText('$500')).not.toBeInTheDocument();
     });
 
     it(`can filter videos by price`, async () => {

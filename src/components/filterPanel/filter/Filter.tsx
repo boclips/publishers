@@ -52,6 +52,8 @@ export const Filter = ({
     }
   };
 
+  const optionsWithHits = options.filter((option) => option.hits > 0);
+
   return (
     <div className="bg-blue-100 mt-6 p-4 border-solid border border-blue-300 rounded">
       <FilterHeader
@@ -63,7 +65,7 @@ export const Filter = ({
         <>
           {filtersSearch}
           <FilterOptionList
-            options={options}
+            options={optionsWithHits}
             selectedOptions={optionStates}
             onSelect={onSelectOption}
           />
