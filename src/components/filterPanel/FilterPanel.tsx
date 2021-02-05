@@ -7,14 +7,16 @@ import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 import { Filters, useFilterOptions } from 'src/hooks/useFilterOptions';
 import { FilterOption } from 'src/types/FilterOption';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
+import { FilterKey } from 'src/types/search/FilterKey';
 import { SelectedFilters } from './SelectedFilters';
 
 interface Props {
   facets?: VideoFacets;
   handleChange: (filter: string, values: string[]) => void;
+  removeFilter: (filter: string, value: string) => void;
 }
 
-export const FilterPanel = ({ facets, handleChange }: Props) => {
+export const FilterPanel = ({ facets, handleChange, removeFilter }: Props) => {
   const filterOptions = useFilterOptions(facets);
 
   const selectedFilterOptions = React.useMemo(
@@ -22,10 +24,18 @@ export const FilterPanel = ({ facets, handleChange }: Props) => {
     [filterOptions],
   );
 
+  const removeSelectedOption = (filter: FilterKey, value: string) => {
+    selectedFilterOptions.filter((it) => it.id !== value);
+    removeFilter(filter, value);
+  };
+
   return (
     <div className="col-start-2 col-end-7">
       <div className="text-primary text-lg font-medium pb-4">Filter by: </div>
-      <SelectedFilters selectedFilterOptions={selectedFilterOptions} />
+      <SelectedFilters
+        selectedFilterOptions={selectedFilterOptions}
+        removeFilter={removeSelectedOption}
+      />
       <VideoTypeFilter
         options={filterOptions.videoTypes}
         handleChange={handleChange}

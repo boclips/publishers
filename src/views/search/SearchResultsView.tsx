@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   prefetchSearchQuery,
   useSearchQuery,
@@ -8,7 +8,7 @@ import Navbar from 'src/components/layout/Navbar';
 import { FilterPanel } from 'src/components/filterPanel/FilterPanel';
 import { SearchResults } from 'src/components/searchResults/SearchResults';
 import Footer from 'src/components/layout/Footer';
-import { FilterKeys } from 'src/types/search/FilterKeys';
+import { FilterKey } from 'src/types/search/FilterKey';
 import { useQueryClient } from 'react-query';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
@@ -50,24 +50,37 @@ const SearchResultsView = () => {
     });
   };
 
-  const handleFilterChange = (key: FilterKeys, values: string[]) => {
-    const prevValues = filters[key];
-    if (prevValues.length !== values.length) {
-      setSearchLocation({
-        query,
-        page: 1,
-        filters: {
-          ...filters,
-          [key]: values,
-        },
-      });
-    }
+  const handleFilterChange = useCallback(
+    (key: FilterKey, values: string[]) => {
+      const prevValues = filters[key];
+      if (prevValues.length !== values.length) {
+        setSearchLocation({
+          query,
+          page: 1,
+          filters: {
+            ...filters,
+            [key]: values,
+          },
+        });
+      }
+    },
+    [filters, query, setSearchLocation],
+  );
+
+  const removeFilter = (key: FilterKey, value: string) => {
+    const oldValues = filters[key];
+    const newValues = oldValues.filter((it) => value !== it);
+    handleFilterChange(key, newValues);
   };
 
   return (
     <div className="grid grid-rows-search-view grid-cols-container gap-8">
       <Navbar showSearchBar />
-      <FilterPanel facets={data?.facets} handleChange={handleFilterChange} />
+      <FilterPanel
+        facets={data?.facets}
+        handleChange={handleFilterChange}
+        removeFilter={removeFilter}
+      />
       {isError ? (
         <div className="col-start-2 col-end-27">{error && error.message}</div>
       ) : (

@@ -25,6 +25,7 @@ describe(`filterPanel`, () => {
       hits: 10,
       id: 'stock',
       label: <span>Stock</span>,
+      isSelected: true,
     }),
     FilterOptionFactory.sample({
       hits: 5,

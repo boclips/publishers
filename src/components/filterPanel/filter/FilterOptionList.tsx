@@ -7,21 +7,17 @@ import s from './FilterOptionList.module.less';
 
 interface Props {
   options: FilterOption[];
-  selectedOptions: string[];
   onSelect: (event, item) => void;
 }
 const DEFAULT_VISIBLE_OPTIONS = 5;
 
-export const FilterOptionList = ({
-  options,
-  selectedOptions,
-  onSelect,
-}: Props) => {
+export const FilterOptionList = ({ options, onSelect }: Props) => {
   const [allExpanded, setAllExpanded] = useState<boolean>(false);
 
   const toggleOptions = () => setAllExpanded(!allExpanded);
 
-  const tooManyOptions = options.length > DEFAULT_VISIBLE_OPTIONS;
+  const optionsWithHits = options.filter((option) => option.hits > 0);
+  const tooManyOptions = optionsWithHits.length > DEFAULT_VISIBLE_OPTIONS;
 
   return (
     <div className="flex flex-col mb-1 mt-4">
@@ -30,14 +26,13 @@ export const FilterOptionList = ({
           'h-64': allExpanded && tooManyOptions,
         })}
       >
-        {options
-
+        {optionsWithHits
           .slice(0, allExpanded ? options.length : DEFAULT_VISIBLE_OPTIONS)
           .map((option) => (
             <span key={option.id}>
               <FilterOptionCheckbox
                 option={option}
-                selected={selectedOptions.includes(option.id)}
+                selected={option.isSelected}
                 onSelect={onSelect}
               />
             </span>

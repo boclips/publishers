@@ -1,4 +1,4 @@
-export type FilterKeys =
+export type FilterKey =
   | 'video_type'
   | 'subject'
   | 'channel'

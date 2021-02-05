@@ -6,7 +6,7 @@ import { SearchFilters } from 'src/hooks/useLocationParams';
 import { convertFacets } from 'src/services/convertFacets';
 
 describe('convertFacets', () => {
-  it('can convert every facet type to a filter option', () => {
+  it('can convert every facet type to a filter option with filter keys', () => {
     const facets = FacetsFactory.sample({
       subjects: [FacetFactory.sample({ id: '1' })],
       durations: [FacetFactory.sample({ id: '2' })],
@@ -25,10 +25,15 @@ describe('convertFacets', () => {
 
     const filterOptions = convertFacets(facets, searchFilters);
     expect(filterOptions.channels[0].id).toEqual('4');
+    expect(filterOptions.channels[0].key).toEqual('channel');
     expect(filterOptions.videoTypes[0].id).toEqual('3');
+    expect(filterOptions.videoTypes[0].key).toEqual('video_type');
     expect(filterOptions.durations[0].id).toEqual('2');
+    expect(filterOptions.durations[0].key).toEqual('duration');
     expect(filterOptions.subjects[0].id).toEqual('1');
+    expect(filterOptions.subjects[0].key).toEqual('subject');
     expect(filterOptions.prices[0].id).toEqual('5');
+    expect(filterOptions.prices[0].key).toEqual('prices');
   });
 
   it('can specify if a filter is selected', () => {

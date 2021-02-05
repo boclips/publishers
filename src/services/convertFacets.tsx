@@ -8,6 +8,7 @@ import { SearchFilters } from 'src/hooks/useLocationParams';
 import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { FilterOption } from 'src/types/FilterOption';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
+import { FilterKey } from 'src/types/search/FilterKey';
 
 export const convertFacets = (
   facets?: VideoFacets,
@@ -23,19 +24,19 @@ export const convertFacets = (
 
   return {
     channels: safeFacets.channels.map((it) =>
-      convertFacet(it, filters?.channel),
+      convertFacet(it, filters?.channel, 'channel'),
     ),
     subjects: safeFacets.subjects.map((it) =>
-      convertFacet(it, filters?.subject),
+      convertFacet(it, filters?.subject, 'subject'),
     ),
     videoTypes: safeFacets.videoTypes.map((it) =>
-      convertFacet(it, filters?.video_type, getVideoTypeLabel),
+      convertFacet(it, filters?.video_type, 'video_type', getVideoTypeLabel),
     ),
     durations: safeFacets.durations.map((it) =>
-      convertFacet(it, filters?.duration, getDurationLabel),
+      convertFacet(it, filters?.duration, 'duration', getDurationLabel),
     ),
     prices: safeFacets.prices.map((price) =>
-      convertFacet(price, filters?.prices, getPriceLabel),
+      convertFacet(price, filters?.prices, 'prices', getPriceLabel),
     ),
   };
 };
@@ -43,6 +44,7 @@ export const convertFacets = (
 const convertFacet = (
   facet: Facet,
   selectedIds: string[] = [],
+  filterKey: FilterKey,
   convertName?: (rawName: string) => string,
 ): FilterOption => {
   const name = convertName ? convertName(facet.name) : facet.name;
@@ -52,6 +54,7 @@ const convertFacet = (
     hits: facet.hits,
     id: facet.id,
     isSelected: selectedIds.includes(facet.id),
+    key: filterKey,
   };
 };
 

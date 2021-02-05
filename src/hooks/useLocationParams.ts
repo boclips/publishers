@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FilterKeys } from '../types/search/FilterKeys';
+import { FilterKey } from '../types/search/FilterKey';
 
 export const useLocationParams = () => {
   const location = useLocation();
   return new URLSearchParams(location.search);
 };
 
-export type SearchFilters = { [key in FilterKeys]: string[] };
+export type SearchFilters = { [key in FilterKey]: string[] };
 
 export interface SearchQueryLocationParams {
   query: string;

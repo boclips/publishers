@@ -10,7 +10,6 @@ import { useGetVideos } from 'src/hooks/api/videoQuery';
 const CartView = () => {
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
   const videoIds = cart?.items?.map((it) => it.videoId);
-  console.log(videoIds, cart);
 
   const {
     data: cartItemVideos,

@@ -3,13 +3,13 @@ import { VideoSearchResults } from 'boclips-api-client/dist/sub-clients/videos/m
 import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { BoclipsClient } from 'boclips-api-client';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
-import { FilterKeys } from 'src/types/search/FilterKeys';
+import { FilterKey } from 'src/types/search/FilterKey';
 
 export interface SearchQuery {
   query: string;
   page: number;
   pageSize: number;
-  filters?: { [key in FilterKeys]: string[] };
+  filters?: { [key in FilterKey]: string[] };
 }
 
 const doSearch = (
