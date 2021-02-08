@@ -13,7 +13,7 @@ const OrderTable = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="grid grid-rows-orders-view grid-cols-container gap-8">
+    <div className="grid grid-rows-order-view grid-cols-container gap-8">
       <Navbar showSearchBar={false} />
       {order && <OrderPage order={order} />}
       <Footer />

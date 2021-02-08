@@ -48,6 +48,7 @@ module.exports = {
         home: '75px minmax(0, 458px) 63px',
         'search-view': '75px minmax(0, auto) 63px',
         'orders-view': '75px 50px minmax(0, auto) 63px',
+        'order-view': '75px 21px minmax(0, auto) minmax(0, auto) 63px',
         'cart-view': '75px 50px minmax(0, auto) 63px',
       },
       gridTemplateColumns: {
@@ -161,6 +162,8 @@ module.exports = {
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     border: ['responsive', 'hover', 'focus', 'focus-within', 'active'],
     borderColor: ['responsive', 'hover', 'focus', 'focus-within', 'active'],
+    margin: ['last'],
+    padding: ['first', 'last'],
     backgroundColor: [
       'responsive',
       'hover',

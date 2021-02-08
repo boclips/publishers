@@ -11,12 +11,11 @@ interface Props {
 }
 
 export const OrderPage = ({ order }: Props) => {
-  // change grid
   return (
-    <div className="col-start-2 col-end-26 row-start-2 row-end-4">
+    <>
       <OrderHeader id={order.id} />
       <OrderSummary order={order} />
       <OrderVideoList order={order} />
-    </div>
+    </>
   );
 };

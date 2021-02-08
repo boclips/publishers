@@ -13,21 +13,26 @@ interface Props {
 
 export const OrderSummary = ({ order }: Props) => {
   return (
-    <div className="flex flex-row border-2 border-blue-500 rounded p-6 mb-4">
-      <OrderDateField fieldName="Order Date" createdAt={order.createdAt} />
-      <OrderStatusField status={order.status} />
-      <OrderDateField fieldName="Delivery Date" createdAt={order.deliveredAt} />
-      <OrderTotalValueField highlighted totalPrice={order.totalPrice} />
-      <OrderVideoQuantity
-        quantity={order.items.length}
-        fieldName="Video quantity"
-      />
+    <div className="grid-row-start-3 grid-row-end-3 col-start-2 col-end-26">
+      <div className="text-2xl font-bold text-gray-800 mb-4">{`Order ${order.id}`}</div>
 
-      {order?.note && (
-        <OrderInformationField fieldName="Notes">
-          <div className="text-base">{order.note}</div>
-        </OrderInformationField>
-      )}
+      <div className="flex flex-row flex-wrap border-2 border-blue-500 rounded p-6">
+        <OrderDateField fieldName="Order date" date={order.createdAt} />
+        <OrderStatusField status={order.status} />
+        <OrderDateField fieldName="Delivery date" date={order.deliveredAt} />
+        <OrderTotalValueField highlighted totalPrice={order.totalPrice} />
+        <OrderVideoQuantity
+          quantity={order.items.length}
+          fieldName="Video quantity"
+        />
+        {order?.note && (
+          <span className="mt-4">
+            <OrderInformationField fieldName="Notes">
+              <div className="text-base">{order.note}</div>
+            </OrderInformationField>
+          </span>
+        )}
+      </div>
     </div>
   );
 };

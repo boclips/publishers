@@ -8,6 +8,8 @@ interface Props {
 
 export const OrderVideoQuantity = ({ quantity, fieldName }: Props) => (
   <OrderInformationField fieldName={fieldName}>
-    <div className="text-base"> {quantity} </div>
+    <div data-qa="video-quantity" className="text-base">
+      {quantity}
+    </div>
   </OrderInformationField>
 );

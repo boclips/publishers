@@ -36,17 +36,15 @@ export const OrderThumbnail = ({ items }: Props) => {
           backgroundImage: `url(${thumbnailUrl})`,
         }}
       >
-        {videos && (
-          <div className="text-white z-10 relative flex flex-col h-full items-center justify-center">
-            <div
-              data-qa="order-item-count"
-              className="font-bold text-5xl leading-8"
-            >
-              {count}
-            </div>
-            <span className="text-xl">{count > 1 ? 'videos' : 'video'}</span>
+        <div className="text-white z-10 relative flex flex-col h-full items-center justify-center">
+          <div
+            data-qa="order-item-count"
+            className="font-bold text-5xl leading-8"
+          >
+            {count}
           </div>
-        )}
+          <span className="text-xl">{count > 1 ? 'videos' : 'video'}</span>
+        </div>
       </div>
     </div>
   );

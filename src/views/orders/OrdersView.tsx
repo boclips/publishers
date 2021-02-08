@@ -4,7 +4,6 @@ import Footer from 'src/components/layout/Footer';
 import { OrdersTable } from 'src/components/ordersTable/OrdersTable';
 import { useGetOrdersQuery } from 'src/hooks/api/orderQuery';
 import { Loading } from 'src/components/common/Loading';
-import { Empty } from 'antd';
 
 export const PAGE_SIZE = 10;
 
@@ -28,14 +27,10 @@ const OrdersView = () => {
         <OrdersTable paginationPage={changePaginationPage} orders={orders} />
       );
 
-    return (
-      <div data-qa="no-results">
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-      </div>
-    );
+    return <div>This will be an empty state</div>;
   };
 
-  if (isLoading || !areOrders) return <Loading />;
+  if (isLoading && !areOrders) return <Loading />;
 
   return (
     <div className="grid grid-rows-orders-view grid-cols-container gap-8">
