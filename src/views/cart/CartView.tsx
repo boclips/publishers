@@ -20,15 +20,9 @@ const CartView = () => {
 
   if (isCartLoading || isCartItemVideosLoading || !videoIds) return <Loading />;
 
-  const cartToDisplay = () => {
+  const renderCart = () => {
     if (itemsInCart && videoIds) {
-      return (
-        <Cart
-          cart={cart}
-          cartItemVideos={cartItemVideos}
-          isCartItemVideosLoading={isCartItemVideosLoading}
-        />
-      );
+      return <Cart cart={cart} cartItemVideos={cartItemVideos} />;
     }
 
     return <EmptyCart />;
@@ -37,7 +31,7 @@ const CartView = () => {
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">
       <Navbar showSearchBar />
-      {cartToDisplay()}
+      {renderCart()}
       <Footer />
     </div>
   );

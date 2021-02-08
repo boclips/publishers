@@ -3,15 +3,11 @@ import dateFormat from 'dateformat';
 import { OrderInformationField } from './OrderInformationField';
 
 interface Props {
-  date: Date;
+  createdAt: Date;
+  fieldName: string;
 }
-export const OrderDateField = ({ date }: Props) => (
-  <OrderInformationField
-    label="Order date"
-    value={
-      <div className="text-gray-800 text-base">
-        {dateFormat(date, 'dd/mm/yy')}
-      </div>
-    }
-  />
+export const OrderDateField = ({ createdAt, fieldName }: Props) => (
+  <OrderInformationField fieldName={fieldName}>
+    <div className="text-base">{dateFormat(createdAt, 'dd/mm/yy') || '-'}</div>
+  </OrderInformationField>
 );

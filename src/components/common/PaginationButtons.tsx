@@ -25,6 +25,7 @@ const CustomPaginationButton = ({
     </div>
   );
 };
+
 export const PaginationButtons = (current, type, _originalElement) => {
   if (type === 'prev') {
     return (

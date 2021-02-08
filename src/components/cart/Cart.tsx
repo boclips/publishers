@@ -8,22 +8,13 @@ import { CartDetails } from './CartDetails';
 interface Props {
   cart: ApiCart;
   cartItemVideos: Video[];
-  isCartItemVideosLoading: Boolean;
 }
 
-export const Cart = ({
-  cart,
-  cartItemVideos,
-  isCartItemVideosLoading,
-}: Props) => {
+export const Cart = ({ cart, cartItemVideos }: Props) => {
   return (
     <>
       <CartSummary cart={cart} />
-      <CartDetails
-        cartItemVideos={cartItemVideos}
-        cart={cart}
-        isLoading={isCartItemVideosLoading}
-      />
+      <CartDetails cartItemVideos={cartItemVideos} cart={cart} />
       <CartOrderSummary videos={cartItemVideos} />
     </>
   );

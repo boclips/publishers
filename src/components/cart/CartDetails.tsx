@@ -11,10 +11,9 @@ import CartItem from './CartItem/CartItem';
 interface Props {
   cartItemVideos: Video[];
   cart: ApiCart;
-  isLoading: Boolean;
 }
 
-export const CartDetails = ({ cartItemVideos, cart, isLoading }: Props) => {
+export const CartDetails = ({ cartItemVideos, cart }: Props) => {
   const apiClient = useBoclipsClient();
 
   const { mutate: onUpdateNote } = useMutation((note: string) =>
@@ -57,7 +56,7 @@ export const CartDetails = ({ cartItemVideos, cart, isLoading }: Props) => {
         placeholder="Add a note about this order (optional)"
       />
       <div className="pt-4 font-medium text-sm col-start-2 col-span-10">
-        {!isLoading && displayCartItems()}
+        {displayCartItems()}
       </div>
     </div>
   );
