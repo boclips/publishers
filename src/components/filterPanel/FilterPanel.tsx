@@ -4,12 +4,11 @@ import { VideoTypeFilter } from 'src/components/filterPanel/VideoTypeFilter';
 import { SubjectFilter } from 'src/components/filterPanel/SubjectFilter';
 import { ChannelFilter } from 'src/components/filterPanel/ChannelFilter';
 import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
-import { Filters, useFilterOptions } from 'src/hooks/useFilterOptions';
-import { FilterOption } from 'src/types/FilterOption';
+import { useFilterOptions } from 'src/hooks/useFilterOptions';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import { FilterKey } from 'src/types/search/FilterKey';
+import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 import { SelectedFilters } from './SelectedFilters';
-import {useSearchQueryLocationParams} from "src/hooks/useLocationParams";
 
 interface Props {
   facets?: VideoFacets;
@@ -18,15 +17,34 @@ interface Props {
   removeAllFilters: () => void;
 }
 
-export const FilterPanel = ({ facets, handleChange, removeFilter,removeAllFilters }: Props) => {
+export const FilterPanel = ({
+  facets,
+  handleChange,
+  removeFilter,
+  removeAllFilters,
+}: Props) => {
   const filterOptions = useFilterOptions(facets);
+  const [searchLocation] = useSearchQueryLocationParams();
 
-  let selectedFilterOptions = React.useMemo(
-    () => {
-      console.log("getting selected filter options")
-      return getSelectedFilterOptions(filterOptions)
-    },
-    [filterOptions],
+  const selectedFilterOptions = React.useMemo(
+    () => [
+      ...filterOptions.channels.filter((option) =>
+        searchLocation.filters.channel.includes(option.id),
+      ),
+      ...filterOptions.subjects.filter((option) =>
+        searchLocation.filters.subject.includes(option.id),
+      ),
+      ...filterOptions.videoTypes.filter((option) =>
+        searchLocation.filters.video_type.includes(option.id),
+      ),
+      ...filterOptions.durations.filter((option) =>
+        searchLocation.filters.duration.includes(option.id),
+      ),
+      ...filterOptions.prices.filter((option) =>
+        searchLocation.filters.prices.includes(option.id),
+      ),
+    ],
+    [filterOptions, searchLocation],
   );
 
   const removeSelectedOption = (filter: FilterKey, value: string) => {
@@ -36,8 +54,8 @@ export const FilterPanel = ({ facets, handleChange, removeFilter,removeAllFilter
 
   const removeFilters = () => {
     // selectedFilterOptions = selectedFilterOptions.filter(() => true)
-    removeAllFilters()
-  }
+    removeAllFilters();
+  };
 
   return (
     <div className="col-start-2 col-end-7">
@@ -66,16 +84,4 @@ export const FilterPanel = ({ facets, handleChange, removeFilter,removeAllFilter
       />
     </div>
   );
-};
-
-const getSelectedFilterOptions = (filterOptions: Filters): FilterOption[] => {
-  const [searchLocation] = useSearchQueryLocationParams();
-
-  return [
-    ...filterOptions.channels.filter((option) => searchLocation.filters["channel"].includes(option.id)),
-    ...filterOptions.subjects.filter((option) => searchLocation.filters["subject"].includes(option.id)),
-    ...filterOptions.videoTypes.filter((option) => searchLocation.filters["video_type"].includes(option.id)),
-    ...filterOptions.durations.filter((option) => searchLocation.filters["duration"].includes(option.id)),
-    ...filterOptions.prices.filter((option) => searchLocation.filters["prices"].includes(option.id)),
-  ];
 };

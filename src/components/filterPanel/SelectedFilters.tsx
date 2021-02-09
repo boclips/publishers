@@ -19,16 +19,19 @@ export const SelectedFilters = ({
   }
   return (
     <div>
-      <div className="mb-4 font-medium flex justify-between ">
+      <div className="mb-4 font-medium flex justify-between">
         <span className="text-base ">Selected filters</span>
         <span
           className="text-sm text-blue-800 cursor-pointer"
+          tabIndex={0}
+          onKeyDown={() => clearFilters()}
+          role="button"
           onClick={() => clearFilters()}
         >
           CLEAR ALL
         </span>
       </div>
-      <div className="flex flex-wrap ">
+      <div className="flex flex-wrap " data-qa="applied-filter-tags">
         {selectedFilterOptions.map((filter) => (
           <SelectedFilterTag filter={filter} removeFilter={removeFilter} />
         ))}

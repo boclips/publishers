@@ -142,8 +142,7 @@ describe(`SearchResultsFiltering`, () => {
       expect(wrapper.queryByText('Raw Footage')).toBeNull();
       expect(wrapper.queryByText('stock video')).toBeNull();
 
-      const selectedFiltersSection = wrapper.getByText('Selected filters')
-        .parentElement;
+      const selectedFiltersSection = wrapper.getByTestId('applied-filter-tags');
 
       expect(within(selectedFiltersSection).getByText('News')).toBeVisible();
     });
@@ -348,8 +347,7 @@ describe(`SearchResultsFiltering`, () => {
       expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
       expect(await wrapper.queryByText('expensive video')).toBeNull();
 
-      const selectedFiltersSection = wrapper.getByText('Selected filters')
-        .parentElement;
+      const selectedFiltersSection = wrapper.getByTestId('applied-filter-tags')
 
       expect(within(selectedFiltersSection).getByText('$100')).toBeVisible();
     });
@@ -393,8 +391,7 @@ describe(`SearchResultsFiltering`, () => {
       expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
       expect(await wrapper.queryByText('expensive video')).toBeNull();
 
-      const selectedFiltersSection = wrapper.getByText('Selected filters')
-        .parentElement;
+      const selectedFiltersSection = wrapper.getByTestId('applied-filter-tags');
       const appliedFilter = within(selectedFiltersSection).getByText('$100');
 
       fireEvent.click(within(appliedFilter).getByTestId('remove-filter'));

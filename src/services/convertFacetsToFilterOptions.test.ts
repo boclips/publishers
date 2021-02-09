@@ -36,36 +36,6 @@ describe('convertFacets', () => {
     expect(filterOptions.prices[0].key).toEqual('prices');
   });
 
-  it('can specify if a filter is selected', () => {
-    const facets = FacetsFactory.sample({
-      subjects: [
-        FacetFactory.sample({ id: '1' }),
-        FacetFactory.sample({ id: '2' }),
-      ],
-      durations: [FacetFactory.sample({ id: '1' })],
-      videoTypes: [FacetFactory.sample({ id: '1' })],
-      channels: [FacetFactory.sample({ id: '1' })],
-      prices: [FacetFactory.sample({ id: '5' })],
-    });
-
-    const searchFilters: SearchFilters = {
-      subject: ['2'],
-      video_type: ['1'],
-      channel: ['1'],
-      duration: ['1'],
-      prices: ['5'],
-    };
-
-    const filterOptions = convertFacetsToFilterOptions(facets, searchFilters);
-
-    expect(filterOptions.subjects[0].isSelected).toEqual(false);
-    expect(filterOptions.subjects[1].isSelected).toEqual(true);
-    expect(filterOptions.videoTypes[0].isSelected).toEqual(true);
-    expect(filterOptions.channels[0].isSelected).toEqual(true);
-    expect(filterOptions.durations[0].isSelected).toEqual(true);
-    expect(filterOptions.prices[0].isSelected).toEqual(true);
-  });
-
   it(`returns empty lists when facets are null`, () => {
     const filterOptions = convertFacetsToFilterOptions(null, null);
 

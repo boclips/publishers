@@ -75,7 +75,6 @@ const SearchResultsView = () => {
   };
 
   const removeAllFilters = useCallback(() => {
-    console.log("remving all filters")
     setSearchLocation({
       query,
       page: 1,
