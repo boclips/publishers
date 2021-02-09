@@ -8,10 +8,11 @@ import s from './FilterOptionList.module.less';
 interface Props {
   options: FilterOption[];
   onSelect: (event, item) => void;
+  selectedOptions: string[]
 }
 const DEFAULT_VISIBLE_OPTIONS = 5;
 
-export const FilterOptionList = ({ options, onSelect }: Props) => {
+export const FilterOptionList = ({ options, onSelect, selectedOptions }: Props) => {
   const [allExpanded, setAllExpanded] = useState<boolean>(false);
 
   const toggleOptions = () => setAllExpanded(!allExpanded);
@@ -32,7 +33,7 @@ export const FilterOptionList = ({ options, onSelect }: Props) => {
             <span key={option.id}>
               <FilterOptionCheckbox
                 option={option}
-                selected={option.isSelected}
+                selected={selectedOptions.includes(option.id)}
                 onSelect={onSelect}
               />
             </span>

@@ -9,6 +9,7 @@ import { FilterOption } from 'src/types/FilterOption';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import { FilterKey } from 'src/types/search/FilterKey';
 import { SelectedFilters } from './SelectedFilters';
+import {useSearchQueryLocationParams} from "src/hooks/useLocationParams";
 
 interface Props {
   facets?: VideoFacets;
@@ -29,12 +30,12 @@ export const FilterPanel = ({ facets, handleChange, removeFilter,removeAllFilter
   );
 
   const removeSelectedOption = (filter: FilterKey, value: string) => {
-    selectedFilterOptions.filter((it) => it.id !== value);
+    // selectedFilterOptions.filter((it) => it.id !== value);
     removeFilter(filter, value);
   };
 
   const removeFilters = () => {
-    selectedFilterOptions = selectedFilterOptions.filter(() => true)
+    // selectedFilterOptions = selectedFilterOptions.filter(() => true)
     removeAllFilters()
   }
 
@@ -68,11 +69,13 @@ export const FilterPanel = ({ facets, handleChange, removeFilter,removeAllFilter
 };
 
 const getSelectedFilterOptions = (filterOptions: Filters): FilterOption[] => {
+  const [searchLocation] = useSearchQueryLocationParams();
+
   return [
-    ...filterOptions.channels.filter((option) => option.isSelected),
-    ...filterOptions.subjects.filter((option) => option.isSelected),
-    ...filterOptions.videoTypes.filter((option) => option.isSelected),
-    ...filterOptions.durations.filter((option) => option.isSelected),
-    ...filterOptions.prices.filter((option) => option.isSelected),
+    ...filterOptions.channels.filter((option) => searchLocation.filters["channel"].includes(option.id)),
+    ...filterOptions.subjects.filter((option) => searchLocation.filters["subject"].includes(option.id)),
+    ...filterOptions.videoTypes.filter((option) => searchLocation.filters["video_type"].includes(option.id)),
+    ...filterOptions.durations.filter((option) => searchLocation.filters["duration"].includes(option.id)),
+    ...filterOptions.prices.filter((option) => searchLocation.filters["prices"].includes(option.id)),
   ];
 };

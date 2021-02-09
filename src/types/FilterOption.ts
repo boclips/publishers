@@ -5,7 +5,6 @@ export interface FilterOption {
   id: string;
   name: string;
   hits: number;
-  isSelected: boolean;
   label: ReactElement;
   key: FilterKey;
 }

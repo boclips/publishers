@@ -10,9 +10,9 @@ import { FilterOption } from 'src/types/FilterOption';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { FilterKey } from 'src/types/search/FilterKey';
 
-export const convertFacets = (
-  facets?: VideoFacets,
-  filters?: SearchFilters,
+export const convertFacetsToFilterOptions = (
+  facets?: VideoFacets, // returned by backend
+  appliedFilters?: SearchFilters, // applied filters (selected one) from URL
 ): Filters => {
   const safeFacets = {
     channels: facets?.channels || [],
@@ -23,40 +23,54 @@ export const convertFacets = (
   };
 
   return {
-    channels: safeFacets.channels.map((it) =>
-      convertFacet(it, filters?.channel, 'channel'),
+    channels: createFilterOptions(
+      safeFacets.channels,
+      appliedFilters?.channel || [],
+      'channel',
     ),
-    subjects: safeFacets.subjects.map((it) =>
-      convertFacet(it, filters?.subject, 'subject'),
+    subjects: createFilterOptions(
+      safeFacets.subjects,
+      appliedFilters?.subject || [],
+      'subject',
     ),
-    videoTypes: safeFacets.videoTypes.map((it) =>
-      convertFacet(it, filters?.video_type, 'video_type', getVideoTypeLabel),
+    videoTypes: createFilterOptions(
+      safeFacets.videoTypes,
+      appliedFilters?.video_type || [],
+      'video_type',
+      getVideoTypeLabel,
     ),
-    durations: safeFacets.durations.map((it) =>
-      convertFacet(it, filters?.duration, 'duration', getDurationLabel),
+    durations: createFilterOptions(
+      safeFacets.durations,
+      appliedFilters?.duration || [],
+      'duration',
+      getDurationLabel,
     ),
-    prices: safeFacets.prices.map((price) =>
-      convertFacet(price, filters?.prices, 'prices', getPriceLabel),
+    prices: createFilterOptions(
+      safeFacets.prices,
+      appliedFilters?.prices || [],
+      'prices',
+      getPriceLabel,
     ),
   };
 };
 
-const convertFacet = (
-  facet: Facet,
-  selectedIds: string[] = [],
+const createFilterOptions = (
+  facetsForOneCategory: Facet[],
+  selectedFiltersIds: string[],
   filterKey: FilterKey,
   convertName?: (rawName: string) => string,
-): FilterOption => {
-  const name = convertName ? convertName(facet.name) : facet.name;
-  return {
-    name,
-    label: <span>{name}</span>,
-    hits: facet.hits,
-    id: facet.id,
-    isSelected: selectedIds.includes(facet.id),
-    key: filterKey,
-  };
-};
+): FilterOption[] =>
+  facetsForOneCategory.map((facet) => {
+    const name = convertName ? convertName(facet.name) : facet.name;
+    return {
+      name,
+      label: <span>{name}</span>,
+      hits: facet.hits,
+      id: facet.id,
+      isSelected: selectedFiltersIds.includes(facet.id),
+      key: filterKey,
+    };
+  });
 
 const getVideoTypeLabel = (name: string): string => {
   switch (name.toUpperCase()) {

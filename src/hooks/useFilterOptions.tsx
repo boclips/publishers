@@ -1,7 +1,7 @@
 import { VideoFacets } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { FilterOption } from 'src/types/FilterOption';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
-import { convertFacets } from 'src/services/convertFacets';
+import { convertFacetsToFilterOptions } from 'src/services/convertFacetsToFilterOptions';
 
 export interface Filters {
   subjects: FilterOption[];
@@ -16,6 +16,6 @@ export interface Filters {
 3 - adds isSelected: true to all facets that appear in the URL
  */
 export const useFilterOptions = (facets: VideoFacets): Filters => {
-  const [params] = useSearchQueryLocationParams();
-  return convertFacets(facets, params.filters);
+  const [urlParams] = useSearchQueryLocationParams();
+  return convertFacetsToFilterOptions(facets, urlParams.filters);
 };
