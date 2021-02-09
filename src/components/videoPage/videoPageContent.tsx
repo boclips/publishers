@@ -5,8 +5,10 @@ import SubjectBadge from '@boclips-ui/subject-badge';
 import VideoCardAddCartButton from 'src/components/videoCardAddCartButton/VideoCardAddCartButton';
 import React from 'react';
 import dateFormat from 'dateformat';
-import { createPriceDisplayValue } from '../../services/createPriceDisplayValue';
+import { CopyLinkButton } from 'src/components/common/CopyLinkButton';
+import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import s from './videoPageContent.module.less';
+import { createPriceDisplayValue } from '../../services/createPriceDisplayValue';
 
 interface Props {
   video: Video;
@@ -52,7 +54,14 @@ export const VideoHeader = ({ video }: Props) => {
           navigator.language,
         )}
       </div>
-      <VideoCardAddCartButton videoId={video?.id} />
+      <div className="flex flex-row">
+        <span className="pr-2 w-1/2">
+          <CopyLinkButton link={buildVideoDetailsLink(video)} />
+        </span>
+        <span className="w-1/2">
+          <VideoCardAddCartButton videoId={video?.id} />
+        </span>
+      </div>
     </div>
   );
 };
