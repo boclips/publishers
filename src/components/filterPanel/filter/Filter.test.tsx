@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import { Filter } from 'src/components/filterPanel/filter/Filter';
 import { renderWithLocation } from 'src/testSupport/renderWithLocation';
 import { FilterOption } from 'src/types/FilterOption';
@@ -23,12 +23,13 @@ describe(`filterPanel`, () => {
   const videoTypes: FilterOption[] = [
     FilterOptionFactory.sample({
       hits: 10,
+      key: 'video_type',
       id: 'stock',
       label: <span>Stock</span>,
-      isSelected: true,
     }),
     FilterOptionFactory.sample({
       hits: 5,
+      key: 'video_type',
       id: 'news',
       label: <span>News</span>,
     }),
@@ -85,7 +86,9 @@ describe(`filterPanel`, () => {
     fireEvent.click(panel.getByText('News'));
 
     const stockCheckbox = panel.getByTestId('stock-checkbox');
-    expect(stockCheckbox).toHaveProperty('checked', true);
+    waitFor(() => {
+      expect(stockCheckbox).toHaveProperty('checked', true);
+    });
   });
 
   it('renders a show more label with the correct number', () => {

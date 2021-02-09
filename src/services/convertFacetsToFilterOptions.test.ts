@@ -3,7 +3,7 @@ import {
   FacetsFactory,
 } from 'boclips-api-client/dist/test-support/FacetsFactory';
 import { SearchFilters } from 'src/hooks/useLocationParams';
-import { convertFacets } from 'src/services/convertFacets';
+import { convertFacetsToFilterOptions } from 'src/services/convertFacetsToFilterOptions';
 
 describe('convertFacets', () => {
   it('can convert every facet type to a filter option with filter keys', () => {
@@ -23,7 +23,7 @@ describe('convertFacets', () => {
       prices: [],
     };
 
-    const filterOptions = convertFacets(facets, searchFilters);
+    const filterOptions = convertFacetsToFilterOptions(facets, searchFilters);
     expect(filterOptions.channels[0].id).toEqual('4');
     expect(filterOptions.channels[0].key).toEqual('channel');
     expect(filterOptions.videoTypes[0].id).toEqual('3');
@@ -36,38 +36,8 @@ describe('convertFacets', () => {
     expect(filterOptions.prices[0].key).toEqual('prices');
   });
 
-  it('can specify if a filter is selected', () => {
-    const facets = FacetsFactory.sample({
-      subjects: [
-        FacetFactory.sample({ id: '1' }),
-        FacetFactory.sample({ id: '2' }),
-      ],
-      durations: [FacetFactory.sample({ id: '1' })],
-      videoTypes: [FacetFactory.sample({ id: '1' })],
-      channels: [FacetFactory.sample({ id: '1' })],
-      prices: [FacetFactory.sample({ id: '5' })],
-    });
-
-    const searchFilters: SearchFilters = {
-      subject: ['2'],
-      video_type: ['1'],
-      channel: ['1'],
-      duration: ['1'],
-      prices: ['5'],
-    };
-
-    const filterOptions = convertFacets(facets, searchFilters);
-
-    expect(filterOptions.subjects[0].isSelected).toEqual(false);
-    expect(filterOptions.subjects[1].isSelected).toEqual(true);
-    expect(filterOptions.videoTypes[0].isSelected).toEqual(true);
-    expect(filterOptions.channels[0].isSelected).toEqual(true);
-    expect(filterOptions.durations[0].isSelected).toEqual(true);
-    expect(filterOptions.prices[0].isSelected).toEqual(true);
-  });
-
   it(`returns empty lists when facets are null`, () => {
-    const filterOptions = convertFacets(null, null);
+    const filterOptions = convertFacetsToFilterOptions(null, null);
 
     expect(filterOptions.subjects).toHaveLength(0);
     expect(filterOptions.videoTypes).toHaveLength(0);
@@ -85,7 +55,7 @@ describe('convertFacets', () => {
       ],
     });
 
-    const filterOptions = convertFacets(facets, null);
+    const filterOptions = convertFacetsToFilterOptions(facets, null);
     expect(filterOptions.videoTypes[0].name).toEqual('News');
     expect(filterOptions.videoTypes[1].name).toEqual('Educational');
     expect(filterOptions.videoTypes[2].name).toEqual('Raw Footage');
@@ -102,7 +72,7 @@ describe('convertFacets', () => {
       ],
     });
 
-    const filterOptions = convertFacets(facets, null);
+    const filterOptions = convertFacetsToFilterOptions(facets, null);
     expect(filterOptions.durations[0].name).toEqual('Up to 1 min');
     expect(filterOptions.durations[1].name).toEqual('1 - 5 min');
     expect(filterOptions.durations[2].name).toEqual('5 - 10 min');
@@ -121,7 +91,7 @@ describe('convertFacets', () => {
       ],
     });
 
-    const filterOptions = convertFacets(facets, null);
+    const filterOptions = convertFacetsToFilterOptions(facets, null);
     expect(filterOptions.prices[0].name).toEqual('$100');
     expect(filterOptions.prices[1].name).toEqual('$200');
     expect(filterOptions.prices[2].name).toEqual('$300');

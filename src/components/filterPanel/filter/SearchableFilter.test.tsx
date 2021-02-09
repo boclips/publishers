@@ -10,31 +10,37 @@ describe(`searchableFilter`, () => {
     FilterOptionFactory.sample({
       id: 'channel-1',
       name: 'TED-ED',
+      key: 'channel',
       label: <span>TED-ED</span>,
       hits: 10,
     }),
     FilterOptionFactory.sample({
       id: 'channel-2',
+      key: 'channel',
       name: 'History channel',
       hits: 5,
     }),
     FilterOptionFactory.sample({
       id: 'channel-3',
+      key: 'channel',
       name: 'geography',
       hits: 5,
     }),
     FilterOptionFactory.sample({
       id: 'channel-4',
+      key: 'channel',
       name: 'science',
       hits: 5,
     }),
     FilterOptionFactory.sample({
       id: 'channel-5',
+      key: 'channel',
       name: 'maths',
       hits: 5,
     }),
     FilterOptionFactory.sample({
       id: 'channel-6',
+      key: 'channel',
       name: 'music',
       hits: 5,
     }),
