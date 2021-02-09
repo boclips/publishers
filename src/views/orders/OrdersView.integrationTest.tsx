@@ -14,14 +14,16 @@ import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 
 describe('OrderView', () => {
-  it('loads the orders view', async () => {
+  it('loads the orders view when there are no orders', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
         <App apiClient={new FakeBoclipsClient()} />
       </MemoryRouter>,
     );
 
-    expect(await wrapper.findByText('Your Orders')).toBeVisible();
+    expect(
+      await wrapper.findByText('This will be an empty state'),
+    ).toBeVisible();
   });
 
   it('navigates to order view when view order is clicked', async () => {
@@ -85,16 +87,6 @@ describe('OrderView', () => {
     expect((await wrapper.findAllByText('View order')).length).toEqual(2);
   });
 
-  it('if no orders are there it shows no orders', async () => {
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/orders']}>
-        <App apiClient={new FakeBoclipsClient()} />
-      </MemoryRouter>,
-    );
-
-    expect(await wrapper.findByTestId('no-results')).toBeVisible();
-  });
-
   it('if there is no deliveryDate it shows a dash', async () => {
     const fakeClient = new FakeBoclipsClient();
     const order = OrdersFactory.sample({
@@ -110,9 +102,7 @@ describe('OrderView', () => {
       </MemoryRouter>,
     );
 
-    expect((await wrapper.findByTestId('delivery-date')).innerHTML).toEqual(
-      '-',
-    );
+    expect(await wrapper.findByText('-')).toBeVisible();
   });
 
   it('shows video count', async () => {
@@ -163,10 +153,13 @@ describe('OrderView', () => {
         }),
       }),
       VideoFactory.sample({
-        id: '123',
+        id: '234',
         playback: PlaybackFactory.sample({
           links: {
-            thumbnail: new Link({ href: 'find me!!', templated: true }),
+            thumbnail: new Link({
+              href: 'https://validThumbnail.com',
+              templated: true,
+            }),
             createPlayerInteractedWithEvent: new Link({
               href: 'player interacted with',
               templated: true,
@@ -195,8 +188,22 @@ describe('OrderView', () => {
       }),
       OrderItemFactory.sample({
         id: 'item-2',
+        video: {
+          id: '234',
+          types: ['123'],
+          title: 'videoooo',
+          videoReference: 'i am a reference',
+          maxResolutionAvailable: true,
+          captionStatus: OrderCaptionStatus.PROCESSING,
+          _links: {
+            fullProjection: new Link({ href: 'i am a link', templated: true }),
+            videoUpload: new Link({ href: 'i am a link', templated: true }),
+            captionAdmin: new Link({ href: 'i am a link', templated: true }),
+          },
+        },
       }),
     ];
+
     const order = OrdersFactory.sample({
       id: 'woop-woop-im-an-id',
       deliveredAt: null,
@@ -212,8 +219,12 @@ describe('OrderView', () => {
       </MemoryRouter>,
     );
 
-    expect(
-      (await wrapper.findByTestId('order-item-thumbnail')) as HTMLImageElement,
-    ).toHaveAttribute('src', 'find me!!');
+    const thumbnail = await wrapper.findByTestId('order-item-thumbnail');
+
+    wrapper.debug(thumbnail, 2000);
+
+    expect(thumbnail.style.backgroundImage).toEqual(
+      'url(https://validThumbnail.com)',
+    );
   });
 });

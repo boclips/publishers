@@ -11,6 +11,7 @@ import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/m
 import { Link } from 'boclips-api-client/dist/types';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { OrderStatus } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
+import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 
 describe('order table', () => {
   it('renders the order header with an id that matches query', async () => {
@@ -47,6 +48,18 @@ describe('order table', () => {
         currency: 'USD',
         amount: 600,
       },
+      playback: PlaybackFactory.sample({
+        links: {
+          thumbnail: new Link({
+            href: 'https://url.com',
+            templated: true,
+          }),
+          createPlayerInteractedWithEvent: new Link({
+            href: 'player interacted with',
+            templated: true,
+          }),
+        },
+      }),
     });
 
     const item = OrderItemFactory.sample({
@@ -86,7 +99,10 @@ describe('order table', () => {
     );
 
     expect(await wrapper.findByText('video-1-title')).toBeVisible();
-    expect(await wrapper.findByAltText('thumbnail')).toBeVisible();
+    expect(
+      (await wrapper.findByTestId('order-item-thumbnail')).style
+        .backgroundImage,
+    ).toEqual('url(https://url.com)');
     expect(await wrapper.findByText('$600')).toBeVisible();
     expect(await wrapper.findByText('ID: video-id-1')).toBeVisible();
   });

@@ -2,35 +2,43 @@ import { OrderItem } from 'boclips-api-client/dist/sub-clients/orders/model/Orde
 import React from 'react';
 import { useFindOrGetVideo } from 'src/hooks/api/videoQuery';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
+import s from './style.module.less';
 
 interface Props {
   item: OrderItem;
 }
 
 export const OrderItemCard = ({ item }: Props) => {
-  const { data: video } = useFindOrGetVideo(item.video.id);
+  const { data: video, isLoading } = useFindOrGetVideo(item.video.id);
 
-  if (!video) return null;
+  const thumbnailUrl = isLoading
+    ? ''
+    : video.playback?.links?.thumbnail.getOriginalLink();
 
   return (
-    <div className="flex flex-row mb-4 pb-4 border-b-2 h-32">
-      <img
-        alt="thumbnail"
-        className="w-48 h-30 rounded"
-        src={video?.playback.links.thumbnail.getOriginalLink()}
+    <div
+      className="flex flex-row border-b-2 border-blue-300 first:pt-0 py-4"
+      style={{ minHeight: '156px' }}
+    >
+      <div
+        data-qa="order-item-thumbnail"
+        className={s.thumbnail}
+        style={{
+          backgroundImage: `url(${thumbnailUrl})`,
+        }}
       />
-      <div className="flex flex-row justify-between flex-grow ml-4">
-        <div className="flex flex-col">
-          <div className="font-medium">{item?.video?.title}</div>
-          <div>ID: {item?.video?.id}</div>
-        </div>
-        <div>
+      <div className="flex flex-col flex-grow pl-8">
+        <span className="font-medium text-base">{item.video.title}</span>
+        <span>ID: {item.video.id} </span>
+      </div>
+      <div className="flex flex-col flex-grow items-end">
+        <span className="text-base">
           {createPriceDisplayValue(
             video?.price?.amount,
             video?.price?.currency,
             navigator.language,
           )}
-        </div>
+        </span>
       </div>
     </div>
   );

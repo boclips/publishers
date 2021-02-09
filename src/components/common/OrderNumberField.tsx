@@ -6,17 +6,15 @@ interface Props {
   id: string;
   isLink?: boolean;
 }
+
 export const OrderNumberField = ({ id, isLink = false }: Props) => (
-  <OrderInformationField
-    label="Order number"
-    value={
-      isLink ? (
-        <Link data-qa="order-id" to={`/orders/${id}`}>
-          <div className="text-blue-800 text-base underline">{id}</div>
-        </Link>
-      ) : (
+  <OrderInformationField fieldName="Order number">
+    {isLink ? (
+      <Link data-qa="order-id" to={`/orders/${id}`}>
         <div className="text-blue-800 text-base underline">{id}</div>
-      )
-    }
-  />
+      </Link>
+    ) : (
+      <div className="text-base">{id}</div>
+    )}
+  </OrderInformationField>
 );

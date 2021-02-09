@@ -28,19 +28,10 @@ export const usePlaceOrderQuery = () => {
   );
 };
 
-export const useGetOrdersQuery = (
-  ordersQuery: OrdersQuery,
-  setErrorMessage: (location: string) => void,
-) => {
+export const useGetOrdersQuery = (ordersQuery: OrdersQuery) => {
   const client = useBoclipsClient();
-  return useQuery(
-    ['orders', ordersQuery],
-    () => getOrders(ordersQuery, client),
-    {
-      onError: (error) => {
-        setErrorMessage(JSON.stringify(error));
-      },
-    },
+  return useQuery(['orders', ordersQuery], () =>
+    getOrders(ordersQuery, client),
   );
 };
 

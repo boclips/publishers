@@ -1,15 +1,15 @@
 import React, { ReactElement } from 'react';
 
 interface ItemProps {
-  label: string;
-  value: ReactElement;
+  fieldName: string;
+  children: ReactElement | 'string';
 }
 
-export const OrderInformationField = ({ label, value }: ItemProps) => {
+export const OrderInformationField = ({ fieldName, children }: ItemProps) => {
   return (
-    <div className="flex flex-col text-sm my-8 mr-20">
-      <div className="text-sm text-grey-700 font-medium">{label}</div>
-      {value}
+    <div className="flex flex-col flex-grow text-sm px-2">
+      <div className="text-sm text-grey-700 font-medium">{fieldName}</div>
+      {children}
     </div>
   );
 };

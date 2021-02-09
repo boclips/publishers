@@ -5,24 +5,21 @@ import c from 'classnames';
 import { OrderInformationField } from './OrderInformationField';
 
 interface Props {
-  price: OrderPrice;
+  totalPrice: OrderPrice;
   highlighted?: boolean;
 }
-export const OrderTotalValueField = ({ price, highlighted }: Props) => (
-  <OrderInformationField
-    label="Total value"
-    value={
-      <div
-        className={c('text-gray-800 text-base', {
-          'font-medium': highlighted,
-        })}
-      >
-        {createPriceDisplayValue(
-          price?.value,
-          price?.currency,
-          navigator.language,
-        )}
-      </div>
-    }
-  />
+export const OrderTotalValueField = ({ totalPrice, highlighted }: Props) => (
+  <OrderInformationField fieldName="Total value">
+    <span
+      className={c('text-gray-800 text-base', {
+        'font-medium': highlighted,
+      })}
+    >
+      {createPriceDisplayValue(
+        totalPrice.value,
+        totalPrice.currency,
+        navigator.language,
+      )}
+    </span>
+  </OrderInformationField>
 );

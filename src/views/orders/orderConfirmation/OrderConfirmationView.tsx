@@ -17,13 +17,11 @@ const OrderConfirmationView = ({ state }: OrderConfirmedInterface) => {
     }
   }, [state, history]);
 
-  if (!state || !state.orderLocation) {
-    return <div />;
-  }
-
-  const orderId = state.orderLocation.substring(
+  const orderId = state?.orderLocation.substring(
     state.orderLocation.lastIndexOf('/') + 1,
   );
+
+  if (!state || !state.orderLocation) return null;
 
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">

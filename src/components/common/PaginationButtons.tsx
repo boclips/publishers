@@ -2,6 +2,7 @@ import PreviousArrow from 'src/resources/icons/pagination-prev-arrow.svg';
 import NextArrow from 'src/resources/icons/pagination-next-arrow.svg';
 import Ellipsis from 'src/resources/icons/pagination-ellipsis.svg';
 import React, { ReactNode } from 'react';
+import c from 'classnames';
 
 interface Props {
   largeButton?: boolean;
@@ -16,15 +17,20 @@ const CustomPaginationButton = ({
 }: Props) => {
   return (
     <div
-      className={`${largeButton && 'w-20'} 
-      ${theme === 'blue' && 'text-blue-800 border-gray-300'}
-      ${theme === 'gray' && 'text-gray-500 border-gray-400'}
-      flex flex-row font-bold border-2 h-9 rounded items-center px-2 justify-around`}
+      className={c(
+        'flex flex-row font-bold border-2 h-9 rounded items-center px-2 justify-around',
+        {
+          'w-20': largeButton,
+          'text-blue-800 border-gray-300': theme === 'blue',
+          'text-gray-500 border-gray-400': theme === 'gray',
+        },
+      )}
     >
       {children}
     </div>
   );
 };
+
 export const PaginationButtons = (current, type, _originalElement) => {
   if (type === 'prev') {
     return (

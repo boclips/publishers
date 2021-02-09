@@ -1,0 +1,24 @@
+@import '~@boclips-ui/styles/src/_publishersColours';
+
+.thumbnail {
+  @apply rounded-md;
+  height: 100px;
+  width: 170px;
+  min-height: 100px;
+  min-width: 170px;
+  background-position: top;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: @blue-900;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+  }
+}
