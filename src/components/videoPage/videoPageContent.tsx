@@ -55,7 +55,7 @@ export const VideoHeader = ({ video }: Props) => {
         )}
       </div>
       <div className="flex flex-row">
-        <span className="pr-2 w-1/2">
+        <span className="w-1/2">
           <CopyLinkButton link={buildVideoDetailsLink(video)} />
         </span>
         <span className="w-1/2">
