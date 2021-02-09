@@ -26,7 +26,7 @@ export const OrderSummary = ({ order }: Props) => {
           fieldName="Video quantity"
         />
         {order?.note && (
-          <span className="mt-4">
+          <span className="mt-4 w-full">
             <OrderInformationField fieldName="Notes">
               <div className="text-base">{order.note}</div>
             </OrderInformationField>
