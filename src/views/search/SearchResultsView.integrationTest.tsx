@@ -281,10 +281,10 @@ describe('SearchResults', () => {
         expect(cart.items).toHaveLength(1);
       });
 
-      expect(wrapper.getByText('Remove from cart')).toBeInTheDocument();
+      expect(wrapper.getByText('Remove')).toBeInTheDocument();
 
       fireEvent(
-        wrapper.getByText('Remove from cart'),
+        wrapper.getByText('Remove'),
         new MouseEvent('click', {
           bubbles: true,
           cancelable: true,

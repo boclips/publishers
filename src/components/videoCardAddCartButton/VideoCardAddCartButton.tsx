@@ -12,9 +12,10 @@ import { useBoclipsClient } from '../common/BoclipsClientProvider';
 
 interface AddToCartButtonProps {
   videoId: string;
+  width?: string;
 }
 
-const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
+const AddToCartButton = ({ videoId, width = '100%' }: AddToCartButtonProps) => {
   const queryClient = useQueryClient();
   const boclipsClient = useBoclipsClient();
   const { data: cart } = useCartQuery();
@@ -61,7 +62,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
         <Button
           onClick={() => mutateAddToCart(videoId)}
           text="Add to cart"
-          width="100%"
+          width={width}
           icon={<CartIcon />}
         />
       );
@@ -70,8 +71,8 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
       <Button
         onClick={() => mutateDeleteFromCart(cartItem.id)}
         type="outline"
-        text="Remove from cart"
-        width="100%"
+        text="Remove"
+        width={width}
         icon={<CartIcon />}
       />
     );
