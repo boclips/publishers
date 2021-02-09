@@ -7,7 +7,7 @@ import { PriceBadge } from 'src/components/videoCard/PriceBadge';
 import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
 import { Link } from 'react-router-dom';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
-import { CopyLinkButton } from 'src/components/common/CopyLinkButton';
+import { CopyLinkButton } from 'src/components/common/copyLinkButton/CopyLinkButton';
 import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import s from './VideoCardWrapper.module.less';
 

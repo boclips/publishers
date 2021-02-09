@@ -5,10 +5,10 @@ import SubjectBadge from '@boclips-ui/subject-badge';
 import VideoCardAddCartButton from 'src/components/videoCardAddCartButton/VideoCardAddCartButton';
 import React from 'react';
 import dateFormat from 'dateformat';
-import { CopyLinkButton } from 'src/components/common/CopyLinkButton';
+import { CopyLinkButton } from 'src/components/common/copyLinkButton/CopyLinkButton';
 import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
+import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import s from './videoPageContent.module.less';
-import { createPriceDisplayValue } from '../../services/createPriceDisplayValue';
 
 interface Props {
   video: Video;
