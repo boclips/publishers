@@ -8,6 +8,7 @@ import {
   FakeBoclipsClient,
   SubjectFactory,
 } from 'boclips-api-client/dist/test-support';
+import { Constants } from 'src/AppConstants';
 
 describe('Video View', () => {
   it('on video page video details are rendered', async () => {
@@ -54,5 +55,27 @@ describe('Video View', () => {
     expect(
       await wrapper.findByText('Released on Dec 17, 2015 by'),
     ).toBeVisible();
+    expect(wrapper.getByRole('button', { name: 'Copy link' })).toBeVisible();
+  });
+
+  it('copy to clipboard button is visible in the page', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    const video = VideoFactory.sample({
+      id: 'video-id',
+    });
+
+    fakeClient.videos.insertVideo(video);
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/videos/video-id']}>
+        <App apiClient={fakeClient} />
+      </MemoryRouter>,
+    );
+    const button = await wrapper.findByRole('button', { name: 'Copy link' });
+    const copyMock = button.closest(
+      `[data-qa="${Constants.HOST}/videos/video-id"]`,
+    );
+    expect(copyMock).toBeVisible();
   });
 });

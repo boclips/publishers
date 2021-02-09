@@ -61,6 +61,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
         <Button
           onClick={() => mutateAddToCart(videoId)}
           text="Add to cart"
+          height="80%"
           icon={<CartIcon />}
         />
       );
@@ -68,7 +69,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
     return (
       <Button
         onClick={() => mutateDeleteFromCart(cartItem.id)}
-        type="outline"
+        height="80%"
         text="Remove from cart"
         icon={<CartIcon />}
       />
@@ -76,7 +77,7 @@ const AddToCartButton = ({ videoId }: AddToCartButtonProps) => {
   };
 
   return (
-    <div className="h-12 w-full flex justify-end mt-2">{displayButton()}</div>
+    <div className="mt-1">{displayButton()}</div>
   );
 };
 

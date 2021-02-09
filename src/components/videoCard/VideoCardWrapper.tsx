@@ -7,6 +7,8 @@ import { PriceBadge } from 'src/components/videoCard/PriceBadge';
 import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
 import { Link } from 'react-router-dom';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
+import { CopyLinkButton } from 'src/components/common/CopyLinkButton';
+import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import s from './VideoCardWrapper.module.less';
 
 interface Props {
@@ -36,7 +38,11 @@ export const VideoCardWrapper = ({ video }: Props) => {
           </Link>
         }
         actions={[
-          <VideoCardAddCartButton videoId={video.id} key="cart-button" />,
+          <div className="flex flex-row justify-end">
+            <CopyLinkButton link={buildVideoDetailsLink(video)} />
+            <span className="mr-2" />
+            <VideoCardAddCartButton videoId={video.id} key="cart-button" />
+          </div>,
         ]}
       />
     </div>
