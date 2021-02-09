@@ -356,33 +356,34 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe(`selected filters`, () => {
-    it(`can remove filters from selected filter panel`, async () => {
-      const fakeClient = new FakeBoclipsClient();
+    const fakeClient = new FakeBoclipsClient();
 
-      fakeClient.videos.setFacets(
-        FacetsFactory.sample({
-          prices: [
-            FacetFactory.sample({ id: '10000', hits: 1, name: '10000' }),
-            FacetFactory.sample({ id: '20000', hits: 1, name: '20000' }),
-          ],
-        }),
-      );
-      const videos = [
-        VideoFactory.sample({
-          id: '1',
-          title: 'cheap video',
-          types: [{ name: 'STOCK', id: 1 }],
-          price: { amount: 10000, currency: 'USD' },
-        }),
-        VideoFactory.sample({
-          id: '2',
-          title: 'expensive video',
-          types: [{ name: 'NEWS', id: 2 }],
-          price: { amount: 20000, currency: 'USD' },
-        }),
-      ];
+    fakeClient.videos.setFacets(
+      FacetsFactory.sample({
+        prices: [
+          FacetFactory.sample({ id: '10000', hits: 1, name: '10000' }),
+          FacetFactory.sample({ id: '20000', hits: 1, name: '20000' }),
+        ],
+      }),
+    );
+    const videos = [
+      VideoFactory.sample({
+        id: '1',
+        title: 'cheap video',
+        types: [{ name: 'STOCK', id: 1 }],
+        price: { amount: 10000, currency: 'USD' },
+      }),
+      VideoFactory.sample({
+        id: '2',
+        title: 'expensive video',
+        types: [{ name: 'NEWS', id: 2 }],
+        price: { amount: 20000, currency: 'USD' },
+      }),
+    ];
 
-      videos.forEach((v) => fakeClient.videos.insertVideo(v));
+    videos.forEach((v) => fakeClient.videos.insertVideo(v));
+
+    it(`can remove filters inidividually from selected filter panel`, async () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video&prices=10000']}>
@@ -397,6 +398,27 @@ describe(`SearchResultsFiltering`, () => {
       const appliedFilter = within(selectedFiltersSection).getByText('$100');
 
       fireEvent.click(within(appliedFilter).getByTestId('remove-filter'));
+
+      await waitFor(() => {
+        expect(wrapper.queryByText('Selected filters')).toBeNull();
+      });
+
+      expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
+      expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
+    });
+
+    it(`can remove all filters from selected filters panel`, async () => {
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=video&prices=10000']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+      expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
+      expect(await wrapper.queryByText('expensive video')).toBeNull();
+
+
+      fireEvent.click(wrapper.getByText('CLEAR ALL'));
 
       await waitFor(() => {
         expect(wrapper.queryByText('Selected filters')).toBeNull();

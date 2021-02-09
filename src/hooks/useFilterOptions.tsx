@@ -10,7 +10,11 @@ export interface Filters {
   videoTypes: FilterOption[];
   prices: FilterOption[];
 }
-
+/*
+1 - receives facets and extracts applied filters from URL
+2 -  Converts all facets into filter options to be rendered in the filter panels
+3 - adds isSelected: true to all facets that appear in the URL
+ */
 export const useFilterOptions = (facets: VideoFacets): Filters => {
   const [params] = useSearchQueryLocationParams();
   return convertFacets(facets, params.filters);

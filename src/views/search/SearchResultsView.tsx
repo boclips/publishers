@@ -17,14 +17,14 @@ export const PAGE_SIZE = 10;
 const SearchResultsView = () => {
   const queryClient = useQueryClient();
   const [searchLocation, setSearchLocation] = useSearchQueryLocationParams();
-  const { query, page: currentPage, filters } = searchLocation;
+  const { query, page: currentPage, filters: filtersFromURL } = searchLocation;
   const boclipsClient = useBoclipsClient();
 
   const { data, isError, error, isLoading } = useSearchQuery({
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
-    filters,
+    filters: filtersFromURL,
   });
 
   useEffect(() => {
@@ -35,43 +35,62 @@ const SearchResultsView = () => {
         query,
         pageSize: PAGE_SIZE,
         page: currentPage,
-        filters,
+        filters: filtersFromURL,
       },
       boclipsClient,
     );
-  }, [currentPage, query, filters, queryClient, boclipsClient]);
+  }, [currentPage, query, filtersFromURL, queryClient, boclipsClient]);
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });
     setSearchLocation({
       query,
       page,
-      filters,
+      filters: filtersFromURL,
     });
   };
 
   const handleFilterChange = useCallback(
     (key: FilterKey, values: string[]) => {
-      const prevValues = filters[key];
+      console.log("calling handle filter change")
+      const prevValues = filtersFromURL[key];
       if (prevValues.length !== values.length) {
         setSearchLocation({
           query,
           page: 1,
           filters: {
-            ...filters,
+            ...filtersFromURL,
             [key]: values,
           },
         });
       }
     },
-    [filters, query, setSearchLocation],
+    [filtersFromURL, query, setSearchLocation],
   );
 
   const removeFilter = (key: FilterKey, value: string) => {
-    const oldValues = filters[key];
+    const oldValues = filtersFromURL[key];
     const newValues = oldValues.filter((it) => value !== it);
     handleFilterChange(key, newValues);
   };
+
+  const removeAllFilters = useCallback(() => {
+    console.log("remving all filters")
+    setSearchLocation({
+      query,
+      page: 1,
+      filters: {
+        duration: [],
+        video_type: [],
+        channel: [],
+        subject: [],
+        prices: [],
+      },
+    });
+
+    },
+    [query, setSearchLocation],
+  );
 
   return (
     <div className="grid grid-rows-search-view grid-cols-container gap-8">
@@ -80,6 +99,7 @@ const SearchResultsView = () => {
         facets={data?.facets}
         handleChange={handleFilterChange}
         removeFilter={removeFilter}
+        removeAllFilters={removeAllFilters}
       />
       {isError ? (
         <div className="col-start-2 col-end-27">{error && error.message}</div>

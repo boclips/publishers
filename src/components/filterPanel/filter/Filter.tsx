@@ -31,6 +31,7 @@ export const Filter = ({
   );
 
   useEffect(() => {
+    setOptionStates(searchLocation.filters[filterName])
     if (filtersTouched) {
       handleChange(filterName, optionStates);
     }
@@ -40,8 +41,10 @@ export const Filter = ({
     setFiltersTouched(true);
     if (optionStates.includes(item)) {
       setOptionStates((states) => states.filter((value) => value !== item));
+      handleChange(filterName, optionStates);
     } else {
       setOptionStates((states) => [...states, item]);
+      handleChange(filterName, optionStates);
     }
   };
 

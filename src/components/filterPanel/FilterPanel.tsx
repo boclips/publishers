@@ -14,13 +14,17 @@ interface Props {
   facets?: VideoFacets;
   handleChange: (filter: string, values: string[]) => void;
   removeFilter: (filter: string, value: string) => void;
+  removeAllFilters: () => void;
 }
 
-export const FilterPanel = ({ facets, handleChange, removeFilter }: Props) => {
+export const FilterPanel = ({ facets, handleChange, removeFilter,removeAllFilters }: Props) => {
   const filterOptions = useFilterOptions(facets);
 
-  const selectedFilterOptions = React.useMemo(
-    () => getSelectedFilterOptions(filterOptions),
+  let selectedFilterOptions = React.useMemo(
+    () => {
+      console.log("getting selected filter options")
+      return getSelectedFilterOptions(filterOptions)
+    },
     [filterOptions],
   );
 
@@ -29,12 +33,18 @@ export const FilterPanel = ({ facets, handleChange, removeFilter }: Props) => {
     removeFilter(filter, value);
   };
 
+  const removeFilters = () => {
+    selectedFilterOptions = selectedFilterOptions.filter(() => true)
+    removeAllFilters()
+  }
+
   return (
     <div className="col-start-2 col-end-7">
       <div className="text-primary text-lg font-medium pb-4">Filter by: </div>
       <SelectedFilters
         selectedFilterOptions={selectedFilterOptions}
         removeFilter={removeSelectedOption}
+        clearFilters={removeFilters}
       />
       <VideoTypeFilter
         options={filterOptions.videoTypes}
