@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const CopyLinkButton = ({ link }: Props) => (
-  <div className={`h-12 flex justify-end mt-2 ${s.copyLinkButton}`}>
+  <div className={`h-12 flex justify-end mt-2 ${s.copyLinkButton} mr-2`}>
     <CopyToClipboard text={link}>
       <Button
         onClick={() => {}}
