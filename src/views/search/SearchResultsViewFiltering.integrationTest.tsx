@@ -424,6 +424,19 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('no results', () => {
+    it('shows a no results page without filters', async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=shark']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+
+      expect(
+        await wrapper.findByText('We couldn’t find any videos for “shark”'),
+      ).toBeVisible();
+    });
     it('shows a no results page with filters', async () => {
       const fakeClient = new FakeBoclipsClient();
 

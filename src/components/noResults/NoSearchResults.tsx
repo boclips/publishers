@@ -19,11 +19,15 @@ export const NoSearchResults = ({ filtersApplied, query }: Props) => {
   return (
     <div className="flex flex-col items-center col-start-7 col-end-26 text-lg text-gray-800 mt-10 ">
       <NoResultsIcon className="h-80 w-80 mb-6" />
-      {filtersApplied &&
-        noResultsText(
-          `We couldn’t find any videos for “${query}” with your filter selection`,
-          'Try again using different keywords or change the filters',
-        )}
+      {filtersApplied
+        ? noResultsText(
+            `We couldn’t find any videos for “${query}” with your filter selection`,
+            'Try again using different keywords or change the filters',
+          )
+        : noResultsText(
+            `We couldn’t find any videos for “${query}”`,
+            'Please check the spelling or try searching something else',
+          )}
     </div>
   );
 };
