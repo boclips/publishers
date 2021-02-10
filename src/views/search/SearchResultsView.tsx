@@ -11,6 +11,7 @@ import Footer from 'src/components/layout/Footer';
 import { FilterKey } from 'src/types/search/FilterKey';
 import { useQueryClient } from 'react-query';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { NoResults } from 'src/components/noResults/NoResults';
 
 export const PAGE_SIZE = 10;
 
@@ -28,7 +29,6 @@ const SearchResultsView = () => {
   });
 
   useEffect(() => {
-    // Prefetch the next page of data
     prefetchSearchQuery(
       queryClient,
       {
@@ -73,6 +73,33 @@ const SearchResultsView = () => {
     handleFilterChange(key, newValues);
   };
 
+  const filtersApplied = (currentFilters) => {
+    return (
+      Object.keys(filters).filter((key) => currentFilters[key].length > 0)
+        .length > 0
+    );
+  };
+
+  const numberOfResults = data?.pageSpec?.totalElements;
+
+  const showResultsOrEmptyView = () => {
+    return (
+      <div className="col-start-7 col-end-26">
+        {numberOfResults === 0 ? (
+          <NoResults filtersApplied={filtersApplied(filters)} query={query} />
+        ) : (
+          <SearchResults
+            results={data}
+            query={query}
+            isLoading={isLoading}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+          />
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="grid grid-rows-search-view grid-cols-container gap-8">
       <Navbar showSearchBar />
@@ -84,13 +111,7 @@ const SearchResultsView = () => {
       {isError ? (
         <div className="col-start-2 col-end-27">{error && error.message}</div>
       ) : (
-        <SearchResults
-          results={data}
-          query={query}
-          isLoading={isLoading}
-          handlePageChange={handlePageChange}
-          currentPage={currentPage}
-        />
+        showResultsOrEmptyView()
       )}
       <Footer />
     </div>
