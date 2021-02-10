@@ -422,4 +422,29 @@ describe(`SearchResultsFiltering`, () => {
       expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
     });
   });
+
+  describe('no results', () => {
+    it('shows a no results page with filters', async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      const video = VideoFactory.sample({
+        id: '1',
+        title: 'log',
+        types: [{ name: 'STOCK', id: 1 }],
+      });
+
+      fakeClient.videos.insertVideo(video);
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=log&page=1&video_type=NEWS']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+
+      expect(
+        await wrapper.findByText(
+          'We couldn’t find any videos for “log” with your filter selection',
+        ),
+      ).toBeVisible();
+    });
+  });
 });

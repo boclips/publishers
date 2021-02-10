@@ -11,6 +11,8 @@ import Footer from 'src/components/layout/Footer';
 import { FilterKey } from 'src/types/search/FilterKey';
 import { useQueryClient } from 'react-query';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { NoSearchResults } from 'src/components/noResults/NoSearchResults';
+import ErrorView from 'src/views/error/ErrorView';
 
 export const PAGE_SIZE = 10;
 
@@ -87,6 +89,37 @@ const SearchResultsView = () => {
     });
   }, [query, setSearchLocation]);
 
+  const areFiltersApplied = (currentFilters) => {
+    return (
+      Object.keys(filtersFromURL).filter(
+        (key) => currentFilters[key].length > 0,
+      ).length > 0
+    );
+  };
+
+  const isNoSearchResults = data?.pageSpec?.totalElements === 0;
+
+  const showResults = () => {
+    const filtersApplied = areFiltersApplied(filtersFromURL);
+    return (
+      <div className="col-start-7 col-end-26">
+        {isNoSearchResults ? (
+          <NoSearchResults filtersApplied={filtersApplied} query={query} />
+        ) : (
+          <SearchResults
+            results={data}
+            query={query}
+            isLoading={isLoading}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+          />
+        )}
+      </div>
+    );
+  };
+
+  if (isError) return <ErrorView error={error} />;
+
   return (
     <div className="grid grid-rows-search-view grid-cols-container gap-8">
       <Navbar showSearchBar />
@@ -96,17 +129,7 @@ const SearchResultsView = () => {
         removeFilter={removeFilter}
         removeAllFilters={removeAllFilters}
       />
-      {isError ? (
-        <div className="col-start-2 col-end-27">{error && error.message}</div>
-      ) : (
-        <SearchResults
-          results={data}
-          query={query}
-          isLoading={isLoading}
-          handlePageChange={handlePageChange}
-          currentPage={currentPage}
-        />
-      )}
+      {showResults()}
       <Footer />
     </div>
   );
