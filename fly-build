@@ -10,9 +10,10 @@ tidy () {
 trap tidy EXIT
 
 mkdir "$dir/version"
-echo TEST_VERSION > "$dir/version/version"
+echo TEST_VERSION > "$dir/version/tag"
 
 fly --target ci execute \
     --input source="$cwd" \
+    --input version="$dir/version" \
     --config "$cwd/pipeline/build.yaml" \
     --output dist=fly-dist
