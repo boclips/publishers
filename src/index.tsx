@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
   Sentry.init({
     release: sentryRelease,
     dsn:
-      'https://0e4298efe74b40fc88515bcde74b4b28@o236297.ingest.sentry.io/5632834',
+      'https://50de7aa7ec43491d9c7140376d0bf128@o236297.ingest.sentry.io/5633299',
     integrations: [new Integrations.BrowserTracing(), new ExtraErrorData()],
     tracesSampleRate: 1.0,
     blacklistUrls: [
