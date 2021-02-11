@@ -2,6 +2,7 @@ import { VideoFacets } from 'boclips-api-client/dist/sub-clients/videos/model/Vi
 import { FilterOption } from 'src/types/FilterOption';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 import { convertFacetsToFilterOptions } from 'src/services/convertFacetsToFilterOptions';
+import { useEffect, useState } from 'react';
 
 export interface Filters {
   subjects: FilterOption[];
@@ -12,6 +13,21 @@ export interface Filters {
 }
 
 export const useFilterOptions = (facets: VideoFacets): Filters => {
+  const [statefulFacets, setStatefulFacets] = useState<VideoFacets>(facets);
   const [urlParams] = useSearchQueryLocationParams();
-  return convertFacetsToFilterOptions(facets, urlParams.filters);
+
+  useEffect(() => {
+    const newFacets = facets;
+
+    Object.keys(statefulFacets).forEach((key) => {
+      newFacets[key] = statefulFacets[key].map((facet) => ({
+        ...facet,
+        hits: facets[key].find((it) => it.id === facet.id)?.hits || 0,
+      }));
+    });
+
+    setStatefulFacets(newFacets as VideoFacets);
+  }, [facets]);
+
+  return convertFacetsToFilterOptions(statefulFacets, urlParams.filters);
 };

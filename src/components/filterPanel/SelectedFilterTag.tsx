@@ -23,7 +23,7 @@ export const SelectedFilterTag = ({ filter, removeFilter }: Props) => {
         onKeyPress={(_) => removeFilter(filter.key, filter.id)}
         onClick={() => removeFilter(filter.key, filter.id)}
       >
-        <CrossIconSVG classname="text-blue-700 stroke-current stroke-2" />
+        <CrossIconSVG className="text-blue-700 stroke-current stroke-2" />
       </span>
     </span>
   );

@@ -98,4 +98,31 @@ describe('convertFacets', () => {
     expect(filterOptions.prices[3].name).toEqual('$400');
     expect(filterOptions.prices[4].name).toEqual('$500');
   });
+
+  it('selected filters always present', () => {
+    const facets = FacetsFactory.sample({
+      subjects: [FacetFactory.sample({ id: '1' })],
+      durations: [FacetFactory.sample({ id: '2' })],
+      videoTypes: [FacetFactory.sample({ id: 'filter-in-facets' })],
+      channels: [FacetFactory.sample({ id: '4' })],
+      prices: [FacetFactory.sample({ id: '5' })],
+    });
+
+    const searchFilters: SearchFilters = {
+      video_type: ['filter-in-facets', 'filter-not-in-facets'],
+      channel: [],
+      subject: [],
+      duration: [],
+      prices: [],
+    };
+
+    const filterOptions = convertFacetsToFilterOptions(facets, searchFilters);
+
+    const filterOptionNotInFacets = filterOptions.videoTypes.find(
+      (item) => item.id === 'filter-not-in-facets',
+    );
+
+    expect(filterOptionNotInFacets.id).toContain('filter-not-in-facets');
+    expect(filterOptionNotInFacets.hits).toEqual(0);
+  });
 });

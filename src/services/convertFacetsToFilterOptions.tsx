@@ -59,8 +59,8 @@ const createFilterOptions = (
   selectedFiltersIds: string[],
   filterKey: FilterKey,
   convertName?: (rawName: string) => string,
-): FilterOption[] =>
-  facetsForOneCategory.map((facet) => {
+): FilterOption[] => {
+  const filterOptionsFromFacets = facetsForOneCategory.map((facet) => {
     const name = convertName ? convertName(facet.name) : facet.name;
     return {
       name,
@@ -71,6 +71,9 @@ const createFilterOptions = (
       key: filterKey,
     };
   });
+
+  return filterOptionsFromFacets;
+};
 
 const getVideoTypeLabel = (name: string): string => {
   switch (name.toUpperCase()) {

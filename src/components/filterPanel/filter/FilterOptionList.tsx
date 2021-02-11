@@ -21,7 +21,9 @@ export const FilterOptionList = ({
 
   const toggleOptions = () => setAllExpanded(!allExpanded);
 
-  const optionsWithHits = options.filter((option) => option.hits > 0);
+  const optionsWithHits = options.filter(
+    (option) => option.hits > 0 || selectedOptions.includes(option.id),
+  );
   const tooManyOptions = optionsWithHits.length > DEFAULT_VISIBLE_OPTIONS;
 
   return (
