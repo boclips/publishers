@@ -8,7 +8,6 @@ import { fireEvent, render, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
-import { Price } from 'boclips-api-client/dist/sub-clients/videos/model/Price';
 
 describe(`SearchResultsFiltering`, () => {
   it(`applies filters from url on load`, async () => {
