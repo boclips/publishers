@@ -8,6 +8,7 @@ import { fireEvent, render, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
+import { Price } from 'boclips-api-client/dist/sub-clients/videos/model/Price';
 
 describe(`SearchResultsFiltering`, () => {
   it(`applies filters from url on load`, async () => {
@@ -50,6 +51,14 @@ describe(`SearchResultsFiltering`, () => {
   describe(`video type filters`, () => {
     it(`displays the video type filters and facet counts`, async () => {
       const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'stock video',
+          types: [{ name: 'STOCK', id: 1 }],
+        }),
+      );
 
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
@@ -212,6 +221,15 @@ describe(`SearchResultsFiltering`, () => {
           subjects: [{ id: 'subject1', name: 'History', hits: 12 }],
         }),
       );
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'stock video',
+          types: [{ name: 'STOCK', id: 1 }],
+        }),
+      );
+
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
           <App apiClient={fakeClient} />
@@ -235,6 +253,14 @@ describe(`SearchResultsFiltering`, () => {
             { id: 'PT5M-PT10M', name: 'PT5M-PT10M', hits: 120 },
             { id: 'PT20M-PT24H', name: 'PT20M-PT24H', hits: 80 },
           ],
+        }),
+      );
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'stock video',
+          types: [{ name: 'STOCK', id: 1 }],
         }),
       );
 
@@ -270,6 +296,14 @@ describe(`SearchResultsFiltering`, () => {
             { id: '30000', name: '30000', hits: 80 },
             { id: '50000', name: '50000', hits: 0 },
           ],
+        }),
+      );
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'stock video',
+          types: [{ name: 'STOCK', id: 1 }],
         }),
       );
 
@@ -381,12 +415,25 @@ describe(`SearchResultsFiltering`, () => {
 
     videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
-    it(`can remove filters inidividually from selected filter panel`, async () => {
+    it(`can remove filters individually from selected filter panel`, async () => {
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'stock video',
+          types: [{ name: 'STOCK', id: 1 }],
+          price: {
+            currency: 'USD',
+            amount: 10000,
+          },
+        }),
+      );
+
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video&prices=10000']}>
           <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
+
       expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
       expect(await wrapper.queryByText('expensive video')).toBeNull();
 
@@ -404,6 +451,18 @@ describe(`SearchResultsFiltering`, () => {
     });
 
     it(`can remove all filters from selected filters panel`, async () => {
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'stock video',
+          types: [{ name: 'STOCK', id: 1 }],
+          price: {
+            currency: 'USD',
+            amount: 10000,
+          },
+        }),
+      );
+
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video&prices=10000']}>
           <App apiClient={fakeClient} />
@@ -437,6 +496,7 @@ describe(`SearchResultsFiltering`, () => {
         await wrapper.findByText('We couldn’t find any videos for “shark”'),
       ).toBeVisible();
     });
+
     it('shows a no results page with filters', async () => {
       const fakeClient = new FakeBoclipsClient();
 

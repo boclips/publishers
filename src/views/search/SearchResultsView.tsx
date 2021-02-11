@@ -94,24 +94,16 @@ const SearchResultsView = () => {
     });
   }, [query, setSearchLocation]);
 
-  if (isError) return <ErrorView error={error} />;
-
-  if (isLoading) return <Loading />;
-
-  const areFiltersApplied = (currentFilters: SearchFilters): boolean => {
-    return (
-      Object.keys(filtersFromURL).filter(
-        (key) => currentFilters[key].length > 0,
-      ).length > 0
-    );
-  };
+  const isNoSearchResults = data?.pageSpec?.totalElements === 0;
 
   const showResults = () => {
-    const filtersApplied = areFiltersApplied(filtersFromURL);
-    const isNoSearchResults = data?.pageSpec?.totalElements === 0;
-
     if (isNoSearchResults)
-      return <NoSearchResults filtersApplied={filtersApplied} query={query} />;
+      return (
+        <NoSearchResults
+          areFiltersApplied={areFiltersApplied(filtersFromURL)}
+          query={query}
+        />
+      );
 
     return (
       <SearchResults
@@ -124,6 +116,8 @@ const SearchResultsView = () => {
     );
   };
 
+  if (isLoading) return <Loading />;
+
   if (isError) return <ErrorView error={error} />;
 
   return (
@@ -135,12 +129,21 @@ const SearchResultsView = () => {
         handleChange={handleFilterChange}
         removeFilter={removeFilter}
         removeAllFilters={removeAllFilters}
+        noResults={isNoSearchResults}
+        areFiltersApplied={areFiltersApplied(filtersFromURL)}
       />
 
       {showResults()}
 
       <Footer />
     </div>
+  );
+};
+
+const areFiltersApplied = (currentFilters: SearchFilters): boolean => {
+  return (
+    Object.keys(currentFilters).filter((key) => currentFilters[key].length > 0)
+      .length > 0
   );
 };
 

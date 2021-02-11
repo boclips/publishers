@@ -7,6 +7,7 @@ import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 import { useFilterOptions } from 'src/hooks/useFilterOptions';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
+import c from 'classnames';
 import { SelectedFilters } from './SelectedFilters';
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
   handleChange: (filter: string, values: string[]) => void;
   removeFilter: (filter: string, value: string) => void;
   removeAllFilters: () => void;
+  noResults: boolean;
+  areFiltersApplied: boolean;
 }
 
 export const FilterPanel = ({
@@ -21,6 +24,8 @@ export const FilterPanel = ({
   handleChange,
   removeFilter,
   removeAllFilters,
+  noResults,
+  areFiltersApplied,
 }: Props) => {
   const filterOptions = useFilterOptions(facets);
   const [searchLocation] = useSearchQueryLocationParams();
@@ -46,31 +51,58 @@ export const FilterPanel = ({
     [filterOptions, searchLocation],
   );
 
+  const SelectedFilterPanelWithTitle = () => {
+    return (
+      <>
+        <div className="text-primary text-lg font-medium pb-4">Filter by:</div>
+        <SelectedFilters
+          selectedFilterOptions={selectedFilterOptions}
+          removeFilter={removeFilter}
+          clearFilters={removeAllFilters}
+        />
+      </>
+    );
+  };
+
+  const renderFilters = () => {
+    if (noResults && !areFiltersApplied) return null;
+
+    if (noResults && areFiltersApplied) return <SelectedFilterPanelWithTitle />;
+
+    return (
+      <>
+        <SelectedFilterPanelWithTitle />
+        <VideoTypeFilter
+          options={filterOptions.videoTypes}
+          handleChange={handleChange}
+        />
+        <DurationFilter
+          options={filterOptions?.durations}
+          handleChange={handleChange}
+        />
+        <ChannelFilter
+          options={filterOptions?.channels}
+          handleChange={handleChange}
+        />
+        <PriceFilter
+          options={filterOptions.prices}
+          handleChange={handleChange}
+        />
+        <SubjectFilter
+          options={filterOptions?.subjects}
+          handleChange={handleChange}
+        />
+      </>
+    );
+  };
+
   return (
-    <div className="col-start-2 col-end-7">
-      <div className="text-primary text-lg font-medium pb-4">Filter by: </div>
-      <SelectedFilters
-        selectedFilterOptions={selectedFilterOptions}
-        removeFilter={removeFilter}
-        clearFilters={removeAllFilters}
-      />
-      <VideoTypeFilter
-        options={filterOptions.videoTypes}
-        handleChange={handleChange}
-      />
-      <DurationFilter
-        options={filterOptions?.durations}
-        handleChange={handleChange}
-      />
-      <ChannelFilter
-        options={filterOptions?.channels}
-        handleChange={handleChange}
-      />
-      <PriceFilter options={filterOptions.prices} handleChange={handleChange} />
-      <SubjectFilter
-        options={filterOptions?.subjects}
-        handleChange={handleChange}
-      />
+    <div
+      className={c('col-start-2 col-end-7', {
+        'bg-blue-100': noResults,
+      })}
+    >
+      {renderFilters()}
     </div>
   );
 };

@@ -2,11 +2,11 @@ import React from 'react';
 import NoResultsIcon from '../../resources/icons/no-search-results.svg';
 
 interface Props {
-  filtersApplied: boolean;
+  areFiltersApplied: boolean;
   query: string;
 }
 
-export const NoSearchResults = ({ filtersApplied, query }: Props) => {
+export const NoSearchResults = ({ areFiltersApplied, query }: Props) => {
   const NoResultsCopy = ({ header, copy }) => {
     return (
       <>
@@ -19,7 +19,7 @@ export const NoSearchResults = ({ filtersApplied, query }: Props) => {
   return (
     <div className="flex flex-col items-center col-start-7 col-end-26 text-lg text-gray-800 mt-10 ">
       <NoResultsIcon className="h-80 w-80 mb-6" />
-      {filtersApplied ? (
+      {areFiltersApplied ? (
         <NoResultsCopy
           header={`We couldn’t find any videos for “${query}” with your filter selection`}
           copy="Try again using different keywords or change the filters"

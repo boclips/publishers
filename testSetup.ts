@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import * as ReactTestingLibrary from '@testing-library/react';
 
-const jestTimeout = 7000;
+const jestTimeout = 10000;
 
 ReactTestingLibrary.configure({
   testIdAttribute: 'data-qa',
