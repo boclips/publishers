@@ -9,6 +9,7 @@ image_resource:
 
 inputs:
 - name: source
+- name: version
 
 outputs:
 - name: dist
@@ -17,8 +18,11 @@ caches:
 - path: ../../../root/.npm
 
 run:
-  path: npm
+  path: sh
   args:
-  - run
-  - ci-build
+  - -ec
+  - |-
+    SENTRY_RELEASE="boclips-web-app-$(cat ../version/tag)"
+    export SENTRY_RELEASE
+    npm run ci-build
   dir: source
