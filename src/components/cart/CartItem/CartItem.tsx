@@ -7,6 +7,8 @@ import Button from '@boclips-ui/button';
 import RemoveFromCartIcon from 'src/resources/icons/bin.svg';
 import { useCartMutation } from 'src/hooks/api/cartQuery';
 import c from 'classnames';
+import { Link } from 'react-router-dom';
+import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import s from './style.module.less';
 
 interface Props {
@@ -48,7 +50,25 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
       <VideoPlayer video={videoItem} />
 
       <div className="flex flex-col w-full ml-3">
-        <div className="text-md text-gray-900">{videoItem.title}</div>
+        <div className="flex flex-row justify-between">
+          <Link
+            to={`/videos/${videoItem.id}`}
+            className="text-base text-gray-900 hover:text-gray-900"
+          >
+            {videoItem.title}
+          </Link>
+          <div
+            className="text-gray-900 text-lg font-bold"
+            data-qa="price-value"
+          >
+            {createPriceDisplayValue(
+              videoItem?.price?.amount,
+              videoItem?.price?.currency,
+              navigator.language,
+            )}
+          </div>
+        </div>
+        <div className="text-sm text-gray-700 font-normal	">{`ID: ${videoItem.id}`}</div>
 
         <div className={s.textButton}>
           <Button

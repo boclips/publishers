@@ -6,6 +6,7 @@ import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 describe('CartItem', () => {
   let client: any;
@@ -26,11 +27,13 @@ describe('CartItem', () => {
     });
 
     const wrapper = render(
-      <BoclipsClientProvider client={new FakeBoclipsClient()}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={new FakeBoclipsClient()}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     expect(
@@ -60,11 +63,13 @@ describe('CartItem', () => {
     });
 
     const wrapper = render(
-      <BoclipsClientProvider client={new FakeBoclipsClient()}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={new FakeBoclipsClient()}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
@@ -89,11 +94,13 @@ describe('CartItem', () => {
     );
 
     const wrapper = render(
-      <BoclipsClientProvider client={fakeClient}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItemFromCart} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={fakeClient}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItemFromCart} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
@@ -136,11 +143,13 @@ describe('CartItem', () => {
     });
 
     const wrapper = render(
-      <BoclipsClientProvider client={new FakeBoclipsClient()}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={new FakeBoclipsClient()}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     expect(wrapper.getByLabelText('trim-from').getAttribute('value')).toEqual(
@@ -172,11 +181,13 @@ describe('CartItem', () => {
     const fakeClient = new FakeBoclipsClient();
 
     const wrapper = render(
-      <BoclipsClientProvider client={fakeClient}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={fakeClient}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
@@ -214,11 +225,13 @@ describe('CartItem', () => {
     const fakeClient = new FakeBoclipsClient();
 
     const wrapper = render(
-      <BoclipsClientProvider client={fakeClient}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={fakeClient}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     fireEvent.click(await wrapper.findByText('Request transcripts'));
@@ -266,11 +279,13 @@ describe('CartItem', () => {
     const fakeClient = new FakeBoclipsClient();
 
     const wrapper = render(
-      <BoclipsClientProvider client={fakeClient}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={fakeClient}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     fireEvent.click(await wrapper.findByText('Request English captions'));
@@ -314,11 +329,13 @@ describe('CartItem', () => {
     const fakeClient = new FakeBoclipsClient();
 
     const wrapper = render(
-      <BoclipsClientProvider client={fakeClient}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={fakeClient}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     fireEvent.click(await wrapper.findByText('Request other type of editing'));
@@ -341,11 +358,13 @@ describe('CartItem', () => {
     const fakeClient = new FakeBoclipsClient();
 
     const wrapper = render(
-      <BoclipsClientProvider client={fakeClient}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={fakeClient}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     fireEvent.click(await wrapper.findByText('Request other type of editing'));
@@ -391,11 +410,13 @@ describe('CartItem', () => {
     const fakeClient = new FakeBoclipsClient();
 
     const wrapper = render(
-      <BoclipsClientProvider client={fakeClient}>
-        <QueryClientProvider client={client}>
-          <CartItem videoItem={video} cartItem={cartItem} />
-        </QueryClientProvider>
-      </BoclipsClientProvider>,
+      <Router>
+        <BoclipsClientProvider client={fakeClient}>
+          <QueryClientProvider client={client}>
+            <CartItem videoItem={video} cartItem={cartItem} />
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
     );
 
     fireEvent.click(await wrapper.findByText('Request other type of editing'));

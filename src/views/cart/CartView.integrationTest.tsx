@@ -36,7 +36,7 @@ describe('CartView', () => {
     });
   });
 
-  it('when videos in cart, displays video player with title and additional services ', async () => {
+  it('when videos in cart, displays video player with information and prices', async () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(video);
@@ -49,10 +49,14 @@ describe('CartView', () => {
         expect(await wrapper.findByText('Shopping cart')).toBeInTheDocument();
         expect(await wrapper.findByText('(1 item)')).toBeInTheDocument();
         expect(await wrapper.findByText('news video')).toBeInTheDocument();
+        expect(await wrapper.findByText('ID: video-id')).toBeInTheDocument();
         expect(
           await wrapper.findByText('Additional services'),
         ).toBeInTheDocument();
         expect(await wrapper.findByText('Trim video')).toBeInTheDocument();
+        expect((await wrapper.findByTestId('price-value')).innerHTML).toEqual(
+          '$600',
+        );
       },
       {
         timeout: 5000,
@@ -226,4 +230,18 @@ describe('CartView', () => {
       .findByText('Confirm order')
       .then((button) => fireEvent.click(button));
   }
+  it('takes you back to video page when cart item title is clicked', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    fakeClient.videos.insertVideo(video);
+    fakeClient.carts.insertCartItem('video-id');
+
+    const wrapper = renderCartView(fakeClient);
+
+    const title = await wrapper.findByText('news video');
+
+    fireEvent.click(title);
+
+    expect(await wrapper.findByTestId('video-page')).toBeVisible();
+  });
 });
