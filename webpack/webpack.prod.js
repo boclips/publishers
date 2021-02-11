@@ -25,6 +25,7 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       template: path.resolve(srcPath, 'index.html'),
     }),
+    new webpack.EnvironmentPlugin(['SENTRY_RELEASE']),
   ],
   performance: {
     hints: 'error',
