@@ -33,6 +33,7 @@ export const useSearchQueryLocationParams = (): [
   };
 
   const history = useHistory();
+
   const setSearchQueryLocationParams = useCallback(
     (search: SearchQueryLocationParams) => {
       const params = convertToURLSearchParams(search);

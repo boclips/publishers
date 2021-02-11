@@ -20,7 +20,6 @@ const doSearch = (
     query,
     page,
     size: pageSize,
-    // @ts-ignore TODO: FIX THE TYPE
     prices: filters?.prices,
     type: filters?.video_type,
     subject: filters?.subject,

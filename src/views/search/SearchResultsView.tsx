@@ -3,7 +3,10 @@ import {
   prefetchSearchQuery,
   useSearchQuery,
 } from 'src/hooks/api/useSearchQuery';
-import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
+import {
+  SearchFilters,
+  useSearchQueryLocationParams,
+} from 'src/hooks/useLocationParams';
 import Navbar from 'src/components/layout/Navbar';
 import { FilterPanel } from 'src/components/filterPanel/FilterPanel';
 import { SearchResults } from 'src/components/searchResults/SearchResults';
@@ -13,6 +16,7 @@ import { useQueryClient } from 'react-query';
 import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 import { NoSearchResults } from 'src/components/noResults/NoSearchResults';
 import ErrorView from 'src/views/error/ErrorView';
+import { Loading } from 'src/components/common/Loading';
 
 export const PAGE_SIZE = 10;
 
@@ -22,7 +26,7 @@ const SearchResultsView = () => {
   const { query, page: currentPage, filters: filtersFromURL } = searchLocation;
   const boclipsClient = useBoclipsClient();
 
-  const { data, isError, error, isLoading } = useSearchQuery({
+  const { data, isError, error, isLoading, isFetching } = useSearchQuery({
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
@@ -45,6 +49,7 @@ const SearchResultsView = () => {
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });
+
     setSearchLocation({
       query,
       page,
@@ -89,7 +94,11 @@ const SearchResultsView = () => {
     });
   }, [query, setSearchLocation]);
 
-  const areFiltersApplied = (currentFilters) => {
+  if (isError) return <ErrorView error={error} />;
+
+  if (isLoading) return <Loading />;
+
+  const areFiltersApplied = (currentFilters: SearchFilters): boolean => {
     return (
       Object.keys(filtersFromURL).filter(
         (key) => currentFilters[key].length > 0,
@@ -97,24 +106,21 @@ const SearchResultsView = () => {
     );
   };
 
-  const isNoSearchResults = data?.pageSpec?.totalElements === 0;
-
   const showResults = () => {
     const filtersApplied = areFiltersApplied(filtersFromURL);
+    const isNoSearchResults = data?.pageSpec?.totalElements === 0;
+
+    if (isNoSearchResults)
+      return <NoSearchResults filtersApplied={filtersApplied} query={query} />;
+
     return (
-      <div className="col-start-7 col-end-26">
-        {isNoSearchResults ? (
-          <NoSearchResults filtersApplied={filtersApplied} query={query} />
-        ) : (
-          <SearchResults
-            results={data}
-            query={query}
-            isLoading={isLoading}
-            handlePageChange={handlePageChange}
-            currentPage={currentPage}
-          />
-        )}
-      </div>
+      <SearchResults
+        results={data}
+        query={query}
+        handlePageChange={handlePageChange}
+        currentPage={currentPage}
+        isFetching={isFetching}
+      />
     );
   };
 
@@ -123,13 +129,16 @@ const SearchResultsView = () => {
   return (
     <div className="grid grid-rows-search-view grid-cols-container gap-8">
       <Navbar showSearchBar />
+
       <FilterPanel
         facets={data?.facets}
         handleChange={handleFilterChange}
         removeFilter={removeFilter}
         removeAllFilters={removeAllFilters}
       />
+
       {showResults()}
+
       <Footer />
     </div>
   );
