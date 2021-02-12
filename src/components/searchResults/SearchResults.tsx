@@ -36,6 +36,7 @@ export function SearchResults({
         results.page.map(() => (
           <div className="mb-8">
             <Skeleton
+              key={Math.random()}
               loading
               active
               title={{ width: '100%' }}

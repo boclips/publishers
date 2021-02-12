@@ -17,6 +17,7 @@ export const SelectedFilters = ({
   if (selectedFilterOptions.length === 0) {
     return <></>;
   }
+
   return (
     <div>
       <div className="mb-4 font-medium flex justify-between">
@@ -33,7 +34,11 @@ export const SelectedFilters = ({
       </div>
       <div className="flex flex-wrap " data-qa="applied-filter-tags">
         {selectedFilterOptions.map((filter) => (
-          <SelectedFilterTag filter={filter} removeFilter={removeFilter} />
+          <SelectedFilterTag
+            filter={filter}
+            removeFilter={removeFilter}
+            key={filter.id}
+          />
         ))}
       </div>
     </div>

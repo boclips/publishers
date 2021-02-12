@@ -13,21 +13,32 @@ export interface Filters {
 }
 
 export const useFilterOptions = (facets: VideoFacets): Filters => {
-  const [statefulFacets, setStatefulFacets] = useState<VideoFacets>(facets);
   const [urlParams] = useSearchQueryLocationParams();
+  return convertFacetsToFilterOptions(facets, urlParams.filters);
+};
 
-  useEffect(() => {
-    const newFacets = facets;
+// export const useFilterOptions = (facets: VideoFacets): Filters => {
+//   const [cachedFacets, setCacheFacets] = useState<VideoFacets>(facets);
+//   const [urlParams] = useSearchQueryLocationParams();
 
-    Object.keys(statefulFacets).forEach((key) => {
-      newFacets[key] = statefulFacets[key].map((facet) => ({
-        ...facet,
-        hits: facets[key].find((it) => it.id === facet.id)?.hits || 0,
-      }));
-    });
+//   useEffect(() => {
+//     setCacheFacets((previousCachedFacets) =>
+//       mergeFacets(previousCachedFacets, facets),
+//     );
+//   }, [facets]);
 
-    setStatefulFacets(newFacets as VideoFacets);
-  }, [facets]);
+//   return convertFacetsToFilterOptions(cachedFacets, urlParams.filters);
+// };
 
-  return convertFacetsToFilterOptions(statefulFacets, urlParams.filters);
+const mergeFacets = (previousFacets, updatedFacets) => {
+  const newFacets = { ...updatedFacets };
+
+  Object.keys(previousFacets).forEach((key) => {
+    updatedFacets[key] = previousFacets[key].map((facet) => ({
+      ...facet,
+      hits: updatedFacets[key].find((it) => it.id === facet.id)?.hits || 0,
+    }));
+  });
+
+  return newFacets;
 };

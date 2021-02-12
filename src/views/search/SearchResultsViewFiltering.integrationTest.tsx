@@ -4,7 +4,13 @@ import {
   FacetsFactory,
 } from 'boclips-api-client/dist/test-support/FacetsFactory';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
-import { fireEvent, render, waitFor, within } from '@testing-library/react';
+import {
+  fireEvent,
+  prettyDOM,
+  render,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -478,6 +484,82 @@ describe(`SearchResultsFiltering`, () => {
 
       expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
       expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
+    });
+
+    it(`shows selected filters even when no facets are returned for that filter`, async () => {
+      const apiClient = new FakeBoclipsClient();
+
+      apiClient.videos.setFacets(
+        FacetsFactory.sample({
+          videoTypes: [
+            FacetFactory.sample({
+              id: 'NEWS',
+              hits: 10,
+              name: 'NEWS',
+            }),
+            FacetFactory.sample({
+              id: 'STOCK',
+              hits: 10,
+              name: 'STOCK',
+            }),
+          ],
+        }),
+      );
+
+      apiClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'STOCK video',
+          types: [{ name: 'STOCK', id: 1 }],
+        }),
+      );
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos?q=video&video_type=STOCK']}>
+          <App apiClient={apiClient} />
+        </MemoryRouter>,
+      );
+
+      let selectedFiltersSection = await wrapper.findByTestId(
+        'applied-filter-tags',
+      );
+
+      expect(
+        within(selectedFiltersSection).getByText('Raw Footage'),
+      ).toBeVisible();
+      expect(within(selectedFiltersSection).queryByText('News')).toBeNull();
+
+      // Remove stock from facets
+      apiClient.videos.setFacets(
+        FacetsFactory.sample({
+          videoTypes: [
+            FacetFactory.sample({
+              id: 'NEWS',
+              hits: 10,
+              name: 'NEWS',
+            }),
+          ],
+        }),
+      );
+
+      const newsCheckbox = wrapper.getByTestId('NEWS-checkbox');
+      fireEvent.click(newsCheckbox);
+
+      selectedFiltersSection = await wrapper.findByTestId(
+        'applied-filter-tags',
+      );
+
+      /**
+       * WHY IS RAW FOOTAGE IN THE SELECTED FILTERS?!?!
+       */
+      console.log(prettyDOM(selectedFiltersSection));
+      expect(
+        await within(selectedFiltersSection).findByText('News'),
+      ).toBeVisible();
+      expect(
+        await within(selectedFiltersSection).findByText('Raw Footage'),
+      ).toBeVisible();
+      expect(false).toBeTruthy();
     });
   });
 
