@@ -38,7 +38,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
           </Link>
         }
         actions={[
-          <div className="flex flex-row justify-end">
+          <div className="flex flex-row justify-end" key={`copy-${video.id}`}>
             <CopyLinkButton link={buildVideoDetailsLink(video)} />
             <VideoCardAddCartButton
               videoId={video.id}

@@ -35,7 +35,12 @@ export const CartDetails = ({ cartItemVideos, cart }: Props) => {
 
     if (cartItems.length === cart.items.length) return cartItems;
 
-    return cart.items.map(() => <VideoCardPlaceholder displayHeader={false} />);
+    return cart.items.map((items) => (
+      <VideoCardPlaceholder
+        displayHeader={false}
+        key={`placeholder-${items.id}`}
+      />
+    ));
   };
 
   return (

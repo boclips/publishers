@@ -30,7 +30,7 @@ export const searchFilterOptions = (
 const boldMatchingText = (text, shouldBeBold) => {
   const textArray = text.split(new RegExp(`(${shouldBeBold})`, 'i'));
   return (
-    <>
+    <span key={`bolded-text-${text}`}>
       {textArray.map((item) => {
         return (
           <>
@@ -42,6 +42,6 @@ const boldMatchingText = (text, shouldBeBold) => {
           </>
         );
       })}
-    </>
+    </span>
   );
 };

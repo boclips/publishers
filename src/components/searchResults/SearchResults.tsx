@@ -30,8 +30,8 @@ export function SearchResults({
         />
       );
 
-    return results.page.map(() => (
-      <div className="mb-8">
+    return results.page.map((video) => (
+      <div className="mb-8" key={`placeholder-${video?.id}`}>
         <VideoCardPlaceholder />
       </div>
     ));

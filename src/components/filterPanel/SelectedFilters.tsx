@@ -36,7 +36,11 @@ export const SelectedFilters = ({
       </div>
       <div className="flex flex-wrap " data-qa="applied-filter-tags">
         {selectedFilterOptions.map((filter) => (
-          <SelectedFilterTag filter={filter} removeFilter={removeFilter} />
+          <SelectedFilterTag
+            key={`${filter.name}-${filter.id}`}
+            filter={filter}
+            removeFilter={removeFilter}
+          />
         ))}
       </div>
     </div>

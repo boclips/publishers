@@ -16,10 +16,10 @@ describe(`convertFilterOptions`, () => {
     expect(options).toHaveLength(2);
 
     expect(renderToStaticMarkup(options[0].label)).toEqual(
-      '<span class="font-medium">el</span>ephant',
+      '<span><span class="font-medium">el</span>ephant</span>',
     );
     expect(renderToStaticMarkup(options[1].label)).toEqual(
-      '<span class="font-medium">el</span>ves',
+      '<span><span class="font-medium">el</span>ves</span>',
     );
   });
 
@@ -35,10 +35,10 @@ describe(`convertFilterOptions`, () => {
     expect(options).toHaveLength(2);
 
     expect(renderToStaticMarkup(options[0].label)).toEqual(
-      '<span class="font-medium">El</span>ephant',
+      '<span><span class="font-medium">El</span>ephant</span>',
     );
     expect(renderToStaticMarkup(options[1].label)).toEqual(
-      '<span class="font-medium">El</span>ves',
+      '<span><span class="font-medium">El</span>ves</span>',
     );
   });
 });
