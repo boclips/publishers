@@ -33,7 +33,14 @@ const SearchResultsView = () => {
 
   const boclipsClient = useBoclipsClient();
 
-  const { data, isError, error, isLoading, isFetching } = useSearchQuery({
+  const {
+    data,
+    isError,
+    error,
+    isLoading,
+    isFetching,
+    isPreviousData,
+  } = useSearchQuery({
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
@@ -123,7 +130,7 @@ const SearchResultsView = () => {
         query={query}
         handlePageChange={handlePageChange}
         currentPage={currentPage}
-        isFetching={isFetching}
+        isFetching={isFetching && isPreviousData}
       />
     );
   };
