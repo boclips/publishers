@@ -12,21 +12,43 @@ interface Props {
 }
 
 const AdditionalServices = ({ videoItem, cartItem }: Props) => {
+  const addPrice = (service, price) => (
+    <div className="flex flex-row justify-between">
+      <span>{service}</span>
+      <span className="h-9 flex items-center">{price}</span>
+    </div>
+  );
+
   return (
     <div className="text-gray-700">
       <div className="text-base">Additional services</div>
-      <TrimService videoItem={videoItem} cartItem={cartItem} />
-      <AdditionalServiceCheckbox
-        cartItem={cartItem}
-        type="transcriptRequested"
-        label="Request transcripts"
-      />
-      <AdditionalServiceCheckbox
-        cartItem={cartItem}
-        type="captionsRequested"
-        label="Request English captions"
-      />
-      <EditRequest cartItem={cartItem} label="Request other type of editing" />
+      {addPrice(
+        <TrimService videoItem={videoItem} cartItem={cartItem} />,
+        'Free',
+      )}
+      {addPrice(
+        <AdditionalServiceCheckbox
+          cartItem={cartItem}
+          type="transcriptRequested"
+          label="Request transcripts"
+        />,
+        'Free',
+      )}
+      {addPrice(
+        <AdditionalServiceCheckbox
+          cartItem={cartItem}
+          type="captionsRequested"
+          label="Request English captions"
+        />,
+        'Free',
+      )}
+      {addPrice(
+        <EditRequest
+          cartItem={cartItem}
+          label="Request other type of editing"
+        />,
+        'Free',
+      )}
     </div>
   );
 };
