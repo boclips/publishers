@@ -37,7 +37,7 @@ describe('Order item preview', () => {
     ).toBeInTheDocument();
   });
 
-  it('displays all additional services', async () => {
+  it('displays all additional services with prices', async () => {
     const fakeClient = new FakeBoclipsClient();
     const client = new QueryClient();
 
@@ -64,8 +64,20 @@ describe('Order item preview', () => {
     );
 
     expect(wrapper.getByText('Trimming: 00:00 - 02:02')).toBeInTheDocument();
+    expect(
+      wrapper.getByText('Trimming: 00:00 - 02:02').parentElement.nextSibling
+        .textContent,
+    ).toEqual('Free');
     expect(wrapper.getByText('Requested transcripts')).toBeInTheDocument();
+    expect(
+      wrapper.getByText('Requested transcripts').parentElement.nextSibling
+        .textContent,
+    ).toEqual('Free');
     expect(wrapper.getByText('Captions: English')).toBeInTheDocument();
+    expect(
+      wrapper.getByText('Captions: English').parentElement.nextSibling
+        .textContent,
+    ).toEqual('Free');
   });
 
   it('displays only selected additional services', async () => {

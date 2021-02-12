@@ -16,7 +16,7 @@ export const CartItemOrderPreview = ({ videos }: Props) => {
       {videos.map((it) => (
         <div
           key={it.id}
-          className="flex flex-row py-3 border-b-2 border-blue-300 rounded"
+          className="flex flex-row justify-between py-3 border-b-2 border-blue-300 rounded"
         >
           <div className={s.imgWrapper}>
             <img
@@ -24,7 +24,7 @@ export const CartItemOrderPreview = ({ videos }: Props) => {
               alt={it.title}
             />
           </div>
-          <div className="ml-4">
+          <div className="ml-5 w-full">
             <div className="text-sm text-gray-900 font-medium ">{it.title}</div>
             <div className="text-xs text-gray-700"> ID: {it.id}</div>
             <OrderItemPreviewAdditionalServices

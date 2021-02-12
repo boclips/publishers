@@ -6,26 +6,42 @@ interface Props {
 }
 
 export const OrderItemPreviewAdditionalServices = ({ cartItem }: Props) => {
-  const trimmingService = () => (
-    <div className="text-xs pt-1 text-gray-700">
-      <div>
-        Trimming:{' '}
-        {`${cartItem.additionalServices.trim.from} -
-          ${cartItem.additionalServices.trim.to}`}
-      </div>
+  const PricedService: React.FunctionComponent<{ price: string }> = ({
+    children,
+    price,
+  }) => (
+    <div className="flex flex-row justify-between">
+      {children}
+      <span className="flex items-center">{price}</span>
     </div>
+  );
+
+  const trimmingService = () => (
+    <PricedService price="Free">
+      <div className="text-xs pt-1 text-gray-700">
+        <div>
+          Trimming:{' '}
+          {`${cartItem.additionalServices.trim.from} -
+          ${cartItem.additionalServices.trim.to}`}
+        </div>
+      </div>
+    </PricedService>
   );
 
   const transcriptService = () => (
-    <div className="text-xs pt-1 text-gray-700">
-      <div>Requested transcripts</div>
-    </div>
+    <PricedService price="Free">
+      <div className="text-xs pt-1 text-gray-700">
+        <div>Requested transcripts</div>
+      </div>
+    </PricedService>
   );
 
   const captionsService = () => (
-    <div className="text-xs pt-1 text-gray-700">
-      <div>Captions: English</div>
-    </div>
+    <PricedService price="Free">
+      <div className="text-xs pt-1 text-gray-700">
+        <div>Captions: English</div>
+      </div>
+    </PricedService>
   );
 
   const additionalServices = [
@@ -41,7 +57,7 @@ export const OrderItemPreviewAdditionalServices = ({ cartItem }: Props) => {
   if (additionalServices.length > 0) {
     return (
       <>
-        <div className="pt-2 font-medium text-xs"> Additional Services </div>,
+        <div className="pt-2 font-medium text-xs"> Additional Services </div>
         {additionalServices}
       </>
     );
