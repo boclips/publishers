@@ -17,7 +17,6 @@ export const SelectedFilters = ({
   if (selectedFilterOptions.length === 0) {
     return <></>;
   }
-
   return (
     <div>
       <div className="mb-4 font-medium flex justify-between">

@@ -30,6 +30,8 @@ export const FilterPanel = ({
   const filterOptions = useFilterOptions(facets);
   const [searchLocation] = useSearchQueryLocationParams();
 
+  console.log(filterOptions);
+
   const selectedFilterOptions = React.useMemo(
     () => [
       ...filterOptions.channels.filter((option) =>

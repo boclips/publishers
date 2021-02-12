@@ -486,17 +486,12 @@ describe(`SearchResultsFiltering`, () => {
       expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
     });
 
-    it(`shows selected filters even when no facets are returned for that filter`, async () => {
+    fit(`shows selected filters even when no facets are returned for that filter`, async () => {
       const apiClient = new FakeBoclipsClient();
 
       apiClient.videos.setFacets(
         FacetsFactory.sample({
           videoTypes: [
-            FacetFactory.sample({
-              id: 'NEWS',
-              hits: 10,
-              name: 'NEWS',
-            }),
             FacetFactory.sample({
               id: 'STOCK',
               hits: 10,
@@ -510,56 +505,90 @@ describe(`SearchResultsFiltering`, () => {
         VideoFactory.sample({
           id: '1',
           title: 'STOCK video',
+          channel: 'this-is-channel-facet',
+          channelId: 'this-is-channel-facet',
           types: [{ name: 'STOCK', id: 1 }],
         }),
       );
 
+      apiClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '2',
+          title: 'NEWS video 1',
+          channel: 'other channel',
+          channelId: 'other-channel',
+          types: [{ name: 'NEWS', id: 2 }],
+        }),
+      );
+
       const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video&video_type=STOCK']}>
+        <MemoryRouter
+          initialEntries={['/videos?q=video&video_type=STOCK&video_type=NEWS']}
+        >
           <App apiClient={apiClient} />
         </MemoryRouter>,
       );
 
-      let selectedFiltersSection = await wrapper.findByTestId(
-        'applied-filter-tags',
-      );
+      await wrapper.findByText('Raw Footage');
 
-      expect(
-        within(selectedFiltersSection).getByText('Raw Footage'),
-      ).toBeVisible();
-      expect(within(selectedFiltersSection).queryByText('News')).toBeNull();
+      // fireEvent.click(await wrapper.findByText('this-is-channel-facet'));
+      // fireEvent.click(await wrapper.findByText('Raw Footage'));
+      //
+      // apiClient.videos.setFacets(
+      //   FacetsFactory.sample({
+      //     videoTypes: [
+      //       FacetFactory.sample({
+      //         id: 'STOCK',
+      //         hits: 10,
+      //         name: 'STOCK',
+      //       }),
+      //     ],
+      //     channels: [
+      //       FacetFactory.sample({
+      //         id: 'this-is-channel-facet',
+      //         hits: 10,
+      //         name: 'this-is-channel-facet',
+      //       }),
+      //     ],
+      //   }),
+      // );
+      //
+      // fireEvent.click(await wrapper.findByText('News'));
 
-      // Remove stock from facets
-      apiClient.videos.setFacets(
-        FacetsFactory.sample({
-          videoTypes: [
-            FacetFactory.sample({
-              id: 'NEWS',
-              hits: 10,
-              name: 'NEWS',
-            }),
-          ],
-        }),
-      );
+      // expect(await wrapper.findByText('Raw Footage')).toBeVisible();
+      //
+      // expect(wrapper.queryByText('News')).toBeNull();
 
-      const newsCheckbox = wrapper.getByTestId('NEWS-checkbox');
-      fireEvent.click(newsCheckbox);
+      // // Remove stock from facets
+      // apiClient.videos.setFacets(
+      //   FacetsFactory.sample({
+      //     videoTypes: [
+      //       FacetFactory.sample({
+      //         id: 'NEWS',
+      //         hits: 10,
+      //         name: 'NEWS',
+      //       }),
+      //     ],
+      //   }),
+      // );
 
-      selectedFiltersSection = await wrapper.findByTestId(
-        'applied-filter-tags',
-      );
+      console.log(prettyDOM(wrapper.baseElement, 300000));
 
-      /**
-       * WHY IS RAW FOOTAGE IN THE SELECTED FILTERS?!?!
-       */
-      console.log(prettyDOM(selectedFiltersSection));
-      expect(
-        await within(selectedFiltersSection).findByText('News'),
-      ).toBeVisible();
-      expect(
-        await within(selectedFiltersSection).findByText('Raw Footage'),
-      ).toBeVisible();
-      expect(false).toBeTruthy();
+      // fireEvent.click(wrapper.getByText('NEWS'));
+
+      // /**
+      //  * WHY IS RAW FOOTAGE IN THE SELECTED FILTERS?!?!
+      //  */
+      // console.log(prettyDOM(selectedFiltersSection));
+
+      // expect(
+      //   await within(selectedFiltersSection).findByText('News'),
+      // ).toBeVisible();
+      // expect(
+      //   await within(selectedFiltersSection).findByText('Raw Footage'),
+      // ).toBeVisible();
+      //
+      // expect(false).toBeTruthy();
     });
   });
 
