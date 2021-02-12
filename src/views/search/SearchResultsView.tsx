@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   prefetchSearchQuery,
   useSearchQuery,
@@ -17,6 +17,7 @@ import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 import { NoSearchResults } from 'src/components/noResults/NoSearchResults';
 import ErrorView from 'src/views/error/ErrorView';
 import { Loading } from 'src/components/common/Loading';
+import { useDebounce } from 'src/hooks/useDebounce';
 
 export const PAGE_SIZE = 10;
 
@@ -24,13 +25,19 @@ const SearchResultsView = () => {
   const queryClient = useQueryClient();
   const [searchLocation, setSearchLocation] = useSearchQueryLocationParams();
   const { query, page: currentPage, filters: filtersFromURL } = searchLocation;
+  const [newFiltersBeforeDebounce, setNewFiltersBeforeDebounce] = useState<
+    SearchFilters
+  >(filtersFromURL);
+
+  const debouncedFilters = useDebounce(newFiltersBeforeDebounce, 1000);
+
   const boclipsClient = useBoclipsClient();
 
   const { data, isError, error, isLoading, isFetching } = useSearchQuery({
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
-    filters: filtersFromURL,
+    filters: debouncedFilters,
   });
 
   useEffect(() => {
@@ -41,11 +48,11 @@ const SearchResultsView = () => {
         query,
         pageSize: PAGE_SIZE,
         page: currentPage,
-        filters: filtersFromURL,
+        filters: debouncedFilters,
       },
       boclipsClient,
     );
-  }, [currentPage, query, filtersFromURL, queryClient, boclipsClient]);
+  }, [currentPage, query, debouncedFilters, queryClient, boclipsClient]);
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });
@@ -61,14 +68,16 @@ const SearchResultsView = () => {
     (key: FilterKey, values: string[]) => {
       const prevValues = filtersFromURL[key];
       if (prevValues.length !== values.length) {
+        const newFilters = {
+          ...filtersFromURL,
+          [key]: values,
+        };
         setSearchLocation({
           query,
           page: 1,
-          filters: {
-            ...filtersFromURL,
-            [key]: values,
-          },
+          filters: newFilters,
         });
+        setNewFiltersBeforeDebounce(newFilters);
       }
     },
     [filtersFromURL, query, setSearchLocation],
@@ -81,17 +90,20 @@ const SearchResultsView = () => {
   };
 
   const removeAllFilters = useCallback(() => {
+    const emptyFilters = {
+      duration: [],
+      video_type: [],
+      channel: [],
+      subject: [],
+      prices: [],
+    };
+
     setSearchLocation({
       query,
       page: 1,
-      filters: {
-        duration: [],
-        video_type: [],
-        channel: [],
-        subject: [],
-        prices: [],
-      },
+      filters: emptyFilters,
     });
+    setNewFiltersBeforeDebounce(emptyFilters);
   }, [query, setSearchLocation]);
 
   const isNoSearchResults = data?.pageSpec?.totalElements === 0;

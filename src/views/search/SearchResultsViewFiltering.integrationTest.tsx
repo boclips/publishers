@@ -145,10 +145,13 @@ describe(`SearchResultsFiltering`, () => {
       fireEvent.click(wrapper.getByTestId('NEWS-checkbox'));
       expect(newsCheckbox).toHaveProperty('checked', true);
 
+      await waitFor(() => {
+        expect(wrapper.queryByText('Raw Footage')).toBeNull();
+        expect(wrapper.queryByText('stock video')).toBeNull();
+      });
+
       expect(await wrapper.findByLabelText(/News/)).toBeInTheDocument();
       expect(await wrapper.findByText('news video')).toBeInTheDocument();
-      expect(wrapper.queryByText('Raw Footage')).toBeNull();
-      expect(wrapper.queryByText('stock video')).toBeNull();
 
       const selectedFiltersSection = wrapper.getByTestId('applied-filter-tags');
 
@@ -206,8 +209,10 @@ describe(`SearchResultsFiltering`, () => {
 
       fireEvent.click(wrapper.getByTestId('getty-id-checkbox'));
 
-      expect(await wrapper.findByText('shark video')).toBeVisible();
-      expect(await wrapper.queryByText('whale video')).toBeNull();
+      await waitFor(() => {
+        expect(wrapper.queryByText('whale video')).toBeNull();
+        expect(wrapper.queryByText('shark video')).toBeVisible();
+      });
     });
   });
 
@@ -377,9 +382,11 @@ describe(`SearchResultsFiltering`, () => {
       expect(hundredDollarCheckbox).toHaveProperty('checked', true);
 
       expect(await wrapper.findByLabelText(/100/)).toBeInTheDocument();
-      expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
-      expect(await wrapper.queryByText('expensive video')).toBeNull();
 
+      await waitFor(() => {
+        expect(wrapper.getByText('cheap video')).toBeInTheDocument();
+        expect(wrapper.queryByText('expensive video')).toBeNull();
+      });
       const selectedFiltersSection = wrapper.getByTestId('applied-filter-tags');
 
       expect(within(selectedFiltersSection).getByText('$100')).toBeVisible();
