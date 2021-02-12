@@ -5,7 +5,7 @@ import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 import { useMutation } from 'react-query';
 import { Video } from 'boclips-api-client/dist/types';
 import { Cart as ApiCart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
-import { Skeleton } from 'antd';
+import VideoCardPlaceholder from '@boclips-ui/video-card-placeholder';
 import CartItem from './CartItem/CartItem';
 
 interface Props {
@@ -35,17 +35,7 @@ export const CartDetails = ({ cartItemVideos, cart }: Props) => {
 
     if (cartItems.length === cart.items.length) return cartItems;
 
-    return cart.items.map(() => (
-      <div className="mb-8">
-        <Skeleton
-          loading
-          active
-          title={{ width: '100%' }}
-          paragraph={{ rows: 2 }}
-          avatar={{ shape: 'square', size: 128 }}
-        />
-      </div>
-    ));
+    return cart.items.map(() => <VideoCardPlaceholder displayHeader={false} />);
   };
 
   return (

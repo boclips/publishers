@@ -18,8 +18,6 @@ const CartView = () => {
 
   const itemsInCart = cart?.items?.length > 0;
 
-  if (isCartLoading || isCartItemVideosLoading || !videoIds) return <Loading />;
-
   const renderCart = () => {
     if (itemsInCart && videoIds) {
       return <Cart cart={cart} cartItemVideos={cartItemVideos} />;
@@ -27,6 +25,8 @@ const CartView = () => {
 
     return <EmptyCart />;
   };
+
+  if (isCartLoading || isCartItemVideosLoading || !videoIds) return <Loading />;
 
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">

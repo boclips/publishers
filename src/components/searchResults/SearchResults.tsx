@@ -2,7 +2,7 @@ import { SearchResultsSummary } from 'src/components/searchResults/SearchResults
 import React from 'react';
 import { VideoSearchResults } from 'boclips-api-client/dist/sub-clients/videos/model/VideoSearchResults';
 import { VideoCardList } from 'src/components/searchResults/VideoCardList';
-import { Skeleton } from 'antd';
+import VideoCardPlaceholder from '@boclips-ui/video-card-placeholder';
 
 interface Props {
   results?: VideoSearchResults;
@@ -19,32 +19,32 @@ export function SearchResults({
   currentPage,
   isFetching,
 }: Props) {
+  const renderVideoCardList = () => {
+    if (!isFetching && results)
+      return (
+        <VideoCardList
+          videos={results.page}
+          currentPage={currentPage}
+          handlePageChange={handlePageChange}
+          totalSearchResults={results.pageSpec?.totalElements}
+        />
+      );
+
+    return results.page.map(() => (
+      <div className="mb-8">
+        <VideoCardPlaceholder />
+      </div>
+    ));
+  };
+
   return (
     <div className="col-start-7 col-end-26">
       <SearchResultsSummary
         count={results?.pageSpec?.totalElements}
         query={query}
       />
-      {!isFetching ? (
-        <VideoCardList
-          videos={results?.page}
-          currentPage={currentPage}
-          handlePageChange={handlePageChange}
-          totalSearchResults={results?.pageSpec?.totalElements}
-        />
-      ) : (
-        results.page.map(() => (
-          <div className="mb-8">
-            <Skeleton
-              loading
-              active
-              title={{ width: '100%' }}
-              paragraph={{ rows: 2 }}
-              avatar={{ shape: 'square', size: 128 }}
-            />
-          </div>
-        ))
-      )}
+
+      {renderVideoCardList()}
     </div>
   );
 }

@@ -54,7 +54,13 @@ export const FilterPanel = ({
   const SelectedFilterPanelWithTitle = () => {
     return (
       <>
-        <div className="text-primary text-lg font-medium pb-4">Filter by:</div>
+        <div
+          className={c('text-primary text-lg font-medium', {
+            'pb-4': selectedFilterOptions.length,
+          })}
+        >
+          Filter by:
+        </div>
         <SelectedFilters
           selectedFilterOptions={selectedFilterOptions}
           removeFilter={removeFilter}

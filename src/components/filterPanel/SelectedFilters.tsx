@@ -19,7 +19,10 @@ export const SelectedFilters = ({
   }
   return (
     <div>
-      <div className="mb-4 font-medium flex justify-between">
+      <div
+        className="mb-4 font-medium flex justify-between items-center"
+        style={{ height: '1.9375rem' }}
+      >
         <span className="text-base ">Selected filters</span>
         <span
           className="text-sm text-blue-800 cursor-pointer"
