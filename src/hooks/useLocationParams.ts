@@ -48,7 +48,7 @@ export const useSearchQueryLocationParams = (): [
   return [searchQueryLocationParams, setSearchQueryLocationParams];
 };
 
-const convertToURLSearchParams = (
+export const convertToURLSearchParams = (
   search: SearchQueryLocationParams,
 ): URLSearchParams => {
   const params = new URLSearchParams();

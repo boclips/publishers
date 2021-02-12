@@ -1,7 +1,11 @@
 import React from 'react';
 import SearchBar from '@boclips-ui/search-bar';
 import { useHistory } from 'react-router-dom';
-import { useLocationParams } from 'src/hooks/useLocationParams';
+import {
+  convertToURLSearchParams,
+  useLocationParams,
+  useSearchQueryLocationParams,
+} from 'src/hooks/useLocationParams';
 import SearchIcon from '../../resources/icons/search-icon.svg';
 
 interface Props {
@@ -12,6 +16,7 @@ interface Props {
 
 export const Search = ({ size, showIconOnly, onSearch }: Props) => {
   const history = useHistory();
+  const [searchLocation] = useSearchQueryLocationParams();
   const query = useLocationParams().get('q');
 
   const handleSearch = (searchQuery: string) => {
@@ -19,7 +24,14 @@ export const Search = ({ size, showIconOnly, onSearch }: Props) => {
       onSearch(searchQuery);
     }
 
-    return history.push({ pathname: `/videos`, search: `?q=${searchQuery}` });
+    searchLocation.query = searchQuery;
+
+    const params = convertToURLSearchParams(searchLocation);
+
+    return history.push({
+      pathname: `/videos`,
+      search: params.toString(),
+    });
   };
 
   return (

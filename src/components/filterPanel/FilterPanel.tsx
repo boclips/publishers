@@ -102,13 +102,5 @@ export const FilterPanel = ({
     );
   };
 
-  return (
-    <div
-      className={c('col-start-2 col-end-7', {
-        'bg-blue-100': noResults,
-      })}
-    >
-      {renderFilters()}
-    </div>
-  );
+  return <div className={c('col-start-2 col-end-7')}>{renderFilters()}</div>;
 };
