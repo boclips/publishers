@@ -7,7 +7,15 @@ import { hot } from 'react-hot-loader/root';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { trackPageRendered } from 'src/components/common/analytics/Analytics';
+import { AnalyticsService } from 'src/services/analytics/AnalyticsService';
 import { BoclipsClientProvider } from './components/common/BoclipsClientProvider';
+import Appcues from './services/analytics/Appcues';
+
+declare global {
+  interface Window {
+    Appcues: Appcues;
+  }
+}
 
 const SearchResultsView = lazy(
   () => import('./views/search/SearchResultsView'),
@@ -32,14 +40,23 @@ interface Props {
   apiClient: BoclipsClient;
   reactQueryClient?: QueryClient;
 }
-
+const analyticsService = new AnalyticsService(window.Appcues);
 const queryClient = new QueryClient(queryClientConfig);
 
 const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
   const currentLocation = useLocation();
 
+  apiClient.users.getCurrentUser().then((user) =>
+    analyticsService.identify({
+      email: user.email,
+      firstName: user.firstName,
+      id: user.id,
+    }),
+  );
+
   useEffect(() => {
     trackPageRendered(currentLocation, apiClient);
+    analyticsService.pageChanged();
   }, [currentLocation, apiClient]);
 
   return (

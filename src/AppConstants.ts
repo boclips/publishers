@@ -21,6 +21,13 @@ export class AppConstants {
     return this.window.Environment.API_PREFIX;
   }
 
+  public get APPCUES_PLAN_TYPE(): string {
+    if (this?.window?.Environment?.APPCUES_PLAN_TYPE) {
+      return this.window.Environment.APPCUES_PLAN_TYPE;
+    }
+    return 'testing';
+  }
+
   public get HOST(): string {
     return `${this.window.location.protocol}//${this.window.location.hostname}${
       this.window.location.port ? `:${this.window.location.port}` : ''
