@@ -9,6 +9,7 @@ import { usePlaceOrderQuery } from 'src/hooks/api/orderQuery';
 import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
 import { useHistory } from 'react-router-dom';
+import { getTotalPriceDisplayValue } from 'src/services/getTotalPriceDisplayValue';
 import s from './style.module.less';
 
 export interface Props {
@@ -53,35 +54,46 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
         data-qa="order-modal"
       >
         <div className={s.modal}>
-          <div className={s.modalHeader}>
-            Order summary
-            <span
-              onClick={() => setOpen(!modalOpen)}
-              tabIndex={0}
-              className="cursor-pointer text-grey-900"
-              role="button"
-              onKeyPress={(event) =>
-                handleEnterKeyDown(event, setOpen(!modalOpen))
-              }
-            >
-              <CloseIconSVG />
+          <div className={s.modalContent}>
+            <div className={s.modalHeader}>
+              Order summary
+              <span
+                onClick={() => setOpen(!modalOpen)}
+                tabIndex={0}
+                className="cursor-pointer text-grey-900"
+                role="button"
+                onKeyPress={(event) =>
+                  handleEnterKeyDown(event, setOpen(!modalOpen))
+                }
+              >
+                <CloseIconSVG />
+              </span>
+            </div>
+            <span className="text-base">
+              {' '}
+              Do you confirm you want to place the following order:
             </span>
+            <div className={s.modalItemsList}>
+              <CartItemOrderPreview videos={videos} />
+            </div>
           </div>
-          Do you confirm you want to place the following order:
-          <div className={s.modalBody}>
-            <CartItemOrderPreview videos={videos} />
-          </div>
-          <div className={s.buttons}>
-            <Button
-              onClick={() => setOpen(!modalOpen)}
-              type="outline"
-              text="Go back to cart"
-            />
-            <Button
-              onClick={onClick}
-              text="Confirm order"
-              disabled={isUserLoading || !user}
-            />
+          <div className={s.modalFooter}>
+            <div className={s.modalTotalPrice}>
+              <span>Total</span>
+              {`${getTotalPriceDisplayValue(videos)}`}
+            </div>
+            <div className={s.buttons}>
+              <Button
+                onClick={() => setOpen(!modalOpen)}
+                type="outline"
+                text="Go back to cart"
+              />
+              <Button
+                onClick={onClick}
+                text="Confirm order"
+                disabled={isUserLoading || !user}
+              />
+            </div>
           </div>
         </div>
       </div>

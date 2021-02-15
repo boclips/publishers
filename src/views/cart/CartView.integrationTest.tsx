@@ -79,6 +79,7 @@ describe('CartView', () => {
     const modal = await wrapper.findByTestId('order-modal');
     expect(await within(modal).findByText('news video')).toBeVisible();
     expect(await within(modal).findByText('Confirm order')).toBeVisible();
+    expect(await within(modal).findByText('$600')).toBeVisible();
     expect(await within(modal).findByText('Go back to cart')).toBeVisible();
   });
 
