@@ -5,6 +5,8 @@ import { prefetchSearchQuery } from 'src/hooks/api/useSearchQuery';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
 import c from 'classnames';
 import { useQueryClient } from 'react-query';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import AppcuesProvider from 'src/services/analytics/AppcuesProvider';
 import s from './style.module.less';
 import { useBoclipsClient } from '../common/BoclipsClientProvider';
 
@@ -23,7 +25,7 @@ const SearchHero = () => {
           <Search
             size="big"
             showIconOnly={false}
-            onSearch={(query) =>
+            onSearch={(query) => {
               prefetchSearchQuery(
                 queryClient,
                 {
@@ -32,8 +34,11 @@ const SearchHero = () => {
                   pageSize: PAGE_SIZE,
                 },
                 boclipsClient,
-              )
-            }
+              );
+              AppcuesProvider.getAppcues().sendEvent(
+                AppcuesEvent.HOMEPAGE_SEARCH,
+              );
+            }}
           />
         </div>
         <div className="col-start-16 col-end-24 self-center justify-self-start">
