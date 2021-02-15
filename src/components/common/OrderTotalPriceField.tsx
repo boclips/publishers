@@ -8,8 +8,8 @@ interface Props {
   totalPrice: OrderPrice;
   highlighted?: boolean;
 }
-export const OrderTotalValueField = ({ totalPrice, highlighted }: Props) => (
-  <OrderInformationField fieldName="Total value">
+export const OrderTotalPriceField = ({ totalPrice, highlighted }: Props) => (
+  <OrderInformationField fieldName="Total price">
     <span
       className={c('text-gray-800 text-base', {
         'font-medium': highlighted,

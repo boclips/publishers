@@ -81,6 +81,8 @@ describe('OrderView', () => {
     expect((await wrapper.findAllByText('Delivery date')).length).toEqual(2);
     expect(await wrapper.findByText('15/01/21')).toBeVisible();
 
+    expect((await wrapper.findAllByText('Total price')).length).toEqual(2);
+
     expect((await wrapper.findAllByText('Status')).length).toEqual(2);
     expect(await wrapper.findByText('PROCESSING')).toBeVisible();
     expect(await wrapper.findByText('DELIVERED')).toBeVisible();
