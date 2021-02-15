@@ -1,6 +1,6 @@
-import { Constants } from 'src/AppConstants';
 import Appcues from 'src/services/analytics/Appcues';
 import { AnalyticsUserProfile } from 'src/services/analytics/AnalyticsUserProfile';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
 
 export class AnalyticsService {
   private appcuesInstance?: Appcues;
@@ -18,7 +18,6 @@ export class AnalyticsService {
       this.appcuesInstance.identify(userProfile.id, {
         name: userProfile.firstName,
         email: userProfile.email,
-        planType: Constants.APPCUES_PLAN_TYPE,
       });
     }
   }
@@ -29,9 +28,9 @@ export class AnalyticsService {
     }
   }
 
-  public sendEvent(type: string) {
+  public sendEvent(type: AppcuesEvent) {
     if (this.appcuesInstance) {
-      this.appcuesInstance.track(type, {});
+      this.appcuesInstance.track(type.toString());
     }
   }
 }

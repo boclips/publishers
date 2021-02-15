@@ -1,44 +1,44 @@
-import { Constants } from 'src/AppConstants';
 import { AnalyticsService } from 'src/services/analytics/AnalyticsService';
 import Appcues from 'src/services/analytics/Appcues';
 import { AnalyticsUserProfile } from 'src/services/analytics/AnalyticsUserProfile';
-
-let analyticsService: AnalyticsService;
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
 
 describe('AnalyticsService', () => {
   let mockAppcues: Appcues;
+  let analyticsService;
 
-  it('sets a user id', () => {
+  beforeEach(() => {
     mockAppcues = {
       track: jest.fn(),
       page: jest.fn(),
       identify: jest.fn(),
     };
     analyticsService = new AnalyticsService(mockAppcues);
+  });
 
+  it('sets a user id', () => {
     const userProfile: AnalyticsUserProfile = {
       id: 'testId',
       firstName: 'test first name',
       email: 'test@test.com',
     };
     analyticsService.identify(userProfile);
+
     expect(mockAppcues.identify).toHaveBeenCalledWith('testId', {
       name: 'test first name',
       email: 'test@test.com',
-      planType: Constants.APPCUES_PLAN_TYPE,
     });
   });
 
   it(`sends a page rendered event`, () => {
-    mockAppcues = {
-      track: jest.fn(),
-      page: jest.fn(),
-      identify: jest.fn(),
-    };
-    analyticsService = new AnalyticsService(mockAppcues);
+    analyticsService.sendEvent(AppcuesEvent.CART_OPENED);
 
-    analyticsService.sendEvent('PAGE_RENDERED');
+    expect(mockAppcues.track).toHaveBeenCalledWith('CART_OPENED');
+  });
 
-    expect(mockAppcues.track).toHaveBeenCalledWith('PAGE_RENDERED', {});
+  it(`sends a page changed event`, () => {
+    analyticsService.pageChanged();
+
+    expect(mockAppcues.page).toHaveBeenCalled();
   });
 });
