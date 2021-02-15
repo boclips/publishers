@@ -28,41 +28,69 @@ export const FilterPanel = ({
   areFiltersApplied,
 }: Props) => {
   const filterOptions = useFilterOptions(facets);
-  const [searchLocation] = useSearchQueryLocationParams();
+  // const [searchLocation] = useSearchQueryLocationParams();
 
-  const selectedFilterOptions = React.useMemo(
-    () => [
-      ...filterOptions.channels.filter((option) =>
-        searchLocation.filters.channel.includes(option.id),
-      ),
-      ...filterOptions.subjects.filter((option) =>
-        searchLocation.filters.subject.includes(option.id),
-      ),
-      ...filterOptions.videoTypes.filter((option) =>
-        searchLocation.filters.video_type.includes(option.id),
-      ),
-      ...filterOptions.durations.filter((option) =>
-        searchLocation.filters.duration.includes(option.id),
-      ),
-      ...filterOptions.prices.filter((option) =>
-        searchLocation.filters.prices.includes(option.id),
-      ),
-    ],
-    [filterOptions, searchLocation],
-  );
+  const x = () => {
+    searchLocation.filters.video_type.map((selectedFilterId) => {
+      const matchingFacet = filterOptions.videoTypes.find(
+        (facet) => facet.id === selectedFilterId,
+      );
+
+      return (
+        matchingFacet || {
+          name: selectedFilterId,
+          id: selectedFilterId,
+          label: 'something',
+          hits: 0,
+        }
+      );
+    });
+  };
+  //
+  // const selectedFilterOptions = React.useMemo(
+  //   () => [
+  //     ...filterOptions.channels.filter((option) =>
+  //       searchLocation.filters.channel.includes(option.id),
+  //     ),
+  //     ...filterOptions.subjects.filter((option) =>
+  //       searchLocation.filters.subject.includes(option.id),
+  //     ),
+  //     ...searchLocation.filters.video_type.map((selectedFilterId) => {
+  //       const matchingFacet = filterOptions.videoTypes.find(
+  //         (facet) => facet.id === selectedFilterId,
+  //       );
+  //
+  //       return (
+  //         matchingFacet || {
+  //           name: selectedFilterId,
+  //           id: selectedFilterId,
+  //           label: 'something',
+  //           hits: 0,
+  //         }
+  //       );
+  //     }),
+  //     ...filterOptions.durations.filter((option) =>
+  //       searchLocation.filters.duration.includes(option.id),
+  //     ),
+  //     ...filterOptions.prices.filter((option) =>
+  //       searchLocation.filters.prices.includes(option.id),
+  //     ),
+  //   ],
+  //   [filterOptions, searchLocation],
+  // );
 
   const SelectedFilterPanelWithTitle = () => {
     return (
       <>
         <div
           className={c('text-primary text-lg font-medium', {
-            'pb-4': selectedFilterOptions.length,
+            // 'pb-4': selectedFilterOptions.length,
+            'pb-4': true,
           })}
         >
           Filter by:
         </div>
         <SelectedFilters
-          selectedFilterOptions={selectedFilterOptions}
           removeFilter={removeFilter}
           clearFilters={removeAllFilters}
         />

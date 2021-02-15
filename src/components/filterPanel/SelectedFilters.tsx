@@ -1,22 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FilterOption } from 'src/types/FilterOption';
 import { SelectedFilterTag } from 'src/components/filterPanel/SelectedFilterTag';
 import { FilterKey } from 'src/types/search/FilterKey';
+import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 
 interface Props {
-  selectedFilterOptions?: FilterOption[];
+  // selectedFilterOptions?: FilterOption[];
   removeFilter?: (filter: FilterKey, value: string) => void;
   clearFilters?: () => void;
 }
 
-export const SelectedFilters = ({
-  selectedFilterOptions,
-  removeFilter,
-  clearFilters,
-}: Props) => {
-  if (selectedFilterOptions.length === 0) {
-    return <></>;
-  }
+export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
+  // if (selectedFilterOptions.length === 0) {
+  //   return <></>;
+  // }
+
+  const [selectedFilters, setSelectedFilters] = useState();
+
+  const [searchLocation] = useSearchQueryLocationParams();
+
+  // console.log(searchLocation);
+
+  useEffect(() => {
+    console.log('channel changed');
+
+    setSelectedFilters(prevState => [...prevState, mapped channel])
+
+  }, [searchLocation.filters.channel]);
+
   return (
     <div>
       <div
@@ -35,14 +46,14 @@ export const SelectedFilters = ({
         </span>
       </div>
       <div className="flex flex-wrap " data-qa="applied-filter-tags">
-        {selectedFilterOptions.map((filter) => (
-          <SelectedFilterTag
-            key={`${filter.name}-${filter.id}`}
-            filter={filter}
-            removeFilter={removeFilter}
-          />
-        ))}
+        {selectedFilters.map((filter) => filter)}
       </div>
     </div>
   );
 };
+
+// <SelectedFilterTag
+//   key={`${filter.name}-${filter.id}`}
+//   filter={filter}
+//   removeFilter={removeFilter}
+// />
