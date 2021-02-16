@@ -6,7 +6,7 @@ import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
 import c from 'classnames';
 import { useQueryClient } from 'react-query';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
-import AppcuesProvider from 'src/services/analytics/AppcuesProvider';
+import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import s from './style.module.less';
 import { useBoclipsClient } from '../common/BoclipsClientProvider';
 
@@ -35,7 +35,7 @@ const SearchHero = () => {
                 },
                 boclipsClient,
               );
-              AppcuesProvider.getAppcues().sendEvent(
+              AnalyticsFactory.getAppcues().sendEvent(
                 AppcuesEvent.HOMEPAGE_SEARCH,
                 { query },
               );

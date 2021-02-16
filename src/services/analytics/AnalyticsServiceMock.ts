@@ -1,7 +1,8 @@
 import Appcues from 'src/services/analytics/Appcues';
+import { AnalyticsService } from 'src/services/analytics/AnalyticsService';
 
-export const analyticsMock = ({
-  track: jest.fn(),
+export const analyticsMock = {
+  sendEvent: jest.fn(),
   identify: jest.fn(),
-  page: jest.fn(),
-} as any) as Appcues;
+  pageChanged: jest.fn(),
+} as AnalyticsService;
