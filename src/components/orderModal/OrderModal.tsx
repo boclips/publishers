@@ -68,11 +68,10 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
                   handleEnterKeyDown(event, setOpen(!modalOpen))
                 }
               >
-                <CloseIconSVG />
+                <CloseIconSVG className="stroke-current  stroke-2" />
               </span>
             </div>
             <span className="text-base">
-              {' '}
               Do you confirm you want to place the following order:
             </span>
             <div className={s.modalItemsList}>
