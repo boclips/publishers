@@ -33,7 +33,7 @@ describe('AnalyticsService', () => {
   it(`sends a page rendered event`, () => {
     analyticsService.sendEvent(AppcuesEvent.CART_OPENED);
 
-    expect(mockAppcues.track).toHaveBeenCalledWith('CART_OPENED');
+    expect(mockAppcues.track).toHaveBeenCalledWith('CART_OPENED', {});
   });
 
   it(`sends a page changed event`, () => {

@@ -28,9 +28,9 @@ export class AnalyticsService {
     }
   }
 
-  public sendEvent(type: AppcuesEvent) {
+  public sendEvent(type: AppcuesEvent, payload: {} = {}) {
     if (this.appcuesInstance) {
-      this.appcuesInstance.track(type.toString());
+      this.appcuesInstance.track(type.toString(), payload);
     }
   }
 }

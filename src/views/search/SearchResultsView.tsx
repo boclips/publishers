@@ -18,6 +18,8 @@ import { NoSearchResults } from 'src/components/noResults/NoSearchResults';
 import ErrorView from 'src/views/error/ErrorView';
 import { Loading } from 'src/components/common/Loading';
 import { useDebounce } from 'src/hooks/useDebounce';
+import AppcuesProvider from 'src/services/analytics/AppcuesProvider';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
 
 export const PAGE_SIZE = 10;
 
@@ -85,6 +87,9 @@ const SearchResultsView = () => {
           filters: newFilters,
         });
         setNewFiltersBeforeDebounce(newFilters);
+        AppcuesProvider.getAppcues().sendEvent(AppcuesEvent.FILTERS_APPLIED, {
+          filters: newFilters,
+        });
       }
     },
     [filtersFromURL, query, setSearchLocation],

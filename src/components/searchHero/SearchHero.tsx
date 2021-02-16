@@ -37,6 +37,7 @@ const SearchHero = () => {
               );
               AppcuesProvider.getAppcues().sendEvent(
                 AppcuesEvent.HOMEPAGE_SEARCH,
+                { query },
               );
             }}
           />
