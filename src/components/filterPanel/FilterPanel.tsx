@@ -8,9 +8,11 @@ import { useFilterOptions } from 'src/hooks/useFilterOptions';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 import c from 'classnames';
+import { ChannelsAndSubjectsProvider } from 'src/components/filterPanel/ChannelsAndSubjectsProvider';
 import { SelectedFilters } from './SelectedFilters';
 
 interface Props {
+  query: string;
   facets?: VideoFacets;
   handleChange: (filter: string, values: string[]) => void;
   removeFilter: (filter: string, value: string) => void;
@@ -20,6 +22,7 @@ interface Props {
 }
 
 export const FilterPanel = ({
+  query,
   facets,
   handleChange,
   removeFilter,
@@ -104,7 +107,7 @@ export const FilterPanel = ({
     if (noResults && areFiltersApplied) return <SelectedFilterPanelWithTitle />;
 
     return (
-      <>
+      <ChannelsAndSubjectsProvider query={query}>
         <SelectedFilterPanelWithTitle />
         <VideoTypeFilter
           options={filterOptions.videoTypes}
@@ -126,7 +129,7 @@ export const FilterPanel = ({
           options={filterOptions?.subjects}
           handleChange={handleChange}
         />
-      </>
+      </ChannelsAndSubjectsProvider>
     );
   };
 

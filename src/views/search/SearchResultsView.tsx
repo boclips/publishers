@@ -144,6 +144,7 @@ const SearchResultsView = () => {
       <Navbar showSearchBar />
 
       <FilterPanel
+        query={query}
         facets={data?.facets}
         handleChange={handleFilterChange}
         removeFilter={removeFilter}
