@@ -6,6 +6,8 @@ import { Loading } from 'src/components/common/Loading';
 import c from 'classnames';
 import BoclipsSecurity from 'boclips-js-security';
 import { Constants } from 'src/AppConstants';
+import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import s from './style.module.less';
 
 export const AccountButton = () => {
@@ -54,7 +56,9 @@ export const AccountButton = () => {
           </div>
           <div className="text-xs text-gray-700">{data.email}</div>
           <div className="pt-4 text-sm">
-            <Link to="/orders">Your orders</Link>
+            <AnalyticsTrackClick eventType={AppcuesEvent.YOUR_ORDERS_OPENED}>
+              <Link to="/orders">Your orders</Link>
+            </AnalyticsTrackClick>
           </div>
           <div className="pt-1 text-sm">
             <button
