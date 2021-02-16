@@ -31,6 +31,7 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
     data: orderLocation,
     isSuccess,
     error,
+    isLoading,
   } = usePlaceOrderQuery();
 
   const onClick = () => {
@@ -93,7 +94,7 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
                 <Button
                   onClick={onClick}
                   text="Confirm order"
-                  disabled={isUserLoading || !user}
+                  disabled={isUserLoading || !user || isLoading}
                 />
               </AnalyticsTrackClick>
             </div>
