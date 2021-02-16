@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { trackPageRendered } from 'src/components/common/analytics/Analytics';
 import { AnalyticsService } from 'src/services/analytics/AnalyticsService';
+import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { BoclipsClientProvider } from './components/common/BoclipsClientProvider';
 import Appcues from './services/analytics/Appcues';
 
@@ -46,13 +48,18 @@ const queryClient = new QueryClient(queryClientConfig);
 const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
   const currentLocation = useLocation();
 
-  apiClient.users.getCurrentUser().then((user) =>
-    analyticsService.identify({
-      email: user.email,
-      firstName: user.firstName,
-      id: user.id,
-    }),
-  );
+  apiClient.users
+    .getCurrentUser()
+    .then((user) =>
+      analyticsService.identify({
+        email: user.email,
+        firstName: user.firstName,
+        id: user.id,
+      }),
+    )
+    .then(() => {
+      AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.LOGGED_IN);
+    });
 
   useEffect(() => {
     trackPageRendered(currentLocation, apiClient);
