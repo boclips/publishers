@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { CopyLinkButton } from 'src/components/common/copyLinkButton/CopyLinkButton';
 import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import s from './VideoCardWrapper.module.less';
 
 interface Props {
@@ -33,9 +35,11 @@ export const VideoCardWrapper = ({ video }: Props) => {
           />
         }
         title={
-          <Link to={`/videos/${video.id}`}>
-            <div className="text-gray-900">{video?.title}</div>
-          </Link>
+          <AnalyticsTrackClick eventType={AppcuesEvent.VIDEO_PAGE_OPENED}>
+            <Link to={`/videos/${video.id}`}>
+              <div className="text-gray-900">{video?.title}</div>
+            </Link>
+          </AnalyticsTrackClick>
         }
         actions={[
           <div className="flex flex-row justify-end" key={`copy-${video.id}`}>
