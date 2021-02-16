@@ -3,6 +3,7 @@ import { FilterOption } from 'src/types/FilterOption';
 import { SelectedFilterTag } from 'src/components/filterPanel/SelectedFilterTag';
 import { FilterKey } from 'src/types/search/FilterKey';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
+import { useChannelsAndSubjectsProvider } from 'src/components/filterPanel/ChannelsAndSubjectsProvider';
 
 interface Props {
   // selectedFilterOptions?: FilterOption[];
@@ -11,22 +12,9 @@ interface Props {
 }
 
 export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
-  // if (selectedFilterOptions.length === 0) {
-  //   return <></>;
-  // }
+  const originalFacets = useChannelsAndSubjectsProvider();
 
-  const [selectedFilters, setSelectedFilters] = useState();
-
-  const [searchLocation] = useSearchQueryLocationParams();
-
-  // console.log(searchLocation);
-
-  useEffect(() => {
-    console.log('channel changed');
-
-    setSelectedFilters(prevState => [...prevState, mapped channel])
-
-  }, [searchLocation.filters.channel]);
+  console.log('originalFacets: ', originalFacets);
 
   return (
     <div>
@@ -45,9 +33,7 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
           CLEAR ALL
         </span>
       </div>
-      <div className="flex flex-wrap " data-qa="applied-filter-tags">
-        {selectedFilters.map((filter) => filter)}
-      </div>
+      <div className="flex flex-wrap " data-qa="applied-filter-tags" />
     </div>
   );
 };
