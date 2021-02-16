@@ -162,8 +162,8 @@ const SearchResultsView = () => {
 
 const areFiltersApplied = (currentFilters: SearchFilters): boolean => {
   return (
-    Object.keys(currentFilters).filter((key) => currentFilters[key].length > 0)
-      .length > 0
+    Object.keys(currentFilters).find((key) => currentFilters[key]?.length > 0)
+      ?.length > 0
   );
 };
 

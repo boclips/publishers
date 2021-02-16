@@ -7,7 +7,7 @@ interface Props {
   query: string;
   children: React.ReactNode;
 }
-const channelsAndSubjectsContext = createContext<
+export const channelsAndSubjectsContext = createContext<
   VideoSearchResults | undefined
 >(null);
 

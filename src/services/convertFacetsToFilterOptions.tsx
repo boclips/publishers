@@ -9,6 +9,7 @@ import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { FilterOption } from 'src/types/FilterOption';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { FilterKey } from 'src/types/search/FilterKey';
+import { useChannelsAndSubjectsProvider } from 'src/components/filterPanel/ChannelsAndSubjectsProvider';
 
 export const convertFacetsToFilterOptions = (
   facets?: VideoFacets,
@@ -72,7 +73,34 @@ const createFilterOptions = (
     };
   });
 
-const getVideoTypeLabel = (name: string): string => {
+export const getFilterLabel = (key, id, originalFacets) => {
+  // TODO: MOVE STRING TO VARS
+  switch (key) {
+    case 'video_type':
+      return getVideoTypeLabel(id);
+    case 'duration':
+      return getDurationLabel(id);
+    case 'prices':
+      return getPriceLabel(id);
+    case 'channel':
+      return getChannelLabel(id, originalFacets);
+    case 'subject':
+      return getSubjectsLabel(id, originalFacets);
+    default:
+      throw 'not supported filter key';
+  }
+};
+
+const getChannelLabel = (id, originalFacets) => {
+  console.log(originalFacets);
+  return originalFacets.facets.channels.find((it) => it.id === id).name;
+};
+
+const getSubjectsLabel = (id, originalFacets) => {
+  return originalFacets.facets.subjects.find((it) => it.id === id).name;
+};
+
+export const getVideoTypeLabel = (name: string): string => {
   switch (name.toUpperCase()) {
     case 'INSTRUCTIONAL':
       return 'Educational';
@@ -85,7 +113,7 @@ const getVideoTypeLabel = (name: string): string => {
   }
 };
 
-const getDurationLabel = (name: string): string => {
+export const getDurationLabel = (name: string): string => {
   switch (name) {
     case DEFAULT_DURATIONS[0]:
       return 'Up to 1 min';
@@ -102,7 +130,7 @@ const getDurationLabel = (name: string): string => {
   }
 };
 
-const getPriceLabel = (name: string): string => {
+export const getPriceLabel = (name: string): string => {
   const price = `${name.slice(0, name.length - 2)}.${name.slice(
     name.length - 2,
   )}`;

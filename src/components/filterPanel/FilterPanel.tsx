@@ -31,13 +31,14 @@ export const FilterPanel = ({
 }: Props) => {
   const filterOptions = useFilterOptions(facets);
 
-  const SelectedFilterPanelWithTitle = () => {
-    return (
-      <>
+  // if (noResults && !areFiltersApplied) return null;
+
+  return (
+    <div className="col-start-2 col-end-7">
+      <ChannelsAndSubjectsProvider query={query}>
         <div
           className={c('text-primary text-lg font-medium', {
-            // 'pb-4': selectedFilterOptions.length,
-            'pb-4': true,
+            'pb-4': areFiltersApplied,
           })}
         >
           Filter by:
@@ -46,40 +47,26 @@ export const FilterPanel = ({
           removeFilter={removeFilter}
           clearFilters={removeAllFilters}
         />
-      </>
-    );
-  };
-
-  if (noResults && !areFiltersApplied) return null;
-
-  return (
-    <div className="col-start-2 col-end-7">
-      <ChannelsAndSubjectsProvider query={query}>
-        <SelectedFilterPanelWithTitle />
-        {!noResults && !areFiltersApplied && (
-          <>
-            <VideoTypeFilter
-              options={filterOptions.videoTypes}
-              handleChange={handleChange}
-            />
-            <DurationFilter
-              options={filterOptions?.durations}
-              handleChange={handleChange}
-            />
-            <ChannelFilter
-              options={filterOptions?.channels}
-              handleChange={handleChange}
-            />
-            <PriceFilter
-              options={filterOptions.prices}
-              handleChange={handleChange}
-            />
-            <SubjectFilter
-              options={filterOptions?.subjects}
-              handleChange={handleChange}
-            />
-          </>
-        )}
+        <VideoTypeFilter
+          options={filterOptions.videoTypes}
+          handleChange={handleChange}
+        />
+        <DurationFilter
+          options={filterOptions?.durations}
+          handleChange={handleChange}
+        />
+        <ChannelFilter
+          options={filterOptions?.channels}
+          handleChange={handleChange}
+        />
+        <PriceFilter
+          options={filterOptions.prices}
+          handleChange={handleChange}
+        />
+        <SubjectFilter
+          options={filterOptions?.subjects}
+          handleChange={handleChange}
+        />
       </ChannelsAndSubjectsProvider>
     </div>
   );
