@@ -11,7 +11,7 @@ describe(`AnalyticsTrackClick`, () => {
   it(`Sends requested event when clicked`, () => {
     const wrapper = render(
       <AnalyticsTrackClick eventType={AppcuesEvent.CART_OPENED}>
-        <button>CLICK ME!!</button>
+        <div>CLICK ME!!</div>
       </AnalyticsTrackClick>,
     );
     fireEvent.click(wrapper.getByText('CLICK ME!!'));

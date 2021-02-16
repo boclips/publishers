@@ -8,6 +8,8 @@ import dateFormat from 'dateformat';
 import { CopyLinkButton } from 'src/components/common/copyLinkButton/CopyLinkButton';
 import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import s from './videoPageContent.module.less';
 
 interface Props {
@@ -55,11 +57,15 @@ export const VideoHeader = ({ video }: Props) => {
         )}
       </div>
       <div className="flex flex-row">
-        <span className="w-1/2">
+        <AnalyticsTrackClick eventType={AppcuesEvent.COPY_LINK_FROM_VIDEO_PAGE}>
           <CopyLinkButton link={buildVideoDetailsLink(video)} />
-        </span>
+        </AnalyticsTrackClick>
         <span className="w-1/2">
-          <VideoCardAddCartButton videoId={video?.id} />
+          <AnalyticsTrackClick
+            eventType={AppcuesEvent.ADD_TO_CART_FROM_VIDEO_PAGE}
+          >
+            <VideoCardAddCartButton videoId={video?.id} />
+          </AnalyticsTrackClick>
         </span>
       </div>
     </div>

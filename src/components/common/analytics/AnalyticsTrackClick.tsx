@@ -11,7 +11,7 @@ export const AnalyticsTrackClick = ({ eventType, children }: Props) => (
   <span
     onClick={() => AnalyticsFactory.getAppcues().sendEvent(eventType)}
     onKeyDown={() => AnalyticsFactory.getAppcues().sendEvent(eventType)}
-    role="button"
+    role="presentation"
   >
     {children}
   </span>
