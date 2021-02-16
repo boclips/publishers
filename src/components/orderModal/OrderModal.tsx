@@ -10,6 +10,8 @@ import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
 import { useHistory } from 'react-router-dom';
 import { getTotalPriceDisplayValue } from 'src/services/getTotalPriceDisplayValue';
+import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import s from './style.module.less';
 
 export interface Props {
@@ -88,11 +90,13 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
                 type="outline"
                 text="Go back to cart"
               />
-              <Button
-                onClick={onClick}
-                text="Confirm order"
-                disabled={isUserLoading || !user}
-              />
+              <AnalyticsTrackClick eventType={AppcuesEvent.ORDER_CONFIRMED}>
+                <Button
+                  onClick={onClick}
+                  text="Confirm order"
+                  disabled={isUserLoading || !user}
+                />
+              </AnalyticsTrackClick>
             </div>
           </div>
         </div>
