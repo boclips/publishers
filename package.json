@@ -75,11 +75,7 @@
     "antd": "^4.3.1",
     "axios": "^0.21.0",
     "babel-loader": "^8.1.0",
-<<<<<<< HEAD
     "boclips-api-client": "30.0.1-dev.3",
-=======
-    "boclips-api-client": "^30.0.1-dev.1",
->>>>>>> wip
     "boclips-js-security": "^4.0.2",
     "boclips-player": "^6.3.2",
     "boclips-player-react": "1.2.4",
