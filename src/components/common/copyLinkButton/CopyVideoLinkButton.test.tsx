@@ -3,6 +3,7 @@ import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvid
 import { fireEvent, render } from '@testing-library/react';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
+import { VideoInteractedWith } from 'boclips-api-client/dist/sub-clients/events/model/EventRequest';
 import { CopyVideoLinkButton } from './CopyVideoLinkButton';
 
 describe('CopyLinkButton', () => {
@@ -16,10 +17,11 @@ describe('CopyLinkButton', () => {
     );
     const button = wrapper.getByText(/Copy link/);
     fireEvent.click(button);
+
     expect(fakeClient.events.getEvents().length).toEqual(1);
-    expect(fakeClient.events.getEvents()[0].type).toEqual(
-      'VIDEO_INTERACTED_WITH',
-    );
-    expect(fakeClient.events.getEvents()[0].subtype).toEqual('COPY_SHARE_LINK');
+
+    const videoInteractedEvent = fakeClient.events.getEvents()[0] as VideoInteractedWith;
+    expect(videoInteractedEvent.type).toEqual('VIDEO_INTERACTED_WITH');
+    expect(videoInteractedEvent.subtype).toEqual('COPY_SHARE_LINK');
   });
 });
