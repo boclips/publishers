@@ -10,7 +10,7 @@ interface Props {
 
 export const SelectedFilterTag = ({ filter, removeFilter }: Props) => {
   return (
-    <span className="py-1 pl-2 mb-1 border-solid border-2 border-blue-700 rounded flex flex-nowrap items-center">
+    <span className="py-1 pl-2 mr-1 mb-1 border-solid border-2 border-blue-700 rounded flex flex-nowrap items-center">
       {filter.name}
       <span
         role="button"
