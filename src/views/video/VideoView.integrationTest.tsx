@@ -9,6 +9,7 @@ import {
   SubjectFactory,
 } from 'boclips-api-client/dist/test-support';
 import { Constants } from 'src/AppConstants';
+import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 
 describe('Video View', () => {
   it('on video page video details are rendered', async () => {
@@ -69,6 +70,9 @@ describe('Video View', () => {
     });
 
     fakeClient.videos.insertVideo(video);
+    fakeClient.users.insertCurrentUser(
+      UserFactory.sample({ id: 'referringUserId' }),
+    );
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos/video-id']}>
@@ -76,8 +80,9 @@ describe('Video View', () => {
       </MemoryRouter>,
     );
     const button = await wrapper.findByRole('button', { name: 'Copy link' });
+
     const copyMock = button.closest(
-      `[data-qa="${Constants.HOST}/videos/video-id"]`,
+      `[data-qa="${Constants.HOST}/videos/video-id?referer=referringUserId"]`,
     );
     expect(copyMock).toBeVisible();
   });
