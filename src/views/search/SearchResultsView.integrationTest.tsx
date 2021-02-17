@@ -317,7 +317,7 @@ describe('SearchResults', () => {
         </MemoryRouter>,
       );
 
-      fakeClient.carts.insertCartItem('video-id');
+      fakeClient.carts.insertCartItem({ videoId: 'video-id' });
       const cart = await fakeClient.carts.getCart();
 
       await waitFor(() => {

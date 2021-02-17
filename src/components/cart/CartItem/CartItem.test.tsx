@@ -179,6 +179,7 @@ describe('CartItem', () => {
     });
 
     const fakeClient = new FakeBoclipsClient();
+    fakeClient.carts.insertCartItem(cartItem);
 
     const wrapper = render(
       <Router>
@@ -197,9 +198,7 @@ describe('CartItem', () => {
 
     const cart = await fakeClient.carts.getCart();
 
-    const updatedCartItem = cart.items.find(
-      (it) => it.videoId === cartItem.videoId,
-    );
+    const updatedCartItem = cart.items[0];
 
     expect(updatedCartItem.additionalServices.trim).toEqual(null);
   });
@@ -223,7 +222,7 @@ describe('CartItem', () => {
     });
 
     const fakeClient = new FakeBoclipsClient();
-
+    fakeClient.carts.insertCartItem(cartItem);
     const wrapper = render(
       <Router>
         <BoclipsClientProvider client={fakeClient}>
@@ -238,10 +237,7 @@ describe('CartItem', () => {
 
     let cart = await fakeClient.carts.getCart();
 
-    let updatedCartItem = cart.items.find(
-      (it) => it.videoId === cartItem.videoId,
-    );
-
+    let updatedCartItem = cart.items[0];
     expect(updatedCartItem.additionalServices.transcriptRequested).toEqual(
       true,
     );
@@ -250,7 +246,7 @@ describe('CartItem', () => {
 
     cart = await fakeClient.carts.getCart();
 
-    updatedCartItem = cart.items.find((it) => it.videoId === cartItem.videoId);
+    updatedCartItem = cart.items[0];
 
     expect(updatedCartItem.additionalServices.transcriptRequested).toEqual(
       false,
@@ -277,6 +273,7 @@ describe('CartItem', () => {
     });
 
     const fakeClient = new FakeBoclipsClient();
+    fakeClient.carts.insertCartItem(cartItem);
 
     const wrapper = render(
       <Router>
@@ -288,22 +285,16 @@ describe('CartItem', () => {
       </Router>,
     );
 
-    fireEvent.click(await wrapper.findByText('Request English captions'));
+    await fireEvent.click(await wrapper.findByText('Request English captions'));
 
     let cart = await fakeClient.carts.getCart();
-
-    let updatedCartItem = cart.items.find(
-      (it) => it.videoId === cartItem.videoId,
-    );
-
+    let updatedCartItem = cart.items[0];
     expect(updatedCartItem.additionalServices.captionsRequested).toEqual(true);
 
     fireEvent.click(await wrapper.findByText('Request English captions'));
 
     cart = await fakeClient.carts.getCart();
-
-    updatedCartItem = cart.items.find((it) => it.videoId === cartItem.videoId);
-
+    updatedCartItem = cart.items[0];
     expect(updatedCartItem.additionalServices.captionsRequested).toEqual(false);
   });
 

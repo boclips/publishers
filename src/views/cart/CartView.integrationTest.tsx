@@ -40,7 +40,7 @@ describe('CartView', () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(video);
-    fakeClient.carts.insertCartItem('video-id');
+    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
 
     const wrapper = renderCartView(fakeClient);
 
@@ -68,7 +68,7 @@ describe('CartView', () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(video);
-    fakeClient.carts.insertCartItem('video-id');
+    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
 
     const wrapper = renderCartView(fakeClient);
 
@@ -88,7 +88,7 @@ describe('CartView', () => {
 
     fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
     fakeClient.videos.insertVideo(video);
-    fakeClient.carts.insertCartItem('video-id');
+    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
 
     const wrapper = renderCartView(fakeClient);
     await placeAndConfirmOrder(wrapper);
@@ -131,8 +131,8 @@ describe('CartView', () => {
       }),
     );
 
-    fakeClient.carts.insertCartItem('video-id-1');
-    fakeClient.carts.insertCartItem('video-id-2');
+    fakeClient.carts.insertCartItem({ videoId: 'video-id-1' });
+    fakeClient.carts.insertCartItem({ videoId: 'video-id-2' });
 
     const wrapper = renderCartView(fakeClient);
 
@@ -145,7 +145,7 @@ describe('CartView', () => {
 
     fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
     fakeClient.videos.insertVideo(video);
-    fakeClient.carts.insertCartItem('video-id');
+    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
     fakeClient.orders.rejectNextPlaceOrder(
       BoclipsApiErrorFactory.sample({ message: 'channel is missing price' }),
     );
@@ -159,7 +159,7 @@ describe('CartView', () => {
 
   it('displays a notes field', async () => {
     const fakeClient = new FakeBoclipsClient();
-    fakeClient.carts.insertCartItem('video-id');
+    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
 
     const wrapper = renderCartView(fakeClient);
 
@@ -172,7 +172,7 @@ describe('CartView', () => {
 
   it('saves a note on the cart', async () => {
     const fakeClient = new FakeBoclipsClient();
-    fakeClient.carts.insertCartItem('video-id');
+    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
 
     const wrapper = renderCartView(fakeClient);
 
@@ -194,7 +194,7 @@ describe('CartView', () => {
   it('removes item from cart', async () => {
     const fakeClient = new FakeBoclipsClient();
     fakeClient.videos.insertVideo(video);
-    fakeClient.carts.insertCartItem(video.id);
+    fakeClient.carts.insertCartItem({ videoId: video.id });
 
     const wrapper = renderCartView(fakeClient);
     const removeButton = await wrapper.findByText('Remove');
@@ -235,7 +235,7 @@ describe('CartView', () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(video);
-    fakeClient.carts.insertCartItem('video-id');
+    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
 
     const wrapper = renderCartView(fakeClient);
 
