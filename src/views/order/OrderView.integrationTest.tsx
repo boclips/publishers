@@ -39,14 +39,14 @@ describe('order table', () => {
     expect(wrapper.queryByText('not-the-id')).not.toBeInTheDocument();
   });
 
-  it('renders a order with items', async () => {
+  it('renders a order with items with item prices', async () => {
     const fakeClient = new FakeBoclipsClient();
 
     const video = VideoFactory.sample({
       id: 'video-id-1',
       price: {
         currency: 'USD',
-        amount: 600,
+        amount: 999,
       },
       playback: PlaybackFactory.sample({
         links: {

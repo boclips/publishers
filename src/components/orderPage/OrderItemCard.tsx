@@ -34,8 +34,8 @@ export const OrderItemCard = ({ item }: Props) => {
       <div className="flex flex-col flex-grow items-end">
         <span className="text-base">
           {createPriceDisplayValue(
-            video?.price?.amount,
-            video?.price?.currency,
+            item?.price?.value,
+            item?.price?.currency,
             navigator.language,
           )}
         </span>
