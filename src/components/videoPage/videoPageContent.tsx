@@ -5,12 +5,11 @@ import SubjectBadge from '@boclips-ui/subject-badge';
 import VideoCardAddCartButton from 'src/components/videoCardAddCartButton/VideoCardAddCartButton';
 import React from 'react';
 import dateFormat from 'dateformat';
-import { CopyLinkButton } from 'src/components/common/copyLinkButton/CopyLinkButton';
-import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import s from './videoPageContent.module.less';
+import { CopyVideoLinkButton } from '../common/copyLinkButton/CopyVideoLinkButton';
 
 interface Props {
   video: Video;
@@ -58,7 +57,7 @@ export const VideoHeader = ({ video }: Props) => {
       </div>
       <div className="flex flex-row">
         <AnalyticsTrackClick eventType={AppcuesEvent.COPY_LINK_FROM_VIDEO_PAGE}>
-          <CopyLinkButton link={buildVideoDetailsLink(video)} />
+          <CopyVideoLinkButton video={video} />
         </AnalyticsTrackClick>
         <span className="w-1/2">
           <AnalyticsTrackClick

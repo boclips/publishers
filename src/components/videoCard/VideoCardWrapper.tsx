@@ -7,10 +7,9 @@ import { PriceBadge } from 'src/components/videoCard/PriceBadge';
 import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
 import { Link } from 'react-router-dom';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
-import { CopyLinkButton } from 'src/components/common/copyLinkButton/CopyLinkButton';
-import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
+import { CopyVideoLinkButton } from 'src/components/common/copyLinkButton/CopyVideoLinkButton';
 import s from './VideoCardWrapper.module.less';
 
 interface Props {
@@ -46,7 +45,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
             <AnalyticsTrackClick
               eventType={AppcuesEvent.COPY_LINK_FROM_SEARCH_RESULTS}
             >
-              <CopyLinkButton link={buildVideoDetailsLink(video)} />
+              <CopyVideoLinkButton video={video} />
             </AnalyticsTrackClick>
             <AnalyticsTrackClick
               eventType={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
