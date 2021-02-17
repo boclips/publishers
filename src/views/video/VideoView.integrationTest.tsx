@@ -49,6 +49,9 @@ describe('Video View', () => {
       await wrapper.findByText('the coolest video you ever did see'),
     ).toBeVisible();
     expect(await wrapper.findByText('this is so cool')).toBeVisible();
+    expect(
+      await wrapper.findByText('This is an agreed price for your organization'),
+    ).toBeVisible();
     expect(await wrapper.findByText('Ages 10-14')).toBeVisible();
     expect(await wrapper.findByText('history')).toBeVisible();
     expect(await wrapper.findByText('cool videos r us')).toBeVisible();

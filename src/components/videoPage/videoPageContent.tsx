@@ -55,6 +55,9 @@ export const VideoHeader = ({ video }: Props) => {
           navigator.language,
         )}
       </div>
+      <div className="grey-800 mb-4">
+        This is an agreed price for your organization
+      </div>
       <div className="flex flex-row">
         <AnalyticsTrackClick eventType={AppcuesEvent.COPY_LINK_FROM_VIDEO_PAGE}>
           <CopyVideoLinkButton video={video} />
