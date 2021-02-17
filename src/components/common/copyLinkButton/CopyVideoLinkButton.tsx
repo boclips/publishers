@@ -17,20 +17,21 @@ export const CopyVideoLinkButton = ({ video }: Props) => {
   const apiClient = useBoclipsClient();
   const { data: user, isFetched } = useGetUserQuery();
 
-  if (isFetched) {
-    return (
-      <div className={`h-12 flex justify-end mt-2 ${s.copyLinkButton} mr-2`}>
-        <CopyToClipboard text={buildVideoDetailsLink(video, user)}>
-          <Button
-            onClick={() => trackCopyVideoShareLink(video, apiClient)}
-            text="Copy link"
-            type="outline"
-            width="100%"
-            icon={<CopyLinkIcon />}
-          />
-        </CopyToClipboard>
-      </div>
-    );
-  }
-  return null;
+  return (
+    <>
+      {isFetched && (
+        <div className={`h-12 flex justify-end mt-2 ${s.copyLinkButton} mr-2`}>
+          <CopyToClipboard text={buildVideoDetailsLink(video, user)}>
+            <Button
+              onClick={() => trackCopyVideoShareLink(video, apiClient)}
+              text="Copy link"
+              type="outline"
+              width="100%"
+              icon={<CopyLinkIcon />}
+            />
+          </CopyToClipboard>
+        </div>
+      )}
+    </>
+  );
 };
