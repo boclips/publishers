@@ -21,7 +21,12 @@ export const OrderSummary = ({ order }: Props) => {
         <OrderStatusField status={order.status} />
         <OrderDateField fieldName="Delivery date" date={order.deliveredAt} />
         <OrderTotalPriceField highlighted totalPrice={order.totalPrice} />
-        <OrderVideoQuantity quantity={order.items.length} fieldName="Videos" />
+        <OrderVideoQuantity
+          videoQuantity={`${order.items.length} video${
+            order.items.length > 1 ? 's' : ''
+          }`}
+          fieldName="Quantity"
+        />
         {order?.note && (
           <span className="mt-4 w-full">
             <OrderInformationField fieldName="Notes">

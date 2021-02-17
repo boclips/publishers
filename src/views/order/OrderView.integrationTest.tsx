@@ -134,7 +134,7 @@ describe('order table', () => {
     );
 
     expect(await wrapper.findByText('Order date')).toBeVisible();
-    expect(await wrapper.findByText('Videos')).toBeVisible();
+    expect(await wrapper.findByText('Quantity')).toBeVisible();
     expect(await wrapper.findByText('Total price')).toBeVisible();
     expect(await wrapper.findByText('Status')).toBeVisible();
     expect(await wrapper.findByText('Delivery date')).toBeVisible();
@@ -145,7 +145,7 @@ describe('order table', () => {
     expect(await wrapper.findByText('PROCESSING')).toBeVisible();
     expect(await wrapper.findByText('03/02/21')).toBeVisible();
     expect((await wrapper.findByTestId('video-quantity')).innerHTML).toEqual(
-      '2',
+      '2 videos',
     );
     expect(await wrapper.findByText('i am a note')).toBeVisible();
   });

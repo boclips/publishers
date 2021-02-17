@@ -73,7 +73,7 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
               </span>
             </div>
             <span className="text-base">
-              Do you confirm you want to place the following order:
+              Please confirm you want to place the following order:
             </span>
             <div className={s.modalItemsList}>
               <CartItemOrderPreview videos={videos} />
