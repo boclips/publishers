@@ -114,7 +114,7 @@ describe('CartView', () => {
     ).toHaveAttribute('href', `/orders`);
   });
 
-  it(`has the 'Video(s) total' label`, async () => {
+  it(`has the cart summary`, async () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(
@@ -138,6 +138,13 @@ describe('CartView', () => {
 
     expect(await wrapper.findByText(' total', { exact: false })).toBeVisible();
     expect(await wrapper.findByText('$900')).toBeVisible();
+    expect(await wrapper.findByText('Transcripts')).toBeVisible();
+    expect(await wrapper.findByText('Captions')).toBeVisible();
+
+
+    (await wrapper.findAllByTestId('cart-summary-extra-services')).map((item)=> {
+      expect(item.innerHTML).toEqual('Free')
+    })
   });
 
   it(`displays error page when error while placing order`, async () => {
