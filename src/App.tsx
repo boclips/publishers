@@ -10,6 +10,7 @@ import { trackPageRendered } from 'src/components/common/analytics/Analytics';
 import { AnalyticsService } from 'src/services/analytics/AnalyticsService';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import ScrollToTop from 'src/hooks/scrollToTop';
 import { BoclipsClientProvider } from './components/common/BoclipsClientProvider';
 import Appcues from './services/analytics/Appcues';
 
@@ -68,6 +69,7 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
 
   return (
     <QueryClientProvider client={reactQueryClient}>
+      <ScrollToTop />
       <Switch>
         <BoclipsClientProvider client={apiClient}>
           <Suspense fallback={<Loading />}>
