@@ -73,7 +73,7 @@ describe('CartView', () => {
     const wrapper = renderCartView(fakeClient);
 
     wrapper
-      .findByText('Place an order')
+      .findByText('Place order')
       .then((button) => fireEvent.click(button));
 
     const modal = await wrapper.findByTestId('order-modal');
@@ -137,14 +137,10 @@ describe('CartView', () => {
     const wrapper = renderCartView(fakeClient);
 
     expect(await wrapper.findByText(' total', { exact: false })).toBeVisible();
-    expect(await wrapper.findByText('$900')).toBeVisible();
+    expect((await wrapper.findByTestId('total-price')).innerHTML).toEqual('$900');
     expect(await wrapper.findByText('Transcripts')).toBeVisible();
     expect(await wrapper.findByText('Captions')).toBeVisible();
-
-
-    (await wrapper.findAllByTestId('cart-summary-extra-services')).map((item)=> {
-      expect(item.innerHTML).toEqual('Free')
-    })
+    expect(await wrapper.findByText('Total')).toBeVisible();
   });
 
   it(`displays error page when error while placing order`, async () => {
@@ -223,8 +219,8 @@ describe('CartView', () => {
   }
 
   async function placeAndConfirmOrder(wrapper: RenderResult) {
-    await wrapper.findByText('Place an order');
-    fireEvent.click(wrapper.getByText('Place an order'));
+    await wrapper.findByText('Place order');
+    fireEvent.click(wrapper.getByText('Place order'));
 
     const modal = await wrapper.findByTestId('order-modal');
 
