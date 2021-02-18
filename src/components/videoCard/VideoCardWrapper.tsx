@@ -1,7 +1,6 @@
 import React from 'react';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import { convertVideoFromApi } from 'src/services/convertVideoFromApi';
-import VideoCardAddCartButton from 'src/components/videoCardAddCartButton/VideoCardAddCartButton';
 import { VideoCardV2 } from '@boclips-ui/video-card-v2';
 import { PriceBadge } from 'src/components/videoCard/PriceBadge';
 import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
@@ -10,6 +9,7 @@ import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import { CopyVideoLinkButton } from 'src/components/common/copyLinkButton/CopyVideoLinkButton';
+import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 import s from './VideoCardWrapper.module.less';
 
 interface Props {
@@ -50,11 +50,13 @@ export const VideoCardWrapper = ({ video }: Props) => {
             <AnalyticsTrackClick
               eventType={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
             >
-              <VideoCardAddCartButton
-                videoId={video.id}
-                key="cart-button"
-                width="148px"
-              />
+              <span role="presentation">
+                <AddToCartButton
+                  videoId={video.id}
+                  key="cart-button"
+                  width="148px"
+                />
+              </span>
             </AnalyticsTrackClick>
           </div>,
         ]}

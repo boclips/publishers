@@ -2,7 +2,7 @@ import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import AgeRangeBadge from '@boclips-ui/age-range-badge';
 import AgeRange from '@boclips-ui/age-range';
 import SubjectBadge from '@boclips-ui/subject-badge';
-import VideoCardAddCartButton from 'src/components/videoCardAddCartButton/VideoCardAddCartButton';
+import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 import React from 'react';
 import dateFormat from 'dateformat';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
@@ -84,7 +84,9 @@ export const VideoHeader = ({ video }: Props) => {
           <AnalyticsTrackClick
             eventType={AppcuesEvent.ADD_TO_CART_FROM_VIDEO_PAGE}
           >
-            <VideoCardAddCartButton videoId={video?.id} />
+            <span role="presentation">
+              <AddToCartButton videoId={video?.id} />
+            </span>
           </AnalyticsTrackClick>
         </span>
       </div>

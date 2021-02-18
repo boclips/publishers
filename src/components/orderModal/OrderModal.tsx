@@ -10,8 +10,8 @@ import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
 import { useHistory } from 'react-router-dom';
 import { getTotalPriceDisplayValue } from 'src/services/getTotalPriceDisplayValue';
-import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import s from './style.module.less';
 
 export interface Props {
@@ -35,6 +35,7 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
   } = usePlaceOrderQuery();
 
   const onClick = () => {
+    AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.ORDER_CONFIRMED);
     placeOrder({ cart, user });
   };
 
@@ -91,14 +92,12 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
                 text="Go back to cart"
                 height="44px"
               />
-              <AnalyticsTrackClick eventType={AppcuesEvent.ORDER_CONFIRMED}>
-                <Button
-                  onClick={onClick}
-                  height="44px"
-                  text="Confirm order"
-                  disabled={isUserLoading || !user || isLoading}
-                />
-              </AnalyticsTrackClick>
+              <Button
+                onClick={onClick}
+                height="44px"
+                text="Confirm order"
+                disabled={isUserLoading || !user || isLoading}
+              />
             </div>
           </div>
         </div>

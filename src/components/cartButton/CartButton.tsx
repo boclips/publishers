@@ -26,8 +26,8 @@ const CartButton = () => {
       onMouseLeave={onMouseLeaveAction}
       className={c(s.cartButton, { [s.active]: isOnCartPage || onMouseEnter })}
     >
-      <Link to="/cart">
-        <AnalyticsTrackClick eventType={AppcuesEvent.CART_OPENED}>
+      <AnalyticsTrackClick eventType={AppcuesEvent.CART_OPENED}>
+        <Link to="/cart">
           <CartIcon />
           <span className="text-xs mt-1 font-medium">
             Cart
@@ -37,8 +37,8 @@ const CartButton = () => {
               </div>
             )}
           </span>
-        </AnalyticsTrackClick>
-      </Link>
+        </Link>
+      </AnalyticsTrackClick>
     </div>
   );
 };
