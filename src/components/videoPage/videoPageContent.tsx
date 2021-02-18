@@ -10,10 +10,28 @@ import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import s from './videoPageContent.module.less';
 import { CopyVideoLinkButton } from '../common/copyLinkButton/CopyVideoLinkButton';
+import InfoIcon from '../../resources/icons/info.svg';
 
 interface Props {
   video: Video;
 }
+
+const AdditionalServicesInformation = () => {
+  return (
+    <div className="mt-8 bg-blue-100 p-6 rounded text-gray-800">
+      <div className="flex flex-row font-medium text-base items-center mb-2 text-gray-900">
+        <InfoIcon />
+        <div className="ml-2">Additional services</div>
+      </div>
+      <div className="text-sm">
+        Captions, transcripts, video trimming, and other editing requests are
+        available upon request from your shopping cart. All additional services
+        are available free of charge.
+      </div>
+    </div>
+  );
+};
+
 export const VideoDetails = ({ video }: Props) => {
   return (
     <div className="flex flex-col">
@@ -70,6 +88,7 @@ export const VideoHeader = ({ video }: Props) => {
           </AnalyticsTrackClick>
         </span>
       </div>
+      <AdditionalServicesInformation />
     </div>
   );
 };

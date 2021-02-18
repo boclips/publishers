@@ -60,6 +60,7 @@ describe('Video View', () => {
       await wrapper.findByText('Released on Dec 17, 2015 by'),
     ).toBeVisible();
     expect(wrapper.getByRole('button', { name: 'Copy link' })).toBeVisible();
+    expect(await wrapper.findByText('Additional services')).toBeVisible();
   });
 
   it('copy to clipboard button is visible in the page', async () => {
