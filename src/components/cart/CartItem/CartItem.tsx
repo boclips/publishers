@@ -68,7 +68,7 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
             )}
           </div>
         </div>
-        <div className="text-sm text-gray-700 font-normal	">{`ID: ${videoItem.id}`}</div>
+        <div className="text-sm text-gray-800 font-normal	">{`ID: ${videoItem.id}`}</div>
 
         <div className={s.textButton}>
           <Button

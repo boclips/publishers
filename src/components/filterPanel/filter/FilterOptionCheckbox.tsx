@@ -12,7 +12,7 @@ export const FilterOptionCheckbox = ({ option, selected, onSelect }: Props) => {
     <div key={option.id} className="mb-2">
       <label
         htmlFor={option.id}
-        className="flex items-start cursor-pointer text-gray-700"
+        className="flex items-start cursor-pointer text-gray-800"
       >
         <input
           onChange={(event) => onSelect(event, option.id)}

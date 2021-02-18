@@ -1,3 +1,5 @@
+@import '~@boclips-ui/styles/src/_publishersColours';
+
 .modalWrapper {
   display: none;
   position: fixed;
@@ -30,32 +32,45 @@
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.13);
   }
 
-  .modalContent{
-    padding:2rem 2rem 0 2rem ;
+  .modalContent {
+    padding: 2rem 2rem 0 2rem;
   }
 
   .modalHeader {
     @apply flex flex-row justify-between text-blue-900 w-full mb-3 font-normal text-3xl;
     background: white;
 
-    svg{
-      width:12px !important;
-      height:12px !important;
+    svg {
+      width: 12px !important;
+      height: 12px !important;
     }
   }
 
   .modalItemsList {
-    margin-top:1rem;
+    margin-top: 1rem;
     overflow: auto;
     max-height: 50vh;
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 100vh;
+      background: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: @blue-500;
+      border-radius: 100vh;
+    }
   }
 
   .modalFooter {
-    box-shadow: 0px -2px 4px rgb(232, 232, 232);
-    width:100%;
-    padding:0 2rem 2rem 2rem;
+    @apply border-t-2 border-blue-300;
+    width: 100%;
+    padding: 0 2rem 2rem 2rem;
 
-    .modalTotalPrice{
+    .modalTotalPrice {
       @apply flex justify-between font-bold text-lg pt-5 mt-5 text-gray-900;
     }
   }
@@ -66,9 +81,10 @@
     width: 100%;
     justify-content: flex-end;
     margin-top: 1.5rem;
-
-    button:first-of-type {
-      margin-right: 0.5rem;
+    button {
+      &:not(span button) {
+        margin-right: 0.5rem;
+      }
     }
   }
 }

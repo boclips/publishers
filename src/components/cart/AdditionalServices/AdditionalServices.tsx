@@ -20,7 +20,7 @@ const AdditionalServices = ({ videoItem, cartItem }: Props) => {
   );
 
   return (
-    <div className="text-gray-700">
+    <div className="text-gray-800">
       <div className="text-base">Additional services</div>
       {addPrice(
         <TrimService videoItem={videoItem} cartItem={cartItem} />,

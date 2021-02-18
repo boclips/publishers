@@ -54,7 +54,7 @@ export const AccountButton = () => {
           <div className="font-medium">
             {data.firstName} {data.lastName}
           </div>
-          <div className="text-xs text-gray-700">{data.email}</div>
+          <div className="text-xs text-gray-800">{data.email}</div>
           <div className="pt-4 text-sm">
             <AnalyticsTrackClick eventType={AppcuesEvent.YOUR_ORDERS_OPENED}>
               <Link to="/orders">Your orders</Link>

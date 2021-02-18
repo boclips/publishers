@@ -12,7 +12,7 @@ export const EmptyCart = () => {
       </div>
       <div className="col-start-12 col-end-21 text-blue-800 flex flex-col justify-center">
         <h2>There are no items in your shopping cart</h2>
-        <p className="text-h3 text-gray-700">
+        <p className="text-h3 text-gray-800">
           Go to our <Link to="/">homepage</Link> and search for your perfect
           video
         </p>

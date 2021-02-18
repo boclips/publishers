@@ -15,7 +15,7 @@ const OrderTable = () => {
   return (
     <div className="grid grid-rows-order-view grid-cols-container gap-8">
       <Navbar showSearchBar={false} />
-      {order && <OrderPage order={order} />}
+      <OrderPage order={order} />
       <Footer />
     </div>
   );

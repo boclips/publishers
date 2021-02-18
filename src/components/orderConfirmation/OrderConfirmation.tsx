@@ -16,7 +16,7 @@ export const OrderConfirmation = ({ orderId }: OrderConfirmationProps) => (
         <div className="text-4xl text-blue-800 font-medium">
           Your order is confirmed
         </div>
-        <div className="text-base text-gray-700 mt-3">
+        <div className="text-base text-gray-800 mt-3">
           Your order{' '}
           <span className="font-semibold text-black-700">{orderId}</span> is
           currently being processed.

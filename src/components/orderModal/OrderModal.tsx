@@ -89,10 +89,12 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
                 onClick={() => setOpen(!modalOpen)}
                 type="outline"
                 text="Go back to cart"
+                height="44px"
               />
               <AnalyticsTrackClick eventType={AppcuesEvent.ORDER_CONFIRMED}>
                 <Button
                   onClick={onClick}
+                  height="44px"
                   text="Confirm order"
                   disabled={isUserLoading || !user || isLoading}
                 />

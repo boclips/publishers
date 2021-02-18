@@ -80,8 +80,8 @@ describe('Cart Item Preview', () => {
       </BoclipsClientProvider>,
     );
 
-    expect(wrapper.getByText('Trimming: 00:00 - 02:02')).toBeInTheDocument();
-    expect(wrapper.getByText('Requested transcripts')).toBeInTheDocument();
-    expect(wrapper.getByText('Captions: English')).toBeInTheDocument();
+    expect(wrapper.getByText(/(.*)Trim: 00:00 - 02:02/s)).toBeInTheDocument();
+    expect(wrapper.getByText('Transcripts requested')).toBeInTheDocument();
+    expect(wrapper.getByText('English captions requested')).toBeInTheDocument();
   });
 });
