@@ -50,7 +50,7 @@ describe('SearchBar', () => {
     await waitFor(() => {
       expect(mockHistoryPush).toHaveBeenCalledWith({
         pathname: '/videos',
-        search: 'q=cats',
+        search: 'q=cats&page=1&video_type=INSTRUCTIONAL&duration=PT1M-PT5M',
       });
     });
   });

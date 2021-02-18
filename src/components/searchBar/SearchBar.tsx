@@ -19,12 +19,6 @@ export const Search = ({ size, showIconOnly, onSearch }: Props) => {
   const [searchLocation] = useSearchQueryLocationParams();
   const query = useLocationParams().get('q');
 
-  const buildParamsWithQueryOnly = () => {
-    const params = new URLSearchParams();
-    params.append('q', convertToURLSearchParams(searchLocation).get('q'));
-    return params;
-  };
-
   const handleSearch = (searchQuery: string) => {
     if (onSearch) {
       onSearch(searchQuery);
@@ -32,7 +26,8 @@ export const Search = ({ size, showIconOnly, onSearch }: Props) => {
 
     searchLocation.query = searchQuery;
 
-    const params = buildParamsWithQueryOnly();
+    const params = convertToURLSearchParams(searchLocation);
+    params.set('page', '1');
 
     return history.push({
       pathname: `/videos`,
