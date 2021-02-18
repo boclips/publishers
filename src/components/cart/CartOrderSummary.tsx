@@ -11,32 +11,37 @@ interface Props {
 export const CartOrderSummary = ({ videos }: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const renderAdditionalServicesSummary = (label) => {
-      return (
-          <div className="flex justify-between my-6">
-              <div>
-                  {label}
-              </div>
-              <div data-qa={"cart-summary-extra-services"}>Free</div>
-          </div>
-      )
-  }
+  const renderCartSummaryItem = (label, value) => {
+    return (
+      <div className="flex justify-between my-3">
+        <span>{label}</span>
+        <span> {value}</span>
+      </div>
+    );
+  };
+
   return (
-    <>
-      <div className="col-start-20 col-end-26 border-blue-500 border-2 h-64 p-5 w-full justify-end flex flex-col rounded">
-          <div className={"border-b border-blue-500 mb-6 font-normal text-base"}>
-            <div className="flex justify-between">
-              <div>
-                Vide<span className="tracking-tightestest">o(s)</span> total
-              </div>
-              <div>{getTotalPriceDisplayValue(videos)}</div>
-            </div>
-              {renderAdditionalServicesSummary('Captions')}
-              {renderAdditionalServicesSummary('Transcripts')}
-          </div>
+    <div className="col-start-20 col-end-26">
+      <div className="border-blue-500 h-72 border-2 flex flex-col rounded p-5">
+        <div className="border-b border-blue-500 mb-4 font-normal text-base">
+          {renderCartSummaryItem(
+            <div>
+              Vide<span className="tracking-tightestest">o(s)</span> total
+            </div>,
+            getTotalPriceDisplayValue(videos),
+          )}
+          {renderCartSummaryItem('Captions', 'Free')}
+          {renderCartSummaryItem('Transcripts', 'Free')}
+        </div>
+        <div className="flex font-bold text-lg text-gray-900 justify-between mb-6">
+          <span>Total</span>
+          <span data-qa="total-price">{`${getTotalPriceDisplayValue(
+            videos,
+          )}`}</span>
+        </div>
         <Button
           onClick={() => setModalOpen(!modalOpen)}
-          text="Place an order"
+          text="Place order"
           height="44px"
           width="100%"
         />
@@ -46,6 +51,6 @@ export const CartOrderSummary = ({ videos }: Props) => {
         modalOpen={modalOpen}
         videos={videos}
       />
-    </>
+    </div>
   );
 };
