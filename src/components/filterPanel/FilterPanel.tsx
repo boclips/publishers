@@ -6,11 +6,12 @@ import { ChannelFilter } from 'src/components/filterPanel/ChannelFilter';
 import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 import { useFilterOptions } from 'src/hooks/useFilterOptions';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
-import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 import c from 'classnames';
+import { ChannelsAndSubjectsProvider } from 'src/components/filterPanel/ChannelsAndSubjectsProvider';
 import { SelectedFilters } from './SelectedFilters';
 
 interface Props {
+  query: string;
   facets?: VideoFacets;
   handleChange: (filter: string, values: string[]) => void;
   removeFilter: (filter: string, value: string) => void;
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export const FilterPanel = ({
+  query,
   facets,
   handleChange,
   removeFilter,
@@ -28,79 +30,59 @@ export const FilterPanel = ({
   areFiltersApplied,
 }: Props) => {
   const filterOptions = useFilterOptions(facets);
-  const [searchLocation] = useSearchQueryLocationParams();
-
-  const selectedFilterOptions = React.useMemo(
-    () => [
-      ...filterOptions.channels.filter((option) =>
-        searchLocation.filters.channel.includes(option.id),
-      ),
-      ...filterOptions.subjects.filter((option) =>
-        searchLocation.filters.subject.includes(option.id),
-      ),
-      ...filterOptions.videoTypes.filter((option) =>
-        searchLocation.filters.video_type.includes(option.id),
-      ),
-      ...filterOptions.durations.filter((option) =>
-        searchLocation.filters.duration.includes(option.id),
-      ),
-      ...filterOptions.prices.filter((option) =>
-        searchLocation.filters.prices.includes(option.id),
-      ),
-    ],
-    [filterOptions, searchLocation],
+  const isDurationFilterApplied = filterOptions.durations.find(
+    (it) => it.hits > 0,
   );
 
-  const SelectedFilterPanelWithTitle = () => {
-    return (
-      <>
+  if (noResults && !areFiltersApplied) return null;
+
+  return (
+    <ChannelsAndSubjectsProvider query={query}>
+      <div className="col-start-2 col-end-7">
         <div
           className={c('text-primary text-lg font-medium', {
-            'pb-4': selectedFilterOptions.length,
+            'pb-4': areFiltersApplied,
           })}
         >
           Filter by:
         </div>
-        <SelectedFilters
-          selectedFilterOptions={selectedFilterOptions}
-          removeFilter={removeFilter}
-          clearFilters={removeAllFilters}
-        />
-      </>
-    );
-  };
-
-  const renderFilters = () => {
-    if (noResults && !areFiltersApplied) return null;
-
-    if (noResults && areFiltersApplied) return <SelectedFilterPanelWithTitle />;
-
-    return (
-      <>
-        <SelectedFilterPanelWithTitle />
-        <VideoTypeFilter
-          options={filterOptions.videoTypes}
-          handleChange={handleChange}
-        />
-        <DurationFilter
-          options={filterOptions?.durations}
-          handleChange={handleChange}
-        />
-        <ChannelFilter
-          options={filterOptions?.channels}
-          handleChange={handleChange}
-        />
-        <PriceFilter
-          options={filterOptions.prices}
-          handleChange={handleChange}
-        />
-        <SubjectFilter
-          options={filterOptions?.subjects}
-          handleChange={handleChange}
-        />
-      </>
-    );
-  };
-
-  return <div className={c('col-start-2 col-end-7')}>{renderFilters()}</div>;
+        {areFiltersApplied && (
+          <SelectedFilters
+            removeFilter={removeFilter}
+            clearFilters={removeAllFilters}
+          />
+        )}
+        {filterOptions.videoTypes.length > 0 && (
+          <VideoTypeFilter
+            options={filterOptions.videoTypes}
+            handleChange={handleChange}
+          />
+        )}
+        {isDurationFilterApplied && (
+          <DurationFilter
+            options={filterOptions.durations}
+            handleChange={handleChange}
+          />
+        )}
+        {filterOptions.channels.length > 0 && (
+          <ChannelFilter
+            options={filterOptions.channels}
+            handleChange={handleChange}
+          />
+        )}
+        {filterOptions.prices.length > 0 && (
+          <PriceFilter
+            options={filterOptions.prices}
+            handleChange={handleChange}
+          />
+        )}
+        {filterOptions.subjects.length > 0 && (
+          <SubjectFilter
+            options={filterOptions.subjects}
+            handleChange={handleChange}
+          />
+        )}
+      </div>
+    </ChannelsAndSubjectsProvider>
+  );
 };

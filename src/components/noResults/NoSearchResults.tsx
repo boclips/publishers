@@ -6,16 +6,16 @@ interface Props {
   query: string;
 }
 
-export const NoSearchResults = ({ areFiltersApplied, query }: Props) => {
-  const NoResultsCopy = ({ header, copy }) => {
-    return (
-      <>
-        <div className="font-medium">{header}</div>
-        <div>{copy}</div>
-      </>
-    );
-  };
+const NoResultsCopy = ({ header, copy }) => {
+  return (
+    <>
+      <div className="font-medium">{header}</div>
+      <div>{copy}</div>
+    </>
+  );
+};
 
+export const NoSearchResults = ({ areFiltersApplied, query }: Props) => {
   return (
     <div className="flex flex-col items-center col-start-7 col-end-26 text-lg text-gray-800 mt-10 ">
       <NoResultsIcon className="h-80 w-80 mb-6" />

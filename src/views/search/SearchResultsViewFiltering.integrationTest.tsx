@@ -192,13 +192,10 @@ describe(`SearchResultsFiltering`, () => {
         </MemoryRouter>,
       );
 
-      expect(await wrapper.findByText('Video type')).toBeInTheDocument();
+      expect(await wrapper.findByText('Channel')).toBeInTheDocument();
 
       expect(await wrapper.findByText('Getty')).toBeInTheDocument();
       expect(await wrapper.findByText('Ted')).toBeInTheDocument();
-
-      expect(await wrapper.findByText('whale video')).toBeInTheDocument();
-      expect(await wrapper.findByText('shark video')).toBeInTheDocument();
 
       fireEvent.change(wrapper.getByPlaceholderText('Search for channel'), {
         target: { value: 'get' },

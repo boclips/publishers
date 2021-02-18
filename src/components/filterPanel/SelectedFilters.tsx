@@ -1,22 +1,46 @@
-import React from 'react';
-import { FilterOption } from 'src/types/FilterOption';
+import React, { useEffect, useState } from 'react';
 import { SelectedFilterTag } from 'src/components/filterPanel/SelectedFilterTag';
 import { FilterKey } from 'src/types/search/FilterKey';
+import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
+import { useChannelsAndSubjectsProvider } from 'src/components/filterPanel/ChannelsAndSubjectsProvider';
+import { getFilterLabel } from 'src/services/convertFacetsToFilterOptions';
 
 interface Props {
-  selectedFilterOptions?: FilterOption[];
   removeFilter?: (filter: FilterKey, value: string) => void;
   clearFilters?: () => void;
 }
 
-export const SelectedFilters = ({
-  selectedFilterOptions,
-  removeFilter,
-  clearFilters,
-}: Props) => {
-  if (selectedFilterOptions.length === 0) {
-    return <></>;
-  }
+export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
+  const [searchQueryLocationParams] = useSearchQueryLocationParams();
+  const originalFacets = useChannelsAndSubjectsProvider();
+
+  const [filtersToRender, setFiltersToRender] = useState([]);
+
+  useEffect(() => {
+    if (searchQueryLocationParams && originalFacets) {
+      const filtersInUrl = Object.keys(searchQueryLocationParams.filters)
+        .map((key) => {
+          return searchQueryLocationParams.filters[key].map((filter) => ({
+            id: filter,
+            name: getFilterLabel(key, filter, originalFacets),
+            key,
+          }));
+        })
+        // @ts-ignore
+        .flat();
+
+      setFiltersToRender(filtersInUrl);
+    }
+    // eslint-disable-next-line
+  }, [
+    searchQueryLocationParams.filters.video_type.length,
+    searchQueryLocationParams.filters.channel.length,
+    searchQueryLocationParams.filters.duration.length,
+    searchQueryLocationParams.filters.subject.length,
+    searchQueryLocationParams.filters.prices.length,
+    originalFacets,
+  ]);
+
   return (
     <div>
       <div
@@ -35,7 +59,7 @@ export const SelectedFilters = ({
         </span>
       </div>
       <div className="flex flex-wrap " data-qa="applied-filter-tags">
-        {selectedFilterOptions.map((filter) => (
+        {filtersToRender.map((filter) => (
           <SelectedFilterTag
             key={`${filter.name}-${filter.id}`}
             filter={filter}

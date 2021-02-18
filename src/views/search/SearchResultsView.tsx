@@ -149,6 +149,7 @@ const SearchResultsView = () => {
       <Navbar showSearchBar />
 
       <FilterPanel
+        query={query}
         facets={data?.facets}
         handleChange={handleFilterChange}
         removeFilter={removeFilter}
@@ -166,8 +167,8 @@ const SearchResultsView = () => {
 
 const areFiltersApplied = (currentFilters: SearchFilters): boolean => {
   return (
-    Object.keys(currentFilters).filter((key) => currentFilters[key].length > 0)
-      .length > 0
+    Object.keys(currentFilters).find((key) => currentFilters[key]?.length > 0)
+      ?.length > 0
   );
 };
 

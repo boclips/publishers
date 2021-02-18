@@ -72,6 +72,32 @@ const createFilterOptions = (
     };
   });
 
+export const getFilterLabel = (key, id, originalFacets) => {
+  // TODO: MOVE STRING TO VARS
+  switch (key) {
+    case 'video_type':
+      return getVideoTypeLabel(id);
+    case 'duration':
+      return getDurationLabel(id);
+    case 'prices':
+      return getPriceLabel(id);
+    case 'channel':
+      return getChannelLabel(id, originalFacets);
+    case 'subject':
+      return getSubjectsLabel(id, originalFacets);
+    default:
+      throw 'not supported filter key';
+  }
+};
+
+const getChannelLabel = (id, originalFacets) => {
+  return originalFacets.facets.channels.find((it) => it.id === id).name;
+};
+
+const getSubjectsLabel = (id, originalFacets) => {
+  return originalFacets.facets.subjects.find((it) => it.id === id).name;
+};
+
 const getVideoTypeLabel = (name: string): string => {
   switch (name.toUpperCase()) {
     case 'INSTRUCTIONAL':
