@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import {
-  doUpdateCartItem,
-  useCarItemAdditionalServicesMutation,
-} from 'src/hooks/api/cartQuery';
+import { useCarItemAdditionalServicesMutation } from 'src/hooks/api/cartQuery';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import c from 'classnames';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 import { AdditionalServices } from 'boclips-api-client/dist/sub-clients/carts/model/AdditionalServices';
 
 interface Props {

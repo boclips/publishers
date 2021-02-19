@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { doUpdateCartItem } from 'src/hooks/api/cartQuery';
+import { useCarItemAdditionalServicesMutation } from 'src/hooks/api/cartQuery';
 import { AdditionalServices as AdditionalServicesApi } from 'boclips-api-client/dist/sub-clients/carts/model/AdditionalServices';
 import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import TimeField from 'react-simple-timefield';
 import c from 'classnames';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 
 interface Props {
   videoItem: Video;
@@ -15,7 +14,9 @@ interface Props {
 const BASE_FROM_DURATION = '00:00';
 
 export const TrimService = ({ videoItem, cartItem }: Props) => {
-  const boclipsClient = useBoclipsClient();
+  const {
+    mutate: mutateAdditionalServices,
+  } = useCarItemAdditionalServicesMutation();
 
   const trimSet = !!cartItem?.additionalServices?.trim;
   const [trimChecked, setTrimChecked] = useState(trimSet);
@@ -45,7 +46,10 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
     setTrimChecked(e.currentTarget.checked);
 
     if (!e.currentTarget.checked) {
-      doUpdateCartItem(cartItem, { trim: null }, boclipsClient);
+      mutateAdditionalServices({
+        cartItem,
+        additionalServices: { trim: null },
+      });
 
       setTrimValue((prevState) => {
         return {
@@ -75,7 +79,12 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
   };
 
   const onBlur = () => {
-    doUpdateCartItem(cartItem, trimValue, boclipsClient);
+    mutateAdditionalServices({
+      cartItem,
+      additionalServices: {
+        trim: trimValue.trim,
+      },
+    });
   };
 
   return (

@@ -44,7 +44,6 @@ interface AdditionalServicesUpdateRequest {
 export const useCarItemAdditionalServicesMutation = () => {
   const boclipsClient = useBoclipsClient();
   const queryClient = useQueryClient();
-
   return useMutation(
     async (
       additionalServicesUpdateRequest: AdditionalServicesUpdateRequest,
@@ -69,6 +68,7 @@ export const useCarItemAdditionalServicesMutation = () => {
                 return {
                   ...it,
                   additionalServices: {
+                    ...it.additionalServices,
                     ...additionalServicesUpdateRequest.additionalServices,
                   },
                 };

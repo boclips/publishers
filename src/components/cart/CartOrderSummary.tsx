@@ -31,7 +31,6 @@ export const CartOrderSummary = ({ videos }: Props) => {
 
   return (
     <>
-      {console.log(cart)}
       <div className="col-start-20 col-end-26">
         <div className="border-blue-500 h-72 border-2 flex flex-col rounded p-5">
           <div className="border-b border-blue-500 mb-4 font-normal text-base">
