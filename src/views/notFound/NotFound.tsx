@@ -5,7 +5,7 @@ import NotFoundSVG from 'src/resources/icons/not-found.svg';
 import Button from '@boclips-ui/button';
 import s from './style.module.less';
 
-export const NotFound = () => (
+const NotFound = () => (
   <div className="grid grid-rows-home grid-cols-container gap-8">
     <Navbar showSearchBar />
     <div className={s.notFoundView}>
@@ -33,3 +33,5 @@ export const NotFound = () => (
     <Footer />
   </div>
 );
+
+export default NotFound;
