@@ -253,7 +253,7 @@ describe('CartItem', () => {
     );
   });
 
-  fit('sets captions request to true when checkbox is checked and to false when is unchecked', async () => {
+  it('sets captions request to true when checkbox is checked and to false when is unchecked', async () => {
     const video = VideoFactory.sample({
       id: 'captions-test', // this id must be unique for the test
       title: 'this is cart item test',
