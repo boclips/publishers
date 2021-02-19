@@ -1,6 +1,5 @@
 import React from 'react';
 import { Cart as ApiCart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
-import c from 'classnames';
 
 interface Props {
   cart: ApiCart;
