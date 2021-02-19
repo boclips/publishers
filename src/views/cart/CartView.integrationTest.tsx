@@ -129,8 +129,22 @@ describe('CartView', () => {
       }),
     );
 
-    fakeClient.carts.insertCartItem({ videoId: 'video-id-1' });
-    fakeClient.carts.insertCartItem({ videoId: 'video-id-2' });
+    fakeClient.carts.insertCartItem({
+      videoId: 'video-id-1',
+      additionalServices: {
+        captionsRequested: true,
+        transcriptRequested: true,
+        trim:{
+          to:'1:00',
+          from:'3:00'
+        },
+        editRequest:'some lovely editing'
+      },
+    });
+    fakeClient.carts.insertCartItem({
+      videoId: 'video-id-2',
+      additionalServices: { transcriptRequested: false },
+    });
 
     const wrapper = renderCartView(fakeClient);
 
@@ -138,8 +152,10 @@ describe('CartView', () => {
     expect((await wrapper.findByTestId('total-price')).innerHTML).toEqual(
       '$900',
     );
-    expect(await wrapper.findByText('Transcripts')).toBeVisible();
     expect(await wrapper.findByText('Captions')).toBeVisible();
+    expect(await wrapper.findByText('Transcripts')).toBeVisible();
+    expect(await wrapper.findByText('Trimming')).toBeVisible();
+    expect(await wrapper.findByText('Editing')).toBeVisible();
     expect(await wrapper.findByText('Total')).toBeVisible();
   });
 
