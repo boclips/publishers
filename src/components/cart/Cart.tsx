@@ -15,7 +15,7 @@ export const Cart = ({ cart, cartItemVideos }: Props) => {
     <>
       <CartSummary cart={cart} />
       <CartDetails cartItemVideos={cartItemVideos} cart={cart} />
-      <CartOrderSummary videos={cartItemVideos} cart={cart} />
+      <CartOrderSummary videos={cartItemVideos} />
     </>
   );
 };

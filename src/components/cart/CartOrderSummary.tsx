@@ -2,20 +2,23 @@ import React, { useState } from 'react';
 import Button from '@boclips-ui/button';
 import { getTotalPriceDisplayValue } from 'src/services/getTotalPriceDisplayValue';
 import { Video } from 'boclips-api-client/dist/types';
-import { Cart as ApiCart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
+import { useCartQuery } from 'src/hooks/api/cartQuery';
 import { OrderModal } from '../orderModal/OrderModal';
 
 interface Props {
   videos: Video[];
-  cart: ApiCart;
 }
 
-export const CartOrderSummary = ({ videos, cart }: Props) => {
+export const CartOrderSummary = ({ videos }: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const { data: cart } = useCartQuery();
 
-  const areCaptionsRequested = cart.items.find(it => it.additionalServices.captionsRequested);
-  const isTranscriptRequested = cart.items.find(it => it.additionalServices.transcriptRequested);
-
+  const areCaptionsRequested = !!cart.items.find(
+    (it) => it.additionalServices.captionsRequested,
+  );
+  const isTranscriptRequested = !!cart.items.find(
+    (it) => it.additionalServices.transcriptRequested,
+  );
 
   const renderCartSummaryItem = (label, value) => {
     return (
@@ -26,10 +29,9 @@ export const CartOrderSummary = ({ videos, cart }: Props) => {
     );
   };
 
-  console.log(cart)
-  console.log(videos)
   return (
     <>
+      {console.log(cart)}
       <div className="col-start-20 col-end-26">
         <div className="border-blue-500 h-72 border-2 flex flex-col rounded p-5">
           <div className="border-b border-blue-500 mb-4 font-normal text-base">
@@ -40,7 +42,8 @@ export const CartOrderSummary = ({ videos, cart }: Props) => {
               getTotalPriceDisplayValue(videos),
             )}
             {areCaptionsRequested && renderCartSummaryItem('Captions', 'Free')}
-            {isTranscriptRequested && renderCartSummaryItem('Transcripts', 'Free')}
+            {isTranscriptRequested &&
+              renderCartSummaryItem('Transcripts', 'Free')}
           </div>
           <div className="flex font-bold text-lg text-gray-900 justify-between mb-6">
             <span>Total</span>
