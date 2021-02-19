@@ -26,14 +26,16 @@ describe('CartView', () => {
     types: [{ name: 'NEWS', id: 2 }],
   });
 
-  it('when no items in cart, displays empty cart view', async () => {
+  it('when no items in cart, displays empty cart view with basic header', async () => {
     const wrapper = renderCartView(new FakeBoclipsClient());
 
-    await waitFor(async () => {
-      expect(
-        await wrapper.findByText('There are no items in your shopping cart'),
-      ).toBeInTheDocument();
-    });
+    expect(await wrapper.findByText('Shopping cart')).toBeInTheDocument();
+
+    expect(await wrapper.queryByText(/items (0)/)).not.toBeInTheDocument();
+
+    expect(
+      await wrapper.findByText('There are no items in your shopping cart'),
+    ).toBeInTheDocument();
   });
 
   it('when videos in cart, displays video player with information and prices', async () => {

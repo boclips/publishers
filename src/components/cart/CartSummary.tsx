@@ -8,16 +8,14 @@ interface Props {
 
 export const CartSummary = ({ cart }: Props) => {
   return (
-    <div
-      className={c(
-        'grid col-start-2 col-end-21 grid-row-start-2 grid-row-end-2 grid-cols-12 gap-8',
-      )}
-    >
+    <div className="col-start-2 col-end-26 grid-row-start-2 grid-row-end-2">
       <div className="col-start-1 col-end-21 flex flex-row">
         <h2 className="font-bold">Shopping cart</h2>
-        <span className="text-3xl pl-3">
-          ({cart.items.length} item{cart.items.length > 1 ? 's' : ''})
-        </span>
+        {!!cart.items.length && (
+          <span className="text-3xl pl-3">
+            ({cart.items.length} item{cart.items.length > 1 ? 's' : ''})
+          </span>
+        )}
       </div>
     </div>
   );
