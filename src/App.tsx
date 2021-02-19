@@ -11,6 +11,7 @@ import { AnalyticsService } from 'src/services/analytics/AnalyticsService';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import ScrollToTop from 'src/hooks/scrollToTop';
+import { NotFound } from 'src/views/notFound/NotFound';
 import { BoclipsClientProvider } from './components/common/BoclipsClientProvider';
 import Appcues from './services/analytics/Appcues';
 
@@ -70,9 +71,9 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
   return (
     <QueryClientProvider client={reactQueryClient}>
       <ScrollToTop />
-      <Switch>
-        <BoclipsClientProvider client={apiClient}>
-          <Suspense fallback={<Loading />}>
+      <BoclipsClientProvider client={apiClient}>
+        <Suspense fallback={<Loading />}>
+          <Switch>
             <Route exact path="/">
               <HomeView />
             </Route>
@@ -104,10 +105,11 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
                 <OrderConfirmationView state={location?.state} />
               )}
             />
-          </Suspense>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </BoclipsClientProvider>
-      </Switch>
+            <Route component={NotFound} />
+          </Switch>
+        </Suspense>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </BoclipsClientProvider>
     </QueryClientProvider>
   );
 };
