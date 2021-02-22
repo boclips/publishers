@@ -131,8 +131,22 @@ describe('CartView', () => {
       }),
     );
 
-    fakeClient.carts.insertCartItem({ videoId: 'video-id-1' });
-    fakeClient.carts.insertCartItem({ videoId: 'video-id-2' });
+    fakeClient.carts.insertCartItem({
+      videoId: 'video-id-1',
+      additionalServices: {
+        captionsRequested: true,
+        transcriptRequested: true,
+        trim: {
+          to: '1:00',
+          from: '3:00',
+        },
+        editRequest: 'some lovely editing',
+      },
+    });
+    fakeClient.carts.insertCartItem({
+      videoId: 'video-id-2',
+      additionalServices: { transcriptRequested: false },
+    });
 
     const wrapper = renderCartView(fakeClient);
 
@@ -140,9 +154,66 @@ describe('CartView', () => {
     expect((await wrapper.findByTestId('total-price')).innerHTML).toEqual(
       '$900',
     );
+
+    expect(await wrapper.findByText('Captions')).toBeVisible();
+    expect(await wrapper.findByText('Transcripts')).toBeVisible();
+    expect(await wrapper.findByText('Trimming')).toBeVisible();
+    expect(await wrapper.findByText('Editing')).toBeVisible();
+    expect(await wrapper.findByText('Total')).toBeVisible();
+  });
+
+  it('adds additional services to the cart summary when selected', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    fakeClient.videos.insertVideo(
+      VideoFactory.sample({
+        price: { amount: 300, currency: 'USD' },
+        id: 'video-additional-service',
+      }),
+    );
+
+    fakeClient.carts.insertCartItem({
+      videoId: 'video-additional-service',
+      additionalServices: {},
+    });
+
+    const wrapper = renderCartView(fakeClient);
+
+    expect(await wrapper.queryByText('Captions')).not.toBeInTheDocument();
+    expect(await wrapper.queryByText('Editing')).not.toBeInTheDocument();
+    expect(await wrapper.queryByText('Trimming')).not.toBeInTheDocument();
+    expect(await wrapper.queryByText('Transcripts')).not.toBeInTheDocument();
+
+    fireEvent.click(await wrapper.findByText('Request other type of editing'));
+
+    const input = await wrapper.findByPlaceholderText(
+      'eg. Remove front and end credits',
+    );
+
+    fireEvent.change(input, {
+      target: { value: 'please do some lovely editing' },
+    });
+
+    fireEvent.click(await wrapper.findByText('Request transcripts'));
+    fireEvent.click(await wrapper.findByText('Request English captions'));
+    fireEvent.click(await wrapper.findByText('Trim video'));
+
+    fireEvent.change(await wrapper.findByLabelText('trim-from'), {
+      target: { value: '2' },
+    });
+
+    fireEvent.blur(await wrapper.findByLabelText('trim-from'));
+
+    fireEvent.change(await wrapper.findByLabelText('trim-to'), {
+      target: { value: '3' },
+    });
+
+    fireEvent.blur(await wrapper.findByLabelText('trim-to'));
+
     expect(await wrapper.findByText('Transcripts')).toBeVisible();
     expect(await wrapper.findByText('Captions')).toBeVisible();
-    expect(await wrapper.findByText('Total')).toBeVisible();
+    expect(await wrapper.findByText('Editing')).toBeVisible();
+    expect(await wrapper.findByText('Trimming')).toBeVisible();
   });
 
   it(`displays error page when error while placing order`, async () => {

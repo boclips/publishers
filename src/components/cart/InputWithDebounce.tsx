@@ -22,7 +22,8 @@ export const InputWithDebounce = ({
     if (debouncedValue || debouncedValue === '') {
       onUpdate(debouncedValue);
     }
-  }, [debouncedValue, onUpdate]);
+    // eslint-disable-next-line
+  }, [debouncedValue]);
 
   return (
     <textarea

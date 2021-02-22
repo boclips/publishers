@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { doUpdateCartItem } from 'src/hooks/api/cartQuery';
-import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
+import { useCartItemAdditionalServicesMutation } from 'src/hooks/api/cartQuery';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { InputWithDebounce } from 'src/components/cart/InputWithDebounce';
 import c from 'classnames';
@@ -12,9 +11,12 @@ interface Props {
 }
 
 export const EditRequest = ({ label, cartItem, price }: Props) => {
-  const boclipsClient = useBoclipsClient();
   const isChecked = !!cartItem?.additionalServices?.editRequest;
   const id = `${cartItem.videoId}editingRequested`;
+
+  const {
+    mutate: mutateAdditionalServices,
+  } = useCartItemAdditionalServicesMutation();
 
   const [serviceRequested, setServiceRequested] = useState(isChecked);
 
@@ -26,13 +28,10 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
   };
 
   const updateEditRequest = (editRequest: string | null) => {
-    doUpdateCartItem(
+    mutateAdditionalServices({
       cartItem,
-      {
-        editRequest,
-      },
-      boclipsClient,
-    );
+      additionalServices: { editRequest },
+    });
   };
 
   return (

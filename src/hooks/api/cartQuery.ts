@@ -25,10 +25,7 @@ export const doUpdateCartItem = (
   additionalServices: AdditionalServices,
   client: BoclipsClient,
 ) => {
-  return client.carts.updateCartItemAdditionalServices(
-    cartItem,
-    additionalServices,
-  );
+  client.carts.updateCartItemAdditionalServices(cartItem, additionalServices);
 };
 
 export const useCartQuery = () => {
@@ -38,6 +35,52 @@ export const useCartQuery = () => {
 
 export const doUpdateCartNote = (note: string, client: BoclipsClient) =>
   client.carts.updateCart(note);
+
+interface AdditionalServicesUpdateRequest {
+  cartItem: CartItem;
+  additionalServices: AdditionalServices;
+}
+
+export const useCartItemAdditionalServicesMutation = () => {
+  const boclipsClient = useBoclipsClient();
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (
+      additionalServicesUpdateRequest: AdditionalServicesUpdateRequest,
+    ) => {
+      return doUpdateCartItem(
+        additionalServicesUpdateRequest.cartItem,
+        additionalServicesUpdateRequest.additionalServices,
+        boclipsClient,
+      );
+    },
+    {
+      onMutate: async (
+        additionalServicesUpdateRequest: AdditionalServicesUpdateRequest,
+      ) => {
+        await queryClient.cancelQueries('cart');
+
+        queryClient.setQueryData('cart', (old: Cart) => ({
+          ...old,
+          items: [
+            ...old.items.map((it) => {
+              if (it.id === additionalServicesUpdateRequest.cartItem.id) {
+                return {
+                  ...it,
+                  additionalServices: {
+                    ...it.additionalServices,
+                    ...additionalServicesUpdateRequest.additionalServices,
+                  },
+                };
+              }
+              return it;
+            }),
+          ],
+        }));
+      },
+    },
+  );
+};
 
 export const useCartMutation = () => {
   const boclipsClient = useBoclipsClient();
@@ -74,3 +117,28 @@ export const useCartMutation = () => {
     },
   );
 };
+
+// {
+//   onMutate: async (cartItemId) => {
+//     await queryClient.cancelQueries('cart');
+//     await queryClient.cancelQueries('cartItemVideos');
+//
+//     const cartItemToRemove = queryClient
+//       .getQueryData<Cart>('cart')
+//       .items.find((it) => it.id === cartItemId);
+//
+//     queryClient.setQueryData('cart', (old: Cart) => ({
+//       ...old,
+//       items: [...old.items.filter((item) => item.id !== cartItemId)],
+//     }));
+//
+//     queryClient.setQueryData('cartItemVideos', (videos: Video[]) => [
+//       ...videos.filter((item) => {
+//         return item.id !== cartItemToRemove.videoId;
+//       }),
+//     ]);
+//   },
+//     onSettled: () => {
+//   queryClient.invalidateQueries('cart');
+// },
+// },
