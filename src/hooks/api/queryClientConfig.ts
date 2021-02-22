@@ -1,3 +1,5 @@
-export const queryClientConfig = {
-  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+import { DefaultOptions } from 'react-query';
+
+export const queryClientConfig: { defaultOptions: DefaultOptions } = {
+  defaultOptions: { queries: { refetchOnWindowFocus: false, retry: 1 } },
 };
