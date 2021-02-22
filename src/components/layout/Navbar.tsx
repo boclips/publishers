@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import CartButton from 'src/components/cartButton/CartButton';
 import c from 'classnames';
-import BoclipsLogoSVG from 'resources/icons/boclips.svg';
+import PearsonBoclipsLogoSVG from 'resources/icons/pearson-clips-logo.svg';
 import { AccountButton } from 'src/components/accountButton/AccountButton';
 import { Search } from '../searchBar/SearchBar';
 import s from './navbar.module.less';
@@ -22,7 +22,7 @@ const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
     >
       <div className="col-start-2 col-end-5">
         <Link to="/" title="Boclips logo">
-          <BoclipsLogoSVG />
+          <PearsonBoclipsLogoSVG />
         </Link>
       </div>
       {showSearchBar && (
