@@ -8,7 +8,7 @@ import { EmptyCart } from 'src/components/cart/EmptyCart';
 import { useGetVideos } from 'src/hooks/api/videoQuery';
 import { CartSummary } from 'src/components/cart/CartSummary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
-import { OmnscientErrorBoundary } from 'src/components/common/errors/OmniscientErrorBoundary';
+import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 
 const CartView = () => {
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
@@ -35,9 +35,9 @@ const CartView = () => {
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">
       <Navbar showSearchBar />
       <CartSummary cart={cart} />
-      <OmnscientErrorBoundary fallback={<RefreshPageError />}>
+      <ErrorBoundary fallback={<RefreshPageError />}>
         {renderCart()}
-      </OmnscientErrorBoundary>
+      </ErrorBoundary>
       <Footer />
     </div>
   );

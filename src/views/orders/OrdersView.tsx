@@ -4,7 +4,7 @@ import Footer from 'src/components/layout/Footer';
 import { OrdersTable } from 'src/components/ordersTable/OrdersTable';
 import { useGetOrdersQuery } from 'src/hooks/api/orderQuery';
 import { Loading } from 'src/components/common/Loading';
-import { OmnscientErrorBoundary } from 'src/components/common/errors/OmniscientErrorBoundary';
+import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
 
 export const PAGE_SIZE = 10;
@@ -40,9 +40,9 @@ const OrdersView = () => {
       <div className="col-start-2 col-end-26 row-start-2 row-end-4">
         <div className="font-bold text-2xl text-grey-800">Your Orders</div>
         <div>
-          <OmnscientErrorBoundary fallback={<RefreshPageError />}>
+          <ErrorBoundary fallback={<RefreshPageError />}>
             {orderRender()}
-          </OmnscientErrorBoundary>
+          </ErrorBoundary>
         </div>
       </div>
       <Footer />
