@@ -109,20 +109,18 @@ describe('CartItem', () => {
       target: { value: '2' },
     });
 
-    // fireEvent.blur(await wrapper.findByLabelText('trim-from'));
-
     fireEvent.change(await wrapper.findByLabelText('trim-to'), {
       target: { value: '3' },
     });
 
-    // fireEvent.blur(await wrapper.findByLabelText('trim-to'));
+    fireEvent.blur(await wrapper.findByLabelText('trim-from'));
 
     cart = await fakeClient.carts.getCart();
 
-    const cartItem = cart.items.find((it) => it.videoId === video.id);
-
-    expect(cartItem.additionalServices?.trim.from).toEqual('02:00');
-    expect(cartItem.additionalServices?.trim.to).toEqual('03:00');
+    await waitFor(() => {
+      expect(cart.items[0].additionalServices?.trim.from).toEqual('02:00');
+      expect(cart.items[0].additionalServices?.trim.to).toEqual('03:00');
+    });
   });
 
   it('displays the trim values if cart item has trim info specified', async () => {
@@ -198,9 +196,9 @@ describe('CartItem', () => {
 
     const cart = await fakeClient.carts.getCart();
 
-    const updatedCartItem = cart.items[0];
-
-    expect(updatedCartItem.additionalServices.trim).toEqual(null);
+    await waitFor(() => {
+      expect(cart.items[0].additionalServices.trim).toEqual(null);
+    });
   });
 
   it('sets transcript request to true when checkbox is checked and to false when is unchecked', async () => {
@@ -237,20 +235,21 @@ describe('CartItem', () => {
 
     let cart = await fakeClient.carts.getCart();
 
-    let updatedCartItem = cart.items[0];
-    expect(updatedCartItem.additionalServices.transcriptRequested).toEqual(
-      true,
-    );
+    await waitFor(() => {
+      expect(cart.items[0].additionalServices.transcriptRequested).toEqual(
+        true,
+      );
+    });
 
     fireEvent.click(await wrapper.findByText('Request transcripts'));
 
     cart = await fakeClient.carts.getCart();
 
-    updatedCartItem = cart.items[0];
-
-    expect(updatedCartItem.additionalServices.transcriptRequested).toEqual(
-      false,
-    );
+    await waitFor(() => {
+      expect(cart.items[0].additionalServices.transcriptRequested).toEqual(
+        false,
+      );
+    });
   });
 
   it('sets captions request to true when checkbox is checked and to false when is unchecked', async () => {
@@ -288,14 +287,18 @@ describe('CartItem', () => {
     await fireEvent.click(await wrapper.findByText('Request English captions'));
 
     let cart = await fakeClient.carts.getCart();
-    let updatedCartItem = cart.items[0];
-    expect(updatedCartItem.additionalServices.captionsRequested).toEqual(true);
+
+    await waitFor(() => {
+      expect(cart.items[0].additionalServices.captionsRequested).toEqual(true);
+    });
 
     fireEvent.click(await wrapper.findByText('Request English captions'));
 
     cart = await fakeClient.carts.getCart();
-    updatedCartItem = cart.items[0];
-    expect(updatedCartItem.additionalServices.captionsRequested).toEqual(false);
+
+    await waitFor(() => {
+      expect(cart.items[0].additionalServices.captionsRequested).toEqual(false);
+    });
   });
 
   it('Opens a input box when you tick edit request', async () => {

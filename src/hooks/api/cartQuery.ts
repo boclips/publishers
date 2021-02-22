@@ -25,7 +25,6 @@ export const doUpdateCartItem = (
   additionalServices: AdditionalServices,
   client: BoclipsClient,
 ) => {
-  console.log(additionalServices)
   client.carts.updateCartItemAdditionalServices(cartItem, additionalServices);
 };
 
