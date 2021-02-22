@@ -9,9 +9,15 @@ interface Props {
   label: string;
   type: keyof Omit<AdditionalServices, 'trim' | 'editRequest'>;
   cartItem: CartItem;
+  price?: string;
 }
 
-const AdditionalServicesCheckbox = ({ label, type, cartItem }: Props) => {
+const AdditionalServicesCheckbox = ({
+  label,
+  type,
+  cartItem,
+  price,
+}: Props) => {
   const boclipsClient = useBoclipsClient();
   const id = cartItem.videoId + type;
   const isChecked = !!cartItem?.additionalServices?.[type];
@@ -31,7 +37,7 @@ const AdditionalServicesCheckbox = ({ label, type, cartItem }: Props) => {
   };
 
   return (
-    <div className="h-9 flex flex-row items-center">
+    <div className="h-9 flex flex-row items-center relative">
       <label className="cursor-pointer font-normal mr-8" htmlFor={id}>
         <input
           onChange={onChangeCheckbox}
@@ -48,6 +54,11 @@ const AdditionalServicesCheckbox = ({ label, type, cartItem }: Props) => {
           {label}
         </span>
       </label>
+      {price && (
+        <div className="absolute top-0 right-0 flex h-full items-center text-lg font-normal">
+          {price}
+        </div>
+      )}
     </div>
   );
 };

@@ -8,9 +8,10 @@ import c from 'classnames';
 interface Props {
   label: string;
   cartItem: CartItem;
+  price?: string;
 }
 
-export const EditRequest = ({ label, cartItem }: Props) => {
+export const EditRequest = ({ label, cartItem, price }: Props) => {
   const boclipsClient = useBoclipsClient();
   const isChecked = !!cartItem?.additionalServices?.editRequest;
   const id = `${cartItem.videoId}editingRequested`;
@@ -35,12 +36,13 @@ export const EditRequest = ({ label, cartItem }: Props) => {
   };
 
   return (
-    <div className="mt-2 flex flex-row items-center">
-      <label
-        className="cursor-pointer flex flex-col font-normal mr-8 w-full"
-        htmlFor={id}
+    <>
+      <div
+        className={c('h-9 flex flex-col relative justify-center relative', {
+          'mb-3': serviceRequested,
+        })}
       >
-        <div className=" flex flex-row mb-3 text-sm">
+        <label className="cursor-pointer font-normal mr-8" htmlFor={id}>
           <input
             onChange={handleChange}
             checked={serviceRequested}
@@ -55,15 +57,21 @@ export const EditRequest = ({ label, cartItem }: Props) => {
           >
             {label}
           </span>
-        </div>
-        {serviceRequested && (
-          <InputWithDebounce
-            currentValue={cartItem.additionalServices?.editRequest}
-            onUpdate={updateEditRequest}
-            placeholder="eg. Remove front and end credits"
-          />
+        </label>
+
+        {price && (
+          <div className="absolute top-0 right-0 flex h-full items-center text-lg font-normal">
+            {price}
+          </div>
         )}
-      </label>
-    </div>
+      </div>
+      {serviceRequested && (
+        <InputWithDebounce
+          currentValue={cartItem.additionalServices?.editRequest}
+          onUpdate={updateEditRequest}
+          placeholder="eg. Remove front and end credits"
+        />
+      )}
+    </>
   );
 };

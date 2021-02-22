@@ -10,11 +10,12 @@ import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 interface Props {
   videoItem: Video;
   cartItem: CartItem;
+  price?: string;
 }
 
 const BASE_FROM_DURATION = '00:00';
 
-export const TrimService = ({ videoItem, cartItem }: Props) => {
+export const TrimService = ({ videoItem, cartItem, price }: Props) => {
   const boclipsClient = useBoclipsClient();
 
   const trimSet = !!cartItem?.additionalServices?.trim;
@@ -79,7 +80,7 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
   };
 
   return (
-    <div className="h-9 flex flex-row items-center">
+    <div className="h-9 flex flex-row items-center relative">
       <label className="cursor-pointer font-normal mr-8" htmlFor={videoItem.id}>
         <input
           onChange={onChangeCheckbox}
@@ -96,6 +97,11 @@ export const TrimService = ({ videoItem, cartItem }: Props) => {
           Trim video
         </span>
       </label>
+      {price && (
+        <div className="absolute top-0 right-0 flex h-full items-center text-lg font-normal">
+          {price}
+        </div>
+      )}
       {trimChecked && (
         <div className="h-full flex items-center font-normal">
           From:
