@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const NetworkErrorBoundary = ({ fallback, children }: Props) => {
+export const QueryErrorBoundary = ({ fallback, children }: Props) => {
   const { isError } = useGlobalQueryError();
 
   if (isError) {

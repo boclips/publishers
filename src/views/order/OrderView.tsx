@@ -5,7 +5,7 @@ import { useGetIdFromLocation } from 'src/hooks/useLocationParams';
 import { useFindOrGetOrder } from 'src/hooks/api/orderQuery';
 import { Loading } from 'src/components/common/Loading';
 import { OrderPage } from 'src/components/orderPage/OrderPage';
-import { OmnscientErrorBoundary } from 'src/components/common/errors/OmniscientErrorBoundary';
+import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
 import { OrderHeader } from 'src/components/orderPage/OrderHeader';
 
@@ -19,9 +19,9 @@ const OrderTable = () => {
     <div className="grid grid-rows-order-view grid-cols-container gap-8">
       <Navbar showSearchBar={false} />
       <OrderHeader id={order?.id} />
-      <OmnscientErrorBoundary fallback={<RefreshPageError />}>
+      <ErrorBoundary fallback={<RefreshPageError />}>
         <OrderPage order={order} />
-      </OmnscientErrorBoundary>
+      </ErrorBoundary>
       <Footer />
     </div>
   );

@@ -19,7 +19,7 @@ import { Loading } from 'src/components/common/Loading';
 import { useDebounce } from 'src/hooks/useDebounce';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
-import { OmnscientErrorBoundary } from 'src/components/common/errors/OmniscientErrorBoundary';
+import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
 
 export const PAGE_SIZE = 10;
@@ -139,7 +139,7 @@ const SearchResultsView = () => {
   return (
     <div className="grid grid-rows-search-view grid-cols-container gap-8">
       <Navbar showSearchBar />
-      <OmnscientErrorBoundary
+      <ErrorBoundary
         fallback={
           <div className="row-start-2 row-end-2 col-start-2 col-end-26">
             <RefreshPageError />
@@ -157,7 +157,7 @@ const SearchResultsView = () => {
         />
 
         {showResults()}
-      </OmnscientErrorBoundary>
+      </ErrorBoundary>
       <Footer />
     </div>
   );
