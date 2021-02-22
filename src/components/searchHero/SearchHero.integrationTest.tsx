@@ -5,7 +5,7 @@ import { render } from 'src/testSupport/render';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { analyticsMock } from 'src/services/analytics/AnalyticsServiceMock';
 import SearchHero from './SearchHero';
-import { BoclipsClientProvider } from '../common/BoclipsClientProvider';
+import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
 
 describe('SearchHero', () => {
   AnalyticsFactory.getAppcues = jest.fn(() => analyticsMock);

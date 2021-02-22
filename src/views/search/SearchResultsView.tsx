@@ -13,13 +13,14 @@ import { SearchResults } from 'src/components/searchResults/SearchResults';
 import Footer from 'src/components/layout/Footer';
 import { FilterKey } from 'src/types/search/FilterKey';
 import { useQueryClient } from 'react-query';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import { NoSearchResults } from 'src/components/noResults/NoSearchResults';
-import ErrorView from 'src/views/error/ErrorView';
 import { Loading } from 'src/components/common/Loading';
 import { useDebounce } from 'src/hooks/useDebounce';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import { OmnscientErrorBoundary } from 'src/components/common/errors/OmniscientErrorBoundary';
+import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
 
 export const PAGE_SIZE = 10;
 
@@ -35,14 +36,7 @@ const SearchResultsView = () => {
 
   const boclipsClient = useBoclipsClient();
 
-  const {
-    data,
-    isError,
-    error,
-    isLoading,
-    isFetching,
-    isPreviousData,
-  } = useSearchQuery({
+  const { data, isLoading, isFetching, isPreviousData } = useSearchQuery({
     query,
     page: currentPage - 1,
     pageSize: PAGE_SIZE,
@@ -142,24 +136,28 @@ const SearchResultsView = () => {
 
   if (isLoading) return <Loading />;
 
-  if (isError) return <ErrorView error={error} />;
-
   return (
     <div className="grid grid-rows-search-view grid-cols-container gap-8">
       <Navbar showSearchBar />
+      <OmnscientErrorBoundary
+        fallback={
+          <div className="row-start-2 row-end-2 col-start-2 col-end-26">
+            <RefreshPageError />
+          </div>
+        }
+      >
+        <FilterPanel
+          query={query}
+          facets={data?.facets}
+          handleChange={handleFilterChange}
+          removeFilter={removeFilter}
+          removeAllFilters={removeAllFilters}
+          noResults={isNoSearchResults}
+          areFiltersApplied={areFiltersApplied(filtersFromURL)}
+        />
 
-      <FilterPanel
-        query={query}
-        facets={data?.facets}
-        handleChange={handleFilterChange}
-        removeFilter={removeFilter}
-        removeAllFilters={removeAllFilters}
-        noResults={isNoSearchResults}
-        areFiltersApplied={areFiltersApplied(filtersFromURL)}
-      />
-
-      {showResults()}
-
+        {showResults()}
+      </OmnscientErrorBoundary>
       <Footer />
     </div>
   );

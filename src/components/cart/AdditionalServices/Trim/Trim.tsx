@@ -5,7 +5,7 @@ import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import TimeField from 'react-simple-timefield';
 import c from 'classnames';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 
 interface Props {
   videoItem: Video;

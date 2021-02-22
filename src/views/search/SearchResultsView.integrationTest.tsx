@@ -12,7 +12,7 @@ import Navbar from 'src/components/layout/Navbar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
-import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
+import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsClientProvider';
 
 describe('SearchResults', () => {
   it('renders a list of videos that match the search query', async () => {

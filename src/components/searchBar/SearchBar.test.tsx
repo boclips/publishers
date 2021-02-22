@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from 'src/testSupport/render';
 import { Search } from 'src/components/searchBar/SearchBar';
 import { MemoryRouter } from 'react-router-dom';
-import { BoclipsClientProvider } from '../common/BoclipsClientProvider';
+import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
 
 const mockHistoryPush = jest.fn();
 

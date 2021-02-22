@@ -8,7 +8,7 @@ import { useQueryClient } from 'react-query';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import s from './style.module.less';
-import { useBoclipsClient } from '../common/BoclipsClientProvider';
+import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
 
 const SearchHero = () => {
   const queryClient = useQueryClient();

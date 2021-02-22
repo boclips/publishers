@@ -1,7 +1,7 @@
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import React from 'react';
 import { render } from 'src/testSupport/render';
-import { BoclipsClientProvider } from '../common/BoclipsClientProvider';
+import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
 import Navbar from './Navbar';
 
 describe('Navbar', () => {

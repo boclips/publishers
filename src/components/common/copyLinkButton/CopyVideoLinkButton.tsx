@@ -3,7 +3,7 @@ import { Video } from 'boclips-api-client/dist/types';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CopyLinkIcon from 'src/resources/icons/copy-link-icon.svg';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import s from './style.module.less';

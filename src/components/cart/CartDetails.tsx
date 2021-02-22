@@ -1,7 +1,7 @@
 import React from 'react';
 import { doUpdateCartNote } from 'src/hooks/api/cartQuery';
 import { InputWithDebounce as CartNote } from 'src/components/cart/InputWithDebounce';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import { useMutation } from 'react-query';
 import { Video } from 'boclips-api-client/dist/types';
 import { Cart as ApiCart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { doUpdateCartItem } from 'src/hooks/api/cartQuery';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { InputWithDebounce } from 'src/components/cart/InputWithDebounce';
 import c from 'classnames';

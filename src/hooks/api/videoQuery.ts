@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from 'react-query';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import Pageable from 'boclips-api-client/dist/sub-clients/common/model/Pageable';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import { BoclipsClient } from 'boclips-api-client';
 
 export const doGetVideos = (videoIds: string[], apiClient: BoclipsClient) => {

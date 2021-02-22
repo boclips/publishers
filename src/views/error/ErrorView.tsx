@@ -1,19 +1,20 @@
 import Navbar from 'src/components/layout/Navbar';
 import Footer from 'src/components/layout/Footer';
 import React from 'react';
-import s from 'src/components/cart/style.module.less';
-import { ErrorMessage } from 'src/components/common/ErrorMessage';
+import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
 
 interface Props {
   error: any;
 }
 
 const ErrorView = ({ error }: Props) => {
+  console.error(error);
+
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">
       <Navbar showSearchBar />
-      <div className={s.orderConfirmedView} data-qa="order-confirmed">
-        <ErrorMessage errorMessage={error.message} />
+      <div className="col-start-2 col-end-26 row-start-2 row-end-4">
+        <RefreshPageError />
       </div>
       <Footer />
     </div>

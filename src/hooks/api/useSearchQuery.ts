@@ -2,7 +2,7 @@ import { QueryClient, useQuery } from 'react-query';
 import { VideoSearchResults } from 'boclips-api-client/dist/sub-clients/videos/model/VideoSearchResults';
 import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { BoclipsClient } from 'boclips-api-client';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import { FilterKey } from 'src/types/search/FilterKey';
 
 export interface SearchQuery {

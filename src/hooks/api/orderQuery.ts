@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { OrdersPage } from 'boclips-api-client/dist/sub-clients/orders/model/OrdersPage';
 import { PlaceOrderRequest } from 'boclips-api-client/dist/sub-clients/orders/model/PlaceOrderRequest';
 import { BoclipsClient } from 'boclips-api-client';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 
 export interface OrdersQuery {
   page: number;

@@ -158,8 +158,9 @@ describe('CartView', () => {
     const wrapper = renderCartView(fakeClient);
     await placeAndConfirmOrder(wrapper);
 
-    expect(await wrapper.findByText('Did not work dude!')).toBeVisible();
-    expect(wrapper.getByText(/channel is missing price/)).toBeVisible();
+    expect(
+      await wrapper.findByText(/There was an error processing your request/),
+    ).toBeVisible();
   });
 
   it('displays a notes field', async () => {

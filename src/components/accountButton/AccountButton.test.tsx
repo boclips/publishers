@@ -8,7 +8,7 @@ import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 import BoclipsSecurity from 'boclips-js-security';
 import { Constants } from 'src/AppConstants';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
-import { BoclipsClientProvider } from '../common/BoclipsClientProvider';
+import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
 
 describe('account button', () => {
   it('opens the tooltip when clicked and close the tooltip when clicked on the body', async () => {

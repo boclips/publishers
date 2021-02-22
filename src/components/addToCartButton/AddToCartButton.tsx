@@ -8,7 +8,7 @@ import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import Button from '@boclips-ui/button';
 import React from 'react';
 import CartIcon from '../../resources/icons/cart-icon.svg';
-import { useBoclipsClient } from '../common/BoclipsClientProvider';
+import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
 
 interface AddToCartButtonProps {
   videoId: string;

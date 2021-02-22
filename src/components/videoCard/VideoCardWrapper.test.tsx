@@ -4,7 +4,7 @@ import { VideoCardWrapper } from 'src/components/videoCard/VideoCardWrapper';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { render } from 'src/testSupport/render';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
-import { BoclipsClientProvider } from '../common/BoclipsClientProvider';
+import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
 
 describe('Video card', () => {
   it('displays all the given information on a video card', () => {

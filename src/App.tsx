@@ -11,8 +11,10 @@ import { AnalyticsService } from 'src/services/analytics/AnalyticsService';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import ScrollToTop from 'src/hooks/scrollToTop';
-import { BoclipsClientProvider } from './components/common/BoclipsClientProvider';
+import { BoclipsClientProvider } from './components/common/providers/BoclipsClientProvider';
 import Appcues from './services/analytics/Appcues';
+import { GlobalQueryErrorProvider } from './components/common/providers/GlobalQueryErrorProvider';
+import { JSErrorBoundary } from './components/common/errors/JSErrorBoundary';
 
 declare global {
   interface Window {
@@ -40,6 +42,11 @@ const OrderConfirmationView = lazy(
 const ErrorView = lazy(() => import('src/views/error/ErrorView'));
 
 const NotFound = lazy(() => import('src/views/notFound/NotFound'));
+
+const RefreshPageError = lazy(
+  () =>
+    import('src/components/common/errors/refreshPageError/RefreshPageError'),
+);
 
 interface Props {
   apiClient: BoclipsClient;
@@ -71,46 +78,50 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
 
   return (
     <QueryClientProvider client={reactQueryClient}>
-      <ScrollToTop />
-      <BoclipsClientProvider client={apiClient}>
-        <Suspense fallback={<Loading />}>
-          <Switch>
-            <Route exact path="/">
-              <HomeView />
-            </Route>
-            <Route exact path="/videos">
-              <SearchResultsView />
-            </Route>
-            <Route exact path="/videos/:id">
-              <VideoView />
-            </Route>
-            <Route exact path="/cart">
-              <CartView />
-            </Route>
-            <Route exact path="/orders">
-              <OrdersView />
-            </Route>
-            <Route exact path="/orders/:id">
-              <OrderView />
-            </Route>
-            <Route
-              exact
-              path="/error"
-              render={({ location }) => (
-                <ErrorView error={location?.state.error} />
-              )}
-            />
-            <Route
-              path="/order-confirmed"
-              render={({ location }) => (
-                <OrderConfirmationView state={location?.state} />
-              )}
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </Suspense>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </BoclipsClientProvider>
+      <GlobalQueryErrorProvider>
+        <ScrollToTop />
+        <BoclipsClientProvider client={apiClient}>
+          <Suspense fallback={<Loading />}>
+            <JSErrorBoundary fallback={<RefreshPageError />}>
+              <Switch>
+                <Route exact path="/">
+                  <HomeView />
+                </Route>
+                <Route exact path="/videos">
+                  <SearchResultsView />
+                </Route>
+                <Route exact path="/videos/:id">
+                  <VideoView />
+                </Route>
+                <Route exact path="/cart">
+                  <CartView />
+                </Route>
+                <Route exact path="/orders">
+                  <OrdersView />
+                </Route>
+                <Route exact path="/orders/:id">
+                  <OrderView />
+                </Route>
+                <Route
+                  exact
+                  path="/error"
+                  render={({ location }) => (
+                    <ErrorView error={location?.state?.error} />
+                  )}
+                />
+                <Route
+                  path="/order-confirmed"
+                  render={({ location }) => (
+                    <OrderConfirmationView state={location?.state} />
+                  )}
+                />
+                <Route component={NotFound} />
+              </Switch>
+            </JSErrorBoundary>
+          </Suspense>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </BoclipsClientProvider>
+      </GlobalQueryErrorProvider>
     </QueryClientProvider>
   );
 };

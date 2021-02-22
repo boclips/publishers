@@ -1,5 +1,5 @@
 import React from 'react';
-import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
+import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsClientProvider';
 import { fireEvent, render } from '@testing-library/react';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';

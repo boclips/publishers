@@ -3,7 +3,7 @@ import React from 'react';
 import AdditionalServices from 'src/components/cart/AdditionalServices/AdditionalServices';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
-import { BoclipsClientProvider } from 'src/components/common/BoclipsClientProvider';
+import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsClientProvider';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 
 describe('AdditionalServices component', () => {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
 import { Link, useLocation } from 'react-router-dom';
-import c from 'classnames';
 import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import c from 'classnames';
 import s from './style.module.less';
 import CartIcon from '../../resources/icons/cart-icon.svg';
 

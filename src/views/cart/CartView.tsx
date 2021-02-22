@@ -7,10 +7,11 @@ import { Loading } from 'src/components/common/Loading';
 import { EmptyCart } from 'src/components/cart/EmptyCart';
 import { useGetVideos } from 'src/hooks/api/videoQuery';
 import { CartSummary } from 'src/components/cart/CartSummary';
-import { RefreshPageError } from 'src/components/errors/refreshPageError/RefreshPageError';
+import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
+import { OmnscientErrorBoundary } from 'src/components/common/errors/OmniscientErrorBoundary';
 
 const CartView = () => {
-  const { data: cart, isLoading: isCartLoading, isError } = useCartQuery();
+  const { data: cart, isLoading: isCartLoading } = useCartQuery();
   const videoIds = cart?.items?.map((it) => it.videoId);
 
   const {
@@ -21,8 +22,6 @@ const CartView = () => {
   const itemsInCart = cart?.items?.length > 0;
 
   const renderCart = () => {
-    if (isError) return <RefreshPageError />;
-
     if (itemsInCart && videoIds) {
       return <Cart cart={cart} cartItemVideos={cartItemVideos} />;
     }
@@ -36,7 +35,9 @@ const CartView = () => {
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">
       <Navbar showSearchBar />
       <CartSummary cart={cart} />
-      {renderCart()}
+      <OmnscientErrorBoundary fallback={<RefreshPageError />}>
+        {renderCart()}
+      </OmnscientErrorBoundary>
       <Footer />
     </div>
   );
