@@ -13,10 +13,10 @@ const NotFound = () => (
         <NotFoundSVG />
       </div>
       <div className="col-start-12 col-end-21 text-blue-800 flex flex-col justify-center">
-        <div className="text-4xl text-blue-800 font-medium">
+        <div className="text-4xl text-blue-800 font-medium leading-10">
           Page not found!
         </div>
-        <div className="text-lg text-gray-800 mt-4">
+        <div className="text-lg leading-6 text-gray-800 mt-4">
           We can’t seem to find the page you’re looking for. Try going back to
           the previous page or contact support@boclips.com
         </div>
