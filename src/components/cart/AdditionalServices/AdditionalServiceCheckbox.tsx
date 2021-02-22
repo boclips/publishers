@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { doUpdateCartItem } from 'src/hooks/api/cartQuery';
+import { useCartItemAdditionalServicesMutation } from 'src/hooks/api/cartQuery';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import c from 'classnames';
-import { useBoclipsClient } from 'src/components/common/BoclipsClientProvider';
 import { AdditionalServices } from 'boclips-api-client/dist/sub-clients/carts/model/AdditionalServices';
 
 interface Props {
@@ -18,22 +17,22 @@ const AdditionalServicesCheckbox = ({
   cartItem,
   price,
 }: Props) => {
-  const boclipsClient = useBoclipsClient();
   const id = cartItem.videoId + type;
   const isChecked = !!cartItem?.additionalServices?.[type];
 
   const [serviceRequested, setServiceRequested] = useState<boolean>(isChecked);
 
+  const {
+    mutate: mutateAdditionalServices,
+  } = useCartItemAdditionalServicesMutation();
+
   const onChangeCheckbox = (e) => {
     setServiceRequested(e.currentTarget.checked);
 
-    doUpdateCartItem(
+    mutateAdditionalServices({
       cartItem,
-      {
-        [type]: e.currentTarget.checked,
-      },
-      boclipsClient,
-    );
+      additionalServices: { [type]: e.currentTarget.checked },
+    });
   };
 
   return (

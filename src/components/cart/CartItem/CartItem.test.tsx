@@ -109,13 +109,13 @@ describe('CartItem', () => {
       target: { value: '2' },
     });
 
-    fireEvent.blur(await wrapper.findByLabelText('trim-from'));
+    // fireEvent.blur(await wrapper.findByLabelText('trim-from'));
 
     fireEvent.change(await wrapper.findByLabelText('trim-to'), {
       target: { value: '3' },
     });
 
-    fireEvent.blur(await wrapper.findByLabelText('trim-to'));
+    // fireEvent.blur(await wrapper.findByLabelText('trim-to'));
 
     cart = await fakeClient.carts.getCart();
 
