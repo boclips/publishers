@@ -149,12 +149,13 @@ describe('CartItem', () => {
         </BoclipsClientProvider>
       </Router>,
     );
+    wrapper.debug();
 
-    expect(wrapper.getByLabelText('trim-from').getAttribute('value')).toEqual(
+    expect(wrapper.getByLabelText('From:').closest('input').value).toEqual(
       '01:21',
     );
 
-    expect(wrapper.getByLabelText('trim-to').getAttribute('value')).toEqual(
+    expect(wrapper.getByLabelText('To:').closest('input').value).toEqual(
       '02:21',
     );
   });
