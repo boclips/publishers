@@ -4,6 +4,7 @@ import { AdditionalServices as AdditionalServicesApi } from 'boclips-api-client/
 import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import c from 'classnames';
+import { useCartValidation } from 'src/components/common/providers/CartValidationProvider';
 
 interface Props {
   videoItem: Video;
@@ -14,6 +15,7 @@ interface Props {
 const BASE_DURATION = '00:00';
 
 export const TrimService = ({ videoItem, cartItem, price }: Props) => {
+  const [cartItemValidation, setCartItemValidation] = useCartValidation();
   const {
     mutate: mutateAdditionalServices,
   } = useCartItemAdditionalServicesMutation();
@@ -21,7 +23,6 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
   const trimSet = !!cartItem?.additionalServices?.trim;
   const [trimChecked, setTrimChecked] = useState(trimSet);
   const [trimTouched, setTrimTouched] = useState(trimSet);
-  const [isValid, setIsValid] = useState(true);
 
   const [trimValue, setTrimValue] = useState<AdditionalServicesApi>({
     trim: {
@@ -30,18 +31,31 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
     },
   });
 
-  const isInputValid = (timeInput: string) => {
-    console.log(
-      !trimTouched || (timeInput && !!timeInput?.match(/(^\d+:[0-5]\d$)/)),
-    );
-    return !trimTouched || (timeInput && !!timeInput?.match(/(^\d+:[0-5]\d$)/));
-  };
+  const cartItemId = cartItem.id;
 
   useEffect(() => {
-    setIsValid(
-      isInputValid(trimValue.trim.from) && isInputValid(trimValue.trim.to),
-    );
-  }, [trimValue, trimChecked, isInputValid]);
+    console.log(trimTouched);
+    const isInputValid = (timeInput: string) => {
+      // console.log(
+      //   !trimTouched || (timeInput && !!timeInput?.match(/(^\d+:[0-5]\d$)/)),
+      // );
+      return (
+        !trimTouched || (timeInput && !!timeInput?.match(/(^\d+:[0-5]\d$)/))
+      );
+    };
+
+    setCartItemValidation((prevState) => {
+      return {
+        ...prevState,
+        [cartItemId]: {
+          ...prevState[cartItemId],
+          isTrimValid:
+            isInputValid(trimValue.trim.from) &&
+            isInputValid(trimValue.trim.to),
+        },
+      };
+    });
+  }, [trimValue, cartItemId, setCartItemValidation, trimTouched]);
 
   const onChangeCheckbox = (e) => {
     setTrimChecked(e.currentTarget.checked);
@@ -90,6 +104,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
     });
   };
 
+  const isTrimValid = cartItemValidation[cartItem.id]?.isTrimValid;
+
   return (
     <div>
       <div className="flex">
@@ -131,8 +147,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
                 className={c(
                   'rounded outline-none w-16 h-10 ml-2 mr-6 px-2 text-center',
                   {
-                    'border-blue-300 border': isValid,
-                    'border-red-error border-1': !isValid,
+                    'border-blue-300 border': isTrimValid,
+                    'border-red-error border-1': !isTrimValid,
                   },
                 )}
                 type="text"
@@ -151,8 +167,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
                 className={c(
                   'rounded outline-none w-16 h-full ml-2 mr-6 px-2 text-center',
                   {
-                    'border-blue-300 border': isValid,
-                    'border-red-error border-1': !isValid,
+                    'border-blue-300 border': isTrimValid,
+                    'border-red-error border-1': !isTrimValid,
                   },
                 )}
                 type="text"
@@ -165,7 +181,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
               />
             </label>
           </div>
-          {!isValid && (
+          {!isTrimValid && (
             <div className="font-normal text-xs ml-12 text-red-error">
               Specify your trimming options
             </div>

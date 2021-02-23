@@ -1,5 +1,6 @@
 import {
   fireEvent,
+  prettyDOM,
   render,
   RenderResult,
   waitFor,
@@ -216,6 +217,45 @@ describe('CartView', () => {
     expect(await wrapper.findByText('Trimming')).toBeVisible();
   });
 
+  it('displays error when trying to place order with invalid trim values', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    fakeClient.videos.insertVideo(
+      VideoFactory.sample({
+        price: { amount: 300, currency: 'USD' },
+        id: 'video-additional-service',
+      }),
+    );
+
+    fakeClient.carts.insertCartItem({
+      videoId: 'video-additional-service',
+      additionalServices: {},
+    });
+
+    const wrapper = renderCartView(fakeClient);
+
+    fireEvent.click(await wrapper.findByText('Trim video'));
+
+    fireEvent.focus(await wrapper.findByLabelText('trim-from'));
+    fireEvent.change(await wrapper.findByLabelText('trim-from'), {
+      target: { value: '-2' },
+    });
+
+    fireEvent.blur(await wrapper.findByLabelText('trim-from'));
+
+    fireEvent.click(await wrapper.findByText('Place order'));
+    // console.log(prettyDOM(wrapper.baseElement, 100000));
+    expect(
+      await wrapper.findByText(
+        'There are some errors. Please review your shopping cart and correct the mistakes.',
+      ),
+    ).toBeVisible();
+
+    expect(
+      await wrapper.findByText('Specify your trimming options'),
+    ).toBeVisible();
+  });
+
   it(`displays error page when error while placing order`, async () => {
     const fakeClient = new FakeBoclipsClient();
 
@@ -308,6 +348,7 @@ describe('CartView', () => {
       .findByText('Confirm order')
       .then((button) => fireEvent.click(button));
   }
+
   it('takes you back to video page when cart item title is clicked', async () => {
     const fakeClient = new FakeBoclipsClient();
 

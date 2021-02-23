@@ -3,6 +3,7 @@ import Button from '@boclips-ui/button';
 import { getTotalPriceDisplayValue } from 'src/services/getTotalPriceDisplayValue';
 import { Video } from 'boclips-api-client/dist/types';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
+import { useCartValidation } from 'src/components/common/providers/CartValidationProvider';
 import { OrderModal } from '../orderModal/OrderModal';
 
 interface Props {
@@ -15,8 +16,16 @@ interface CartSummaryItem {
 }
 
 export const CartOrderSummary = ({ videos }: Props) => {
+  const [cartItemValidation] = useCartValidation();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const { data: cart } = useCartQuery();
+  const [displayErrorMessage, setDisplayErrorMessage] = useState<boolean>(
+    false,
+  );
+
+  const isCartValid = Object.values(cartItemValidation).every(
+    (item) => item.isTrimValid,
+  );
 
   const CartSummaryItem = ({ label, value }: CartSummaryItem) => {
     return (
@@ -71,11 +80,20 @@ export const CartOrderSummary = ({ videos }: Props) => {
             )}`}</span>
           </div>
           <Button
-            onClick={() => setModalOpen(!modalOpen)}
+            onClick={() => {
+              setDisplayErrorMessage(!isCartValid);
+              setModalOpen(isCartValid);
+            }}
             text="Place order"
             height="44px"
             width="100%"
           />
+          {displayErrorMessage && (
+            <div>
+              There are some errors. Please review your shopping cart and
+              correct the mistakes.
+            </div>
+          )}
         </div>
       </div>
       <OrderModal
