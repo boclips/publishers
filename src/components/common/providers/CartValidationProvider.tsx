@@ -5,20 +5,25 @@ interface Props {
 }
 
 interface CartItemValidation {
-  isTrimValid: boolean;
+  trim: {
+    isFromValid: boolean;
+    isToValid: boolean;
+  };
 }
 
 type CartItemValidationMap = { [key in string]: CartItemValidation };
 
-const queryClientContext = createContext<
-  [
-    CartItemValidationMap,
-    React.Dispatch<React.SetStateAction<CartItemValidationMap>>,
-  ]
->(null);
+const queryClientContext = createContext<{
+  isCartValid: boolean;
+  cartItemsValidation: CartItemValidationMap;
+  setCartItemsValidation: React.Dispatch<
+    React.SetStateAction<CartItemValidationMap>
+  >;
+}>(null);
 
 export const CartValidationProvider = ({ children }: Props) => {
-  const value = useState<CartItemValidationMap>({});
+  const value = useProvideValidation();
+
   return (
     <queryClientContext.Provider value={value}>
       {children}
@@ -28,4 +33,20 @@ export const CartValidationProvider = ({ children }: Props) => {
 
 export const useCartValidation = () => {
   return useContext(queryClientContext);
+};
+
+const useProvideValidation = () => {
+  const [cartItemsValidation, setCartItemsValidation] = useState<
+    CartItemValidationMap
+  >({});
+
+  const isCartValid = Object.values(cartItemsValidation).every((item) => {
+    return item.trim.isFromValid && item.trim.isToValid;
+  });
+
+  return {
+    isCartValid,
+    cartItemsValidation,
+    setCartItemsValidation,
+  };
 };

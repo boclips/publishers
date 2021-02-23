@@ -16,15 +16,11 @@ interface CartSummaryItem {
 }
 
 export const CartOrderSummary = ({ videos }: Props) => {
-  const [cartItemValidation] = useCartValidation();
+  const { isCartValid } = useCartValidation();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const { data: cart } = useCartQuery();
   const [displayErrorMessage, setDisplayErrorMessage] = useState<boolean>(
     false,
-  );
-
-  const isCartValid = Object.values(cartItemValidation).every(
-    (item) => item.isTrimValid,
   );
 
   const CartSummaryItem = ({ label, value }: CartSummaryItem) => {
@@ -89,7 +85,7 @@ export const CartOrderSummary = ({ videos }: Props) => {
             width="100%"
           />
           {displayErrorMessage && (
-            <div>
+            <div className="text-red-error text-xs mt-2">
               There are some errors. Please review your shopping cart and
               correct the mistakes.
             </div>
