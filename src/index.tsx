@@ -12,6 +12,17 @@ import { Integrations } from '@sentry/tracing';
 import App from './App';
 import { Constants } from './AppConstants';
 
+const addHubspotScript = () => {
+  const hubspotScript = document.createElement('script');
+  hubspotScript.setAttribute('type', 'text/javascript');
+  hubspotScript.setAttribute('id', 'hs-script-loader');
+  hubspotScript.setAttribute('async', 'true');
+  hubspotScript.setAttribute('defer', 'true');
+  hubspotScript.src = '//js.hs-scripts.com/4854096.js';
+
+  document.head.appendChild(hubspotScript);
+};
+
 if (process.env.NODE_ENV === 'production') {
   const sentryRelease = process.env.SENTRY_RELEASE;
 
@@ -27,6 +38,8 @@ if (process.env.NODE_ENV === 'production') {
       /^chrome:\/\//i,
     ],
   });
+
+  addHubspotScript();
 }
 
 const authOptions = {
