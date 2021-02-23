@@ -148,6 +148,9 @@ describe('order table', () => {
       '2 videos',
     );
     expect(await wrapper.findByText('i am a note')).toBeVisible();
+    expect(
+      wrapper.getByText(/To edit or cancel this order, please contact/),
+    ).toBeVisible();
   });
   it('does not render notes field if there is no note', async () => {
     const fakeClient = new FakeBoclipsClient();
