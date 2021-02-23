@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsClientProvider';
+import { Helmet } from 'react-helmet';
 
 describe('SearchResults', () => {
   it('renders a list of videos that match the search query', async () => {
@@ -323,6 +324,36 @@ describe('SearchResults', () => {
       await waitFor(() => {
         const cartCounter = wrapper.getByTestId('cart-counter').innerHTML;
         expect(cartCounter).toBe(cart.items.length.toString());
+      });
+    });
+  });
+
+  describe('window titles', () => {
+    it('displays search query in window title', async () => {
+      render(
+        <MemoryRouter initialEntries={['/videos?q=hello']}>
+          <App apiClient={new FakeBoclipsClient()} />
+        </MemoryRouter>,
+      );
+
+      const helmet = Helmet.peek();
+
+      await waitFor(() => {
+        expect(helmet.title).toEqual('hello videos');
+      });
+    });
+
+    it(`displays default title when no query present`, async () => {
+      render(
+        <MemoryRouter initialEntries={['/videos']}>
+          <App apiClient={new FakeBoclipsClient()} />
+        </MemoryRouter>,
+      );
+
+      const helmet = Helmet.peek();
+
+      await waitFor(() => {
+        expect(helmet.title).toEqual('Boclips');
       });
     });
   });

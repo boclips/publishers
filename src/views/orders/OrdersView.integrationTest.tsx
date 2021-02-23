@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
@@ -12,6 +12,7 @@ import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/m
 import { Link } from 'boclips-api-client/dist/types';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
+import { Helmet } from 'react-helmet';
 
 describe('OrderView', () => {
   it('loads the orders view when there are no orders', async () => {
@@ -228,5 +229,21 @@ describe('OrderView', () => {
     expect(thumbnail.style.backgroundImage).toEqual(
       'url(https://validThumbnail.com)',
     );
+  });
+
+  describe('window titles', () => {
+    it(`displays Orders as window title`, async () => {
+      render(
+        <MemoryRouter initialEntries={['/orders']}>
+          <App apiClient={new FakeBoclipsClient()} />
+        </MemoryRouter>,
+      );
+
+      const helmet = Helmet.peek();
+
+      await waitFor(() => {
+        expect(helmet.title).toEqual('Orders');
+      });
+    });
   });
 });

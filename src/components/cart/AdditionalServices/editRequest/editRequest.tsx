@@ -37,7 +37,7 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
   return (
     <>
       <div
-        className={c('h-9 flex flex-col relative justify-center relative', {
+        className={c('h-9 flex flex-col justify-center relative', {
           'mb-3': serviceRequested,
         })}
       >

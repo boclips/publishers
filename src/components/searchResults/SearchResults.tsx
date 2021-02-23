@@ -3,6 +3,7 @@ import React from 'react';
 import { VideoSearchResults } from 'boclips-api-client/dist/sub-clients/videos/model/VideoSearchResults';
 import { VideoCardList } from 'src/components/searchResults/VideoCardList';
 import VideoCardPlaceholder from '@boclips-ui/video-card-placeholder';
+import { Helmet } from 'react-helmet';
 
 interface Props {
   results?: VideoSearchResults;
@@ -39,6 +40,7 @@ export function SearchResults({
 
   return (
     <div className="col-start-7 col-end-26">
+      {query && <Helmet title={`${query} videos`} />}
       <SearchResultsSummary
         count={results?.pageSpec?.totalElements}
         query={query}
