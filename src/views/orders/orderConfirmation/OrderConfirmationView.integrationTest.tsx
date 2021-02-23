@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 
@@ -34,5 +35,28 @@ describe('OrderConfirmationView', () => {
 
     expect(await wrapper.findByText('Your order is confirmed')).toBeVisible();
     expect(wrapper.getByText('123')).toBeVisible();
+  });
+
+  describe('window titles', () => {
+    it(`displays window title`, async () => {
+      window.history.pushState(
+        {
+          state: {
+            orderLocation: '123',
+          },
+        },
+        'Test page title',
+        '/order-confirmed',
+      );
+
+      const wrapper = render(<App apiClient={new FakeBoclipsClient()} />, {
+        wrapper: BrowserRouter,
+      });
+
+      const helmet = Helmet.peek();
+
+      expect(await wrapper.findByText('Your order is confirmed')).toBeVisible();
+      expect(helmet.title).toEqual('Order Confirmed!');
+    });
   });
 });

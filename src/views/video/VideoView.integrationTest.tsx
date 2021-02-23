@@ -10,6 +10,7 @@ import {
 } from 'boclips-api-client/dist/test-support';
 import { Constants } from 'src/AppConstants';
 import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
+import { Helmet } from 'react-helmet';
 
 describe('Video View', () => {
   it('on video page video details are rendered', async () => {
@@ -86,5 +87,41 @@ describe('Video View', () => {
       `[data-qa="${Constants.HOST}/videos/video-id?referer=referringUserId"]`,
     );
     expect(copyMock).toBeVisible();
+  });
+
+  describe('window titles', () => {
+    it(`displays video title as window title`, async () => {
+      const video = VideoFactory.sample({
+        id: 'video-1',
+        title: 'the coolest video you ever did see',
+      });
+
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.videos.insertVideo(video);
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos/video-1']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+
+      expect(
+        await wrapper.findByText('the coolest video you ever did see'),
+      ).toBeVisible();
+
+      const helmet = Helmet.peek();
+      expect(helmet.title).toEqual('the coolest video you ever did see');
+    });
+
+    it('displays default window title when no video available', () => {
+      render(
+        <MemoryRouter initialEntries={['/videos/video-2']}>
+          <App apiClient={new FakeBoclipsClient()} />
+        </MemoryRouter>,
+      );
+
+      const helmet = Helmet.peek();
+      expect(helmet.title).toEqual('Boclips');
+    });
   });
 });

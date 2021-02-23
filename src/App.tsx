@@ -11,6 +11,7 @@ import { AnalyticsService } from 'src/services/analytics/AnalyticsService';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import ScrollToTop from 'src/hooks/scrollToTop';
+import { Helmet } from 'react-helmet';
 import { BoclipsClientProvider } from './components/common/providers/BoclipsClientProvider';
 import Appcues from './services/analytics/Appcues';
 import { GlobalQueryErrorProvider } from './components/common/providers/GlobalQueryErrorProvider';
@@ -83,6 +84,7 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
         <BoclipsClientProvider client={apiClient}>
           <Suspense fallback={<Loading />}>
             <JSErrorBoundary fallback={<RefreshPageError />}>
+              <Helmet title="Boclips" />
               <Switch>
                 <Route exact path="/">
                   <HomeView />
@@ -94,9 +96,11 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
                   <VideoView />
                 </Route>
                 <Route exact path="/cart">
+                  <Helmet title="Cart" />
                   <CartView />
                 </Route>
                 <Route exact path="/orders">
+                  <Helmet title="Orders" />
                   <OrdersView />
                 </Route>
                 <Route exact path="/orders/:id">
@@ -112,10 +116,16 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
                 <Route
                   path="/order-confirmed"
                   render={({ location }) => (
-                    <OrderConfirmationView state={location?.state} />
+                    <>
+                      <Helmet title="Order Confirmed!" />
+                      <OrderConfirmationView state={location?.state} />
+                    </>
                   )}
                 />
-                <Route component={NotFound} />
+                <Route>
+                  <Helmet title="Page not found" />
+                  <NotFound />
+                </Route>
               </Switch>
             </JSErrorBoundary>
           </Suspense>

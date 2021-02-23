@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -12,6 +12,7 @@ import { Link } from 'boclips-api-client/dist/types';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { OrderStatus } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
+import { Helmet } from 'react-helmet';
 
 describe('order table', () => {
   it('renders the order header with an id that matches query', async () => {
@@ -167,5 +168,21 @@ describe('order table', () => {
 
     expect(await wrapper.findByText('Order date')).toBeVisible();
     expect(wrapper.queryByText('Notes')).not.toBeInTheDocument();
+  });
+
+  describe('window titles', () => {
+    it(`displays order id in window title`, async () => {
+      render(
+        <MemoryRouter initialEntries={['/orders/order-123']}>
+          <App apiClient={new FakeBoclipsClient()} />
+        </MemoryRouter>,
+      );
+
+      const helmet = Helmet.peek();
+
+      await waitFor(() => {
+        expect(helmet.title).toEqual('Order order-123');
+      });
+    });
   });
 });

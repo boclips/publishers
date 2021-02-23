@@ -7,6 +7,7 @@ import {
 } from 'src/components/videoPage/videoPageContent';
 import { useFindOrGetVideo } from 'src/hooks/api/videoQuery';
 import { useGetIdFromLocation } from 'src/hooks/useLocationParams';
+import { Helmet } from 'react-helmet';
 import { ErrorBoundary } from '../common/errors/ErrorBoundary';
 import { RefreshPageError } from '../common/errors/refreshPageError/RefreshPageError';
 
@@ -26,6 +27,7 @@ export const VideoPage = () => {
           className="col-start-2 col-end-26 row-start-2 row-end-4 flex justify-between"
         >
           <ErrorBoundary fallback={<RefreshPageError />}>
+            {video?.title && <Helmet title={video.title} />}
             <div className="w-2/3">
               <div className="mb-4">
                 <VideoPlayer video={video} />

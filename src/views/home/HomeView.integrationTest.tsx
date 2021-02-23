@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { Helmet } from 'react-helmet';
 
 describe('HomeView', () => {
   it('loads the home view text', async () => {
@@ -16,6 +17,18 @@ describe('HomeView', () => {
     expect(
       await wrapper.findByText('What videos do you need today?'),
     ).toBeInTheDocument();
+  });
+
+  it('displays Boclips as window title', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App apiClient={new FakeBoclipsClient()} />
+      </MemoryRouter>,
+    );
+
+    const helmet = Helmet.peek();
+
+    expect(helmet.title).toEqual('Boclips');
   });
 
   describe('Navigating to search', () => {

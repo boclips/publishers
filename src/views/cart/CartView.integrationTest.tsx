@@ -15,6 +15,7 @@ import { BoclipsApiErrorFactory } from 'boclips-api-client/dist/test-support/Boc
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { QueryClient } from 'react-query';
+import { Helmet } from 'react-helmet';
 
 describe('CartView', () => {
   const video = VideoFactory.sample({
@@ -362,5 +363,21 @@ describe('CartView', () => {
     fireEvent.click(title);
 
     expect(await wrapper.findByTestId('video-page')).toBeVisible();
+  });
+
+  describe('window titles', () => {
+    it(`displays Cart as window title`, async () => {
+      render(
+        <MemoryRouter initialEntries={['/cart']}>
+          <App apiClient={new FakeBoclipsClient()} />
+        </MemoryRouter>,
+      );
+
+      const helmet = Helmet.peek();
+
+      await waitFor(() => {
+        expect(helmet.title).toEqual('Cart');
+      });
+    });
   });
 });
