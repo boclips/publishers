@@ -36,9 +36,9 @@ export const DurationInput = ({
       <input
         aria-label={ariaLabel}
         className={c(
-          'rounded outline-none w-16 h-10 ml-2 mr-6 px-2 text-center',
+          'rounded outline-none w-16 h-10 ml-2 mr-6 px-2 text-center text-gray-800',
           {
-            'border-blue-300 border': isValid,
+            'border-blue-300 border-1': isValid,
             'border-red-error border-1': !isValid,
           },
         )}

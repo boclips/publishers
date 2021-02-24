@@ -176,7 +176,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
             />
           </div>
           {!isTrimValid && (
-            <div className="font-normal text-xs ml-12 text-red-error">
+            <div className="font-normal text-xs ml-12 text-red-error mt-1">
               Specify your trimming options
             </div>
           )}
