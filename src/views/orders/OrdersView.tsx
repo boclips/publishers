@@ -6,6 +6,7 @@ import { useGetOrdersQuery } from 'src/hooks/api/orderQuery';
 import { Loading } from 'src/components/common/Loading';
 import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
+import EmptyOrdersSVG from 'src/resources/icons/empty-order-history.svg';
 
 export const PAGE_SIZE = 10;
 
@@ -21,10 +22,10 @@ const OrdersView = () => {
     setPage(pageNum);
   };
 
-  const areOrders = orders?.orders.length > 0;
+  const hasOrders = orders?.orders.length > 0;
 
   const orderRender = () => {
-    if (areOrders)
+    if (hasOrders)
       return (
         <OrdersTable paginationPage={changePaginationPage} orders={orders} />
       );
@@ -32,18 +33,41 @@ const OrdersView = () => {
     return <div>This will be an empty state</div>;
   };
 
-  if (isLoading && !areOrders) return <Loading />;
+  if (isLoading && !hasOrders) return <Loading />;
 
   return (
     <div className="grid grid-rows-orders-view grid-cols-container gap-8">
       <Navbar showSearchBar />
       <div className="col-start-2 col-end-26 row-start-2 row-end-4">
-        <div className="font-bold text-2xl text-grey-800">Your Orders</div>
-        <div>
-          <ErrorBoundary fallback={<RefreshPageError />}>
-            {orderRender()}
-          </ErrorBoundary>
-        </div>
+            <div className="font-bold text-2xl text-grey-800">Your Orders</div>
+        {hasOrders ? (
+          <div>
+            <div>
+              <ErrorBoundary fallback={<RefreshPageError />}>
+                {orderRender()}
+              </ErrorBoundary>
+            </div>
+          </div>
+        ) : (
+          <div className="col-start-2 col-end-26 bg-primary-light h-full rounded-lg">
+            <section className={'grid grid-cols-content gap-8  h-full'}>
+              <div className="col-start-5 col-end-9 flex justify-center items-center my-12">
+                <span data-qa="empty-orders-image">
+                  <EmptyOrdersSVG />
+                </span>
+              </div>
+              <div className="col-start-12 col-end-21 text-blue-800 flex flex-col justify-center my-11">
+                <h2 className="blue-800 font-medium text-4xl">
+                  You have no order history... yet!
+                </h2>
+                <p className="text-gray-800 text-lg">
+                  But when you order something, you can keep track of all your
+                  orders here.
+                </p>
+              </div>
+            </section>
+          </div>
+        )}
       </div>
       <Footer />
     </div>

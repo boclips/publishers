@@ -15,7 +15,7 @@ import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFa
 import { Helmet } from 'react-helmet';
 
 describe('OrderView', () => {
-  it('loads the orders view when there are no orders', async () => {
+  it('loads the no orders view when there are no orders', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
         <App apiClient={new FakeBoclipsClient()} />
@@ -23,8 +23,14 @@ describe('OrderView', () => {
     );
 
     expect(
-      await wrapper.findByText('This will be an empty state'),
+      await wrapper.findByText('You have no order history... yet!'),
     ).toBeVisible();
+    expect(
+      wrapper.getByText(
+        'But when you order something, you can keep track of all your orders here',
+      ),
+    ).toBeInTheDocument();
+    expect(wrapper.getByTestId('empty-orders-image')).toBeInTheDocument();
   });
 
   it('navigates to order view when view order is clicked', async () => {
