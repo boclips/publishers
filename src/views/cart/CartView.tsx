@@ -34,10 +34,17 @@ const CartView = () => {
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">
       <Navbar showSearchBar />
-      <CartSummary cart={cart} />
-      <ErrorBoundary fallback={<RefreshPageError />}>
-        {renderCart()}
-      </ErrorBoundary>
+      {itemsInCart ? (
+        <>
+          <CartSummary cart={cart} />
+          <ErrorBoundary fallback={<RefreshPageError />}>
+            {renderCart()}
+          </ErrorBoundary>
+        </>
+      ) : (
+        <EmptyCart />
+      )}
+
       <Footer />
     </div>
   );
