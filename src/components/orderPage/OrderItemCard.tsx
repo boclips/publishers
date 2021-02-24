@@ -3,6 +3,7 @@ import React from 'react';
 import { useFindOrGetVideo } from 'src/hooks/api/videoQuery';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { AdditionalServicesSummaryPreview } from 'src/components/cart/AdditionalServices/AdditionalServicesSummaryPreview';
+import { Link } from 'react-router-dom';
 import s from './style.module.less';
 
 interface Props {
@@ -38,7 +39,12 @@ export const OrderItemCard = ({ item }: Props) => {
         </span>
 
         <div className="flex flex-col">
-          <span className="font-medium text-base">{item.video.title}</span>
+          <Link
+            to={`/videos/${item.video.id}`}
+            className="font-medium text-base text-gray-900 hover:text-gray-900"
+          >
+            {item.video.title}
+          </Link>
           <span>ID: {item.video.id} </span>
         </div>
 

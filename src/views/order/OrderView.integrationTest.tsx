@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -168,6 +168,47 @@ describe('order table', () => {
 
     expect(await wrapper.findByText('Order date')).toBeVisible();
     expect(wrapper.queryByText('Notes')).not.toBeInTheDocument();
+  });
+
+  it('video title links to video page', async () => {
+    const fakeClient = new FakeBoclipsClient();
+    const item = OrderItemFactory.sample({
+      video: {
+        title: 'linked-video-title',
+        id: 'video-id-1',
+        captionStatus: OrderCaptionStatus.PROCESSING,
+        maxResolutionAvailable: true,
+        videoReference: 'video-ref',
+        types: ['I am a type', 'me too!'],
+        _links: {
+          fullProjection: new Link({ href: 'fullprojection', templated: true }),
+          videoUpload: new Link({ href: 'videoUpload', templated: true }),
+          captionAdmin: new Link({ href: 'captionAdmin', templated: true }),
+        },
+      },
+      price: {
+        displayValue: '$600',
+        currency: 'USD',
+        value: 600,
+      },
+    });
+    const order = OrdersFactory.sample({
+      id: 'order-video-link',
+      items: [item],
+    });
+
+    fakeClient.orders.insertOrderFixture(order);
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/orders/order-video-link']}>
+        <App apiClient={fakeClient} />
+      </MemoryRouter>,
+    );
+
+    const title = await wrapper.findByText('linked-video-title');
+
+    fireEvent.click(title);
+
+    expect(await wrapper.findByTestId('video-page')).toBeVisible();
   });
 
   describe('window titles', () => {
