@@ -32,6 +32,12 @@ export const CartOrderSummary = ({ videos }: Props) => {
     );
   };
 
+  React.useEffect(() => {
+    if (isCartValid) {
+      setDisplayErrorMessage(false);
+    }
+  }, [isCartValid]);
+
   const transriptsRequested = cart.items?.find(
     (item) => item?.additionalServices?.transcriptRequested,
   );

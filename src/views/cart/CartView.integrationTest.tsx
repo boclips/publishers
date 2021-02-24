@@ -231,7 +231,7 @@ describe('CartView', () => {
     expect(await wrapper.findByText('Trimming')).toBeVisible();
   });
 
-  it('displays error when trying to place order with invalid trim values', async () => {
+  it('displays error when trying to place order with invalid trim values and then removes the error when trim becomes valid again', async () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(
@@ -255,8 +255,6 @@ describe('CartView', () => {
       target: { value: '-2' },
     });
 
-    fireEvent.blur(await wrapper.findByLabelText('trim-from'));
-
     fireEvent.click(await wrapper.findByText('Place order'));
     expect(
       await wrapper.findByText(
@@ -267,6 +265,19 @@ describe('CartView', () => {
     expect(
       await wrapper.findByText('Specify your trimming options'),
     ).toBeVisible();
+
+    fireEvent.change(await wrapper.findByLabelText('trim-from'), {
+      target: { value: '0:00' },
+    });
+    fireEvent.change(await wrapper.findByLabelText('trim-to'), {
+      target: { value: '0:05' },
+    });
+
+    expect(
+      wrapper.queryByText(
+        'There are some errors. Please review your shopping cart and correct the mistakes.',
+      ),
+    ).not.toBeInTheDocument();
   });
 
   it('allows an order to be placed when trim is ticked but never touched', async () => {
