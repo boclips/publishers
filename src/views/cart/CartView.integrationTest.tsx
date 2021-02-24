@@ -45,7 +45,7 @@ describe('CartView', () => {
     expect(await wrapper.queryByText(/items (0)/)).not.toBeInTheDocument();
 
     expect(
-      await wrapper.findByText('There are no items in your shopping cart'),
+      await wrapper.findByText('Your shopping cart is empty'),
     ).toBeInTheDocument();
   });
 
@@ -112,17 +112,10 @@ describe('CartView', () => {
 
     const confirmation = await wrapper.findByTestId('order-confirmed');
     expect(await fakeClient.orders.getAll()).toHaveLength(1);
-    const placedOrder = await fakeClient.orders
-      .getAll()
-      .then((orders) => orders[0]);
 
     expect(
       within(confirmation).getByText('Your order is confirmed'),
     ).toBeVisible();
-
-    expect(
-      within(confirmation).getByText('View order details').closest('a'),
-    ).toHaveAttribute('href', `/orders/${placedOrder.id}`);
 
     expect(
       within(confirmation).getByText('View all orders').closest('a'),
@@ -186,7 +179,7 @@ describe('CartView', () => {
     const removeButton = await wrapper.findByText('Remove');
     fireEvent.click(removeButton);
     expect(
-      await wrapper.findByText('There are no items in your shopping cart'),
+      await wrapper.findByText('Your shopping cart is empty'),
     ).toBeInTheDocument();
   });
 

@@ -34,7 +34,9 @@ describe('OrderConfirmationView', () => {
     });
 
     expect(await wrapper.findByText('Your order is confirmed')).toBeVisible();
-    expect(wrapper.getByText('123')).toBeVisible();
+    expect(
+      wrapper.getByText('Your order #123 is currently being processed.'),
+    ).toBeVisible();
   });
 
   describe('window titles', () => {

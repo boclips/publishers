@@ -27,7 +27,7 @@ describe('OrderView', () => {
     ).toBeVisible();
     expect(
       wrapper.getByText(
-        'But when you order something, you can keep track of all your orders here',
+        'But when you order something, you can keep track of all your orders here.',
       ),
     ).toBeInTheDocument();
     expect(wrapper.getByTestId('empty-orders-image')).toBeInTheDocument();

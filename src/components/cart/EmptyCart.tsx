@@ -1,9 +1,9 @@
 import EmptyCartCharacter from 'src/resources/icons/empty-cart-character.svg';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import React from 'react';
 import c from 'classnames';
-import s from './style.module.less';
 import Button from '@boclips-ui/button';
+import s from './style.module.less';
 
 export const EmptyCart = () => {
   const history = useHistory();
