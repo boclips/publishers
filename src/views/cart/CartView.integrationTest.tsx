@@ -177,226 +177,6 @@ describe('CartView', () => {
     expect(await wrapper.findByText('Total')).toBeVisible();
   });
 
-  it('adds additional services to the cart summary when selected', async () => {
-    const fakeClient = new FakeBoclipsClient();
-
-    fakeClient.videos.insertVideo(
-      VideoFactory.sample({
-        price: { amount: 300, currency: 'USD' },
-        id: 'video-additional-service',
-      }),
-    );
-
-    fakeClient.carts.insertCartItem({
-      videoId: 'video-additional-service',
-      additionalServices: {},
-    });
-
-    const wrapper = renderCartView(fakeClient);
-
-    expect(await wrapper.queryByText('Captions')).not.toBeInTheDocument();
-    expect(await wrapper.queryByText('Editing')).not.toBeInTheDocument();
-    expect(await wrapper.queryByText('Trimming')).not.toBeInTheDocument();
-    expect(await wrapper.queryByText('Transcripts')).not.toBeInTheDocument();
-
-    fireEvent.click(await wrapper.findByText('Request other type of editing'));
-
-    const input = await wrapper.findByPlaceholderText(
-      'eg. Remove front and end credits',
-    );
-
-    fireEvent.change(input, {
-      target: { value: 'please do some lovely editing' },
-    });
-
-    fireEvent.click(await wrapper.findByText('Request transcripts'));
-    fireEvent.click(await wrapper.findByText('Request English captions'));
-    fireEvent.click(await wrapper.findByText('Trim video'));
-
-    fireEvent.change(await wrapper.findByLabelText('trim-from'), {
-      target: { value: '2' },
-    });
-
-    fireEvent.blur(await wrapper.findByLabelText('trim-from'));
-
-    fireEvent.change(await wrapper.findByLabelText('trim-to'), {
-      target: { value: '3' },
-    });
-
-    fireEvent.blur(await wrapper.findByLabelText('trim-to'));
-
-    expect(await wrapper.findByText('Transcripts')).toBeVisible();
-    expect(await wrapper.findByText('Captions')).toBeVisible();
-    expect(await wrapper.findByText('Editing')).toBeVisible();
-    expect(await wrapper.findByText('Trimming')).toBeVisible();
-  });
-
-  it('displays error when trying to place order with invalid trim values and then removes the error when trim becomes valid again', async () => {
-    const fakeClient = new FakeBoclipsClient();
-
-    fakeClient.videos.insertVideo(
-      VideoFactory.sample({
-        price: { amount: 300, currency: 'USD' },
-        id: 'video-additional-service',
-      }),
-    );
-
-    fakeClient.carts.insertCartItem({
-      videoId: 'video-additional-service',
-      additionalServices: {},
-    });
-
-    const wrapper = renderCartView(fakeClient);
-
-    fireEvent.click(await wrapper.findByText('Trim video'));
-
-    fireEvent.focus(await wrapper.findByLabelText('trim-from'));
-    fireEvent.change(await wrapper.findByLabelText('trim-from'), {
-      target: { value: '-2' },
-    });
-
-    fireEvent.click(await wrapper.findByText('Place order'));
-    expect(
-      await wrapper.findByText(
-        'There are some errors. Please review your shopping cart and correct the mistakes.',
-      ),
-    ).toBeVisible();
-
-    expect(
-      await wrapper.findByText('Specify your trimming options'),
-    ).toBeVisible();
-
-    fireEvent.change(await wrapper.findByLabelText('trim-from'), {
-      target: { value: '0:00' },
-    });
-    fireEvent.change(await wrapper.findByLabelText('trim-to'), {
-      target: { value: '0:05' },
-    });
-
-    expect(
-      wrapper.queryByText(
-        'There are some errors. Please review your shopping cart and correct the mistakes.',
-      ),
-    ).not.toBeInTheDocument();
-  });
-
-  it('allows an order to be placed when trim is ticked but never touched', async () => {
-    const fakeClient = new FakeBoclipsClient();
-
-    fakeClient.videos.insertVideo(
-      VideoFactory.sample({
-        price: { amount: 300, currency: 'USD' },
-        id: 'video-additional-service',
-      }),
-    );
-
-    fakeClient.carts.insertCartItem({
-      videoId: 'video-additional-service',
-      additionalServices: {},
-    });
-
-    const wrapper = renderCartView(fakeClient);
-
-    fireEvent.click(await wrapper.findByText('Trim video'));
-
-    fireEvent.click(await wrapper.findByText('Place order'));
-    expect(
-      wrapper.queryByText(
-        'There are some errors. Please review your shopping cart and correct the mistakes.',
-      ),
-    ).not.toBeInTheDocument();
-
-    expect(
-      await wrapper.findByText(
-        'Please confirm you want to place the following order:',
-      ),
-    ).toBeVisible();
-
-    expect(
-      await wrapper.findByText('No additional services selected'),
-    ).toBeVisible();
-  });
-
-  it('prevents from typing non digit or colon characters', async () => {
-    const fakeClient = new FakeBoclipsClient();
-
-    fakeClient.videos.insertVideo(
-      VideoFactory.sample({
-        price: { amount: 300, currency: 'USD' },
-        id: 'video-additional-service',
-      }),
-    );
-
-    fakeClient.carts.insertCartItem({
-      videoId: 'video-additional-service',
-      additionalServices: {},
-    });
-
-    const wrapper = renderCartView(fakeClient);
-
-    fireEvent.click(await wrapper.findByText('Trim video'));
-
-    fireEvent.focus(await wrapper.findByLabelText('trim-from'));
-
-    userEvent.type(wrapper.getByLabelText('trim-from'), 'k1a2:30s');
-
-    expect(
-      (wrapper.getByLabelText('trim-from') as HTMLInputElement).value,
-    ).toEqual('12:30');
-  });
-
-  it(`displays error page when error while placing order`, async () => {
-    const fakeClient = new FakeBoclipsClient();
-
-    fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
-    fakeClient.videos.insertVideo(video);
-    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
-    fakeClient.orders.rejectNextPlaceOrder(
-      BoclipsApiErrorFactory.sample({ message: 'channel is missing price' }),
-    );
-
-    const wrapper = renderCartView(fakeClient);
-    await placeAndConfirmOrder(wrapper);
-
-    expect(
-      await wrapper.findByText(/There was an error processing your request/),
-    ).toBeVisible();
-  });
-
-  it('displays a notes field', async () => {
-    const fakeClient = new FakeBoclipsClient();
-    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
-
-    const wrapper = renderCartView(fakeClient);
-
-    expect(
-      await wrapper.findByPlaceholderText(
-        'Add a note about this order (optional)',
-      ),
-    ).toBeVisible();
-  });
-
-  it('saves a note on the cart', async () => {
-    const fakeClient = new FakeBoclipsClient();
-    fakeClient.carts.insertCartItem({ videoId: 'video-id' });
-
-    const wrapper = renderCartView(fakeClient);
-
-    const input = await wrapper.findByPlaceholderText(
-      'Add a note about this order (optional)',
-    );
-
-    fireEvent.change(input, { target: { value: 'i am a note' } });
-    const changedInput = await wrapper.findByDisplayValue('i am a note');
-    expect(changedInput).toBeVisible();
-
-    const cart = await fakeClient.carts.getCart();
-
-    await waitFor(() => {
-      expect(cart.note).toEqual('i am a note');
-    });
-  });
-
   it('removes item from cart', async () => {
     const fakeClient = new FakeBoclipsClient();
     fakeClient.videos.insertVideo(video);
@@ -409,34 +189,6 @@ describe('CartView', () => {
       await wrapper.findByText('There are no items in your shopping cart'),
     ).toBeInTheDocument();
   });
-
-  function renderCartView(client) {
-    return render(
-      <MemoryRouter initialEntries={['/cart']}>
-        <App
-          apiClient={client}
-          reactQueryClient={new QueryClient(queryClientConfig)}
-        />
-      </MemoryRouter>,
-    );
-  }
-
-  async function placeAndConfirmOrder(wrapper: RenderResult) {
-    await wrapper.findByText('Place order');
-    fireEvent.click(wrapper.getByText('Place order'));
-
-    const modal = await wrapper.findByTestId('order-modal');
-
-    await waitFor(async () =>
-      expect(
-        within(modal).getByText('Confirm order').closest('button'),
-      ).not.toBeDisabled(),
-    );
-
-    await within(modal)
-      .findByText('Confirm order')
-      .then((button) => fireEvent.click(button));
-  }
 
   it('takes you back to video page when cart item title is clicked', async () => {
     const fakeClient = new FakeBoclipsClient();
@@ -451,6 +203,230 @@ describe('CartView', () => {
     fireEvent.click(title);
 
     expect(await wrapper.findByTestId('video-page')).toBeVisible();
+  });
+
+  describe('interacting with additional services', () => {
+    it('adds additional services to the cart summary when selected', async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          price: { amount: 300, currency: 'USD' },
+          id: 'video-additional-service',
+        }),
+      );
+
+      fakeClient.carts.insertCartItem({
+        videoId: 'video-additional-service',
+        additionalServices: {},
+      });
+
+      const wrapper = renderCartView(fakeClient);
+
+      expect(await wrapper.queryByText('Captions')).not.toBeInTheDocument();
+      expect(await wrapper.queryByText('Editing')).not.toBeInTheDocument();
+      expect(await wrapper.queryByText('Trimming')).not.toBeInTheDocument();
+      expect(await wrapper.queryByText('Transcripts')).not.toBeInTheDocument();
+
+      fireEvent.click(
+        await wrapper.findByText('Request other type of editing'),
+      );
+
+      const input = await wrapper.findByPlaceholderText(
+        'eg. Remove front and end credits',
+      );
+
+      fireEvent.change(input, {
+        target: { value: 'please do some lovely editing' },
+      });
+
+      fireEvent.click(await wrapper.findByText('Request transcripts'));
+      fireEvent.click(await wrapper.findByText('Request English captions'));
+      fireEvent.click(await wrapper.findByText('Trim video'));
+
+      fireEvent.change(await wrapper.findByLabelText('trim-from'), {
+        target: { value: '2' },
+      });
+
+      fireEvent.blur(await wrapper.findByLabelText('trim-from'));
+
+      fireEvent.change(await wrapper.findByLabelText('trim-to'), {
+        target: { value: '3' },
+      });
+
+      fireEvent.blur(await wrapper.findByLabelText('trim-to'));
+
+      expect(await wrapper.findByText('Transcripts')).toBeVisible();
+      expect(await wrapper.findByText('Captions')).toBeVisible();
+      expect(await wrapper.findByText('Editing')).toBeVisible();
+      expect(await wrapper.findByText('Trimming')).toBeVisible();
+    });
+
+    it('displays error when trying to place order with invalid trim values and then removes the error when trim becomes valid again', async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          price: { amount: 300, currency: 'USD' },
+          id: 'video-additional-service',
+        }),
+      );
+
+      fakeClient.carts.insertCartItem({
+        videoId: 'video-additional-service',
+        additionalServices: {},
+      });
+
+      const wrapper = renderCartView(fakeClient);
+
+      fireEvent.click(await wrapper.findByText('Trim video'));
+
+      fireEvent.focus(await wrapper.findByLabelText('trim-from'));
+      fireEvent.change(await wrapper.findByLabelText('trim-from'), {
+        target: { value: '-2' },
+      });
+
+      fireEvent.click(await wrapper.findByText('Place order'));
+      expect(
+        await wrapper.findByText(
+          'There are some errors. Please review your shopping cart and correct the mistakes.',
+        ),
+      ).toBeVisible();
+
+      expect(
+        await wrapper.findByText('Specify your trimming options'),
+      ).toBeVisible();
+
+      fireEvent.change(await wrapper.findByLabelText('trim-from'), {
+        target: { value: '0:00' },
+      });
+      fireEvent.change(await wrapper.findByLabelText('trim-to'), {
+        target: { value: '0:05' },
+      });
+
+      expect(
+        wrapper.queryByText(
+          'There are some errors. Please review your shopping cart and correct the mistakes.',
+        ),
+      ).not.toBeInTheDocument();
+    });
+
+    it('allows an order to be placed when trim is ticked but never touched', async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          price: { amount: 300, currency: 'USD' },
+          id: 'video-additional-service',
+        }),
+      );
+
+      fakeClient.carts.insertCartItem({
+        videoId: 'video-additional-service',
+        additionalServices: {},
+      });
+
+      const wrapper = renderCartView(fakeClient);
+
+      fireEvent.click(await wrapper.findByText('Trim video'));
+
+      fireEvent.click(await wrapper.findByText('Place order'));
+      expect(
+        wrapper.queryByText(
+          'There are some errors. Please review your shopping cart and correct the mistakes.',
+        ),
+      ).not.toBeInTheDocument();
+
+      expect(
+        await wrapper.findByText(
+          'Please confirm you want to place the following order:',
+        ),
+      ).toBeVisible();
+
+      expect(
+        await wrapper.findByText('No additional services selected'),
+      ).toBeVisible();
+    });
+
+    it('prevents from typing non digit or colon characters', async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          price: { amount: 300, currency: 'USD' },
+          id: 'video-additional-service',
+        }),
+      );
+
+      fakeClient.carts.insertCartItem({
+        videoId: 'video-additional-service',
+        additionalServices: {},
+      });
+
+      const wrapper = renderCartView(fakeClient);
+
+      fireEvent.click(await wrapper.findByText('Trim video'));
+
+      fireEvent.focus(await wrapper.findByLabelText('trim-from'));
+
+      userEvent.type(wrapper.getByLabelText('trim-from'), 'k1a2:30s');
+
+      expect(
+        (wrapper.getByLabelText('trim-from') as HTMLInputElement).value,
+      ).toEqual('12:30');
+    });
+
+    it(`displays error page when error while placing order`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
+      fakeClient.videos.insertVideo(video);
+      fakeClient.carts.insertCartItem({ videoId: 'video-id' });
+      fakeClient.orders.rejectNextPlaceOrder(
+        BoclipsApiErrorFactory.sample({ message: 'channel is missing price' }),
+      );
+
+      const wrapper = renderCartView(fakeClient);
+      await placeAndConfirmOrder(wrapper);
+
+      expect(
+        await wrapper.findByText(/There was an error processing your request/),
+      ).toBeVisible();
+    });
+
+    it('displays a notes field', async () => {
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.carts.insertCartItem({ videoId: 'video-id' });
+
+      const wrapper = renderCartView(fakeClient);
+
+      expect(
+        await wrapper.findByPlaceholderText(
+          'Add a note about this order (optional)',
+        ),
+      ).toBeVisible();
+    });
+
+    it('saves a note on the cart', async () => {
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.carts.insertCartItem({ videoId: 'video-id' });
+
+      const wrapper = renderCartView(fakeClient);
+
+      const input = await wrapper.findByPlaceholderText(
+        'Add a note about this order (optional)',
+      );
+
+      fireEvent.change(input, { target: { value: 'i am a note' } });
+      const changedInput = await wrapper.findByDisplayValue('i am a note');
+      expect(changedInput).toBeVisible();
+
+      const cart = await fakeClient.carts.getCart();
+
+      await waitFor(() => {
+        expect(cart.note).toEqual('i am a note');
+      });
+    });
   });
 
   describe('window titles', () => {
@@ -469,3 +445,31 @@ describe('CartView', () => {
     });
   });
 });
+
+async function placeAndConfirmOrder(wrapper: RenderResult) {
+  await wrapper.findByText('Place order');
+  fireEvent.click(wrapper.getByText('Place order'));
+
+  const modal = await wrapper.findByTestId('order-modal');
+
+  await waitFor(async () =>
+    expect(
+      within(modal).getByText('Confirm order').closest('button'),
+    ).not.toBeDisabled(),
+  );
+
+  await within(modal)
+    .findByText('Confirm order')
+    .then((button) => fireEvent.click(button));
+}
+
+function renderCartView(client) {
+  return render(
+    <MemoryRouter initialEntries={['/cart']}>
+      <App
+        apiClient={client}
+        reactQueryClient={new QueryClient(queryClientConfig)}
+      />
+    </MemoryRouter>,
+  );
+}
