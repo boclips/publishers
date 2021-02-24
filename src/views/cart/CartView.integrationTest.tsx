@@ -26,6 +26,15 @@ describe('CartView', () => {
     },
     types: [{ name: 'NEWS', id: 2 }],
   });
+  const instructionalVideo = VideoFactory.sample({
+    id: 'instructional-video-id',
+    title: 'instructional video',
+    price: {
+      amount: 400,
+      currency: 'USD',
+    },
+    types: [{ name: 'INSTRUCTIONAL', id: 3 }],
+  });
 
   it('when no items in cart, displays empty cart view with basic header', async () => {
     const wrapper = renderCartView(new FakeBoclipsClient());
@@ -71,7 +80,9 @@ describe('CartView', () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(video);
+    fakeClient.videos.insertVideo(instructionalVideo);
     fakeClient.carts.insertCartItem({ videoId: 'video-id' });
+    fakeClient.carts.insertCartItem({ videoId: 'instructional-video-id' });
 
     const wrapper = renderCartView(fakeClient);
 
@@ -81,6 +92,8 @@ describe('CartView', () => {
     expect(await within(modal).findByText('news video')).toBeVisible();
     expect(await within(modal).findByText('Confirm order')).toBeVisible();
     expect(await within(modal).findByText('$600')).toBeVisible();
+    expect(await within(modal).findByText('$400')).toBeVisible();
+    expect(await within(modal).findByText('$1,000')).toBeVisible();
     expect(await within(modal).findByText('Go back to cart')).toBeVisible();
   });
 

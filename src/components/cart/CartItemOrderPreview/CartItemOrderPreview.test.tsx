@@ -58,6 +58,7 @@ describe('Cart Item Preview', () => {
             trim: { from: '00:00', to: '02:02' },
             transcriptRequested: true,
             captionsRequested: true,
+            editRequest: 'bla bla',
           },
         },
       ],
@@ -70,6 +71,10 @@ describe('Cart Item Preview', () => {
     const video = VideoFactory.sample({
       id: 'video-id',
       title: 'this is cart item test',
+      price: {
+        amount: 1000,
+        currency: 'USD',
+      },
     });
 
     const wrapper = render(
@@ -83,5 +88,9 @@ describe('Cart Item Preview', () => {
     expect(wrapper.getByText(/(.*)Trim: 00:00 - 02:02/s)).toBeInTheDocument();
     expect(wrapper.getByText('Transcripts requested')).toBeInTheDocument();
     expect(wrapper.getByText('English captions requested')).toBeInTheDocument();
+    expect(
+      wrapper.getByText('Other type of editing: bla bla'),
+    ).toBeInTheDocument();
+    expect(wrapper.getByText('$1,000')).toBeInTheDocument();
   });
 });

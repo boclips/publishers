@@ -4,6 +4,7 @@ import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { AdditionalServicesSummaryPreview } from 'src/components/cart/AdditionalServices/AdditionalServicesSummaryPreview';
 import c from 'classnames';
+import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import s from './style.module.less';
 
 interface Props {
@@ -49,8 +50,17 @@ export const CartItemOrderPreview = ({ videos }: Props) => {
             />
           </div>
           <div className="ml-5 w-full">
-            <div className="text-sm text-gray-900 font-medium">
-              {video.title}
+            <div className="text-sm text-gray-900 font-medium flex justify-between">
+              <span>{video.title}</span>
+              {video.price && (
+                <span className="text-base font-normal">
+                  {createPriceDisplayValue(
+                    video.price.amount,
+                    video.price.currency,
+                    navigator.language,
+                  )}
+                </span>
+              )}
             </div>
             <div className="text-xs text-gray-800"> ID: {video.id}</div>
             {getAdditionalServicesSummary(
