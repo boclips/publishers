@@ -117,7 +117,7 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
                   path="/order-confirmed"
                   render={({ location }) => (
                     <>
-                      <Helmet title="Order Confirmed!" />
+                      <Helmet title="Order confirmed!" />
                       <OrderConfirmationView state={location?.state} />
                     </>
                   )}

@@ -56,7 +56,7 @@ describe('OrderConfirmationView', () => {
       const helmet = Helmet.peek();
 
       expect(await wrapper.findByText('Your order is confirmed')).toBeVisible();
-      expect(helmet.title).toEqual('Order Confirmed!');
+      expect(helmet.title).toEqual('Order confirmed!');
     });
   });
 });
