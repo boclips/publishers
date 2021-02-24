@@ -23,6 +23,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
 
   const trimSet = !!cartItem?.additionalServices?.trim;
   const [trimChecked, setTrimChecked] = useState(trimSet);
+  const [isTrimTouched, setIsTrimTouched] = useState(false);
 
   const [trimValue, setTrimValue] = useState<AdditionalServicesApi>({
     trim: {
@@ -40,19 +41,29 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
         [cartItemId]: {
           ...prevState[cartItemId],
           trim: {
-            isFromValid: isTrimFromValid({
-              from: trimValue.trim.from,
-              to: trimValue.trim.to,
-            }),
-            isToValid: isTrimToValid({
-              from: trimValue.trim.from,
-              to: trimValue.trim.to,
-            }),
+            isFromValid:
+              !isTrimTouched ||
+              isTrimFromValid(
+                {
+                  from: trimValue.trim.from,
+                  to: trimValue.trim.to,
+                },
+                videoItem,
+              ),
+            isToValid:
+              !isTrimTouched ||
+              isTrimToValid(
+                {
+                  from: trimValue.trim.from,
+                  to: trimValue.trim.to,
+                },
+                videoItem,
+              ),
           },
         },
       };
     });
-  }, [trimValue, cartItemId, setCartItemsValidation]);
+  }, [trimValue, cartItemId, setCartItemsValidation, isTrimTouched]);
 
   const onChangeCheckbox = (e) => {
     setTrimChecked(e.currentTarget.checked);
@@ -72,6 +83,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
           },
         };
       });
+
+      setIsTrimTouched(false);
     }
   };
 
@@ -149,6 +162,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
                 )}
                 type="text"
                 onBlur={onBlur}
+                onFocus={() => setIsTrimTouched(true)}
                 onChange={(e) => onChangeTrimInput(e, 'from')}
                 placeholder={BASE_DURATION}
                 id={`${videoItem.id}-from`}
@@ -168,6 +182,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
                 )}
                 type="text"
                 placeholder={BASE_DURATION}
+                onFocus={() => setIsTrimTouched(true)}
                 onChange={(e) => onChangeTrimInput(e, 'to')}
                 onBlur={onBlur}
                 id={`${videoItem.id}-to`}

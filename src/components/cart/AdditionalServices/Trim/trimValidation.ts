@@ -1,3 +1,4 @@
+import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import { BASE_DURATION } from './Trim';
 
 interface Trim {
@@ -5,48 +6,71 @@ interface Trim {
   from?: string;
 }
 
-/**
- *
- * I think we should convert the strings to numbers in seconds
- * We should probably check if the to value is greater than the length of the video
- * Also I don't think isTrimToValid should depend on from value, probably a tidy up
- */
-export const isTrimFromValid = (trim: Trim): boolean => {
+export const isTrimFromValid = (trim: Trim, video: Video = null): boolean => {
   const { to, from } = trim;
 
   if (!from) {
     return false;
   }
 
-  if (isBaseDuration(from) && isBaseDuration(to)) {
+  if (!isMatchingTimeFormat(from)) {
     return false;
   }
 
-  if (from.match(/(^\d+:[0-5]\d$)/)) {
-    return true;
-  }
-
-  return false;
-};
-
-export const isTrimToValid = (trim: Trim) => {
-  const { to } = trim;
-
-  if (!to) {
+  if (from === to) {
     return false;
   }
 
-  if (isBaseDuration(to)) {
+  if (!!to && durationInSeconds(from) > durationInSeconds(to)) {
     return false;
   }
 
-  if (to.match(/(^\d+:[0-5]\d$)/)) {
-    return true;
+  if (isFullDuration(trim, video)) {
+    return false;
   }
 
   return true;
 };
 
-const isBaseDuration = (value: string) => {
-  return BASE_DURATION === value;
+export const isTrimToValid = (trim: Trim, video: Video = null) => {
+  const { from, to } = trim;
+
+  if (!to) {
+    return false;
+  }
+
+  if (!isMatchingTimeFormat(to)) {
+    return false;
+  }
+
+  if (from === to) {
+    return false;
+  }
+
+  if (!!from && durationInSeconds(from) > durationInSeconds(to)) {
+    return false;
+  }
+
+  if (isFullDuration(trim, video)) {
+    return false;
+  }
+
+  if (durationInSeconds(trim.to) > video.playback.duration.asSeconds()) {
+    return false;
+  }
+
+  return true;
 };
+
+const isMatchingTimeFormat = (time: string) => time.match(/(^\d+:[0-5]\d$)/);
+
+const isFullDuration = (trim: Trim, video: Video) =>
+  isBaseDuration(trim.from) &&
+  durationInSeconds(trim.to) === video.playback.duration.asSeconds();
+
+const durationInSeconds = (time: string): number => {
+  const minutesAndSeconds = time.split(':');
+  return +minutesAndSeconds[0] * 60 + +minutesAndSeconds[1];
+};
+
+const isBaseDuration = (value: string) => BASE_DURATION === value;

@@ -81,6 +81,7 @@
     "boclips-player": "^6.3.2",
     "boclips-player-react": "1.2.4",
     "copy-webpack-plugin": "^6.2.1",
+    "dayjs": "^1.9.7",
     "dateformat": "^4.4.1",
     "eslint": "^7.20.0",
     "eslint-config-airbnb": "^18.2.1",

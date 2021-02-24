@@ -1,11 +1,4 @@
-import {
-  fireEvent,
-  prettyDOM,
-  render,
-  RenderResult,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { fireEvent, render, RenderResult, waitFor, within, } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -245,7 +238,6 @@ describe('CartView', () => {
     fireEvent.blur(await wrapper.findByLabelText('trim-from'));
 
     fireEvent.click(await wrapper.findByText('Place order'));
-    // console.log(prettyDOM(wrapper.baseElement, 100000));
     expect(
       await wrapper.findByText(
         'There are some errors. Please review your shopping cart and correct the mistakes.',
@@ -254,6 +246,43 @@ describe('CartView', () => {
 
     expect(
       await wrapper.findByText('Specify your trimming options'),
+    ).toBeVisible();
+  });
+
+  it('allows an order to be placed when trim is ticked but never touched', async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    fakeClient.videos.insertVideo(
+      VideoFactory.sample({
+        price: { amount: 300, currency: 'USD' },
+        id: 'video-additional-service',
+      }),
+    );
+
+    fakeClient.carts.insertCartItem({
+      videoId: 'video-additional-service',
+      additionalServices: {},
+    });
+
+    const wrapper = renderCartView(fakeClient);
+
+    fireEvent.click(await wrapper.findByText('Trim video'));
+
+    fireEvent.click(await wrapper.findByText('Place order'));
+    expect(
+      wrapper.queryByText(
+        'There are some errors. Please review your shopping cart and correct the mistakes.',
+      ),
+    ).not.toBeInTheDocument();
+
+    expect(
+      await wrapper.findByText(
+        'Please confirm you want to place the following order:',
+      ),
+    ).toBeVisible();
+
+    expect(
+      await wrapper.findByText('No additional services selected'),
     ).toBeVisible();
   });
 
