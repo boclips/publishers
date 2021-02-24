@@ -36,11 +36,7 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
 
   return (
     <>
-      <div
-        className={c('h-9 flex flex-col justify-center relative', {
-          'mb-3': serviceRequested,
-        })}
-      >
+      <div className={c('h-9 flex flex-col justify-center relative')}>
         <label className="cursor-pointer font-normal mr-8" htmlFor={id}>
           <input
             onChange={handleChange}
@@ -65,11 +61,16 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
         )}
       </div>
       {serviceRequested && (
-        <InputWithDebounce
-          currentValue={cartItem.additionalServices?.editRequest}
-          onUpdate={updateEditRequest}
-          placeholder="eg. Remove front and end credits"
-        />
+        <div className="ml-6">
+          <div className="font-normal text-xs mb-3 ml-2">
+            Specify how you&apos;d like to edit the video
+          </div>
+          <InputWithDebounce
+            currentValue={cartItem.additionalServices?.editRequest}
+            onUpdate={updateEditRequest}
+            placeholder="eg. Remove front and end credits"
+          />
+        </div>
       )}
     </>
   );

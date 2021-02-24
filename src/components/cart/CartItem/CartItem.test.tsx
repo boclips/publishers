@@ -336,7 +336,11 @@ describe('CartItem', () => {
 
     expect(
       await wrapper.findByPlaceholderText('eg. Remove front and end credits'),
-    );
+    ).toBeInTheDocument();
+
+    expect(
+      await wrapper.findByText("Specify how you'd like to edit the video"),
+    ).toBeInTheDocument();
   });
   it('Saves edit request to cart', async () => {
     const video = VideoFactory.sample({
