@@ -1,0 +1,56 @@
+import React from 'react';
+import c from 'classnames';
+
+interface Props {
+  label: string;
+  id: string;
+  ariaLabel: string;
+  isValid: boolean;
+  value: string;
+  onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onFocus: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const BASE_DURATION = '00:00';
+
+export const DurationInput = ({
+  label,
+  ariaLabel,
+  isValid,
+  onBlur,
+  onFocus,
+  onChange,
+  id,
+  value,
+}: Props) => {
+  const onKeyPress = (e) => {
+    if (e.key !== ':' && Number.isNaN(Number(e.key))) {
+      e.preventDefault();
+    }
+  };
+
+  return (
+    <label htmlFor={id}>
+      {label}
+      <input
+        aria-label={ariaLabel}
+        className={c(
+          'rounded outline-none w-16 h-10 ml-2 mr-6 px-2 text-center',
+          {
+            'border-blue-300 border': isValid,
+            'border-red-error border-1': !isValid,
+          },
+        )}
+        type="text"
+        onBlur={onBlur}
+        onKeyPress={onKeyPress}
+        onFocus={onFocus}
+        onChange={onChange}
+        placeholder={BASE_DURATION}
+        id={id}
+        value={value || ''}
+      />
+    </label>
+  );
+};

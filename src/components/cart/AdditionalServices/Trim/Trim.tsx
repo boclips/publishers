@@ -5,6 +5,7 @@ import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import c from 'classnames';
 import { useCartValidation } from 'src/components/common/providers/CartValidationProvider';
+import { DurationInput } from './DurationInput';
 import { isTrimFromValid, isTrimToValid } from './trimValidation';
 
 interface Props {
@@ -12,8 +13,6 @@ interface Props {
   cartItem: CartItem;
   price?: string;
 }
-
-export const BASE_DURATION = '00:00';
 
 export const TrimService = ({ videoItem, cartItem, price }: Props) => {
   const { cartItemsValidation, setCartItemsValidation } = useCartValidation();
@@ -121,12 +120,6 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
 
   const trimValidation = cartItemsValidation[cartItem.id]?.trim;
 
-  const onKeyPress = (e) => {
-    if (e.key !== ':' && Number.isNaN(Number(e.key))) {
-      e.preventDefault();
-    }
-  };
-
   return (
     <div>
       <div className="flex">
@@ -161,48 +154,26 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
             Specify how you’d like to trim the video
           </div>
           <div className="text-md h-full flex flex-row font-normal mt-2">
-            <label htmlFor={`${videoItem.id}-from`}>
-              From:
-              <input
-                aria-label="trim-from"
-                className={c(
-                  'rounded outline-none w-16 h-10 ml-2 mr-6 px-2 text-center',
-                  {
-                    'border-blue-300 border': trimValidation?.isFromValid,
-                    'border-red-error border-1': !trimValidation?.isFromValid,
-                  },
-                )}
-                type="text"
-                onBlur={onBlur}
-                onKeyPress={onKeyPress}
-                onFocus={() => setIsTrimTouched(true)}
-                onChange={(e) => onChangeTrimInput(e, 'from')}
-                placeholder={BASE_DURATION}
-                id={`${videoItem.id}-from`}
-                value={trimValue.trim.from}
-              />
-            </label>
-            <label htmlFor={`${videoItem.id}-to`}>
-              To:
-              <input
-                aria-label="trim-to"
-                className={c(
-                  'rounded outline-none w-16 h-full ml-2 mr-6 px-2 text-center',
-                  {
-                    'border-blue-300 border': trimValidation?.isToValid,
-                    'border-red-error border-1': !trimValidation?.isToValid,
-                  },
-                )}
-                type="text"
-                placeholder={BASE_DURATION}
-                onFocus={() => setIsTrimTouched(true)}
-                onChange={(e) => onChangeTrimInput(e, 'to')}
-                onBlur={onBlur}
-                onKeyPress={onKeyPress}
-                id={`${videoItem.id}-to`}
-                value={trimValue.trim.to}
-              />
-            </label>
+            <DurationInput
+              label="From:"
+              isValid={trimValidation?.isFromValid}
+              ariaLabel="trim-from"
+              onBlur={onBlur}
+              onFocus={() => setIsTrimTouched(true)}
+              onChange={(e) => onChangeTrimInput(e, 'from')}
+              id={`${videoItem.id}-from`}
+              value={trimValue.trim.from}
+            />
+            <DurationInput
+              ariaLabel="trim-to"
+              isValid={trimValidation?.isToValid}
+              label="To:"
+              onFocus={() => setIsTrimTouched(true)}
+              onChange={(e) => onChangeTrimInput(e, 'to')}
+              onBlur={onBlur}
+              id={`${videoItem.id}-to`}
+              value={trimValue.trim.to}
+            />
           </div>
           {(!trimValidation?.isFromValid || !trimValidation?.isToValid) && (
             <div className="font-normal text-xs ml-12 text-red-error">

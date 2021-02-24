@@ -1,5 +1,5 @@
 import { Duration } from 'dayjs/plugin/duration';
-import { BASE_DURATION } from './Trim';
+import { BASE_DURATION } from './DurationInput';
 
 interface Trim {
   to?: string;
