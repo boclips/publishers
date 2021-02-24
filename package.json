@@ -25,6 +25,7 @@
   "homepage": "https://github.com/boclips/publishers#readme",
   "devDependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
+    "@testing-library/user-event": "^12.7.3",
     "css-loader": "^5.0.0",
     "css-minimizer-webpack-plugin": "^1.1.5",
     "html-webpack-plugin": "^4.5.0",
@@ -81,6 +82,7 @@
     "boclips-player": "^6.3.2",
     "boclips-player-react": "1.2.4",
     "copy-webpack-plugin": "^6.2.1",
+    "dayjs": "^1.9.7",
     "dateformat": "^4.4.1",
     "eslint": "^7.20.0",
     "eslint-config-airbnb": "^18.2.1",

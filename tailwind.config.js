@@ -97,6 +97,9 @@ module.exports = {
         26: '26',
         27: '27',
       },
+      borderWidth: {
+        1: '1.5px',
+      },
       colors: {
         blue: {
           100: 'var(--blue-100)',
@@ -108,6 +111,9 @@ module.exports = {
           700: 'var(--blue-700)',
           800: 'var(--blue-800)',
           900: 'var(--blue-900)',
+        },
+        red: {
+          error: 'var(--red-error)',
         },
         gray: {
           100: 'var(--gray-100)',

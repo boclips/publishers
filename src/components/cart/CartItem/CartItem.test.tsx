@@ -7,6 +7,7 @@ import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsCl
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { CartValidationProvider } from 'src/components/common/providers/CartValidationProvider';
 
 describe('CartItem', () => {
   let client: any;
@@ -14,6 +15,21 @@ describe('CartItem', () => {
   beforeEach(() => {
     client = new QueryClient();
   });
+
+  function renderCartItem(
+    cartItem: React.ReactNode,
+    fakeClient: FakeBoclipsClient = new FakeBoclipsClient(),
+  ) {
+    return render(
+      <Router>
+        <BoclipsClientProvider client={fakeClient}>
+          <QueryClientProvider client={client}>
+            <CartValidationProvider>{cartItem}</CartValidationProvider>
+          </QueryClientProvider>
+        </BoclipsClientProvider>
+      </Router>,
+    );
+  }
 
   it('displays cart item with title and additional services', async () => {
     const cartItem = CartItemFactory.sample({
@@ -26,14 +42,8 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={new FakeBoclipsClient()}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
     );
 
     expect(
@@ -62,14 +72,8 @@ describe('CartItem', () => {
       title: 'this is cart item test',
     });
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={new FakeBoclipsClient()}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
     );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
@@ -93,24 +97,19 @@ describe('CartItem', () => {
       video.id,
     );
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={fakeClient}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItemFromCart} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItemFromCart} />,
+      fakeClient,
     );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
 
     fireEvent.change(await wrapper.findByLabelText('trim-from'), {
-      target: { value: '2' },
+      target: { value: '2:00' },
     });
 
     fireEvent.change(await wrapper.findByLabelText('trim-to'), {
-      target: { value: '3' },
+      target: { value: '3:00' },
     });
 
     fireEvent.blur(await wrapper.findByLabelText('trim-from'));
@@ -118,8 +117,8 @@ describe('CartItem', () => {
     cart = await fakeClient.carts.getCart();
 
     await waitFor(() => {
-      expect(cart.items[0].additionalServices?.trim.from).toEqual('02:00');
-      expect(cart.items[0].additionalServices?.trim.to).toEqual('03:00');
+      expect(cart.items[0].additionalServices?.trim.from).toEqual('2:00');
+      expect(cart.items[0].additionalServices?.trim.to).toEqual('3:00');
     });
   });
 
@@ -140,21 +139,15 @@ describe('CartItem', () => {
       },
     });
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={new FakeBoclipsClient()}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
     );
 
-    expect(wrapper.getByLabelText('trim-from').getAttribute('value')).toEqual(
+    expect(wrapper.getByLabelText('From:').closest('input').value).toEqual(
       '01:21',
     );
 
-    expect(wrapper.getByLabelText('trim-to').getAttribute('value')).toEqual(
+    expect(wrapper.getByLabelText('To:').closest('input').value).toEqual(
       '02:21',
     );
   });
@@ -179,14 +172,9 @@ describe('CartItem', () => {
     const fakeClient = new FakeBoclipsClient();
     fakeClient.carts.insertCartItem(cartItem);
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={fakeClient}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
+      fakeClient,
     );
 
     fireEvent.click(await wrapper.findByText('Trim video'));
@@ -221,16 +209,10 @@ describe('CartItem', () => {
 
     const fakeClient = new FakeBoclipsClient();
     fakeClient.carts.insertCartItem(cartItem);
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={fakeClient}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
+      fakeClient,
     );
-
     fireEvent.click(await wrapper.findByText('Request transcripts'));
 
     let cart = await fakeClient.carts.getCart();
@@ -274,14 +256,9 @@ describe('CartItem', () => {
     const fakeClient = new FakeBoclipsClient();
     fakeClient.carts.insertCartItem(cartItem);
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={fakeClient}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
+      fakeClient,
     );
 
     await fireEvent.click(await wrapper.findByText('Request English captions'));
@@ -322,14 +299,9 @@ describe('CartItem', () => {
 
     const fakeClient = new FakeBoclipsClient();
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={fakeClient}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
+      fakeClient,
     );
 
     fireEvent.click(await wrapper.findByText('Request other type of editing'));
@@ -355,14 +327,9 @@ describe('CartItem', () => {
 
     const fakeClient = new FakeBoclipsClient();
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={fakeClient}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
+      fakeClient,
     );
 
     fireEvent.click(await wrapper.findByText('Request other type of editing'));
@@ -407,14 +374,9 @@ describe('CartItem', () => {
 
     const fakeClient = new FakeBoclipsClient();
 
-    const wrapper = render(
-      <Router>
-        <BoclipsClientProvider client={fakeClient}>
-          <QueryClientProvider client={client}>
-            <CartItem videoItem={video} cartItem={cartItem} />
-          </QueryClientProvider>
-        </BoclipsClientProvider>
-      </Router>,
+    const wrapper = renderCartItem(
+      <CartItem videoItem={video} cartItem={cartItem} />,
+      fakeClient,
     );
 
     fireEvent.click(await wrapper.findByText('Request other type of editing'));

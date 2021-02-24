@@ -6,9 +6,10 @@ import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFacto
 import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsClientProvider';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { CartValidationProvider } from 'src/components/common/providers/CartValidationProvider';
 
 describe('AdditionalServices component', () => {
-  it('should displays a price for all of the services', async () => {
+  it('should display a price for all of the services', async () => {
     const cartItem = CartItemFactory.sample({
       id: 'cart-item-id-1',
       videoId: '123',
@@ -24,7 +25,9 @@ describe('AdditionalServices component', () => {
     const renderedElement = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
         <QueryClientProvider client={client}>
-          <AdditionalServices videoItem={video} cartItem={cartItem} />
+          <CartValidationProvider>
+            <AdditionalServices videoItem={video} cartItem={cartItem} />
+          </CartValidationProvider>
         </QueryClientProvider>
       </BoclipsClientProvider>,
     );
