@@ -33,6 +33,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
 
   const cartItemId = cartItem.id;
   const videoDuration = videoItem.playback.duration;
+  const trimValidation = cartItemsValidation[cartItem.id]?.trim;
+  const isTrimValid = trimValidation?.isFromValid && trimValidation?.isToValid;
 
   useEffect(() => {
     setCartItemsValidation((prevState) => {
@@ -110,15 +112,15 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
   };
 
   const onBlur = () => {
-    mutateAdditionalServices({
-      cartItem,
-      additionalServices: {
-        trim: trimValue.trim,
-      },
-    });
+    if (isTrimValid) {
+      mutateAdditionalServices({
+        cartItem,
+        additionalServices: {
+          trim: trimValue.trim,
+        },
+      });
+    }
   };
-
-  const trimValidation = cartItemsValidation[cartItem.id]?.trim;
 
   return (
     <div>
@@ -175,7 +177,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
               value={trimValue.trim.to}
             />
           </div>
-          {(!trimValidation?.isFromValid || !trimValidation?.isToValid) && (
+          {!isTrimValid && (
             <div className="font-normal text-xs ml-12 text-red-error">
               Specify your trimming options
             </div>
