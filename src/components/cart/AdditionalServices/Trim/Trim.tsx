@@ -145,9 +145,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
           </span>
         </label>
         {price && (
-          <div className="absolute top-0 right-0 flex h-full items-center text-lg font-normal">
-            {price}
-          </div>
+          <div className="absolute right-0 text-lg font-normal">{price}</div>
         )}
       </div>
       {trimChecked && (
