@@ -193,13 +193,13 @@ describe('order table', () => {
       },
     });
     const order = OrdersFactory.sample({
-      id: 'order-video-link',
+      id: 'order-video-link1',
       items: [item],
     });
 
     fakeClient.orders.insertOrderFixture(order);
     const wrapper = render(
-      <MemoryRouter initialEntries={['/orders/order-video-link']}>
+      <MemoryRouter initialEntries={['/orders/order-video-link1']}>
         <App apiClient={fakeClient} />
       </MemoryRouter>,
     );

@@ -11,6 +11,7 @@ import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import App from './App';
 import { Constants } from './AppConstants';
+import { FallbackApp } from './FallbackApp';
 
 const addHubspotScript = () => {
   const hubspotScript = document.createElement('script');
@@ -48,14 +49,22 @@ const authOptions = {
   requireLoginPage: true,
   authEndpoint: Constants.AUTH_ENDPOINT,
   onLogin: async () => {
-    ReactDom.render(
-      <Router>
-        <App
-          apiClient={await ApiBoclipsClient.create(axios, Constants.API_PREFIX)}
-        />
-      </Router>,
-      document.getElementById('root'),
-    );
+    try {
+      const apiClient = await ApiBoclipsClient.create(
+        axios,
+        Constants.API_PREFIX,
+      );
+
+      ReactDom.render(
+        <Router>
+          <App apiClient={apiClient} />
+        </Router>,
+        document.getElementById('root'),
+      );
+    } catch (e) {
+      // If we can't fetch links via the api client (e.g a service is down) show a simple fallback page
+      ReactDom.render(<FallbackApp />, document.getElementById('root'));
+    }
   },
 };
 
