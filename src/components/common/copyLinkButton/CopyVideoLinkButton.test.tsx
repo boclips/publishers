@@ -1,13 +1,20 @@
 import React from 'react';
 import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsClientProvider';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { VideoInteractedWith } from 'boclips-api-client/dist/sub-clients/events/model/EventRequest';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import { CopyVideoLinkButton } from './CopyVideoLinkButton';
 
 describe('CopyLinkButton', () => {
+  Object.assign(navigator, {
+    clipboard: {
+      writeText: () => Promise.resolve(),
+    },
+  });
+
   it('tracks event when button is pressed', async () => {
     const fakeClient = new FakeBoclipsClient();
     const video = VideoFactory.sample({});
@@ -21,10 +28,37 @@ describe('CopyLinkButton', () => {
     const button = await wrapper.findByText(/Copy link/);
     fireEvent.click(button);
 
-    expect(fakeClient.events.getEvents().length).toEqual(1);
+    await waitFor(() => {
+      expect(fakeClient.events.getEvents().length).toEqual(1);
 
-    const videoInteractedEvent = fakeClient.events.getEvents()[0] as VideoInteractedWith;
-    expect(videoInteractedEvent.type).toEqual('VIDEO_INTERACTED_WITH');
-    expect(videoInteractedEvent.subtype).toEqual('COPY_SHARE_LINK');
+      const videoInteractedEvent = fakeClient.events.getEvents()[0] as VideoInteractedWith;
+      expect(videoInteractedEvent.type).toEqual('VIDEO_INTERACTED_WITH');
+      expect(videoInteractedEvent.subtype).toEqual('COPY_SHARE_LINK');
+    });
+  });
+
+  it('copies the the video link when clicked', async () => {
+    jest.spyOn(navigator.clipboard, 'writeText');
+
+    const fakeClient = new FakeBoclipsClient();
+
+    const user = await fakeClient.users.getCurrentUser();
+    const video = VideoFactory.sample({ id: 'this-is-a-test' });
+
+    const wrapper = render(
+      <QueryClientProvider client={new QueryClient()}>
+        <BoclipsClientProvider client={fakeClient}>
+          <CopyVideoLinkButton video={video} />
+        </BoclipsClientProvider>
+      </QueryClientProvider>,
+    );
+
+    const button = await wrapper.findByText(/Copy link/);
+
+    fireEvent.click(button);
+
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      buildVideoDetailsLink(video, user),
+    );
   });
 });

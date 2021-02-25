@@ -8,8 +8,6 @@ import {
   FakeBoclipsClient,
   SubjectFactory,
 } from 'boclips-api-client/dist/test-support';
-import { Constants } from 'src/AppConstants';
-import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 import { Helmet } from 'react-helmet';
 
 describe('Video View', () => {
@@ -72,21 +70,16 @@ describe('Video View', () => {
     });
 
     fakeClient.videos.insertVideo(video);
-    fakeClient.users.insertCurrentUser(
-      UserFactory.sample({ id: 'referringUserId' }),
-    );
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos/video-id']}>
         <App apiClient={fakeClient} />
       </MemoryRouter>,
     );
+
     const button = await wrapper.findByRole('button', { name: 'Copy link' });
 
-    const copyMock = button.closest(
-      `[data-qa="${Constants.HOST}/videos/video-id?referer=referringUserId"]`,
-    );
-    expect(copyMock).toBeVisible();
+    expect(button).toBeInTheDocument();
   });
 
   describe('window titles', () => {
