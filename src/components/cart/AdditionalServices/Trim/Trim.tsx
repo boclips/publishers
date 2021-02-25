@@ -26,8 +26,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
 
   const [trimValue, setTrimValue] = useState<AdditionalServicesApi>({
     trim: {
-      from: cartItem.additionalServices?.trim?.from,
-      to: cartItem.additionalServices?.trim?.to,
+      from: cartItem?.additionalServices?.trim?.from,
+      to: cartItem?.additionalServices?.trim?.to,
     },
   });
 
