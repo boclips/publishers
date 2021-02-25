@@ -21,30 +21,21 @@ const CartView = () => {
 
   const itemsInCart = cart?.items?.length > 0;
 
-  const renderCart = () => {
-    if (itemsInCart && videoIds) {
-      return <Cart cart={cart} cartItemVideos={cartItemVideos} />;
-    }
-
-    return <EmptyCart />;
-  };
-
   if (isCartLoading || isCartItemVideosLoading || !videoIds) return <Loading />;
 
   return (
     <div className="grid grid-cols-container grid-rows-cart-view gap-8">
       <Navbar showSearchBar />
-      {itemsInCart ? (
+      {itemsInCart && videoIds ? (
         <>
           <CartSummary cart={cart} />
           <ErrorBoundary fallback={<RefreshPageError />}>
-            {renderCart()}
+            <Cart cart={cart} cartItemVideos={cartItemVideos} />
           </ErrorBoundary>
         </>
       ) : (
         <EmptyCart />
       )}
-
       <Footer />
     </div>
   );

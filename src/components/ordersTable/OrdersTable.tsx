@@ -17,20 +17,23 @@ export const OrdersTable = ({ orders, paginationPage }: Props) => {
   };
 
   return (
-    <List
-      itemLayout="vertical"
-      size="large"
-      pagination={{
-        total: orders.page.totalElements,
-        pageSize: 10,
-        showSizeChanger: false,
-        onChange: handlePageChange,
-        current: orders.page.number + 1,
-        className: s.pagination,
-        itemRender: PaginationButtons,
-      }}
-      dataSource={orders.orders}
-      renderItem={(order: Order) => <OrdersCard order={order} />}
-    />
+    <div className="col-start-2 col-end-26 row-start-3 row-end-4 flex items-center">
+      <List
+        className="w-full"
+        itemLayout="vertical"
+        size="large"
+        pagination={{
+          total: orders.page.totalElements,
+          pageSize: 10,
+          showSizeChanger: false,
+          onChange: handlePageChange,
+          current: orders.page.number + 1,
+          className: s.pagination,
+          itemRender: PaginationButtons,
+        }}
+        dataSource={orders.orders}
+        renderItem={(order: Order) => <OrdersCard order={order} />}
+      />
+    </div>
   );
 };

@@ -114,26 +114,6 @@ const SearchResultsView = () => {
 
   const isNoSearchResults = data?.pageSpec?.totalElements === 0;
 
-  const showResults = () => {
-    if (isNoSearchResults)
-      return (
-        <NoSearchResults
-          areFiltersApplied={areFiltersApplied(filtersFromURL)}
-          query={query}
-        />
-      );
-
-    return (
-      <SearchResults
-        results={data}
-        query={query}
-        handlePageChange={handlePageChange}
-        currentPage={currentPage}
-        isFetching={isFetching && isPreviousData}
-      />
-    );
-  };
-
   if (isLoading) return <Loading />;
 
   return (
@@ -156,7 +136,20 @@ const SearchResultsView = () => {
           areFiltersApplied={areFiltersApplied(filtersFromURL)}
         />
 
-        {showResults()}
+        {isNoSearchResults ? (
+          <NoSearchResults
+            areFiltersApplied={areFiltersApplied(filtersFromURL)}
+            query={query}
+          />
+        ) : (
+          <SearchResults
+            results={data}
+            query={query}
+            handlePageChange={handlePageChange}
+            currentPage={currentPage}
+            isFetching={isFetching && isPreviousData}
+          />
+        )}
       </ErrorBoundary>
       <Footer />
     </div>
