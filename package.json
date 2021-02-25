@@ -79,7 +79,7 @@
     "babel-loader": "^8.1.0",
     "boclips-api-client": "^31.0.2",
     "boclips-js-security": "^6.0.0",
-    "boclips-player": "^6.3.2",
+    "boclips-player": "^6.3.5",
     "boclips-player-react": "1.2.4",
     "copy-webpack-plugin": "^6.2.1",
     "dayjs": "^1.9.7",
