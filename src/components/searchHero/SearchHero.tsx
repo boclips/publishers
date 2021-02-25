@@ -13,6 +13,22 @@ import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
 const SearchHero = () => {
   const queryClient = useQueryClient();
   const boclipsClient = useBoclipsClient();
+
+  const onSearch = (query) => {
+    prefetchSearchQuery(
+      queryClient,
+      {
+        query,
+        page: 0,
+        pageSize: PAGE_SIZE,
+      },
+      boclipsClient,
+    );
+    AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.HOMEPAGE_SEARCH, {
+      query,
+    });
+  };
+
   return (
     <main className="col-start-2 col-end-26 row-start-2 row-end-2 bg-primary-light h-full rounded-lg">
       <section
@@ -22,25 +38,7 @@ const SearchHero = () => {
           <h1 className="mb-8 text-4xl font-medium">
             What videos do you need today?
           </h1>
-          <Search
-            size="big"
-            showIconOnly={false}
-            onSearch={(query) => {
-              prefetchSearchQuery(
-                queryClient,
-                {
-                  query,
-                  page: 0,
-                  pageSize: PAGE_SIZE,
-                },
-                boclipsClient,
-              );
-              AnalyticsFactory.getAppcues().sendEvent(
-                AppcuesEvent.HOMEPAGE_SEARCH,
-                { query },
-              );
-            }}
-          />
+          <Search size="big" showIconOnly={false} onSearch={onSearch} />
         </div>
         <div className="col-start-16 col-end-24 self-center justify-self-start">
           <div className={c(s.svgContainer)}>

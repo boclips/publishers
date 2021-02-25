@@ -1,4 +1,7 @@
-import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import {
+  ChannelFactory,
+  FakeBoclipsClient,
+} from 'boclips-api-client/dist/test-support';
 import {
   FacetFactory,
   FacetsFactory,
@@ -8,6 +11,22 @@ import { fireEvent, render, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
+
+import { MutationCache, QueryCache, QueryClient } from 'react-query';
+
+const createReactQueryClient = () => {
+  const mutationCache = new MutationCache();
+  const queryCache = new QueryCache();
+  return new QueryClient({
+    queryCache,
+    mutationCache,
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+};
 
 describe(`SearchResultsFiltering`, () => {
   it(`applies filters from url on load`, async () => {
@@ -38,7 +57,10 @@ describe(`SearchResultsFiltering`, () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video&video_type=STOCK']}>
-        <App apiClient={fakeClient} />
+        <App
+          reactQueryClient={createReactQueryClient()}
+          apiClient={fakeClient}
+        />
       </MemoryRouter>,
     );
 
@@ -75,7 +97,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -117,7 +142,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -162,6 +190,12 @@ describe(`SearchResultsFiltering`, () => {
   describe(`channel filters`, () => {
     it(`can filter channel filter options`, async () => {
       const fakeClient = new FakeBoclipsClient();
+      fakeClient.channels.insertFixture(
+        ChannelFactory.sample({ id: 'getty-id', name: 'Getty' }),
+      );
+      fakeClient.channels.insertFixture(
+        ChannelFactory.sample({ id: 'ted-id', name: 'Ted' }),
+      );
 
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
@@ -188,7 +222,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -233,7 +270,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -267,7 +307,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -310,7 +353,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -351,7 +397,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -433,7 +482,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video&prices=10000']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -468,7 +520,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video&prices=10000']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
       expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
@@ -491,7 +546,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=shark']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 
@@ -512,7 +570,10 @@ describe(`SearchResultsFiltering`, () => {
       fakeClient.videos.insertVideo(video);
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=log&page=1&video_type=NEWS']}>
-          <App apiClient={fakeClient} />
+          <App
+            reactQueryClient={createReactQueryClient()}
+            apiClient={fakeClient}
+          />
         </MemoryRouter>,
       );
 

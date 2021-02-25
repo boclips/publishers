@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { SelectedFilterTag } from 'src/components/filterPanel/SelectedFilterTag';
 import { FilterKey } from 'src/types/search/FilterKey';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
-import { useChannelsAndSubjectsProvider } from 'src/components/filterPanel/ChannelsAndSubjectsProvider';
 import { getFilterLabel } from 'src/services/convertFacetsToFilterOptions';
+import { useGetChannelsQuery } from 'src/hooks/api/channelQuery';
+import { useGetSubjectsQuery } from 'src/hooks/api/subjectQuery';
 
 interface Props {
   removeFilter?: (filter: FilterKey, value: string) => void;
@@ -12,17 +13,18 @@ interface Props {
 
 export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
   const [searchQueryLocationParams] = useSearchQueryLocationParams();
-  const originalFacets = useChannelsAndSubjectsProvider();
 
   const [filtersToRender, setFiltersToRender] = useState([]);
+  const { data: channels } = useGetChannelsQuery();
+  const { data: subjects } = useGetSubjectsQuery();
 
   useEffect(() => {
-    if (searchQueryLocationParams && originalFacets) {
+    if (searchQueryLocationParams && channels && subjects) {
       const filtersInUrl = Object.keys(searchQueryLocationParams.filters)
         .map((key) => {
           return searchQueryLocationParams.filters[key].map((filter) => ({
             id: filter,
-            name: getFilterLabel(key, filter, originalFacets),
+            name: getFilterLabel(key, filter, channels, subjects),
             key,
           }));
         })
@@ -38,7 +40,8 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
     searchQueryLocationParams.filters.duration.length,
     searchQueryLocationParams.filters.subject.length,
     searchQueryLocationParams.filters.prices.length,
-    originalFacets,
+    channels,
+    subjects,
   ]);
 
   return (
