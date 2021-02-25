@@ -57,6 +57,11 @@ module.exports = {
         content: 'repeat(24, minmax(0, 38px))',
         24: 'repeat(24, 1fr)',
       },
+      extend: {
+        gap: {
+          8: '1.5rem 2rem',
+        },
+      },
       gridRowStart: {
         last: '-1',
       },
