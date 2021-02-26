@@ -1,10 +1,10 @@
 import React from 'react';
-import { FilterOption } from 'src/types/FilterOption';
 import { FilterKey } from 'src/types/search/FilterKey';
 import CrossIconSVG from 'src/resources/icons/cross-icon.svg';
+import { SelectedFilter } from 'src/components/filterPanel/SelectedFilters';
 
 interface Props {
-  filter: FilterOption;
+  filter: SelectedFilter;
   removeFilter: (filter: FilterKey, value: string) => void;
 }
 
