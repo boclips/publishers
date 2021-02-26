@@ -9,6 +9,8 @@ import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { FilterOption } from 'src/types/FilterOption';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { FilterKey } from 'src/types/search/FilterKey';
+import { Channel } from 'boclips-api-client/dist/sub-clients/channels/model/Channel';
+import { Subject } from 'boclips-api-client/dist/sub-clients/subjects/model/Subject';
 
 export const convertFacetsToFilterOptions = (
   facets?: VideoFacets,
@@ -72,7 +74,12 @@ const createFilterOptions = (
     };
   });
 
-export const getFilterLabel = (key, id, originalFacets) => {
+export const getFilterLabel = (
+  key,
+  id,
+  channels?: Channel[],
+  subjects?: Subject[],
+): string => {
   // TODO: MOVE STRING TO VARS
   switch (key) {
     case 'video_type':
@@ -82,20 +89,20 @@ export const getFilterLabel = (key, id, originalFacets) => {
     case 'prices':
       return getPriceLabel(id);
     case 'channel':
-      return getChannelLabel(id, originalFacets);
+      return getChannelLabel(id, channels);
     case 'subject':
-      return getSubjectsLabel(id, originalFacets);
+      return getSubjectsLabel(id, subjects);
     default:
       throw 'not supported filter key';
   }
 };
 
-const getChannelLabel = (id, originalFacets) => {
-  return originalFacets.facets.channels.find((it) => it.id === id).name;
+const getChannelLabel = (id, channels?: Channel[]) => {
+  return channels ? channels.find((it) => it.id === id).name : id;
 };
 
-const getSubjectsLabel = (id, originalFacets) => {
-  return originalFacets.facets.subjects.find((it) => it.id === id).name;
+const getSubjectsLabel = (id, subjects?: Subject[]) => {
+  return subjects ? subjects.find((it) => it.id === id).name : id;
 };
 
 const getVideoTypeLabel = (name: string): string => {

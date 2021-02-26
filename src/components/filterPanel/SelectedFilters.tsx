@@ -2,34 +2,52 @@ import React, { useEffect, useState } from 'react';
 import { SelectedFilterTag } from 'src/components/filterPanel/SelectedFilterTag';
 import { FilterKey } from 'src/types/search/FilterKey';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
-import { useChannelsAndSubjectsProvider } from 'src/components/filterPanel/ChannelsAndSubjectsProvider';
 import { getFilterLabel } from 'src/services/convertFacetsToFilterOptions';
+import { useGetChannelsQuery } from 'src/hooks/api/channelQuery';
+import { useGetSubjectsQuery } from 'src/hooks/api/subjectQuery';
 
 interface Props {
   removeFilter?: (filter: FilterKey, value: string) => void;
   clearFilters?: () => void;
 }
 
+export interface SelectedFilter {
+  id: string;
+  name: string;
+  key: FilterKey;
+}
+
 export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
   const [searchQueryLocationParams] = useSearchQueryLocationParams();
-  const originalFacets = useChannelsAndSubjectsProvider();
 
-  const [filtersToRender, setFiltersToRender] = useState([]);
+  const [filtersToRender, setFiltersToRender] = useState<SelectedFilter[]>([]);
+  const { data: channels } = useGetChannelsQuery();
+  const { data: subjects } = useGetSubjectsQuery();
+
+  const buildSelectedFilter = (
+    selectedFilterId: string,
+    filterKey: FilterKey,
+  ): SelectedFilter => {
+    return {
+      id: selectedFilterId,
+      name: getFilterLabel(filterKey, selectedFilterId, channels, subjects),
+      key: filterKey,
+    };
+  };
 
   useEffect(() => {
-    if (searchQueryLocationParams && originalFacets) {
-      const filtersInUrl = Object.keys(searchQueryLocationParams.filters)
-        .map((key) => {
-          return searchQueryLocationParams.filters[key].map((filter) => ({
-            id: filter,
-            name: getFilterLabel(key, filter, originalFacets),
-            key,
-          }));
-        })
-        // @ts-ignore
-        .flat();
-
-      setFiltersToRender(filtersInUrl);
+    if (searchQueryLocationParams && channels && subjects) {
+      const filtersInUrl: SelectedFilter[][] = Object.entries(
+        searchQueryLocationParams.filters,
+      ).map(([filterKey, appliedFilters]) => {
+        return appliedFilters.map((appliedFilterId) =>
+          buildSelectedFilter(appliedFilterId, filterKey as FilterKey),
+        );
+      });
+      const flattenedFiltersInUrl: SelectedFilter[] = ([] as SelectedFilter[]).concat(
+        ...filtersInUrl,
+      );
+      setFiltersToRender(flattenedFiltersInUrl);
     }
     // eslint-disable-next-line
   }, [
@@ -38,7 +56,8 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
     searchQueryLocationParams.filters.duration.length,
     searchQueryLocationParams.filters.subject.length,
     searchQueryLocationParams.filters.prices.length,
-    originalFacets,
+    channels,
+    subjects,
   ]);
 
   return (

@@ -1,4 +1,7 @@
-import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import {
+  ChannelFactory,
+  FakeBoclipsClient,
+} from 'boclips-api-client/dist/test-support';
 import {
   FacetFactory,
   FacetsFactory,
@@ -9,9 +12,41 @@ import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
 
+import { MutationCache, QueryCache, QueryClient } from 'react-query';
+
+const createReactQueryClient = () => {
+  const mutationCache = new MutationCache();
+  const queryCache = new QueryCache();
+  return new QueryClient({
+    queryCache,
+    mutationCache,
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+};
+
 describe(`SearchResultsFiltering`, () => {
+  let fakeClient;
+
+  function renderSearchResultsView(initialEntries: string[]) {
+    return render(
+      <MemoryRouter initialEntries={initialEntries}>
+        <App
+          reactQueryClient={createReactQueryClient()}
+          apiClient={fakeClient}
+        />
+      </MemoryRouter>,
+    );
+  }
+
+  beforeEach(() => {
+    fakeClient = new FakeBoclipsClient();
+  });
+
   it(`applies filters from url on load`, async () => {
-    const fakeClient = new FakeBoclipsClient();
     fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
@@ -36,11 +71,9 @@ describe(`SearchResultsFiltering`, () => {
       }),
     );
 
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/videos?q=video&video_type=STOCK']}>
-        <App apiClient={fakeClient} />
-      </MemoryRouter>,
-    );
+    const wrapper = renderSearchResultsView([
+      '/videos?q=video&video_type=STOCK',
+    ]);
 
     const stockCheckbox = await wrapper.findByTestId('STOCK-checkbox');
     expect(stockCheckbox).toHaveProperty('checked', true);
@@ -48,9 +81,11 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe(`video type filters`, () => {
-    it(`displays the video type filters and facet counts`, async () => {
-      const fakeClient = new FakeBoclipsClient();
+    beforeEach(() => {
+      fakeClient = new FakeBoclipsClient();
+    });
 
+    it(`displays the video type filters and facet counts`, async () => {
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
           id: '1',
@@ -73,11 +108,7 @@ describe(`SearchResultsFiltering`, () => {
         }),
       );
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
 
       expect(await wrapper.findByText('Video type')).toBeInTheDocument();
       expect(await wrapper.findByText('Educational')).toBeInTheDocument();
@@ -90,8 +121,6 @@ describe(`SearchResultsFiltering`, () => {
     });
 
     it(`can filter videos by type`, async () => {
-      const fakeClient = new FakeBoclipsClient();
-
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           videoTypes: [
@@ -115,11 +144,7 @@ describe(`SearchResultsFiltering`, () => {
 
       videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
 
       expect(await wrapper.findByText('Video type')).toBeInTheDocument();
 
@@ -160,8 +185,17 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe(`channel filters`, () => {
+    beforeEach(() => {
+      fakeClient = new FakeBoclipsClient();
+    });
+
     it(`can filter channel filter options`, async () => {
-      const fakeClient = new FakeBoclipsClient();
+      fakeClient.channels.insertFixture(
+        ChannelFactory.sample({ id: 'getty-id', name: 'Getty' }),
+      );
+      fakeClient.channels.insertFixture(
+        ChannelFactory.sample({ id: 'ted-id', name: 'Ted' }),
+      );
 
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
@@ -186,11 +220,7 @@ describe(`SearchResultsFiltering`, () => {
 
       videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
 
       expect(await wrapper.findByText('Channel')).toBeInTheDocument();
 
@@ -214,9 +244,11 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('Subject filters', () => {
-    it(`displays the subject filters and facet counts`, async () => {
-      const fakeClient = new FakeBoclipsClient();
+    beforeEach(() => {
+      fakeClient = new FakeBoclipsClient();
+    });
 
+    it(`displays the subject filters and facet counts`, async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           subjects: [{ id: 'subject1', name: 'History', hits: 12 }],
@@ -231,11 +263,7 @@ describe(`SearchResultsFiltering`, () => {
         }),
       );
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
 
       expect(await wrapper.findByText('Subject')).toBeInTheDocument();
       expect(await wrapper.findByText('History')).toBeInTheDocument();
@@ -244,9 +272,11 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('Duration filters', () => {
-    it(`displays the duration filters and facet counts`, async () => {
-      const fakeClient = new FakeBoclipsClient();
+    beforeEach(() => {
+      fakeClient = new FakeBoclipsClient();
+    });
 
+    it(`displays the duration filters and facet counts`, async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           durations: [
@@ -265,11 +295,7 @@ describe(`SearchResultsFiltering`, () => {
         }),
       );
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
 
       expect(await wrapper.findByText('Duration')).toBeInTheDocument();
 
@@ -286,9 +312,11 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe(`price filters`, () => {
-    it(`displays the price filters and facet counts when hits > 0`, async () => {
-      const fakeClient = new FakeBoclipsClient();
+    beforeEach(() => {
+      fakeClient = new FakeBoclipsClient();
+    });
 
+    it(`displays the price filters and facet counts when hits > 0`, async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           prices: [
@@ -308,11 +336,7 @@ describe(`SearchResultsFiltering`, () => {
         }),
       );
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
 
       expect(await wrapper.findByText('Price')).toBeInTheDocument();
       expect(await wrapper.findByText('$100')).toBeInTheDocument();
@@ -322,8 +346,6 @@ describe(`SearchResultsFiltering`, () => {
     });
 
     it(`can filter videos by price`, async () => {
-      const fakeClient = new FakeBoclipsClient();
-
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           prices: [
@@ -349,11 +371,7 @@ describe(`SearchResultsFiltering`, () => {
 
       videos.forEach((v) => fakeClient.videos.insertVideo(v));
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
 
       expect(await wrapper.findByText('Price')).toBeInTheDocument();
 
@@ -391,32 +409,34 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe(`selected filters`, () => {
-    const fakeClient = new FakeBoclipsClient();
+    beforeEach(() => {
+      fakeClient = new FakeBoclipsClient();
 
-    fakeClient.videos.setFacets(
-      FacetsFactory.sample({
-        prices: [
-          FacetFactory.sample({ id: '10000', hits: 1, name: '10000' }),
-          FacetFactory.sample({ id: '20000', hits: 1, name: '20000' }),
-        ],
-      }),
-    );
-    const videos = [
-      VideoFactory.sample({
-        id: '1',
-        title: 'cheap video',
-        types: [{ name: 'STOCK', id: 1 }],
-        price: { amount: 10000, currency: 'USD' },
-      }),
-      VideoFactory.sample({
-        id: '2',
-        title: 'expensive video',
-        types: [{ name: 'NEWS', id: 2 }],
-        price: { amount: 20000, currency: 'USD' },
-      }),
-    ];
+      fakeClient.videos.setFacets(
+        FacetsFactory.sample({
+          prices: [
+            FacetFactory.sample({ id: '10000', hits: 1, name: '10000' }),
+            FacetFactory.sample({ id: '20000', hits: 1, name: '20000' }),
+          ],
+        }),
+      );
+      const videos = [
+        VideoFactory.sample({
+          id: '1',
+          title: 'cheap video',
+          types: [{ name: 'STOCK', id: 1 }],
+          price: { amount: 10000, currency: 'USD' },
+        }),
+        VideoFactory.sample({
+          id: '2',
+          title: 'expensive video',
+          types: [{ name: 'NEWS', id: 2 }],
+          price: { amount: 20000, currency: 'USD' },
+        }),
+      ];
 
-    videos.forEach((v) => fakeClient.videos.insertVideo(v));
+      videos.forEach((v) => fakeClient.videos.insertVideo(v));
+    });
 
     it(`can remove filters individually from selected filter panel`, async () => {
       fakeClient.videos.insertVideo(
@@ -431,11 +451,7 @@ describe(`SearchResultsFiltering`, () => {
         }),
       );
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video&prices=10000']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video&prices=10000']);
 
       expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
       expect(await wrapper.queryByText('expensive video')).toBeNull();
@@ -466,11 +482,7 @@ describe(`SearchResultsFiltering`, () => {
         }),
       );
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=video&prices=10000']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderSearchResultsView(['/videos?q=video&prices=10000']);
       expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
       expect(await wrapper.queryByText('expensive video')).toBeNull();
 
@@ -486,14 +498,12 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('no results', () => {
-    it('shows a no results page without filters', async () => {
-      const fakeClient = new FakeBoclipsClient();
+    beforeEach(() => {
+      fakeClient = new FakeBoclipsClient();
+    });
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=shark']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+    it('shows a no results page without filters', async () => {
+      const wrapper = renderSearchResultsView(['/videos?q=shark']);
 
       expect(
         await wrapper.findByText('We couldn’t find any videos for “shark”'),
@@ -501,8 +511,6 @@ describe(`SearchResultsFiltering`, () => {
     });
 
     it('shows a no results page with filters', async () => {
-      const fakeClient = new FakeBoclipsClient();
-
       const video = VideoFactory.sample({
         id: '1',
         title: 'log',
@@ -510,11 +518,10 @@ describe(`SearchResultsFiltering`, () => {
       });
 
       fakeClient.videos.insertVideo(video);
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos?q=log&page=1&video_type=NEWS']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+
+      const wrapper = renderSearchResultsView([
+        '/videos?q=log&page=1&video_type=NEWS',
+      ]);
 
       expect(
         await wrapper.findByText(

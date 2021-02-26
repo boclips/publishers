@@ -7,11 +7,9 @@ import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 import { useFilterOptions } from 'src/hooks/useFilterOptions';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import c from 'classnames';
-import { ChannelsAndSubjectsProvider } from 'src/components/filterPanel/ChannelsAndSubjectsProvider';
 import { SelectedFilters } from './SelectedFilters';
 
 interface Props {
-  query: string;
   facets?: VideoFacets;
   handleChange: (filter: string, values: string[]) => void;
   removeFilter: (filter: string, value: string) => void;
@@ -21,7 +19,6 @@ interface Props {
 }
 
 export const FilterPanel = ({
-  query,
   facets,
   handleChange,
   removeFilter,
@@ -37,52 +34,50 @@ export const FilterPanel = ({
   if (noResults && !areFiltersApplied) return null;
 
   return (
-    <ChannelsAndSubjectsProvider query={query}>
-      <div className="col-start-2 col-end-7">
-        <div
-          className={c('text-primary text-lg font-medium', {
-            'pb-4': areFiltersApplied,
-          })}
-        >
-          Filter by:
-        </div>
-        {areFiltersApplied && (
-          <SelectedFilters
-            removeFilter={removeFilter}
-            clearFilters={removeAllFilters}
-          />
-        )}
-        {filterOptions.videoTypes.length > 0 && (
-          <VideoTypeFilter
-            options={filterOptions.videoTypes}
-            handleChange={handleChange}
-          />
-        )}
-        {isDurationFilterApplied && (
-          <DurationFilter
-            options={filterOptions.durations}
-            handleChange={handleChange}
-          />
-        )}
-        {filterOptions.channels.length > 0 && (
-          <ChannelFilter
-            options={filterOptions.channels}
-            handleChange={handleChange}
-          />
-        )}
-        {filterOptions.prices.length > 0 && (
-          <PriceFilter
-            options={filterOptions.prices}
-            handleChange={handleChange}
-          />
-        )}
-        {filterOptions.subjects.length > 0 && (
-          <SubjectFilter
-            options={filterOptions.subjects}
-            handleChange={handleChange}
-          />
-        )}
+    <div className="col-start-2 col-end-7">
+      <div
+        className={c('text-primary text-lg font-medium', {
+          'pb-4': areFiltersApplied,
+        })}
+      >
+        Filter by:
       </div>
-    </ChannelsAndSubjectsProvider>
+      {areFiltersApplied && (
+        <SelectedFilters
+          removeFilter={removeFilter}
+          clearFilters={removeAllFilters}
+        />
+      )}
+      {filterOptions.videoTypes.length > 0 && (
+        <VideoTypeFilter
+          options={filterOptions.videoTypes}
+          handleChange={handleChange}
+        />
+      )}
+      {isDurationFilterApplied && (
+        <DurationFilter
+          options={filterOptions.durations}
+          handleChange={handleChange}
+        />
+      )}
+      {filterOptions.channels.length > 0 && (
+        <ChannelFilter
+          options={filterOptions.channels}
+          handleChange={handleChange}
+        />
+      )}
+      {filterOptions.prices.length > 0 && (
+        <PriceFilter
+          options={filterOptions.prices}
+          handleChange={handleChange}
+        />
+      )}
+      {filterOptions.subjects.length > 0 && (
+        <SubjectFilter
+          options={filterOptions.subjects}
+          handleChange={handleChange}
+        />
+      )}
+    </div>
   );
 };
