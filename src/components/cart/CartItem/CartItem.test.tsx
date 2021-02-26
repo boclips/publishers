@@ -311,7 +311,7 @@ describe('CartItem', () => {
     ).toBeInTheDocument();
 
     expect(
-      await wrapper.findByText("Specify how you'd like to edit the video"),
+      await wrapper.findByText('Specify how you’d like to edit the video'),
     ).toBeInTheDocument();
   });
   it('Saves edit request to cart', async () => {

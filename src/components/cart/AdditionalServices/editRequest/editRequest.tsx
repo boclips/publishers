@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCartItemAdditionalServicesMutation } from 'src/hooks/api/cartQuery';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import { InputWithDebounce } from 'src/components/cart/InputWithDebounce';
 import c from 'classnames';
+import { useCartValidation } from 'src/components/common/providers/CartValidationProvider';
 
 interface Props {
   label: string;
@@ -11,6 +12,15 @@ interface Props {
 }
 
 export const EditRequest = ({ label, cartItem, price }: Props) => {
+  const { cartItemsValidation, setCartItemsValidation } = useCartValidation();
+  const [isEditTouched, setIsEditTouched] = useState(false);
+  const [editRequestWithoutDebounce, setEditRequestWithoutDebounce] = useState(
+    cartItem.additionalServices?.editRequest,
+  );
+  const isEditRequestValid =
+    cartItemsValidation[cartItem.id]?.editRequest?.isValid;
+
+  const cartItemId = cartItem.id;
   const isChecked = !!cartItem?.additionalServices?.editRequest;
   const id = `${cartItem.videoId}editingRequested`;
 
@@ -20,18 +30,43 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
 
   const [serviceRequested, setServiceRequested] = useState(isChecked);
 
+  useEffect(() => {
+    setCartItemsValidation((prevState) => {
+      return {
+        ...prevState,
+        [cartItemId]: {
+          ...prevState[cartItemId],
+          editRequest: {
+            isValid:
+              !isEditTouched ||
+              (!!editRequestWithoutDebounce &&
+                editRequestWithoutDebounce !== ''),
+          },
+        },
+      };
+    });
+  }, [
+    cartItemId,
+    setCartItemsValidation,
+    isEditTouched,
+    editRequestWithoutDebounce,
+  ]);
+
   const handleChange = (e) => {
     if (!e.currentTarget.checked) {
       updateEditRequest(null);
+      setIsEditTouched(false);
     }
     setServiceRequested(e.currentTarget.checked);
   };
 
-  const updateEditRequest = (editRequest: string | null) => {
-    mutateAdditionalServices({
-      cartItem,
-      additionalServices: { editRequest },
-    });
+  const updateEditRequest = (editRequestValue: string | null) => {
+    if (editRequestValue !== '') {
+      mutateAdditionalServices({
+        cartItem,
+        additionalServices: { editRequest: editRequestValue },
+      });
+    }
   };
 
   return (
@@ -63,13 +98,21 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
       {serviceRequested && (
         <div className="ml-6">
           <div className="font-normal text-xs mb-3 ml-2">
-            Specify how you&apos;d like to edit the video
+            Specify how you’d like to edit the video
           </div>
           <InputWithDebounce
             currentValue={cartItem.additionalServices?.editRequest}
+            onFocus={() => setIsEditTouched(true)}
             onUpdate={updateEditRequest}
             placeholder="eg. Remove front and end credits"
+            isValid={isEditRequestValid}
+            onUpdateWithoutDebounce={setEditRequestWithoutDebounce}
           />
+          {!isEditRequestValid && (
+            <div className="font-normal text-xs text-red-error">
+              Specify your editing requirements
+            </div>
+          )}
         </div>
       )}
     </>

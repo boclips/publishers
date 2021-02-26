@@ -9,6 +9,9 @@ interface CartItemValidation {
     isFromValid: boolean;
     isToValid: boolean;
   };
+  editRequest: {
+    isValid: boolean;
+  };
 }
 
 type CartItemValidationMap = { [key in string]: CartItemValidation };
@@ -41,7 +44,11 @@ const useProvideValidation = () => {
   >({});
 
   const isCartValid = Object.values(cartItemsValidation).every((item) => {
-    return item.trim.isFromValid && item.trim.isToValid;
+    return (
+      item.trim?.isFromValid &&
+      item.trim?.isToValid &&
+      item.editRequest?.isValid
+    );
   });
 
   return {

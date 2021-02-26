@@ -304,6 +304,54 @@ describe('CartView', () => {
       ).not.toBeInTheDocument();
     });
 
+    it('displays error when trying to place order with empty edit request and then removes the error when trim becomes valid again', async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          price: { amount: 300, currency: 'USD' },
+          id: 'video-additional-service',
+        }),
+      );
+
+      fakeClient.carts.insertCartItem({
+        videoId: 'video-additional-service',
+        additionalServices: {},
+      });
+
+      const wrapper = renderCartView(fakeClient);
+
+      fireEvent.click(
+        await wrapper.findByText('Request other type of editing'),
+      );
+
+      const input = await wrapper.findByPlaceholderText(
+        'eg. Remove front and end credits',
+      );
+
+      fireEvent.focus(input);
+      fireEvent.click(await wrapper.findByText('Place order'));
+      expect(
+        await wrapper.findByText(
+          'There are some errors. Please review your shopping cart and correct the mistakes.',
+        ),
+      ).toBeVisible();
+
+      expect(
+        await wrapper.findByText('Specify your editing requirements'),
+      ).toBeVisible();
+
+      fireEvent.change(input, {
+        target: { value: 'please do some lovely editing' },
+      });
+
+      expect(
+        wrapper.queryByText(
+          'There are some errors. Please review your shopping cart and correct the mistakes.',
+        ),
+      ).not.toBeInTheDocument();
+    });
+
     it('allows an order to be placed when trim is ticked but never touched', async () => {
       const fakeClient = new FakeBoclipsClient();
 
@@ -322,6 +370,45 @@ describe('CartView', () => {
       const wrapper = renderCartView(fakeClient);
 
       fireEvent.click(await wrapper.findByText('Trim video'));
+
+      fireEvent.click(await wrapper.findByText('Place order'));
+      expect(
+        wrapper.queryByText(
+          'There are some errors. Please review your shopping cart and correct the mistakes.',
+        ),
+      ).not.toBeInTheDocument();
+
+      expect(
+        await wrapper.findByText(
+          'Please confirm you want to place the following order:',
+        ),
+      ).toBeVisible();
+
+      expect(
+        await wrapper.findByText('No additional services selected'),
+      ).toBeVisible();
+    });
+
+    it('allows an order to be placed when edit request is ticked but never touched', async () => {
+      const fakeClient = new FakeBoclipsClient();
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          price: { amount: 300, currency: 'USD' },
+          id: 'video-additional-service',
+        }),
+      );
+
+      fakeClient.carts.insertCartItem({
+        videoId: 'video-additional-service',
+        additionalServices: {},
+      });
+
+      const wrapper = renderCartView(fakeClient);
+
+      fireEvent.click(
+        await wrapper.findByText('Request other type of editing'),
+      );
 
       fireEvent.click(await wrapper.findByText('Place order'));
       expect(
