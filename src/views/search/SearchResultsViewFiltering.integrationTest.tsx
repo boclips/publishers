@@ -81,10 +81,6 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe(`video type filters`, () => {
-    beforeEach(() => {
-      fakeClient = new FakeBoclipsClient();
-    });
-
     it(`displays the video type filters and facet counts`, async () => {
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
@@ -185,10 +181,6 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe(`channel filters`, () => {
-    beforeEach(() => {
-      fakeClient = new FakeBoclipsClient();
-    });
-
     it(`can filter channel filter options`, async () => {
       fakeClient.channels.insertFixture(
         ChannelFactory.sample({ id: 'getty-id', name: 'Getty' }),
@@ -244,10 +236,6 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('Subject filters', () => {
-    beforeEach(() => {
-      fakeClient = new FakeBoclipsClient();
-    });
-
     it(`displays the subject filters and facet counts`, async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
@@ -272,10 +260,6 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('Duration filters', () => {
-    beforeEach(() => {
-      fakeClient = new FakeBoclipsClient();
-    });
-
     it(`displays the duration filters and facet counts`, async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
@@ -312,10 +296,6 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe(`price filters`, () => {
-    beforeEach(() => {
-      fakeClient = new FakeBoclipsClient();
-    });
-
     it(`displays the price filters and facet counts when hits > 0`, async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
@@ -441,7 +421,7 @@ describe(`SearchResultsFiltering`, () => {
     it(`can remove filters individually from selected filter panel`, async () => {
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
-          id: '1',
+          id: '3',
           title: 'stock video',
           types: [{ name: 'STOCK', id: 1 }],
           price: {
@@ -472,7 +452,7 @@ describe(`SearchResultsFiltering`, () => {
     it(`can remove all filters from selected filters panel`, async () => {
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
-          id: '1',
+          id: '3',
           title: 'stock video',
           types: [{ name: 'STOCK', id: 1 }],
           price: {
@@ -498,10 +478,6 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('no results', () => {
-    beforeEach(() => {
-      fakeClient = new FakeBoclipsClient();
-    });
-
     it('shows a no results page without filters', async () => {
       const wrapper = renderSearchResultsView(['/videos?q=shark']);
 
