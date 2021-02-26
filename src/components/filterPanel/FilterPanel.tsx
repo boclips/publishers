@@ -7,6 +7,8 @@ import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 import { useFilterOptions } from 'src/hooks/useFilterOptions';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import c from 'classnames';
+import { useLocationFilters } from 'src/hooks/useLocationFilters';
+import { FilterOption } from 'src/types/FilterOption';
 import { SelectedFilters } from './SelectedFilters';
 
 interface Props {
@@ -26,10 +28,28 @@ export const FilterPanel = ({
   noResults,
   areFiltersApplied,
 }: Props) => {
+  const [appliedFilters] = useLocationFilters();
   const filterOptions = useFilterOptions(facets);
   const isDurationFilterApplied = filterOptions.durations.find(
     (it) => it.hits > 0,
   );
+
+  const finalChannelFilters = [
+    ...appliedFilters
+      .filter((af) => af.key === 'channel')
+      .map(
+        (fnif): FilterOption => {
+          return {
+            id: fnif.id,
+            name: fnif.name,
+            hits: 9999,
+            key: 'channel',
+            label: <span>{fnif.name}</span>,
+          };
+        },
+      ),
+    ...filterOptions.channels,
+  ];
 
   if (noResults && !areFiltersApplied) return null;
 
@@ -60,9 +80,9 @@ export const FilterPanel = ({
           handleChange={handleChange}
         />
       )}
-      {filterOptions.channels.length > 0 && (
+      {finalChannelFilters.length > 0 && (
         <ChannelFilter
-          options={filterOptions.channels}
+          options={finalChannelFilters}
           handleChange={handleChange}
         />
       )}
