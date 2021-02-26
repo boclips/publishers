@@ -7,9 +7,10 @@ import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 import { useFilterOptions } from 'src/hooks/useFilterOptions';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import c from 'classnames';
-import { useLocationFilters } from 'src/hooks/useLocationFilters';
+import {SelectedFilter, useLocationFilters} from 'src/hooks/useLocationFilters';
 import { FilterOption } from 'src/types/FilterOption';
 import { SelectedFilters } from './SelectedFilters';
+import {FilterKey} from "src/types/search/FilterKey";
 
 interface Props {
   facets?: VideoFacets;
@@ -34,22 +35,37 @@ export const FilterPanel = ({
     (it) => it.hits > 0,
   );
 
-  const finalChannelFilters = [
-    ...appliedFilters
-      .filter((af) => af.key === 'channel')
-      .map(
-        (fnif): FilterOption => {
-          return {
-            id: fnif.id,
-            name: fnif.name,
-            hits: 9999,
-            key: 'channel',
-            label: <span>{fnif.name}</span>,
-          };
-        },
-      ),
-    ...filterOptions.channels,
+  const buildEmptyOptionFilter = (selectedFilter: SelectedFilter, filterKey: FilterKey)  => {
+    return {
+      id: selectedFilter.id,
+      name: selectedFilter.name,
+      hits: 0,
+      key: filterKey,
+      label: <span>{selectedFilter.name}</span>,
+    };
+  }
+
+  const hasNoHits = (filterCategory: FilterOption[], appliedFilter: SelectedFilter) =>
+      !filterCategory.find((option => option.id === appliedFilter.id))
+
+  const transformIntoEmptyOptionFilters = (filterCategory: FilterOption[], filterKey: FilterKey) => {
+    const filtersWithNoHits = appliedFilters
+        .filter((appliedFilter) => appliedFilter.key === filterKey)
+        .filter((appliedFilter) => hasNoHits(filterCategory, appliedFilter))
+    return filtersWithNoHits
+        .map((fnif): FilterOption => (buildEmptyOptionFilter(fnif, filterKey)))
+  }
+
+  const buildFilterOptionsWithEmptyHits = (filterCategory: FilterOption[], filterKey: FilterKey) => [
+    ...transformIntoEmptyOptionFilters(filterCategory, filterKey),
+    ...filterCategory,
   ];
+
+  const finalChannelFilters = buildFilterOptionsWithEmptyHits(filterOptions.channels, 'channel')
+  const finalSubjectFilters = buildFilterOptionsWithEmptyHits(filterOptions.subjects, 'subject')
+  const finalDurationFilters = buildFilterOptionsWithEmptyHits(filterOptions.durations, 'duration')
+  const finalPriceFilters = buildFilterOptionsWithEmptyHits(filterOptions.prices, 'prices')
+  const finalVideoTypeFilters = buildFilterOptionsWithEmptyHits(filterOptions.videoTypes, 'video_type')
 
   if (noResults && !areFiltersApplied) return null;
 
@@ -69,15 +85,15 @@ export const FilterPanel = ({
           appliedFilters={appliedFilters}
         />
       )}
-      {filterOptions.videoTypes.length > 0 && (
+      {finalVideoTypeFilters.length > 0 && (
         <VideoTypeFilter
-          options={filterOptions.videoTypes}
+          options={finalVideoTypeFilters}
           handleChange={handleChange}
         />
       )}
       {isDurationFilterApplied && (
         <DurationFilter
-          options={filterOptions.durations}
+          options={finalDurationFilters}
           handleChange={handleChange}
         />
       )}
@@ -87,15 +103,15 @@ export const FilterPanel = ({
           handleChange={handleChange}
         />
       )}
-      {filterOptions.prices.length > 0 && (
+      {finalPriceFilters.length > 0 && (
         <PriceFilter
-          options={filterOptions.prices}
+          options={finalPriceFilters}
           handleChange={handleChange}
         />
       )}
-      {filterOptions.subjects.length > 0 && (
+      {finalSubjectFilters.length > 0 && (
         <SubjectFilter
-          options={filterOptions.subjects}
+          options={finalSubjectFilters}
           handleChange={handleChange}
         />
       )}

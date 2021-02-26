@@ -21,8 +21,7 @@ export const FilterOptionList = ({
 
   const toggleOptions = () => setAllExpanded(!allExpanded);
 
-  const optionsWithHits = options.filter((option) => option.hits > 0);
-  const tooManyOptions = optionsWithHits.length > DEFAULT_VISIBLE_OPTIONS;
+  const tooManyOptions = options.length > DEFAULT_VISIBLE_OPTIONS;
 
   return (
     <div className="flex flex-col mb-1 mt-4">
@@ -31,7 +30,7 @@ export const FilterOptionList = ({
           'h-64': allExpanded && tooManyOptions,
         })}
       >
-        {optionsWithHits
+        {options
           .slice(0, allExpanded ? options.length : DEFAULT_VISIBLE_OPTIONS)
           .map((option) => (
             <span key={option.id}>
