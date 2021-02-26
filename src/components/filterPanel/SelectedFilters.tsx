@@ -1,16 +1,19 @@
 import React from 'react';
 import { SelectedFilterTag } from 'src/components/filterPanel/SelectedFilterTag';
 import { FilterKey } from 'src/types/search/FilterKey';
-import { useLocationFilters } from 'src/hooks/useLocationFilters';
+import { SelectedFilter } from 'src/hooks/useLocationFilters';
 
 interface Props {
   removeFilter?: (filter: FilterKey, value: string) => void;
   clearFilters?: () => void;
+  appliedFilters: SelectedFilter[];
 }
 
-export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
-  const [filtersToRender] = useLocationFilters();
-
+export const SelectedFilters = ({
+  removeFilter,
+  clearFilters,
+  appliedFilters,
+}: Props) => {
   return (
     <div>
       <div
@@ -29,7 +32,7 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
         </span>
       </div>
       <div className="flex flex-wrap " data-qa="applied-filter-tags">
-        {filtersToRender.map((filter) => (
+        {appliedFilters.map((filter) => (
           <SelectedFilterTag
             key={`${filter.name}-${filter.id}`}
             filter={filter}

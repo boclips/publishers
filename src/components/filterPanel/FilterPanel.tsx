@@ -66,6 +66,7 @@ export const FilterPanel = ({
         <SelectedFilters
           removeFilter={removeFilter}
           clearFilters={removeAllFilters}
+          appliedFilters={appliedFilters}
         />
       )}
       {filterOptions.videoTypes.length > 0 && (
