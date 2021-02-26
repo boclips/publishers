@@ -28,3 +28,10 @@ window.matchMedia =
 afterEach(() => {
   ReactTestingLibrary.cleanup();
 });
+
+// This is mocking the Appcues import from index.html
+window.Appcues = {
+  page: jest.fn(),
+  identify: jest.fn(),
+  track: jest.fn(),
+};
