@@ -127,7 +127,6 @@ const SearchResultsView = () => {
         }
       >
         <FilterPanel
-          query={query}
           facets={data?.facets}
           handleChange={handleFilterChange}
           removeFilter={removeFilter}
