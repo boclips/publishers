@@ -47,8 +47,9 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
         [s.shrink]: shrinkAnimation,
       })}
     >
-      <VideoPlayer video={videoItem} />
-
+      <div className={s.videoWrapper}>
+        <VideoPlayer video={videoItem} controls="cart" />
+      </div>
       <div className="flex flex-col w-full ml-3">
         <div className="flex flex-row justify-between">
           <Link
