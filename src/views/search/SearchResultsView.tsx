@@ -131,7 +131,7 @@ const SearchResultsView = () => {
           handleChange={handleFilterChange}
           removeFilter={removeFilter}
           removeAllFilters={removeAllFilters}
-          noResults={isNoSearchResults}
+          resultsFound={!isNoSearchResults}
           areFiltersApplied={areFiltersApplied(filtersFromURL)}
         />
 

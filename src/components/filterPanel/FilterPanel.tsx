@@ -14,7 +14,7 @@ interface Props {
   handleChange: (filter: string, values: string[]) => void;
   removeFilter: (filter: string, value: string) => void;
   removeAllFilters: () => void;
-  noResults: boolean;
+  resultsFound: boolean;
   areFiltersApplied: boolean;
 }
 
@@ -23,7 +23,7 @@ export const FilterPanel = ({
   handleChange,
   removeFilter,
   removeAllFilters,
-  noResults,
+  resultsFound,
   areFiltersApplied,
 }: Props) => {
   const filterOptions = useFilterOptions(facets);
@@ -31,7 +31,7 @@ export const FilterPanel = ({
     (it) => it.hits > 0,
   );
 
-  if (noResults && !areFiltersApplied) return null;
+  if (!resultsFound && !areFiltersApplied) return null;
 
   return (
     <div className="col-start-2 col-end-7">
@@ -48,35 +48,39 @@ export const FilterPanel = ({
           clearFilters={removeAllFilters}
         />
       )}
-      {filterOptions.videoTypes.length > 0 && (
-        <VideoTypeFilter
-          options={filterOptions.videoTypes}
-          handleChange={handleChange}
-        />
-      )}
-      {isDurationFilterApplied && (
-        <DurationFilter
-          options={filterOptions.durations}
-          handleChange={handleChange}
-        />
-      )}
-      {filterOptions.channels.length > 0 && (
-        <ChannelFilter
-          options={filterOptions.channels}
-          handleChange={handleChange}
-        />
-      )}
-      {filterOptions.prices.length > 0 && (
-        <PriceFilter
-          options={filterOptions.prices}
-          handleChange={handleChange}
-        />
-      )}
-      {filterOptions.subjects.length > 0 && (
-        <SubjectFilter
-          options={filterOptions.subjects}
-          handleChange={handleChange}
-        />
+      {resultsFound && (
+        <>
+          {filterOptions.videoTypes.length > 0 && (
+            <VideoTypeFilter
+              options={filterOptions.videoTypes}
+              handleChange={handleChange}
+            />
+          )}
+          {isDurationFilterApplied && (
+            <DurationFilter
+              options={filterOptions.durations}
+              handleChange={handleChange}
+            />
+          )}
+          {filterOptions.channels.length > 0 && (
+            <ChannelFilter
+              options={filterOptions.channels}
+              handleChange={handleChange}
+            />
+          )}
+          {filterOptions.prices.length > 0 && (
+            <PriceFilter
+              options={filterOptions.prices}
+              handleChange={handleChange}
+            />
+          )}
+          {filterOptions.subjects.length > 0 && (
+            <SubjectFilter
+              options={filterOptions.subjects}
+              handleChange={handleChange}
+            />
+          )}
+        </>
       )}
     </div>
   );
