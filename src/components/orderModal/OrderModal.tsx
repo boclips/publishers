@@ -64,13 +64,13 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
               <span
                 onClick={() => setOpen(!modalOpen)}
                 tabIndex={0}
-                className="cursor-pointer text-grey-900"
+                className="cursor-pointer text-grey-900 w-5 h-5 flex items-center justify-center mt-2"
                 role="button"
                 onKeyPress={(event) =>
                   handleEnterKeyDown(event, setOpen(!modalOpen))
                 }
               >
-                <CloseIconSVG className="stroke-current  stroke-2" />
+                <CloseIconSVG className="stroke-current stroke-2" />
               </span>
             </div>
             <span className="text-base">
