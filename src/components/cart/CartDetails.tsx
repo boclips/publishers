@@ -50,7 +50,7 @@ export const CartDetails = ({ cartItemVideos, cart }: Props) => {
         onUpdate={onUpdateNote}
         placeholder="Add a note about this order (optional)"
       />
-      <div className="pt-4 font-medium text-sm col-start-2 col-span-10">
+      <div className="pt-4 font-medium text-sm col-start-2 col-span-10 border-b-2">
         {displayCartItems()}
       </div>
     </div>
