@@ -29,7 +29,7 @@ const OrderTable = () => {
   return (
     <div className="grid grid-rows-order-view grid-cols-container gap-8">
       <OrderHelmet orderId={orderId} />
-      <Navbar showSearchBar={false} />
+      <Navbar showSearchBar />
       <OrderHeader id={order?.id} />
       <ErrorBoundary fallback={<RefreshPageError />}>
         <OrderPage order={order} />
