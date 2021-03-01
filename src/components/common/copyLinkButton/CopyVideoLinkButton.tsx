@@ -28,7 +28,7 @@ export const CopyVideoLinkButton = ({ video }: Props) => {
 
     setTimeout(() => {
       setCopiedToClipboard(false);
-    }, 2000);
+    }, 1500);
   };
 
   return (
