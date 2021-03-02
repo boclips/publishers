@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -9,6 +9,7 @@ import {
   SubjectFactory,
 } from 'boclips-api-client/dist/test-support';
 import { Helmet } from 'react-helmet';
+import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
 
 describe('Video View', () => {
   it('on video page video details are rendered', async () => {
@@ -115,6 +116,64 @@ describe('Video View', () => {
 
       const helmet = Helmet.peek();
       expect(helmet.title).toEqual('Boclips');
+    });
+  });
+  describe('back button', () => {
+    it('does not render back button if user navigates directly to page', async () => {
+      const video = VideoFactory.sample({
+        id: 'video-3',
+        title: 'the coolest video you ever did see',
+      });
+
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.videos.insertVideo(video);
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos/video-3']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+      expect(wrapper.queryByText('Back')).not.toBeInTheDocument();
+    });
+
+    it('navigates back to previous page', async () => {
+      const video = VideoFactory.sample({
+        id: 'video-4',
+        title: 'the coolest video you ever did see',
+      });
+
+      const cartItem = CartItemFactory.sample({
+        videoId: 'video-4',
+      });
+
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.videos.insertVideo(video);
+      fakeClient.carts.insertCartItem(cartItem);
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/cart']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+
+      const title = await wrapper.findByText(
+        'the coolest video you ever did see',
+      );
+
+      fireEvent.click(title);
+
+      await waitFor(async () => {
+        expect(wrapper.getByText('Back')).toBeVisible();
+        expect(wrapper.queryByText('Shopping cart')).not.toBeInTheDocument();
+      });
+
+      const backButton = await wrapper.findByText('Back');
+
+      fireEvent.click(backButton);
+
+      await waitFor(async () =>
+        expect(wrapper.getByText('Shopping cart')).toBeVisible(),
+      );
     });
   });
 });
