@@ -17,6 +17,10 @@ export class AppConstants {
     return this.window.Environment.AUTH_ENDPOINT;
   }
 
+  public get IS_HOTJAR_ENABLED(): boolean {
+    return this.window.Environment.IS_HOTJAR_ENABLED === 'true';
+  }
+
   public get API_PREFIX(): string {
     return this.window.Environment.API_PREFIX;
   }

@@ -13,6 +13,9 @@ import App from './App';
 import { Constants } from './AppConstants';
 import { FallbackApp } from './FallbackApp';
 
+// eslint-disable-next-line import/extensions
+import { loadHotjar } from './thridParty/loadHotjar.js';
+
 const addHubspotScript = () => {
   const hubspotScript = document.createElement('script');
   hubspotScript.setAttribute('type', 'text/javascript');
@@ -23,6 +26,10 @@ const addHubspotScript = () => {
 
   document.head.appendChild(hubspotScript);
 };
+
+if (Constants.IS_HOTJAR_ENABLED) {
+  loadHotjar();
+}
 
 if (process.env.NODE_ENV === 'production') {
   const sentryRelease = process.env.SENTRY_RELEASE;
