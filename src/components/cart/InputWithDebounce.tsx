@@ -7,7 +7,7 @@ interface Props {
   onUpdate: (note: string) => void;
   placeholder: string;
   isValid?: boolean;
-  onFocus?: () => void;
+  enableValidation?: (enabled: boolean) => void;
   onUpdateWithoutDebounce?: (note: string) => void;
 }
 export const InputWithDebounce = ({
@@ -15,7 +15,7 @@ export const InputWithDebounce = ({
   onUpdate,
   placeholder,
   isValid = true,
-  onFocus = () => {},
+  enableValidation = () => {},
   onUpdateWithoutDebounce = (_) => {},
 }: Props) => {
   const [value, setValue] = useState(currentValue || '');
@@ -44,7 +44,8 @@ export const InputWithDebounce = ({
       )}
       placeholder={placeholder}
       onChange={handleOnChange}
-      onFocus={onFocus}
+      onFocus={() => enableValidation(false)}
+      onBlur={() => enableValidation(true)}
       value={value}
       rows={2}
     />

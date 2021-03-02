@@ -22,7 +22,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
 
   const trimSet = !!cartItem?.additionalServices?.trim;
   const [trimChecked, setTrimChecked] = useState(trimSet);
-  const [isTrimTouched, setIsTrimTouched] = useState(false);
+  const [isValidationEnabled, setIsValidationEnabled] = useState(false);
 
   const [trimValue, setTrimValue] = useState<AdditionalServicesApi>({
     trim: {
@@ -44,7 +44,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
           ...prevState[cartItemId],
           trim: {
             isFromValid:
-              !isTrimTouched ||
+              !isValidationEnabled ||
               isTrimFromValid(
                 {
                   from: trimValue.trim.from,
@@ -53,7 +53,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
                 videoDuration,
               ),
             isToValid:
-              !isTrimTouched ||
+              !isValidationEnabled ||
               isTrimToValid(
                 {
                   from: trimValue.trim.from,
@@ -70,7 +70,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
     trimValue,
     cartItemId,
     setCartItemsValidation,
-    isTrimTouched,
+    isValidationEnabled,
   ]);
 
   const onChangeCheckbox = (e) => {
@@ -92,7 +92,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
         };
       });
 
-      setIsTrimTouched(false);
+      setIsValidationEnabled(false);
     }
   };
 
@@ -120,6 +120,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
         },
       });
     }
+    setIsValidationEnabled(true);
   };
 
   return (
@@ -161,7 +162,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
               isValid={trimValidation?.isFromValid}
               ariaLabel="trim-from"
               onBlur={onBlur}
-              onFocus={() => setIsTrimTouched(true)}
+              onFocus={() => setIsValidationEnabled(false)}
               onChange={(e) => onChangeTrimInput(e, 'from')}
               id={`${videoItem.id}-from`}
               value={trimValue.trim.from}
@@ -170,7 +171,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
               ariaLabel="trim-to"
               isValid={trimValidation?.isToValid}
               label="To:"
-              onFocus={() => setIsTrimTouched(true)}
+              onFocus={() => setIsValidationEnabled(false)}
               onChange={(e) => onChangeTrimInput(e, 'to')}
               onBlur={onBlur}
               id={`${videoItem.id}-to`}

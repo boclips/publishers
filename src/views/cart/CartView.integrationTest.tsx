@@ -275,6 +275,7 @@ describe('CartView', () => {
       fireEvent.click(await wrapper.findByText('Trim video'));
 
       fireEvent.focus(await wrapper.findByLabelText('trim-from'));
+      fireEvent.blur(await wrapper.findByLabelText('trim-from'));
       fireEvent.change(await wrapper.findByLabelText('trim-from'), {
         target: { value: '-2' },
       });
@@ -304,7 +305,7 @@ describe('CartView', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('displays error when trying to place order with empty edit request and then removes the error when trim becomes valid again', async () => {
+    it('displays error when leaving empty edit request and then removes the error when trim becomes valid again', async () => {
       const fakeClient = new FakeBoclipsClient();
 
       fakeClient.videos.insertVideo(
@@ -330,6 +331,7 @@ describe('CartView', () => {
       );
 
       fireEvent.focus(input);
+      fireEvent.blur(input);
       fireEvent.click(await wrapper.findByText('Place order'));
       expect(
         await wrapper.findByText(

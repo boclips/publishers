@@ -13,7 +13,7 @@ interface Props {
 
 export const EditRequest = ({ label, cartItem, price }: Props) => {
   const { cartItemsValidation, setCartItemsValidation } = useCartValidation();
-  const [isEditTouched, setIsEditTouched] = useState(false);
+  const [isValidationEnabled, setIsValidationEnabled] = useState(false);
   const [editRequestWithoutDebounce, setEditRequestWithoutDebounce] = useState(
     cartItem.additionalServices?.editRequest,
   );
@@ -38,7 +38,7 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
           ...prevState[cartItemId],
           editRequest: {
             isValid:
-              !isEditTouched ||
+              !isValidationEnabled ||
               (!!editRequestWithoutDebounce &&
                 editRequestWithoutDebounce !== ''),
           },
@@ -48,14 +48,14 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
   }, [
     cartItemId,
     setCartItemsValidation,
-    isEditTouched,
+    isValidationEnabled,
     editRequestWithoutDebounce,
   ]);
 
   const handleChange = (e) => {
     if (!e.currentTarget.checked) {
       updateEditRequest(null);
-      setIsEditTouched(false);
+      setIsValidationEnabled(false);
     }
     setServiceRequested(e.currentTarget.checked);
   };
@@ -102,7 +102,9 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
           </div>
           <InputWithDebounce
             currentValue={cartItem.additionalServices?.editRequest}
-            onFocus={() => setIsEditTouched(true)}
+            enableValidation={(enabled: boolean) =>
+              setIsValidationEnabled(enabled)
+            }
             onUpdate={updateEditRequest}
             placeholder="eg. Remove front and end credits"
             isValid={isEditRequestValid}
