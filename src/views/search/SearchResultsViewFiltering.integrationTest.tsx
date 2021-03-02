@@ -466,7 +466,7 @@ describe(`SearchResultsFiltering`, () => {
       expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
       expect(await wrapper.queryByText('expensive video')).toBeNull();
 
-      fireEvent.click(wrapper.getByText('CLEAR ALL'));
+      fireEvent.click(wrapper.getByText('Clear all'));
 
       await waitFor(() => {
         expect(wrapper.queryByText('Selected filters')).toBeNull();

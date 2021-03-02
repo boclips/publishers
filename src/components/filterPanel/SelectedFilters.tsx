@@ -74,7 +74,7 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
           role="button"
           onClick={() => clearFilters()}
         >
-          CLEAR ALL
+          Clear all
         </span>
       </div>
       <div className="flex flex-wrap " data-qa="applied-filter-tags">
