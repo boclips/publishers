@@ -43,19 +43,30 @@ const SearchResultsView = () => {
     filters: debouncedFilters,
   });
 
+  const hasNextPage = currentPage < data?.pageSpec?.totalPages;
+
   useEffect(() => {
     // Prefetch the next page of data
-    prefetchSearchQuery(
-      queryClient,
-      {
-        query,
-        pageSize: PAGE_SIZE,
-        page: currentPage,
-        filters: debouncedFilters,
-      },
-      boclipsClient,
-    );
-  }, [currentPage, query, debouncedFilters, queryClient, boclipsClient]);
+    if (hasNextPage) {
+      prefetchSearchQuery(
+        queryClient,
+        {
+          query,
+          pageSize: PAGE_SIZE,
+          page: currentPage,
+          filters: debouncedFilters,
+        },
+        boclipsClient,
+      );
+    }
+  }, [
+    currentPage,
+    query,
+    debouncedFilters,
+    queryClient,
+    boclipsClient,
+    hasNextPage,
+  ]);
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0 });
