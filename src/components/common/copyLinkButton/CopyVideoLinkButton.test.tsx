@@ -33,7 +33,7 @@ describe('CopyLinkButton', () => {
 
       const videoInteractedEvent = fakeClient.events.getEvents()[0] as VideoInteractedWith;
       expect(videoInteractedEvent.type).toEqual('VIDEO_INTERACTED_WITH');
-      expect(videoInteractedEvent.subtype).toEqual('COPY_SHARE_LINK');
+      expect(videoInteractedEvent.subtype).toEqual('VIDEO_LINK_COPIED');
     });
   });
 

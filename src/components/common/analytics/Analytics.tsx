@@ -12,5 +12,5 @@ export const trackCopyVideoShareLink = (
   video: Video,
   apiClient: BoclipsClient,
 ) => {
-  apiClient.events.trackVideoInteraction(video, 'COPY_SHARE_LINK');
+  apiClient.events.trackVideoInteraction(video, 'VIDEO_LINK_COPIED');
 };
