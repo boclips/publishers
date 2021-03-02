@@ -123,8 +123,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
   };
 
   return (
-    <div>
-      <div className="flex">
+    <>
+      <div className="h-9 flex flex-row w-full items-center justify-between">
         <label
           className="cursor-pointer font-normal mr-8"
           htmlFor={videoItem.id}
@@ -145,7 +145,9 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
           </span>
         </label>
         {price && (
-          <div className="absolute right-0 text-lg font-normal">{price}</div>
+          <div className="flex h-full items-center text-lg font-normal">
+            {price}
+          </div>
         )}
       </div>
       {trimChecked && (
@@ -182,6 +184,6 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };

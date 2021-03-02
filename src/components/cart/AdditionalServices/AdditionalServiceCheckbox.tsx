@@ -36,7 +36,7 @@ const AdditionalServicesCheckbox = ({
   };
 
   return (
-    <div className="h-9 flex flex-row items-center relative">
+    <div className="h-9 flex flex-row w-full items-center justify-between">
       <label className="cursor-pointer font-normal mr-8" htmlFor={id}>
         <input
           onChange={onChangeCheckbox}
@@ -54,7 +54,7 @@ const AdditionalServicesCheckbox = ({
         </span>
       </label>
       {price && (
-        <div className="absolute top-0 right-0 flex h-full items-center text-lg font-normal">
+        <div className="flex h-full items-center text-lg font-normal">
           {price}
         </div>
       )}
