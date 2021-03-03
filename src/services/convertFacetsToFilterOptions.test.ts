@@ -57,7 +57,7 @@ describe('convertFacets', () => {
 
     const filterOptions = convertFacetsToFilterOptions(facets, null);
     expect(filterOptions.videoTypes[0].name).toEqual('News');
-    expect(filterOptions.videoTypes[1].name).toEqual('Educational');
+    expect(filterOptions.videoTypes[1].name).toEqual('Instructional');
     expect(filterOptions.videoTypes[2].name).toEqual('Raw Footage');
   });
 

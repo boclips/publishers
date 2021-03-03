@@ -107,7 +107,7 @@ describe(`SearchResultsFiltering`, () => {
       const wrapper = renderSearchResultsView(['/videos?q=video']);
 
       expect(await wrapper.findByText('Video type')).toBeInTheDocument();
-      expect(await wrapper.findByText('Educational')).toBeInTheDocument();
+      expect(await wrapper.findByText('Instructional')).toBeInTheDocument();
       expect(await wrapper.findByText('Raw Footage')).toBeInTheDocument();
       expect(await wrapper.findByText('News')).toBeInTheDocument();
 
@@ -144,7 +144,7 @@ describe(`SearchResultsFiltering`, () => {
 
       expect(await wrapper.findByText('Video type')).toBeInTheDocument();
 
-      expect(wrapper.queryByText('Educational')).toBeNull();
+      expect(wrapper.queryByText('Instructional')).toBeNull();
       expect(await wrapper.findByText('News')).toBeInTheDocument();
       expect(await wrapper.findByText('Raw Footage')).toBeInTheDocument();
 

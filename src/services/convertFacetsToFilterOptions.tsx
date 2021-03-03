@@ -108,7 +108,7 @@ const getSubjectsLabel = (id, subjects?: Subject[]) => {
 const getVideoTypeLabel = (name: string): string => {
   switch (name.toUpperCase()) {
     case 'INSTRUCTIONAL':
-      return 'Educational';
+      return 'Instructional';
     case 'STOCK':
       return 'Raw Footage';
     case 'NEWS':
