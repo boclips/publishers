@@ -1,5 +1,6 @@
 import React from 'react';
 import c from 'classnames';
+import { useDebounce } from 'src/hooks/useDebounce';
 
 interface Props {
   label: string;
@@ -24,6 +25,7 @@ export const DurationInput = ({
   id,
   value,
 }: Props) => {
+  const debouncedIsValid = useDebounce(isValid, 100);
   const onKeyPress = (e) => {
     if (e.key !== ':' && Number.isNaN(Number(e.key))) {
       e.preventDefault();
@@ -38,8 +40,8 @@ export const DurationInput = ({
         className={c(
           'rounded outline-none w-16 h-10 ml-2 mr-6 px-2 text-center text-gray-800',
           {
-            'border-blue-300 border-1': isValid,
-            'border-red-error border-1': !isValid,
+            'border-blue-300 border-1': debouncedIsValid,
+            'border-red-error border-1': !debouncedIsValid,
           },
         )}
         type="text"

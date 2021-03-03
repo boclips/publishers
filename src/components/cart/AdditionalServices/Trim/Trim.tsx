@@ -5,6 +5,7 @@ import { Video } from 'boclips-api-client/dist/types';
 import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
 import c from 'classnames';
 import { useCartValidation } from 'src/components/common/providers/CartValidationProvider';
+import { useDebounce } from 'src/hooks/useDebounce';
 import { DurationInput } from './DurationInput';
 import { isTrimFromValid, isTrimToValid } from './trimValidation';
 
@@ -35,6 +36,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
   const videoDuration = videoItem.playback.duration;
   const trimValidation = cartItemsValidation[cartItem.id]?.trim;
   const isTrimValid = trimValidation?.isFromValid && trimValidation?.isToValid;
+  const debouncedIsTrimValid = useDebounce(isTrimValid, 100);
 
   useEffect(() => {
     setCartItemsValidation((prevState) => {
@@ -112,15 +114,13 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
   };
 
   const onBlur = () => {
-    if (isTrimValid) {
-      mutateAdditionalServices({
-        cartItem,
-        additionalServices: {
-          trim: trimValue.trim,
-        },
-      });
-    }
     setIsValidationEnabled(true);
+    mutateAdditionalServices({
+      cartItem,
+      additionalServices: {
+        trim: trimValue.trim,
+      },
+    });
   };
 
   return (
@@ -178,7 +178,7 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
               value={trimValue.trim.to}
             />
           </div>
-          {!isTrimValid && (
+          {!debouncedIsTrimValid && (
             <div className="font-normal text-xs ml-12 text-red-error mt-1">
               Specify your trimming options
             </div>
