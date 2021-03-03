@@ -22,7 +22,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
       <VideoCardV2
         key={video.id}
         video={convertVideoFromApi(video)}
-        videoPlayer={<VideoPlayer video={video} />}
+        videoPlayer={<VideoPlayer video={video} showDurationBadge />}
         border="bottom"
         topBadge={
           <PriceBadge

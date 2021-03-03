@@ -48,7 +48,7 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
       })}
     >
       <div className={s.videoWrapper}>
-        <VideoPlayer video={videoItem} controls="cart" />
+        <VideoPlayer video={videoItem} controls="cart" showDurationBadge />
       </div>
       <div className="flex flex-col w-full ml-3">
         <div className="flex flex-row justify-between">
