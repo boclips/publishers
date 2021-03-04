@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer
-      className="col-start-2 col-end-26 row-end-last"
+      className="col-start-1 col-end-25 row-end-last"
       aria-label="Boclips footer"
     >
       <div className="border-t text-xxs text-footer pt-4 font-thin ">

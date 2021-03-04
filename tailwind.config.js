@@ -2,15 +2,11 @@ const debugScreens = require('tailwindcss-debug-screens');
 const customForms = require('@tailwindcss/custom-forms');
 
 module.exports = {
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-  },
   purge: ['./src/**/*.html', './src/**/*.tsx'],
-  corePlugins: {
-    container: false,
-  },
   theme: {
+    container: {
+      center: true,
+    },
     customForms: (theme) => ({
       default: {
         checkbox: {
@@ -53,6 +49,7 @@ module.exports = {
         'video-view': '75px minmax(0, auto) 63px',
       },
       gridTemplateColumns: {
+        new: 'repeat(24, minmax(0, 38px))',
         container:
           'minmax(2rem, 1fr) repeat(24, minmax(0, 38px)) minmax(2rem, 1fr)',
         content: 'repeat(24, minmax(0, 38px))',

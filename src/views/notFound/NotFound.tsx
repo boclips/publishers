@@ -3,13 +3,14 @@ import Navbar from 'src/components/layout/Navbar';
 import Footer from 'src/components/layout/Footer';
 import NotFoundSVG from 'src/resources/icons/not-found.svg';
 import Button from '@boclips-ui/button';
+import { Layout } from 'src/components/layout/Layout';
 import s from './style.module.less';
 
 const NotFound = () => (
-  <div className="grid grid-rows-home grid-cols-container gap-6">
+  <Layout rowsSetup="grid-rows-home">
     <Navbar showSearchBar />
     <div className={s.notFoundView}>
-      <div className="col-start-2 col-end-10 flex justify-center items-center">
+      <div className="col-start-1 col-end-10 flex justify-center items-center">
         <NotFoundSVG />
       </div>
       <div className="col-start-12 col-end-21 text-blue-800 flex flex-col justify-center">
@@ -31,7 +32,7 @@ const NotFound = () => (
       </div>
     </div>
     <Footer />
-  </div>
+  </Layout>
 );
 
 export default NotFound;

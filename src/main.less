@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  img, video {
+  img,
+  video {
     max-width: none !important;
   }
 
@@ -14,6 +15,11 @@
   h2 {
     @apply text-h2;
     color: inherit !important;
+  }
+
+  .container {
+    min-width: 1280px;
+    padding: 0 2rem;
   }
 }
 
@@ -50,5 +56,5 @@ html {
   --gray-800: #2d3748;
   --gray-900: #1a202c;
 
-  --red-error: #D70000;
+  --red-error: #d70000;
 }

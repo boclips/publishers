@@ -21,6 +21,7 @@ import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
+import { Layout } from 'src/components/layout/Layout';
 
 export const PAGE_SIZE = 10;
 
@@ -128,11 +129,11 @@ const SearchResultsView = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="grid grid-rows-search-view grid-cols-container gap-6">
+    <Layout rowsSetup="grid-rows-search-view ">
       <Navbar showSearchBar />
       <ErrorBoundary
         fallback={
-          <div className="row-start-2 row-end-2 col-start-2 col-end-26">
+          <div className="row-start-2 row-end-2 col-start-1 col-end-25">
             <RefreshPageError />
           </div>
         }
@@ -162,7 +163,7 @@ const SearchResultsView = () => {
         )}
       </ErrorBoundary>
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

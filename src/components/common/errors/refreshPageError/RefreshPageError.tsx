@@ -12,7 +12,7 @@ export const RefreshPageError = () => {
   };
 
   return (
-    <div className="col-start-2 col-end-26 bg-primary-light h-full rounded-lg">
+    <div className="col-start-1 col-end-26 bg-primary-light h-full rounded-lg">
       <section
         className={c(
           s.pageErrorWrapper,

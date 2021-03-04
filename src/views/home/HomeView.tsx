@@ -1,15 +1,16 @@
 import React from 'react';
 import Navbar from 'src/components/layout/Navbar';
 import Footer from 'src/components/layout/Footer';
+import { Layout } from 'src/components/layout/Layout';
 import SearchHero from '../../components/searchHero/SearchHero';
 
 const HomeView = () => {
   return (
-    <div className="grid grid-rows-home grid-cols-container gap-6">
+    <Layout rowsSetup="grid-rows-home">
       <Navbar showSearchBar={false} />
       <SearchHero />
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

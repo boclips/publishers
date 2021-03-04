@@ -2,6 +2,7 @@ import Navbar from 'src/components/layout/Navbar';
 import Footer from 'src/components/layout/Footer';
 import React from 'react';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
+import { Layout } from 'src/components/layout/Layout';
 
 interface Props {
   error: any;
@@ -11,13 +12,13 @@ const ErrorView = ({ error }: Props) => {
   console.error(error);
 
   return (
-    <div className="grid grid-cols-container grid-rows-cart-view gap-6">
+    <Layout rowsSetup="grid-rows-cart-view">
       <Navbar showSearchBar />
-      <div className="col-start-2 col-end-26 row-start-2 row-end-4">
+      <div className="col-start-1 col-end-25 row-start-2 row-end-2">
         <RefreshPageError />
       </div>
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

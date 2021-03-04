@@ -30,7 +30,7 @@ const SearchHero = () => {
   };
 
   return (
-    <main className="col-start-2 col-end-26 row-start-2 row-end-2 bg-primary-light h-full rounded-lg">
+    <main className="col-start-1 col-end-25 row-start-2 row-end-2 bg-primary-light h-full rounded-lg">
       <section
         className={c(s.heroContainer, 'grid grid-cols-content gap-6  h-full')}
       >

@@ -14,23 +14,20 @@ interface Props {
 const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
   return (
     <nav
-      className={c(
-        s.navbar,
-        'col-start-1 col-end-27 gap-6 grid grid-cols-container',
-      )}
+      className={c(s.navbar, 'col-start-1 col-end-25 grid grid-cols-24 gap-6')}
       aria-label="Boclips navigation bar"
     >
-      <div className="col-start-2 col-end-5">
+      <div className="col-start-1 col-end-5">
         <Link to="/" title="Boclips logo">
           <PearsonBoclipsLogoSVG />
         </Link>
       </div>
       {showSearchBar && (
-        <div className="col-start-7 col-end-20 flex justify-start">
+        <div className="col-start-6 col-end-20 flex justify-start">
           <Search size="small" showIconOnly />
         </div>
       )}
-      <div className="col-start-20 col-end-26 flex h-full justify-end">
+      <div className="col-start-20 col-end-25 flex h-full justify-end">
         <AccountButton />
         <CartButton />
       </div>

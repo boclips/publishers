@@ -1,7 +1,18 @@
-.navbar{
-@apply items-center h-full bg-white;
-  position:sticky;
-  top:0px;
+.navbar {
+  @apply items-center h-full bg-white;
+  position: sticky;
+  top: 0px;
   z-index: 50;
-  box-shadow: 0 2px 8px 0 rgba(0,21,80,0.15);
+  height: 75px;
+  &:after {
+    content: '';
+    width: 100vw;
+    height: 75px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 21, 80, 0.15);
+  }
 }

@@ -9,6 +9,7 @@ import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
 import { OrderHeader } from 'src/components/orderPage/OrderHeader';
 import { Helmet } from 'react-helmet';
+import { Layout } from 'src/components/layout/Layout';
 
 const OrderHelmet = ({ orderId }: { orderId?: string }) => {
   return <>{orderId && <Helmet title={`Order ${orderId}`} />}</>;
@@ -27,7 +28,7 @@ const OrderTable = () => {
     );
 
   return (
-    <div className="grid grid-rows-order-view grid-cols-container gap-6">
+    <Layout rowsSetup="grid-rows-order-view ">
       <OrderHelmet orderId={orderId} />
       <Navbar showSearchBar />
       <OrderHeader id={order?.id} />
@@ -35,7 +36,7 @@ const OrderTable = () => {
         <OrderPage order={order} />
       </ErrorBoundary>
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

@@ -8,7 +8,7 @@ import s from './style.module.less';
 export const EmptyCart = () => {
   const history = useHistory();
   return (
-    <div className="col-start-2 col-end-26 row-start-2 row-end-4">
+    <div className="col-start-1 col-end-25 row-start-2 row-end-4">
       <div className="font-bold text-2xl text-grey-800">Shopping cart</div>
       <div className={c(s.emptyCartView, { [s.fadeIn]: true })}>
         <div className="col-start-5 col-end-10 flex justify-center items-center">

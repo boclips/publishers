@@ -6,6 +6,7 @@ import { useGetIdFromLocation } from 'src/hooks/useLocationParams';
 import { useFindOrGetVideo } from 'src/hooks/api/videoQuery';
 import { Loading } from 'src/components/common/Loading';
 import { Helmet } from 'react-helmet';
+import { Layout } from 'src/components/layout/Layout';
 
 const VideoView = () => {
   const videoId = useGetIdFromLocation('videos');
@@ -14,15 +15,12 @@ const VideoView = () => {
   if (isLoading && !video) return <Loading />;
 
   return (
-    <div
-      data-qa="video-page"
-      className="grid grid-rows-video-view grid-cols-container gap-6"
-    >
+    <Layout dataQa="video-page" rowsSetup="grid-rows-video-view ">
       {video?.title && <Helmet title={video.title} />}
       <Navbar showSearchBar />
       <VideoPage video={video} />
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

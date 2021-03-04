@@ -9,6 +9,7 @@ import { useGetVideos } from 'src/hooks/api/videoQuery';
 import { CartSummary } from 'src/components/cart/CartSummary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
 import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
+import { Layout } from 'src/components/layout/Layout';
 
 const CartView = () => {
   const { data: cart, isLoading: isCartLoading } = useCartQuery();
@@ -24,7 +25,7 @@ const CartView = () => {
   if (isCartLoading || isCartItemVideosLoading || !videoIds) return <Loading />;
 
   return (
-    <div className="grid grid-cols-container grid-rows-cart-view gap-6">
+    <Layout rowsSetup="grid-rows-cart-view">
       <Navbar showSearchBar />
       {itemsInCart && videoIds ? (
         <>
@@ -37,7 +38,7 @@ const CartView = () => {
         <EmptyCart />
       )}
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

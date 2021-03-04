@@ -1,10 +1,10 @@
-@import "~@boclips-ui/styles/src/_publishersColours";
+@import '~@boclips-ui/styles/src/_publishersColours';
 
 .cartButton {
-@apply flex flex-col items-center relative;
-  width:65px;
+  @apply flex flex-col items-center relative;
+  width: 65px;
   cursor: pointer;
-  &.active{
+  &.active {
     &::after {
       content: '';
       position: absolute;
@@ -13,10 +13,10 @@
       width: 100%;
       background-color: @blue-700;
       height: 6px;
-      border-radius:4px 4px 0px 0px;
+      border-radius: 4px 4px 0px 0px;
     }
   }
-  a{
+  a {
     display: flex;
     flex-direction: column;
     color: inherit;
@@ -25,13 +25,13 @@
     align-items: center;
     justify-content: center;
   }
-  svg{
+  svg {
     stroke: @gray-900;
   }
 }
 
 .basketCounter {
-@apply absolute bg-blue-500 rounded-full items-center justify-center flex text-blue-800 font-bold;
+  @apply absolute bg-blue-500 rounded-full items-center justify-center flex text-blue-800 font-bold;
   top: 5px;
   right: 0;
   width: 24px;
