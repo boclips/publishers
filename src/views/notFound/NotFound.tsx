@@ -6,7 +6,7 @@ import Button from '@boclips-ui/button';
 import s from './style.module.less';
 
 const NotFound = () => (
-  <div className="grid grid-rows-home grid-cols-container gap-8">
+  <div className="grid grid-rows-home grid-cols-container gap-6">
     <Navbar showSearchBar />
     <div className={s.notFoundView}>
       <div className="col-start-2 col-end-10 flex justify-center items-center">

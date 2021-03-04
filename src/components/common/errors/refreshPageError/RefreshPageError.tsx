@@ -16,7 +16,7 @@ export const RefreshPageError = () => {
       <section
         className={c(
           s.pageErrorWrapper,
-          'grid grid-cols-content gap-8  h-full',
+          'grid grid-cols-content gap-6  h-full',
         )}
       >
         <div className="col-start-5 col-end-9 flex justify-center items-center">

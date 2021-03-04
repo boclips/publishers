@@ -16,7 +16,7 @@ const VideoView = () => {
   return (
     <div
       data-qa="video-page"
-      className="grid grid-rows-video-view grid-cols-container gap-8"
+      className="grid grid-rows-video-view grid-cols-container gap-6"
     >
       {video?.title && <Helmet title={video.title} />}
       <Navbar showSearchBar />

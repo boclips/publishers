@@ -11,7 +11,7 @@ const ErrorView = ({ error }: Props) => {
   console.error(error);
 
   return (
-    <div className="grid grid-cols-container grid-rows-cart-view gap-8">
+    <div className="grid grid-cols-container grid-rows-cart-view gap-6">
       <Navbar showSearchBar />
       <div className="col-start-2 col-end-26 row-start-2 row-end-4">
         <RefreshPageError />

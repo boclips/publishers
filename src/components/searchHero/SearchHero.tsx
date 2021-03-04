@@ -32,7 +32,7 @@ const SearchHero = () => {
   return (
     <main className="col-start-2 col-end-26 row-start-2 row-end-2 bg-primary-light h-full rounded-lg">
       <section
-        className={c(s.heroContainer, 'grid grid-cols-content gap-8  h-full')}
+        className={c(s.heroContainer, 'grid grid-cols-content gap-6  h-full')}
       >
         <div className="col-start-3 col-end-15 self-center lg:col-start-4 lg:col-end-16">
           <h1 className="mb-8 text-4xl font-medium">

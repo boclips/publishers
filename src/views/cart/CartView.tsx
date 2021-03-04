@@ -24,7 +24,7 @@ const CartView = () => {
   if (isCartLoading || isCartItemVideosLoading || !videoIds) return <Loading />;
 
   return (
-    <div className="grid grid-cols-container grid-rows-cart-view gap-8">
+    <div className="grid grid-cols-container grid-rows-cart-view gap-6">
       <Navbar showSearchBar />
       {itemsInCart && videoIds ? (
         <>

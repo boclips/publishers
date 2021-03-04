@@ -5,7 +5,7 @@ import SearchHero from '../../components/searchHero/SearchHero';
 
 const HomeView = () => {
   return (
-    <div className="grid grid-rows-home grid-cols-container gap-8">
+    <div className="grid grid-rows-home grid-cols-container gap-6">
       <Navbar showSearchBar={false} />
       <SearchHero />
       <Footer />

@@ -27,7 +27,7 @@ const OrderTable = () => {
     );
 
   return (
-    <div className="grid grid-rows-order-view grid-cols-container gap-8">
+    <div className="grid grid-rows-order-view grid-cols-container gap-6">
       <OrderHelmet orderId={orderId} />
       <Navbar showSearchBar />
       <OrderHeader id={order?.id} />

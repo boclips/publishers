@@ -128,7 +128,7 @@ const SearchResultsView = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="grid grid-rows-search-view grid-cols-container gap-8">
+    <div className="grid grid-rows-search-view grid-cols-container gap-6">
       <Navbar showSearchBar />
       <ErrorBoundary
         fallback={

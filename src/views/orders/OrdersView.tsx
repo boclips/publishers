@@ -27,7 +27,7 @@ const OrdersView = () => {
   if (isLoading && !hasOrders) return <Loading />;
 
   return (
-    <div className="grid grid-rows-orders-view grid-cols-container gap-8">
+    <div className="grid grid-rows-orders-view grid-cols-container gap-6">
       <Navbar showSearchBar />
       <div className="col-start-2 col-end-26 row-start-2 row-end-2 flex items-center">
         <div className="font-bold text-2xl text-grey-800">Your Orders</div>
@@ -38,7 +38,7 @@ const OrdersView = () => {
         </ErrorBoundary>
       ) : (
         <div className="col-start-2 col-end-26 bg-primary-light h-full rounded-lg">
-          <section className="grid grid-cols-content gap-8  h-full">
+          <section className="grid grid-cols-content gap-6  h-full">
             <div className="col-start-5 col-end-9 flex justify-center items-center my-12">
               <span data-qa="empty-orders-image">
                 <EmptyOrdersSVG />
