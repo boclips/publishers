@@ -3,11 +3,9 @@ import HomeImageSVG from 'src/resources/icons/home-search.svg';
 import { Search } from 'src/components/searchBar/SearchBar';
 import { prefetchSearchQuery } from 'src/hooks/api/useSearchQuery';
 import { PAGE_SIZE } from 'src/views/search/SearchResultsView';
-import c from 'classnames';
 import { useQueryClient } from 'react-query';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
-import s from './style.module.less';
 import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
 
 const SearchHero = () => {
@@ -30,23 +28,18 @@ const SearchHero = () => {
   };
 
   return (
-    <main className="col-start-1 col-end-25 row-start-2 row-end-2 bg-primary-light h-full rounded-lg">
-      <section
-        className={c(s.heroContainer, 'grid grid-cols-content gap-6  h-full')}
-      >
-        <div className="col-start-3 col-end-15 self-center lg:col-start-4 lg:col-end-16">
-          <h1 className="mb-8 text-4xl font-medium">
-            What videos do you need today?
-          </h1>
-          <Search size="big" showIconOnly={false} onSearch={onSearch} />
-        </div>
-        <div className="col-start-16 col-end-24 self-center justify-self-start">
-          <div className={c(s.svgContainer)}>
-            <HomeImageSVG />
-          </div>
-        </div>
-      </section>
-    </main>
+    <>
+      <div className="col-start-1 col-end-25 row-start-2 row-end-2 bg-primary-light rounded-lg" />
+      <div className="col-start-3 col-end-15 md:col-start-4 md:col-end-15 lg:col-start-5 lg:col-end-15 row-start-2 row-end-2 self-center">
+        <h1 className="mb-8 text-4xl font-medium">
+          What videos do you need today?
+        </h1>
+        <Search size="big" showIconOnly={false} onSearch={onSearch} />
+      </div>
+      <div className="col-start-16 col-end-25 row-start-2 row-end-2 self-center justify-self-start">
+        <HomeImageSVG />
+      </div>
+    </>
   );
 };
 
