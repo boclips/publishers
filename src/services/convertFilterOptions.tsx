@@ -27,21 +27,28 @@ export const searchFilterOptions = (
     return acc;
   }, []);
 
-const boldMatchingText = (text, shouldBeBold) => {
-  const textArray = text.split(new RegExp(`(${shouldBeBold})`, 'i'));
+const boldMatchingText = (fullText, textToBold) => {
+  const textArray = fullText.split(new RegExp(`(${textToBold})`, 'i'));
+
+  const textArrayWithUniqueIds = textArray.map((arrayItem, index) => {
+    return {
+      id: index,
+      text: arrayItem,
+    };
+  });
   return (
-    <span key={`bolded-text-${text}`}>
-      {textArray.map((item) => {
+    <>
+      {textArrayWithUniqueIds.map((item) => {
         return (
-          <>
-            {item.toLowerCase() === shouldBeBold.toLowerCase() ? (
-              <span className="font-medium">{item}</span>
+          <React.Fragment key={`${item.id}-${item.text}`}>
+            {item.text.toLowerCase() === textToBold.toLowerCase() ? (
+              <span className="font-medium">{item.text}</span>
             ) : (
-              item
+              item.text
             )}
-          </>
+          </React.Fragment>
         );
       })}
-    </span>
+    </>
   );
 };
