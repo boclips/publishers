@@ -72,7 +72,7 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
         <div className="text-sm text-gray-800 font-normal">{`ID: ${videoItem.id}`}</div>
         <TextButton
           onClick={cartItemAnimate}
-          text={'Remove'}
+          text="Remove"
           icon={<RemoveFromCartIcon />}
         />
         <AdditionalServices videoItem={videoItem} cartItem={cartItem} />

@@ -1,7 +1,7 @@
 import Button from '@boclips-ui/button';
 import React from 'react';
-import s from './style.module.less';
 import c from 'classnames';
+import s from './style.module.less';
 
 interface Props {
   onClick: () => void;

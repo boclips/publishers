@@ -68,11 +68,7 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
         style={{ height: '1.9375rem' }}
       >
         <span className="text-base">Selected filters</span>
-        <TextButton
-          onClick={clearFilters}
-          text={'Clear all'}
-          fontSize="small"
-        />
+        <TextButton onClick={clearFilters} text="Clear all" fontSize="small" />
       </div>
       <div className="flex flex-wrap " data-qa="applied-filter-tags">
         {filtersToRender.map((filter) => (
