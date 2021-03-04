@@ -3,12 +3,12 @@ import { Video } from 'boclips-api-client/dist/types';
 import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
 import AdditionalServices from 'src/components/cart/AdditionalServices/AdditionalServices';
 import { CartItem as ApiCartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartItem';
-import Button from '@boclips-ui/button';
 import RemoveFromCartIcon from 'src/resources/icons/bin.svg';
 import { useCartMutation } from 'src/hooks/api/cartQuery';
 import c from 'classnames';
 import { Link } from 'react-router-dom';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
+import { TextButton } from 'src/components/common/textButton/TextButton';
 import s from './style.module.less';
 
 interface Props {
@@ -70,15 +70,11 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
           </div>
         </div>
         <div className="text-sm text-gray-800 font-normal">{`ID: ${videoItem.id}`}</div>
-
-        <div className={s.textButton}>
-          <Button
-            onClick={cartItemAnimate}
-            text="Remove"
-            icon={<RemoveFromCartIcon />}
-          />
-        </div>
-
+        <TextButton
+          onClick={cartItemAnimate}
+          text={'Remove'}
+          icon={<RemoveFromCartIcon />}
+        />
         <AdditionalServices videoItem={videoItem} cartItem={cartItem} />
       </div>
     </div>

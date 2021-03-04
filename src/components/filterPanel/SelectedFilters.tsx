@@ -5,7 +5,7 @@ import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 import { getFilterLabel } from 'src/services/convertFacetsToFilterOptions';
 import { useGetChannelsQuery } from 'src/hooks/api/channelQuery';
 import { useGetSubjectsQuery } from 'src/hooks/api/subjectQuery';
-import { handleEnterKeyDown } from 'src/services/handleEnterKeyDown';
+import { TextButton } from 'src/components/common/textButton/TextButton';
 
 interface Props {
   removeFilter?: (filter: FilterKey, value: string) => void;
@@ -67,16 +67,12 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
         className="mb-4 font-medium flex justify-between items-center"
         style={{ height: '1.9375rem' }}
       >
-        <span className="text-base ">Selected filters</span>
-        <span
-          className="text-sm text-blue-800 cursor-pointer hover:bg-blue-400 active:bg-blue-500 active:text-blue-900 py-1 px-2 rounded focus:outline-none"
-          tabIndex={0}
-          onKeyDown={(e) => handleEnterKeyDown(e, clearFilters)}
-          role="button"
-          onClick={() => clearFilters()}
-        >
-          Clear all
-        </span>
+        <span className="text-base">Selected filters</span>
+        <TextButton
+          onClick={clearFilters}
+          text={'Clear all'}
+          fontSize="small"
+        />
       </div>
       <div className="flex flex-wrap " data-qa="applied-filter-tags">
         {filtersToRender.map((filter) => (
