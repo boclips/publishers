@@ -50,6 +50,7 @@ module.exports = {
         'orders-view': '75px 50px minmax(0, auto) 63px',
         'order-view': '75px 21px minmax(0, auto) minmax(0, auto) 63px',
         'cart-view': '75px 50px minmax(0, auto) 63px',
+        'video-view': '75px minmax(0, auto) 63px',
       },
       gridTemplateColumns: {
         container:
@@ -57,10 +58,8 @@ module.exports = {
         content: 'repeat(24, minmax(0, 38px))',
         24: 'repeat(24, 1fr)',
       },
-      extend: {
-        gap: {
-          8: '1.5rem 2rem',
-        },
+      gap: {
+        8: '1.5rem',
       },
       gridRowStart: {
         last: '-1',

@@ -7,7 +7,9 @@ import {
 import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 import Button from '@boclips-ui/button';
 import React from 'react';
-import CartIcon from '../../resources/icons/cart-icon.svg';
+import c from 'classnames';
+import CartIcon from 'resources/icons/cart-icon.svg';
+import s from './style.module.less';
 import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
 
 interface AddToCartButtonProps {
@@ -15,7 +17,7 @@ interface AddToCartButtonProps {
   width?: string;
 }
 
-const AddToCartButton = ({ videoId, width = '100%' }: AddToCartButtonProps) => {
+export const AddToCartButton = ({ videoId, width }: AddToCartButtonProps) => {
   const queryClient = useQueryClient();
   const boclipsClient = useBoclipsClient();
   const { data: cart } = useCartQuery();
@@ -56,29 +58,31 @@ const AddToCartButton = ({ videoId, width = '100%' }: AddToCartButtonProps) => {
     },
   );
 
-  const displayButton = () => {
-    if (!cartItem) {
-      return (
+  return (
+    <div
+      style={{ width }}
+      className={c(`h-12 flex justify-end ${s.svgOutlineNone}`, {
+        [s.svgOutline]: cartItem,
+      })}
+    >
+      {!cartItem ? (
         <Button
           onClick={() => mutateAddToCart(videoId)}
           text="Add to cart"
-          width={width}
           icon={<CartIcon />}
+          width="100%"
         />
-      );
-    }
-    return (
-      <Button
-        onClick={() => mutateDeleteFromCart(cartItem.id)}
-        type="outline"
-        text="Remove"
-        width={width}
-        icon={<CartIcon />}
-      />
-    );
-  };
-
-  return <div className="h-12 flex justify-end mt-2">{displayButton()}</div>;
+      ) : (
+        <Button
+          onClick={() => mutateDeleteFromCart(cartItem.id)}
+          type="outline"
+          text="Remove"
+          icon={<CartIcon />}
+          width="100%"
+        />
+      )}
+    </div>
+  );
 };
 
 export default AddToCartButton;

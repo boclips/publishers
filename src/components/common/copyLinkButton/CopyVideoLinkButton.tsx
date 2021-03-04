@@ -11,9 +11,10 @@ import { trackCopyVideoShareLink } from '../analytics/Analytics';
 
 interface Props {
   video: Video;
+  width?: string;
 }
 
-export const CopyVideoLinkButton = ({ video }: Props) => {
+export const CopyVideoLinkButton = ({ video, width }: Props) => {
   const apiClient = useBoclipsClient();
   const { data: user, isFetched } = useGetUserQuery();
 
@@ -32,7 +33,10 @@ export const CopyVideoLinkButton = ({ video }: Props) => {
   };
 
   return (
-    <div className={`h-12 flex justify-end mt-2 ${s.copyLinkButton} mr-2`}>
+    <div
+      style={{ width }}
+      className={`h-12 flex justify-end ${s.copyLinkButton} mr-2`}
+    >
       <Button
         data-qa={`copy-button-${video.id}`}
         onClick={copyLink}
@@ -40,6 +44,7 @@ export const CopyVideoLinkButton = ({ video }: Props) => {
         type="outline"
         icon={copiedToClipboard ? <CopiedLinkIcon /> : <CopyLinkIcon />}
         disabled={!isFetched}
+        width="100%"
       />
     </div>
   );

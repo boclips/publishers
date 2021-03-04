@@ -2,7 +2,10 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="col-start-2 col-end-26" aria-label="Boclips footer">
+    <footer
+      className="col-start-2 col-end-26 row-end-last"
+      aria-label="Boclips footer"
+    >
       <div className="border-t text-xxs text-footer pt-4 font-thin ">
         <div>
           <span> Copyright © 2021 Boclips. All rights reserved. </span>

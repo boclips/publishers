@@ -16,7 +16,7 @@ const Navbar = ({ showSearchBar }: Props = { showSearchBar: false }) => {
     <nav
       className={c(
         s.navbar,
-        'col-start-1 col-end-27 gap-x-8 grid grid-cols-container',
+        'col-start-1 col-end-27 gap-8 grid grid-cols-container',
       )}
       aria-label="Boclips navigation bar"
     >
@@ -43,7 +43,7 @@ export const NakedNavbar = () => {
     <nav
       className={c(
         s.navbar,
-        'col-start-1 col-end-27 gap-x-8 grid grid-cols-container',
+        'col-start-1 col-end-27 gap-8 grid grid-cols-container',
       )}
       aria-label="Boclips navigation bar"
     />
