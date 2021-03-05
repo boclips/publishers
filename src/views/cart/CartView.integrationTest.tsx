@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   RenderResult,
@@ -87,7 +88,10 @@ describe('CartView', () => {
 
     const wrapper = renderCartView(fakeClient);
 
-    wrapper.findByText('Place order').then((button) => fireEvent.click(button));
+    const placeOrder = await wrapper.findByText('Place order');
+    act(() => {
+      fireEvent.click(placeOrder);
+    });
 
     const modal = await wrapper.findByTestId('order-modal');
     expect(await within(modal).findByText('news video')).toBeVisible();
@@ -214,6 +218,7 @@ describe('CartView', () => {
 
       const wrapper = renderCartView(fakeClient);
 
+      expect(await wrapper.findByText('Shopping cart'));
       expect(await wrapper.queryByText('Captions')).not.toBeInTheDocument();
       expect(await wrapper.queryByText('Editing')).not.toBeInTheDocument();
       expect(await wrapper.queryByText('Trimming')).not.toBeInTheDocument();
