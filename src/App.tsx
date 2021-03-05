@@ -12,7 +12,6 @@ import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import ScrollToTop from 'src/hooks/scrollToTop';
 import { Helmet } from 'react-helmet';
-import FallbackView from 'src/views/fallback/FallbackView';
 import { BoclipsClientProvider } from './components/common/providers/BoclipsClientProvider';
 import Appcues from './services/analytics/Appcues';
 import { GlobalQueryErrorProvider } from './components/common/providers/GlobalQueryErrorProvider';
@@ -45,10 +44,13 @@ const ErrorView = lazy(() => import('src/views/error/ErrorView'));
 
 const NotFound = lazy(() => import('src/views/notFound/NotFound'));
 
+const FallbackView = lazy(() => import('src/views/fallback/FallbackView'));
+
 interface Props {
   apiClient: BoclipsClient;
   reactQueryClient?: QueryClient;
 }
+
 const analyticsService = new AnalyticsService(window.Appcues);
 const queryClient = new QueryClient(queryClientConfig);
 
