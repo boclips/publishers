@@ -6,7 +6,7 @@ import { useFindOrGetOrder } from 'src/hooks/api/orderQuery';
 import { Loading } from 'src/components/common/Loading';
 import { OrderPage } from 'src/components/orderPage/OrderPage';
 import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
-import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
+import RefreshPageError from 'src/components/common/errors/refreshPageError/RefreshPageError';
 import { OrderHeader } from 'src/components/orderPage/OrderHeader';
 import { Helmet } from 'react-helmet';
 import { Layout } from 'src/components/layout/Layout';
@@ -32,7 +32,7 @@ const OrderTable = () => {
       <OrderHelmet orderId={orderId} />
       <Navbar showSearchBar />
       <OrderHeader id={order?.id} />
-      <ErrorBoundary fallback={<RefreshPageError />}>
+      <ErrorBoundary fallback={<RefreshPageError row="3" />}>
         <OrderPage order={order} />
       </ErrorBoundary>
       <Footer />

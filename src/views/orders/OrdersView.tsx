@@ -5,7 +5,7 @@ import { OrdersTable } from 'src/components/ordersTable/OrdersTable';
 import { useGetOrdersQuery } from 'src/hooks/api/orderQuery';
 import { Loading } from 'src/components/common/Loading';
 import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
-import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
+import RefreshPageError from 'src/components/common/errors/refreshPageError/RefreshPageError';
 import EmptyOrdersSVG from 'src/resources/icons/empty-order-history.svg';
 import { Layout } from 'src/components/layout/Layout';
 import { Hero as OrdersEmptyState } from 'src/components/hero/Hero';
@@ -35,7 +35,7 @@ const OrdersView = () => {
         <div className="font-bold text-2xl text-grey-800">Your Orders</div>
       </div>
       {hasOrders ? (
-        <ErrorBoundary fallback={<RefreshPageError />}>
+        <ErrorBoundary fallback={<RefreshPageError row="3" />}>
           <OrdersTable paginationPage={changePaginationPage} orders={orders} />
         </ErrorBoundary>
       ) : (

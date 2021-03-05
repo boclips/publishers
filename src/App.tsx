@@ -12,6 +12,7 @@ import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import ScrollToTop from 'src/hooks/scrollToTop';
 import { Helmet } from 'react-helmet';
+import FallbackView from 'src/views/fallback/FallbackView';
 import { BoclipsClientProvider } from './components/common/providers/BoclipsClientProvider';
 import Appcues from './services/analytics/Appcues';
 import { GlobalQueryErrorProvider } from './components/common/providers/GlobalQueryErrorProvider';
@@ -43,11 +44,6 @@ const OrderConfirmationView = lazy(
 const ErrorView = lazy(() => import('src/views/error/ErrorView'));
 
 const NotFound = lazy(() => import('src/views/notFound/NotFound'));
-
-const RefreshPageError = lazy(
-  () =>
-    import('src/components/common/errors/refreshPageError/RefreshPageError'),
-);
 
 interface Props {
   apiClient: BoclipsClient;
@@ -83,7 +79,7 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
         <ScrollToTop />
         <BoclipsClientProvider client={apiClient}>
           <Suspense fallback={<Loading />}>
-            <JSErrorBoundary fallback={<RefreshPageError />}>
+            <JSErrorBoundary fallback={<FallbackView />}>
               <Helmet title="Boclips" />
               <Switch>
                 <Route exact path="/">

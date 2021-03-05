@@ -7,8 +7,6 @@ import { Loading } from 'src/components/common/Loading';
 import { EmptyCart } from 'src/components/cart/EmptyCart';
 import { useGetVideos } from 'src/hooks/api/videoQuery';
 import { CartSummary } from 'src/components/cart/CartSummary';
-import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
-import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 import { Layout } from 'src/components/layout/Layout';
 
 const CartView = () => {
@@ -27,13 +25,9 @@ const CartView = () => {
   return (
     <Layout rowsSetup="grid-rows-cart-view">
       <Navbar showSearchBar />
+      <CartSummary cart={cart} />
       {itemsInCart && videoIds ? (
-        <>
-          <CartSummary cart={cart} />
-          <ErrorBoundary fallback={<RefreshPageError />}>
-            <Cart cart={cart} cartItemVideos={cartItemVideos} />
-          </ErrorBoundary>
-        </>
+        <Cart cart={cart} cartItemVideos={cartItemVideos} />
       ) : (
         <EmptyCart />
       )}

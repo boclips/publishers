@@ -8,9 +8,9 @@ interface Props {
 export const CartSummary = ({ cart }: Props) => {
   return (
     <div className="col-start-1 col-end-25 grid-row-start-2 grid-row-end-2 flex flex-row">
-      <h2 className="font-bold">Shopping cart</h2>
+      <div className="font-bold text-2xl">Shopping cart</div>
       {!!cart.items.length && (
-        <span className="text-3xl pl-3">
+        <span className="text-2xl pl-3">
           ({cart.items.length} item{cart.items.length > 1 ? 's' : ''})
         </span>
       )}

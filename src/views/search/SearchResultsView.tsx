@@ -20,7 +20,7 @@ import { useDebounce } from 'src/hooks/useDebounce';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
-import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
+import RefreshPageError from 'src/components/common/errors/refreshPageError/RefreshPageError';
 import { Layout } from 'src/components/layout/Layout';
 
 export const PAGE_SIZE = 10;

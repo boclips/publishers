@@ -1,49 +1,41 @@
 import React from 'react';
 import ErrorEngineer from 'resources/icons/errro-engineer.svg';
-import c from 'classnames';
 import Button from '@boclips-ui/button';
-import s from './style.module.less';
+import { Hero } from 'src/components/hero/Hero';
 
-export const RefreshPageError = () => {
+interface Props {
+  row?: string;
+}
+
+export const one = ({ one2 }) => {
+  return <div> {one2}</div>;
+};
+
+const RefreshPageError = ({ row }: Props) => {
   const refreshHandler = () => {
     window.location.reload();
   };
 
   return (
-    <div className="col-start-1 col-end-26 bg-primary-light h-full rounded-lg">
-      <section
-        className={c(
-          s.pageErrorWrapper,
-          'grid grid-cols-content gap-6  h-full',
-        )}
-      >
-        <div className="col-start-5 col-end-9 flex justify-center items-center">
-          <ErrorEngineer />
-        </div>
-        <div className="col-start-12 col-end-21 text-blue-800 flex flex-col justify-center">
-          <h2 className="blue-800 font-medium text-4xl">
-            Sorry, it’s not you! It’s us.
-          </h2>
-          <p className="text-gray-800 text-lg">
-            There was an error processing your request. Please try once again.
-            <br />
-            If this continues, please contact us at support@boclips.com
-          </p>
-          <div className="mt-8 flex flex-row items-center">
-            <Button
-              onClick={refreshHandler}
-              text="Refresh page"
-              height="44px"
-              width="145px"
-            />
-
-            <div className="font-medium ml-6 blue-800 text-base ">
-              <a href="mailto:support@boclips.com">Contact support</a>
-            </div>
+    <Hero
+      icon={<ErrorEngineer />}
+      row={row}
+      title="Sorry, it’s not you! It’s us."
+      description="There was an error processing your request. Please try once again. If this continues, please contact us at support@boclips.com"
+      actions={
+        <>
+          <Button
+            onClick={refreshHandler}
+            text="Refresh page"
+            height="44px"
+            width="145px"
+          />
+          <div className="font-medium ml-6 blue-800 text-base ">
+            <a href="mailto:support@boclips.com">Contact support</a>
           </div>
-        </div>
-      </section>
-    </div>
+        </>
+      }
+    />
   );
 };
 

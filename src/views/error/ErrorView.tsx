@@ -1,7 +1,7 @@
 import Navbar from 'src/components/layout/Navbar';
 import Footer from 'src/components/layout/Footer';
 import React from 'react';
-import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
+import RefreshPageError from 'src/components/common/errors/refreshPageError/RefreshPageError';
 import { Layout } from 'src/components/layout/Layout';
 
 interface Props {

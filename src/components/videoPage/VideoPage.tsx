@@ -6,8 +6,6 @@ import { VideoAdditionalServices } from 'src/components/videoPage/VideoAdditiona
 import { VideoHeader } from 'src/components/videoPage/VideoHeader';
 import { useHistory } from 'react-router-dom';
 import BlueArrow from 'resources/icons/blue-arrow.svg';
-import { ErrorBoundary } from '../common/errors/ErrorBoundary';
-import { RefreshPageError } from '../common/errors/refreshPageError/RefreshPageError';
 
 interface Props {
   video: Video;
@@ -23,7 +21,7 @@ export const VideoPage = ({ video }: Props) => {
   const userNavigatedToPageViaApp = history.action === 'PUSH';
 
   return (
-    <ErrorBoundary fallback={<RefreshPageError />}>
+    <>
       <div className="col-start-1 col-end-18 row-start-2 row-end-2 h-full">
         {userNavigatedToPageViaApp && (
           <button
@@ -44,6 +42,6 @@ export const VideoPage = ({ video }: Props) => {
         <VideoHeader video={video} />
         <VideoAdditionalServices />
       </div>
-    </ErrorBoundary>
+    </>
   );
 };
