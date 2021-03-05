@@ -47,6 +47,7 @@ module.exports = {
         'order-view': '75px 21px minmax(0, auto) minmax(0, auto) 63px',
         'cart-view': '75px 50px minmax(0, auto) 63px',
         'video-view': '75px minmax(0, auto) 63px',
+        'refresh-page-view': '75px minmax(0, auto) 63px',
       },
       gridTemplateColumns: {
         new: 'repeat(24, minmax(0, 38px))',

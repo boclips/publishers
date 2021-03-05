@@ -30,7 +30,7 @@ const SearchHero = () => {
   return (
     <>
       <div className="col-start-1 col-end-25 row-start-2 row-end-2 bg-primary-light rounded-lg" />
-      <div className="col-start-3 col-end-15 md:col-start-4 md:col-end-15 lg:col-start-5 lg:col-end-15 row-start-2 row-end-2 self-center">
+      <div className="col-start-3 col-end-15 md:col-start-4 md:col-end-15 lg:col-start-4 lg:col-end-15 row-start-2 row-end-2 self-center">
         <h1 className="mb-8 text-4xl font-medium">
           What videos do you need today?
         </h1>

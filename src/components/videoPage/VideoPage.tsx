@@ -23,29 +23,27 @@ export const VideoPage = ({ video }: Props) => {
   const userNavigatedToPageViaApp = history.action === 'PUSH';
 
   return (
-    <>
-      <ErrorBoundary fallback={<RefreshPageError />}>
-        <div className="col-start-1 col-end-18 row-start-2 row-end-2 h-full">
-          {userNavigatedToPageViaApp && (
-            <button
-              type="button"
-              className="text-blue-800 font-xs font-medium flex flex-row items-center mb-2"
-              onClick={goToPreviousPage}
-            >
-              <BlueArrow className="transform rotate-90 mr-2" />
-              Back
-            </button>
-          )}
+    <ErrorBoundary fallback={<RefreshPageError />}>
+      <div className="col-start-1 col-end-18 row-start-2 row-end-2 h-full">
+        {userNavigatedToPageViaApp && (
+          <button
+            type="button"
+            className="text-blue-800 font-xs font-medium flex flex-row items-center mb-2"
+            onClick={goToPreviousPage}
+          >
+            <BlueArrow className="transform rotate-90 mr-2" />
+            Back
+          </button>
+        )}
 
-          <VideoPlayer video={video} />
-          <VideoDescription video={video} />
-        </div>
+        <VideoPlayer video={video} />
+        <VideoDescription video={video} />
+      </div>
 
-        <div className="col-start-18 col-end-26 row-start-2 row-end-2">
-          <VideoHeader video={video} />
-          <VideoAdditionalServices />
-        </div>
-      </ErrorBoundary>
-    </>
+      <div className="col-start-18 col-end-26 row-start-2 row-end-2">
+        <VideoHeader video={video} />
+        <VideoAdditionalServices />
+      </div>
+    </ErrorBoundary>
   );
 };

@@ -25,12 +25,12 @@ describe('OrderView', () => {
     expect(
       await wrapper.findByText('You have no order history... yet!'),
     ).toBeVisible();
+
     expect(
       wrapper.getByText(
         'But when you order something, you can keep track of all your orders here.',
       ),
     ).toBeInTheDocument();
-    expect(wrapper.getByTestId('empty-orders-image')).toBeInTheDocument();
   });
 
   it('navigates to order view when view order is clicked', async () => {

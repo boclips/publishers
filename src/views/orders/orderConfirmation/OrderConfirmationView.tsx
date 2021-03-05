@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import Navbar from 'src/components/layout/Navbar';
 import Footer from 'src/components/layout/Footer';
-import { useHistory } from 'react-router-dom';
-import { OrderConfirmation } from 'src/components/orderConfirmation/OrderConfirmation';
+import { Link, useHistory } from 'react-router-dom';
+import { Layout } from 'src/components/layout/Layout';
+import Button from '@boclips-ui/button';
+import { Hero } from 'src/components/hero/Hero';
+import OrderConfirmedSVG from 'src/resources/icons/order-confirmed.svg';
 
 interface OrderConfirmedInterface {
   state: any;
@@ -24,11 +27,33 @@ const OrderConfirmationView = ({ state }: OrderConfirmedInterface) => {
   if (!state || !state.orderLocation) return null;
 
   return (
-    <div className="grid grid-cols-container grid-rows-cart-view gap-6">
+    <Layout rowsSetup="grid-rows-home">
       <Navbar showSearchBar />
-      <OrderConfirmation orderId={orderId} />
+      <Hero
+        title="Your order is confirmed"
+        icon={<OrderConfirmedSVG />}
+        description="Your order #632371654 is currently being processed. We’ve sent you an email with your order confirmation. "
+        moreDescription="You can track and review all orders in your account"
+        actions={
+          <>
+            <Button
+              onClick={() => {
+                history.push({
+                  pathname: `/orders/${orderId}`,
+                });
+              }}
+              text="View order details"
+              height="44px"
+              width="170px"
+            />
+            <Link className="font-medium text-base ml-6" to="/orders">
+              View all orders
+            </Link>
+          </>
+        }
+      />
       <Footer />
-    </div>
+    </Layout>
   );
 };
 

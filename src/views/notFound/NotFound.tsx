@@ -4,35 +4,29 @@ import Footer from 'src/components/layout/Footer';
 import NotFoundSVG from 'src/resources/icons/not-found.svg';
 import Button from '@boclips-ui/button';
 import { Layout } from 'src/components/layout/Layout';
-import s from './style.module.less';
+import { Hero } from 'src/components/hero/Hero';
 
-const NotFound = () => (
-  <Layout rowsSetup="grid-rows-home">
-    <Navbar showSearchBar />
-    <div className={s.notFoundView}>
-      <div className="col-start-1 col-end-10 flex justify-center items-center">
-        <NotFoundSVG />
-      </div>
-      <div className="col-start-12 col-end-21 text-blue-800 flex flex-col justify-center">
-        <div className="text-4xl text-blue-800 font-medium leading-10">
-          Page not found!
-        </div>
-        <div className="text-lg leading-6 text-gray-800 mt-4">
-          We can’t seem to find the page you’re looking for. Try going back to
-          the previous page or contact support@boclips.com
-        </div>
-        <div className="flex space-x-14 mt-8 font-medium">
+const NotFound = () => {
+  return (
+    <Layout rowsSetup="grid-rows-home">
+      <Navbar showSearchBar />
+      <Hero
+        icon={<NotFoundSVG />}
+        title="Page not found!"
+        description="We can’t seem to find the page you’re looking for. Try going back to
+          the previous page or contact support@boclips.com"
+        actions={
           <Button
             onClick={() => {
               window.location.href = 'mailto:support@boclips.com';
             }}
             text="Contact Support"
           />
-        </div>
-      </div>
-    </div>
-    <Footer />
-  </Layout>
-);
+        }
+      />
+      <Footer />
+    </Layout>
+  );
+};
 
 export default NotFound;

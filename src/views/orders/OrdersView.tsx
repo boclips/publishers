@@ -8,6 +8,7 @@ import { ErrorBoundary } from 'src/components/common/errors/ErrorBoundary';
 import { RefreshPageError } from 'src/components/common/errors/refreshPageError/RefreshPageError';
 import EmptyOrdersSVG from 'src/resources/icons/empty-order-history.svg';
 import { Layout } from 'src/components/layout/Layout';
+import { Hero as OrdersEmptyState } from 'src/components/hero/Hero';
 
 export const PAGE_SIZE = 10;
 
@@ -38,24 +39,12 @@ const OrdersView = () => {
           <OrdersTable paginationPage={changePaginationPage} orders={orders} />
         </ErrorBoundary>
       ) : (
-        <div className="col-start-1 col-end-25 bg-primary-light h-full rounded-lg">
-          <section className="grid grid-cols-content gap-6  h-full">
-            <div className="col-start-5 col-end-9 flex justify-center items-center my-12">
-              <span data-qa="empty-orders-image">
-                <EmptyOrdersSVG />
-              </span>
-            </div>
-            <div className="col-start-12 col-end-21 text-blue-800 flex flex-col justify-center my-11">
-              <h2 className="blue-800 font-medium text-4xl">
-                You have no order history... yet!
-              </h2>
-              <p className="text-gray-800 text-lg">
-                But when you order something, you can keep track of all your
-                orders here.
-              </p>
-            </div>
-          </section>
-        </div>
+        <OrdersEmptyState
+          row="3"
+          icon={<EmptyOrdersSVG />}
+          title="You have no order history... yet!"
+          description="But when you order something, you can keep track of all your orders here."
+        />
       )}
       <Footer />
     </Layout>

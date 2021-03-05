@@ -110,16 +110,14 @@ describe('CartView', () => {
 
     expect(await wrapper.findByText('Loading')).toBeVisible();
 
-    const confirmation = await wrapper.findByTestId('order-confirmed');
     expect(await fakeClient.orders.getAll()).toHaveLength(1);
 
-    expect(
-      within(confirmation).getByText('Your order is confirmed'),
-    ).toBeVisible();
+    expect(await wrapper.findByText('Your order is confirmed')).toBeVisible();
 
-    expect(
-      within(confirmation).getByText('View all orders').closest('a'),
-    ).toHaveAttribute('href', `/orders`);
+    expect(await wrapper.findByText('View all orders')).toHaveAttribute(
+      'href',
+      `/orders`,
+    );
   });
 
   it(`has the cart summary`, async () => {
