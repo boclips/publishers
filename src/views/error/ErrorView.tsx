@@ -12,11 +12,9 @@ const ErrorView = ({ error }: Props) => {
   console.error(error);
 
   return (
-    <Layout rowsSetup="grid-rows-cart-view">
+    <Layout rowsSetup="grid-rows-home">
       <Navbar showSearchBar />
-      <div className="col-start-1 col-end-25 row-start-2 row-end-2">
-        <RefreshPageError />
-      </div>
+      <RefreshPageError />
       <Footer />
     </Layout>
   );
