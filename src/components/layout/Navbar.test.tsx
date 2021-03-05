@@ -5,19 +5,21 @@ import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider
 import Navbar from './Navbar';
 
 describe('Navbar', () => {
-  it('does not render the search bar by default', () => {
+  it('does not render the search bar by default', async () => {
     const navbar = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
         <Navbar />
       </BoclipsClientProvider>,
     );
 
+    await navbar.findByTitle('Boclips logo');
+
     expect(
       navbar.queryByRole('combobox', { name: /search/i }),
     ).not.toBeInTheDocument();
   });
 
-  it('does renders the search bar when told to', () => {
+  it('does renders the search bar when told to', async () => {
     const navbar = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
         <Navbar showSearchBar />
@@ -25,7 +27,7 @@ describe('Navbar', () => {
     );
 
     expect(
-      navbar.getByRole('combobox', { name: /search/i }),
-    ).toBeInTheDocument();
+      await navbar.findByRole('combobox', { name: /search/i }),
+    ).toBeVisible();
   });
 });

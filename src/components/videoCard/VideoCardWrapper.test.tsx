@@ -7,7 +7,7 @@ import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
 
 describe('Video card', () => {
-  it('displays all the given information on a video card', () => {
+  it('displays all the given information on a video card', async () => {
     const video = VideoFactory.sample({
       title: 'hello i am a title',
       description: 'wow what a video hansen',
@@ -39,7 +39,7 @@ describe('Video card', () => {
       </BoclipsClientProvider>,
     );
 
-    expect(wrapper.getByText('hello i am a title')).toBeVisible();
+    expect(await wrapper.findByText('hello i am a title')).toBeVisible();
     expect(wrapper.getByText('wow what a video hansen')).toBeVisible();
     expect(wrapper.getByText('Released on Mar 20, 2019')).toBeVisible();
     expect(wrapper.getByText('by BFI')).toBeVisible();

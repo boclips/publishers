@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 
-describe('track page render event', async () => {
+describe('track page render event', () => {
   it('trackPageRendered calls ApiClient with url', () => {
     const fakeClient = new FakeBoclipsClient();
 

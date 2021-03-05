@@ -7,7 +7,13 @@ import {
   FacetsFactory,
 } from 'boclips-api-client/dist/test-support/FacetsFactory';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
-import { fireEvent, render, waitFor, within } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -219,10 +225,11 @@ describe(`SearchResultsFiltering`, () => {
       expect(await wrapper.findByText('Getty')).toBeInTheDocument();
       expect(await wrapper.findByText('Ted')).toBeInTheDocument();
 
-      fireEvent.change(wrapper.getByPlaceholderText('Search for channel'), {
-        target: { value: 'get' },
+      act(() => {
+        fireEvent.change(wrapper.getByPlaceholderText('Search for channel'), {
+          target: { value: 'get' },
+        });
       });
-
       expect(await wrapper.findByText('Get')).toHaveClass('font-medium');
       expect(wrapper.queryByText('Ted')).toBeNull();
 
