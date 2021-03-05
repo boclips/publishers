@@ -19,13 +19,14 @@ describe('HomeView', () => {
     ).toBeInTheDocument();
   });
 
-  it('displays Boclips as window title', () => {
-    render(
+  it('displays Boclips as window title', async () => {
+    const wrapper = render(
       <MemoryRouter initialEntries={['/']}>
         <App apiClient={new FakeBoclipsClient()} />
       </MemoryRouter>,
     );
 
+    await wrapper.findByTestId('search-input');
     const helmet = Helmet.peek();
 
     expect(helmet.title).toEqual('Boclips');
