@@ -6,6 +6,8 @@ import React from 'react';
 
 describe('NotFoundView', () => {
   it('shows not found if route is unknown', async () => {
+    jest.spyOn(console, 'log').mockImplementation(jest.fn());
+
     const wrapper = render(
       <MemoryRouter initialEntries={['/randompath']}>
         <App apiClient={new FakeBoclipsClient()} />
