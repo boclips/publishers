@@ -462,6 +462,9 @@ describe('CartView', () => {
     });
 
     it(`displays error page when error while placing order`, async () => {
+      const originalConsoleError = console.error;
+      console.error = () => {};
+
       const fakeClient = new FakeBoclipsClient();
 
       fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
@@ -477,6 +480,7 @@ describe('CartView', () => {
       expect(
         await wrapper.findByText(/There was an error processing your request/),
       ).toBeVisible();
+      console.error = originalConsoleError;
     });
 
     it('displays a notes field', async () => {
