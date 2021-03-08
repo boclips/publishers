@@ -16,9 +16,9 @@ export const OrderTotalPriceField = ({ totalPrice, highlighted }: Props) => (
       })}
     >
       {createPriceDisplayValue(
-        totalPrice.value,
-        totalPrice.currency,
-        navigator.language,
+        totalPrice?.value,
+        totalPrice?.currency,
+        navigator?.language,
       )}
     </span>
   </OrderInformationField>
