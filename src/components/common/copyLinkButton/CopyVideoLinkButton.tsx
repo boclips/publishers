@@ -6,15 +6,18 @@ import CopiedLinkIcon from 'src/resources/icons/copied-link-icon.svg';
 import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import { buildVideoDetailsLink } from 'src/services/buildVideoDetailsLink';
 import { useGetUserQuery } from 'src/hooks/api/userQuery';
+import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import s from './style.module.less';
 import { trackCopyVideoShareLink } from '../analytics/Analytics';
 
 interface Props {
   video: Video;
   width?: string;
+  appcueEvent?: AppcuesEvent;
 }
 
-export const CopyVideoLinkButton = ({ video, width }: Props) => {
+export const CopyVideoLinkButton = ({ video, width, appcueEvent }: Props) => {
   const apiClient = useBoclipsClient();
   const { data: user, isFetched } = useGetUserQuery();
 
@@ -25,6 +28,10 @@ export const CopyVideoLinkButton = ({ video, width }: Props) => {
     navigator.clipboard.writeText(linkToCopy).then(() => {
       setCopiedToClipboard(true);
       trackCopyVideoShareLink(video, apiClient);
+
+      if (appcueEvent) {
+        AnalyticsFactory.getAppcues().sendEvent(appcueEvent);
+      }
     });
 
     setTimeout(() => {

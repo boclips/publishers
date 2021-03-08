@@ -57,18 +57,21 @@ const queryClient = new QueryClient(queryClientConfig);
 const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
   const currentLocation = useLocation();
 
-  apiClient.users
-    .getCurrentUser()
-    .then((user) =>
-      analyticsService.identify({
-        email: user.email,
-        firstName: user.firstName,
-        id: user.id,
-      }),
-    )
-    .then(() => {
-      AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.LOGGED_IN);
-    });
+  useEffect(() => {
+    apiClient.users
+      .getCurrentUser()
+      .then((user) =>
+        analyticsService.identify({
+          email: user.email,
+          firstName: user.firstName,
+          id: user.id,
+        }),
+      )
+      .then(() => {
+        AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.LOGGED_IN);
+      });
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     trackPageRendered(currentLocation, apiClient);

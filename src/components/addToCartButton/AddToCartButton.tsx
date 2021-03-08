@@ -9,15 +9,22 @@ import Button from '@boclips-ui/button';
 import React from 'react';
 import c from 'classnames';
 import CartIcon from 'resources/icons/cart-icon.svg';
+import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import s from './style.module.less';
 import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
 
 interface AddToCartButtonProps {
   videoId: string;
   width?: string;
+  appcueEvent?: AppcuesEvent;
 }
 
-export const AddToCartButton = ({ videoId, width }: AddToCartButtonProps) => {
+export const AddToCartButton = ({
+  videoId,
+  width,
+  appcueEvent,
+}: AddToCartButtonProps) => {
   const queryClient = useQueryClient();
   const boclipsClient = useBoclipsClient();
   const { data: cart } = useCartQuery();
@@ -37,6 +44,10 @@ export const AddToCartButton = ({ videoId, width }: AddToCartButtonProps) => {
           ...old,
           items: [...old.items, it],
         }));
+
+        if (appcueEvent) {
+          AnalyticsFactory.getAppcues().sendEvent(appcueEvent);
+        }
       },
     },
   );

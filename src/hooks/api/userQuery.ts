@@ -1,8 +1,9 @@
 import { BoclipsClient } from 'boclips-api-client';
 import { useQuery } from 'react-query';
 import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
+import { User } from 'boclips-api-client/dist/sub-clients/organisations/model/User';
 
-export const doGetUser = (client: BoclipsClient) => {
+export const doGetUser = (client: BoclipsClient): Promise<User> => {
   return client.users.getCurrentUser();
 };
 

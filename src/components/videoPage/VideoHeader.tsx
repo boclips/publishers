@@ -1,5 +1,4 @@
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
-import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { CopyVideoLinkButton } from 'src/components/common/copyLinkButton/CopyVideoLinkButton';
 import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
@@ -36,14 +35,16 @@ export const VideoHeader = ({ video }: Props) => {
         This is an agreed price for your organization
       </div>
       <div className="flex flex-row " style={{ width: '100%' }}>
-        <AnalyticsTrackClick eventType={AppcuesEvent.COPY_LINK_FROM_VIDEO_PAGE}>
-          <CopyVideoLinkButton video={video} width="50%" />
-        </AnalyticsTrackClick>
-        <AnalyticsTrackClick
-          eventType={AppcuesEvent.ADD_TO_CART_FROM_VIDEO_PAGE}
-        >
-          <AddToCartButton videoId={video?.id} width="50%" />
-        </AnalyticsTrackClick>
+        <CopyVideoLinkButton
+          video={video}
+          width="50%"
+          appcueEvent={AppcuesEvent.COPY_LINK_FROM_VIDEO_PAGE}
+        />
+        <AddToCartButton
+          videoId={video?.id}
+          width="50%"
+          appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_VIDEO_PAGE}
+        />
       </div>
     </>
   );

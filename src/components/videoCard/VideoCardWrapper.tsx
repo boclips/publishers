@@ -7,9 +7,9 @@ import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
 import { Link } from 'react-router-dom';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
-import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import { CopyVideoLinkButton } from 'src/components/common/copyLinkButton/CopyVideoLinkButton';
 import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
+import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import s from './VideoCardWrapper.module.less';
 
 interface Props {
@@ -17,6 +17,35 @@ interface Props {
 }
 
 export const VideoCardWrapper = ({ video }: Props) => {
+  const VideoCardTitle = () => {
+    const onClick = () =>
+      AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.VIDEO_PAGE_OPENED);
+
+    return (
+      <Link onClick={onClick} to={`/videos/${video.id}`}>
+        <div className="text-gray-900">{video?.title}</div>
+      </Link>
+    );
+  };
+
+  const VideoCartButtons = () => {
+    return (
+      <div className="flex flex-row justify-end" key={`copy-${video.id}`}>
+        <CopyVideoLinkButton
+          video={video}
+          appcueEvent={AppcuesEvent.COPY_LINK_FROM_SEARCH_RESULTS}
+        />
+
+        <AddToCartButton
+          videoId={video.id}
+          key="cart-button"
+          width="148px"
+          appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className={s.videoCard}>
       <VideoCardV2
@@ -33,33 +62,8 @@ export const VideoCardWrapper = ({ video }: Props) => {
             )}
           />
         }
-        title={
-          <AnalyticsTrackClick eventType={AppcuesEvent.VIDEO_PAGE_OPENED}>
-            <Link to={`/videos/${video.id}`}>
-              <div className="text-gray-900">{video?.title}</div>
-            </Link>
-          </AnalyticsTrackClick>
-        }
-        actions={[
-          <div className="flex flex-row justify-end" key={`copy-${video.id}`}>
-            <AnalyticsTrackClick
-              eventType={AppcuesEvent.COPY_LINK_FROM_SEARCH_RESULTS}
-            >
-              <CopyVideoLinkButton video={video} />
-            </AnalyticsTrackClick>
-            <AnalyticsTrackClick
-              eventType={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
-            >
-              <span role="presentation">
-                <AddToCartButton
-                  videoId={video.id}
-                  key="cart-button"
-                  width="148px"
-                />
-              </span>
-            </AnalyticsTrackClick>
-          </div>,
-        ]}
+        title={<VideoCardTitle />}
+        actions={[<VideoCartButtons />]}
       />
     </div>
   );

@@ -221,10 +221,12 @@ describe('SearchResults', () => {
       </MemoryRouter>,
     );
 
-    fireEvent.click(await wrapper.findByText('news video'));
+    await waitFor(async () => {
+      fireEvent.click(await wrapper.findByText(/news video/));
+    });
 
-    await waitFor(() => {
-      expect(wrapper.getByTestId('video-page')).toBeVisible();
+    await waitFor(async () => {
+      expect(await wrapper.findByTestId('video-page')).toBeVisible();
     });
   });
 
@@ -266,7 +268,9 @@ describe('SearchResults', () => {
         </MemoryRouter>,
       );
 
-      expect(await wrapper.findByText('Add to cart')).toBeInTheDocument();
+      await waitFor(async () => {
+        expect(await wrapper.findByText('Add to cart')).toBeInTheDocument();
+      });
 
       fireEvent(
         wrapper.getByText('Add to cart'),

@@ -440,8 +440,10 @@ describe(`SearchResultsFiltering`, () => {
 
       const wrapper = renderSearchResultsView(['/videos?q=video&prices=10000']);
 
-      expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
-      expect(await wrapper.queryByText('expensive video')).toBeNull();
+      await waitFor(async () => {
+        expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
+        expect(await wrapper.queryByText('expensive video')).toBeNull();
+      });
 
       const selectedFiltersSection = wrapper.getByTestId('applied-filter-tags');
       const appliedFilter = within(selectedFiltersSection).getByText('$100');
@@ -452,8 +454,10 @@ describe(`SearchResultsFiltering`, () => {
         expect(wrapper.queryByText('Selected filters')).toBeNull();
       });
 
-      expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
-      expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
+      await waitFor(async () => {
+        expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
+        expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
+      });
     });
 
     it(`can remove all filters from selected filters panel`, async () => {
@@ -470,8 +474,11 @@ describe(`SearchResultsFiltering`, () => {
       );
 
       const wrapper = renderSearchResultsView(['/videos?q=video&prices=10000']);
-      expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
-      expect(await wrapper.queryByText('expensive video')).toBeNull();
+
+      await waitFor(async () => {
+        expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
+        expect(await wrapper.queryByText('expensive video')).toBeNull();
+      });
 
       fireEvent.click(wrapper.getByText('Clear all'));
 
@@ -479,8 +486,10 @@ describe(`SearchResultsFiltering`, () => {
         expect(wrapper.queryByText('Selected filters')).toBeNull();
       });
 
-      expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
-      expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
+      await waitFor(async () => {
+        expect(await wrapper.findByText('cheap video')).toBeInTheDocument();
+        expect(await wrapper.findByText('expensive video')).toBeInTheDocument();
+      });
     });
   });
 

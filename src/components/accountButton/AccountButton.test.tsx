@@ -35,7 +35,7 @@ describe('account button', () => {
       </BoclipsClientProvider>,
     );
 
-    expect(navbar.getByText('Account')).toBeInTheDocument();
+    expect(await navbar.findByText('Account')).toBeInTheDocument();
 
     fireEvent.click(navbar.getByText('Account'));
 

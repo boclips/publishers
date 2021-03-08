@@ -6,8 +6,8 @@ import { Loading } from 'src/components/common/Loading';
 import c from 'classnames';
 import BoclipsSecurity from 'boclips-js-security';
 import { Constants } from 'src/AppConstants';
-import { AnalyticsTrackClick } from 'src/components/common/analytics/AnalyticsTrackClick';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
+import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import s from './style.module.less';
 
 export const AccountButton = () => {
@@ -16,6 +16,7 @@ export const AccountButton = () => {
   const { data, isLoading } = useGetUserQuery();
   const ref = useRef(null);
 
+  // close modal on click outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -36,45 +37,13 @@ export const AccountButton = () => {
   const onMouseEnterAction = () => {
     setOnMouseEnter(true);
   };
+
   const onMouseLeaveAction = () => {
     setOnMouseEnter(false);
   };
 
-  const renderModal = () => {
-    if (isLoading && displayModal) {
-      return (
-        <div ref={ref} className={s.tooltip}>
-          <Loading />
-        </div>
-      );
-    }
-    return (
-      displayModal && (
-        <div ref={ref} className={s.tooltip}>
-          <div className="font-medium">
-            {data.firstName} {data.lastName}
-          </div>
-          <div className="text-xs text-gray-800">{data.email}</div>
-          <div className="pt-4 text-sm">
-            <AnalyticsTrackClick eventType={AppcuesEvent.YOUR_ORDERS_OPENED}>
-              <Link to="/orders">Your orders</Link>
-            </AnalyticsTrackClick>
-          </div>
-          <div className="pt-1 text-sm">
-            <button
-              type="button"
-              onClick={() =>
-                BoclipsSecurity.getInstance().logout({
-                  redirectUri: `${Constants.HOST}/`,
-                })
-              }
-            >
-              Log out
-            </button>
-          </div>
-        </div>
-      )
-    );
+  const ordersOpenedEvent = () => {
+    AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.YOUR_ORDERS_OPENED);
   };
 
   return (
@@ -89,7 +58,36 @@ export const AccountButton = () => {
         <MyAccountSVG />
         <span className="text-xs mt-1 font-medium">Account</span>
       </div>
-      {renderModal()}
+      {isLoading && displayModal && (
+        <div ref={ref} className={s.tooltip}>
+          <Loading />
+        </div>
+      )}
+      {displayModal && (
+        <div ref={ref} className={s.tooltip}>
+          <div className="font-medium">
+            {data.firstName} {data.lastName}
+          </div>
+          <div className="text-xs text-gray-800">{data.email}</div>
+          <div className="pt-4 text-sm">
+            <Link onClick={ordersOpenedEvent} to="/orders">
+              Your orders
+            </Link>
+          </div>
+          <div className="pt-1 text-sm">
+            <button
+              type="button"
+              onClick={() =>
+                BoclipsSecurity.getInstance().logout({
+                  redirectUri: `${Constants.HOST}/`,
+                })
+              }
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
