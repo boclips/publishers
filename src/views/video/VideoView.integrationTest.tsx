@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
@@ -83,41 +83,6 @@ describe('Video View', () => {
     expect(button).toBeInTheDocument();
   });
 
-  describe('window titles', () => {
-    it(`displays video title as window title`, async () => {
-      const video = VideoFactory.sample({
-        id: 'video-1',
-        title: 'the coolest video you ever did see',
-      });
-
-      const fakeClient = new FakeBoclipsClient();
-      fakeClient.videos.insertVideo(video);
-
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos/video-1']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
-
-      expect(
-        await wrapper.findByText('the coolest video you ever did see'),
-      ).toBeVisible();
-
-      const helmet = Helmet.peek();
-      expect(helmet.title).toEqual('the coolest video you ever did see');
-    });
-
-    it('displays default window title when no video available', () => {
-      render(
-        <MemoryRouter initialEntries={['/videos/video-2']}>
-          <App apiClient={new FakeBoclipsClient()} />
-        </MemoryRouter>,
-      );
-
-      const helmet = Helmet.peek();
-      expect(helmet.title).toEqual('Boclips');
-    });
-  });
   describe('back button', () => {
     it('does not render back button if user navigates directly to page', async () => {
       const video = VideoFactory.sample({
@@ -133,6 +98,9 @@ describe('Video View', () => {
           <App apiClient={fakeClient} />
         </MemoryRouter>,
       );
+
+      await wrapper.findByText('the coolest video you ever did see');
+
       expect(wrapper.queryByText('Back')).not.toBeInTheDocument();
     });
 
@@ -160,20 +128,64 @@ describe('Video View', () => {
         'the coolest video you ever did see',
       );
 
-      fireEvent.click(title);
+      act(() => {
+        fireEvent.click(title);
+      });
 
       await waitFor(async () => {
-        expect(wrapper.getByText('Back')).toBeVisible();
+        expect(await wrapper.findByText('Back')).toBeVisible();
         expect(wrapper.queryByText('Shopping cart')).not.toBeInTheDocument();
       });
 
       const backButton = await wrapper.findByText('Back');
 
-      fireEvent.click(backButton);
+      act(() => {
+        fireEvent.click(backButton);
+      });
 
       await waitFor(async () =>
         expect(wrapper.getByText('Shopping cart')).toBeVisible(),
       );
+    });
+  });
+
+  describe('window titles', () => {
+    it(`displays video title as window title`, async () => {
+      const video = VideoFactory.sample({
+        id: 'video-1',
+        title: 'the coolest video you ever did see',
+      });
+
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.videos.insertVideo(video);
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos/video-1']}>
+          <App apiClient={fakeClient} />
+        </MemoryRouter>,
+      );
+
+      expect(
+        await wrapper.findByText('the coolest video you ever did see'),
+      ).toBeVisible();
+
+      const helmet = Helmet.peek();
+      expect(helmet.title).toEqual('the coolest video you ever did see');
+    });
+
+    it('displays default window title when no video available', async () => {
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos/video-2']}>
+          <App apiClient={new FakeBoclipsClient()} />
+        </MemoryRouter>,
+      );
+
+      expect(
+        await wrapper.findByText('Sorry, it’s not you! It’s us.'),
+      ).toBeVisible();
+
+      const helmet = Helmet.peek();
+      expect(helmet.title).toEqual('Boclips');
     });
   });
 });

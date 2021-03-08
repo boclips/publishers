@@ -29,7 +29,7 @@ const useProvideError = () => {
   React.useEffect(() => {
     const queryCache = client.getQueryCache();
 
-    queryCache.subscribe(() => {
+    const unsubscribeHandle = queryCache.subscribe(() => {
       setIsError(
         client
           .getQueryCache()
@@ -37,6 +37,8 @@ const useProvideError = () => {
           .some((query) => query.state.status === 'error'),
       );
     });
+
+    return () => unsubscribeHandle();
   }, [client]);
 
   return isError;
