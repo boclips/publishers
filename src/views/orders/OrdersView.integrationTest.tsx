@@ -230,8 +230,6 @@ describe('OrderView', () => {
 
     const thumbnail = await wrapper.findByTestId('order-item-thumbnail');
 
-    wrapper.debug(thumbnail, 2000);
-
     expect(thumbnail.style.backgroundImage).toEqual(
       'url(https://validThumbnail.com)',
     );
