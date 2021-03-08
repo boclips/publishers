@@ -63,7 +63,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
           />
         }
         title={<VideoCardTitle />}
-        actions={[<VideoCartButtons />]}
+        actions={[<VideoCartButtons key={`video-cart-buttons-${video.id}`} />]}
       />
     </div>
   );
