@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
@@ -221,8 +221,14 @@ describe('SearchResults', () => {
       </MemoryRouter>,
     );
 
+    let newsVideo = null;
+
     await waitFor(async () => {
-      fireEvent.click(await wrapper.findByText(/news video/));
+      newsVideo = await wrapper.findByText(/news video/);
+    });
+
+    act(() => {
+      fireEvent.click(newsVideo);
     });
 
     await waitFor(async () => {
