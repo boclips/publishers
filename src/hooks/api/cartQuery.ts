@@ -60,23 +60,27 @@ export const useCartItemAdditionalServicesMutation = () => {
       ) => {
         await queryClient.cancelQueries('cart');
 
-        queryClient.setQueryData('cart', (old: Cart) => ({
-          ...old,
-          items: [
-            ...old.items.map((it) => {
-              if (it.id === additionalServicesUpdateRequest.cartItem.id) {
-                return {
-                  ...it,
-                  additionalServices: {
-                    ...it.additionalServices,
-                    ...additionalServicesUpdateRequest.additionalServices,
-                  },
-                };
-              }
-              return it;
-            }),
-          ],
-        }));
+        queryClient.setQueryData('cart', (old: Cart) => {
+          return {
+            ...old,
+            items: old?.items
+              ? [
+                  ...old.items.map((it) => {
+                    if (it.id === additionalServicesUpdateRequest.cartItem.id) {
+                      return {
+                        ...it,
+                        additionalServices: {
+                          ...it.additionalServices,
+                          ...additionalServicesUpdateRequest.additionalServices,
+                        },
+                      };
+                    }
+                    return it;
+                  }),
+                ]
+              : [],
+          };
+        });
       },
     },
   );
