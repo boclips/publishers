@@ -27,11 +27,7 @@ const addHubspotScript = () => {
   document.head.appendChild(hubspotScript);
 };
 
-if (Constants.IS_HOTJAR_ENABLED) {
-  loadHotjar();
-}
-
-if (process.env.NODE_ENV === 'production') {
+const initializeSentry = () => {
   const sentryRelease = process.env.SENTRY_RELEASE;
 
   Sentry.init({
@@ -46,8 +42,18 @@ if (process.env.NODE_ENV === 'production') {
       /^chrome:\/\//i,
     ],
   });
+};
 
+if (Constants.IS_HOTJAR_ENABLED) {
+  loadHotjar();
+}
+
+if (Constants.IS_HUBSPOT_ENABLED) {
   addHubspotScript();
+}
+
+if (Constants.IS_SENTRY_ENABLED) {
+  initializeSentry();
 }
 
 const authOptions = {
