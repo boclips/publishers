@@ -9,6 +9,7 @@ import c from 'classnames';
 import { Link } from 'react-router-dom';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { TextButton } from 'src/components/common/textButton/TextButton';
+import { getBrowserLocale } from 'src/services/getBrowserLocale';
 import s from './style.module.less';
 
 interface Props {
@@ -65,7 +66,7 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
             {createPriceDisplayValue(
               videoItem?.price?.amount,
               videoItem?.price?.currency,
-              navigator.language,
+              getBrowserLocale(),
             )}
           </div>
         </div>

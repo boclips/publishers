@@ -10,6 +10,7 @@ import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import { CopyVideoLinkButton } from 'src/components/common/copyLinkButton/CopyVideoLinkButton';
 import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
+import { getBrowserLocale } from 'src/services/getBrowserLocale';
 import s from './VideoCardWrapper.module.less';
 
 interface Props {
@@ -58,7 +59,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
             price={createPriceDisplayValue(
               video.price?.amount,
               video.price?.currency,
-              navigator.language,
+              getBrowserLocale(),
             )}
           />
         }

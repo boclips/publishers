@@ -2,6 +2,7 @@ import React from 'react';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { OrderPrice } from 'boclips-api-client/dist/sub-clients/orders/model/OrderPrice';
 import c from 'classnames';
+import { getBrowserLocale } from 'src/services/getBrowserLocale';
 import { OrderInformationField } from './OrderInformationField';
 
 interface Props {
@@ -18,7 +19,7 @@ export const OrderTotalPriceField = ({ totalPrice, highlighted }: Props) => (
       {createPriceDisplayValue(
         totalPrice?.value,
         totalPrice?.currency,
-        navigator?.language,
+        getBrowserLocale(),
       )}
     </span>
   </OrderInformationField>

@@ -5,6 +5,7 @@ import { CartItem } from 'boclips-api-client/dist/sub-clients/carts/model/CartIt
 import { AdditionalServicesSummaryPreview } from 'src/components/cart/AdditionalServices/AdditionalServicesSummaryPreview';
 import c from 'classnames';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
+import { getBrowserLocale } from 'src/services/getBrowserLocale';
 import s from './style.module.less';
 
 interface Props {
@@ -57,7 +58,7 @@ export const CartItemOrderPreview = ({ videos }: Props) => {
                   {createPriceDisplayValue(
                     video.price.amount,
                     video.price.currency,
-                    navigator.language,
+                    getBrowserLocale(),
                   )}
                 </span>
               )}

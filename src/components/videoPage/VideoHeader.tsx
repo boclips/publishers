@@ -5,6 +5,7 @@ import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 import React from 'react';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import dateFormat from 'dateformat';
+import { getBrowserLocale } from 'src/services/getBrowserLocale';
 
 interface Props {
   video: Video;
@@ -28,7 +29,7 @@ export const VideoHeader = ({ video }: Props) => {
         {createPriceDisplayValue(
           video?.price?.amount,
           video?.price?.currency,
-          navigator.language,
+          getBrowserLocale(),
         )}
       </div>
       <div className="grey-800 mb-4">

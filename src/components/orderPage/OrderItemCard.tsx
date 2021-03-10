@@ -4,6 +4,7 @@ import { useFindOrGetVideo } from 'src/hooks/api/videoQuery';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { AdditionalServicesSummaryPreview } from 'src/components/cart/AdditionalServices/AdditionalServicesSummaryPreview';
 import { Link } from 'react-router-dom';
+import { getBrowserLocale } from 'src/services/getBrowserLocale';
 import s from './style.module.less';
 
 interface Props {
@@ -34,7 +35,7 @@ export const OrderItemCard = ({ item }: Props) => {
           {createPriceDisplayValue(
             item?.price?.value,
             item?.price?.currency,
-            navigator.language,
+            getBrowserLocale(),
           )}
         </span>
 

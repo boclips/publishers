@@ -9,6 +9,7 @@ export const createPriceDisplayValue = (
     return null;
   }
   const isDecimal = amount % 1 !== 0;
+
   return currencyFormat(
     amount,
     language || 'en-US',
