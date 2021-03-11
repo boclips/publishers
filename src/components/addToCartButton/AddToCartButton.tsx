@@ -11,17 +11,22 @@ import c from 'classnames';
 import CartIcon from 'resources/icons/cart-icon.svg';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
+import {
+  trackVideoAddedToCart,
+  trackVideoRemovedFromCart,
+} from 'src/components/common/analytics/Analytics';
+import { Video } from 'boclips-api-client/dist/types';
 import s from './style.module.less';
 import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
 
 interface AddToCartButtonProps {
-  videoId: string;
+  video: Video;
   width?: string;
   appcueEvent?: AppcuesEvent;
 }
 
 export const AddToCartButton = ({
-  videoId,
+  video,
   width,
   appcueEvent,
 }: AddToCartButtonProps) => {
@@ -29,7 +34,7 @@ export const AddToCartButton = ({
   const boclipsClient = useBoclipsClient();
   const { data: cart } = useCartQuery();
 
-  const cartItem = cart?.items?.find((it) => it?.videoId === videoId);
+  const cartItem = cart?.items?.find((it) => it?.videoId === video.id);
 
   const { mutate: mutateAddToCart } = useMutation(
     (id: string) => {
@@ -69,6 +74,16 @@ export const AddToCartButton = ({
     },
   );
 
+  const addToCart = () => {
+    trackVideoAddedToCart(video, boclipsClient);
+    mutateAddToCart(video.id);
+  };
+
+  const removeFromCart = () => {
+    trackVideoRemovedFromCart(video, boclipsClient);
+    mutateDeleteFromCart(cartItem.id);
+  };
+
   return (
     <div
       style={{ width }}
@@ -78,14 +93,14 @@ export const AddToCartButton = ({
     >
       {!cartItem ? (
         <Button
-          onClick={() => mutateAddToCart(videoId)}
+          onClick={addToCart}
           text="Add to cart"
           icon={<CartIcon />}
           width="100%"
         />
       ) : (
         <Button
-          onClick={() => mutateDeleteFromCart(cartItem.id)}
+          onClick={removeFromCart}
           type="outline"
           text="Remove"
           icon={<CartIcon />}

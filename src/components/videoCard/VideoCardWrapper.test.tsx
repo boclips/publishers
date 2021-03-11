@@ -4,6 +4,8 @@ import { VideoCardWrapper } from 'src/components/videoCard/VideoCardWrapper';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { render } from 'src/testSupport/render';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { VideoInteractedWith } from 'boclips-api-client/dist/sub-clients/events/model/EventRequest';
+import { act, fireEvent } from '@testing-library/react';
 import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
 
 describe('Video card', () => {
@@ -46,5 +48,67 @@ describe('Video card', () => {
     expect(wrapper.getByText('geography')).toBeVisible();
     expect(wrapper.getByText('Ages 7-9')).toBeVisible();
     expect(wrapper.getByText('$100')).toBeVisible();
+  });
+
+  describe('video interacted with events', () => {
+    it('add to cart button sends event when toggled', async () => {
+      const fakeClient = new FakeBoclipsClient();
+      const wrapper = render(
+        <BoclipsClientProvider client={fakeClient}>
+          <VideoCardWrapper video={VideoFactory.sample({})} />
+        </BoclipsClientProvider>,
+      );
+
+      const addToCart = await wrapper.findByRole('button', {
+        name: 'Add to cart',
+      });
+      act(() => {
+        fireEvent.click(addToCart);
+      });
+
+      const videoInteractedEvents = fakeClient.events.getEvents() as VideoInteractedWith[];
+
+      expect(videoInteractedEvents.length).toEqual(1);
+      expect(videoInteractedEvents[0].type).toEqual('VIDEO_INTERACTED_WITH');
+      expect(videoInteractedEvents[0].subtype).toEqual('VIDEO_ADDED_TO_CART');
+
+      const removeFromCart = await wrapper.findByRole('button', {
+        name: 'Remove',
+      });
+
+      act(() => {
+        fireEvent.click(removeFromCart);
+      });
+
+      expect(videoInteractedEvents.length).toEqual(2);
+      expect(videoInteractedEvents[1].type).toEqual('VIDEO_INTERACTED_WITH');
+      expect(videoInteractedEvents[1].subtype).toEqual(
+        'VIDEO_REMOVED_FROM_CART',
+      );
+    });
+
+    it('sends an event when video details page is opened', async () => {
+      const fakeClient = new FakeBoclipsClient();
+      const video = VideoFactory.sample({
+        title: 'video killed the radio star',
+      });
+
+      const wrapper = render(
+        <BoclipsClientProvider client={fakeClient}>
+          <VideoCardWrapper video={video} />
+        </BoclipsClientProvider>,
+      );
+
+      const title = await wrapper.findByText('video killed the radio star');
+
+      act(() => {
+        fireEvent.click(title);
+      });
+
+      const videoInteractedEvent = fakeClient.events.getEvents()[0] as VideoInteractedWith;
+
+      expect(videoInteractedEvent.type).toEqual('VIDEO_INTERACTED_WITH');
+      expect(videoInteractedEvent.subtype).toEqual('NAVIGATE_TO_VIDEO_DETAILS');
+    });
   });
 });

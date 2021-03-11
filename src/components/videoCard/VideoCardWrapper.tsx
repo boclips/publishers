@@ -11,6 +11,8 @@ import { CopyVideoLinkButton } from 'src/components/common/copyLinkButton/CopyVi
 import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { getBrowserLocale } from 'src/services/getBrowserLocale';
+import { trackNavigateToVideoDetails } from 'src/components/common/analytics/Analytics';
+import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import s from './VideoCardWrapper.module.less';
 
 interface Props {
@@ -18,10 +20,13 @@ interface Props {
 }
 
 export const VideoCardWrapper = ({ video }: Props) => {
-  const VideoCardTitle = () => {
-    const onClick = () =>
-      AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.VIDEO_PAGE_OPENED);
+  const boclipsClient = useBoclipsClient();
 
+  const VideoCardTitle = () => {
+    const onClick = () => {
+      AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.VIDEO_PAGE_OPENED);
+      trackNavigateToVideoDetails(video, boclipsClient);
+    };
     return (
       <Link onClick={onClick} to={`/videos/${video.id}`}>
         <div className="text-gray-900">{video?.title}</div>
@@ -38,7 +43,7 @@ export const VideoCardWrapper = ({ video }: Props) => {
         />
 
         <AddToCartButton
-          videoId={video.id}
+          video={video}
           key="cart-button"
           width="148px"
           appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
