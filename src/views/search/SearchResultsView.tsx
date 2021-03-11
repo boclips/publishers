@@ -131,13 +131,7 @@ const SearchResultsView = () => {
   return (
     <Layout rowsSetup="grid-rows-search-view ">
       <Navbar showSearchBar />
-      <ErrorBoundary
-        fallback={
-          <div className="row-start-2 row-end-2 col-start-1 col-end-25">
-            <RefreshPageError />
-          </div>
-        }
-      >
+      <ErrorBoundary fallback={<RefreshPageError row="2" />}>
         <FilterPanel
           facets={data?.facets}
           handleChange={handleFilterChange}
