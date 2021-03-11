@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
-import { Location } from 'history';
 
 interface Props {
   children: React.ReactNode;
