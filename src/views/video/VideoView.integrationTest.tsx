@@ -174,43 +174,18 @@ describe('Video View', () => {
     });
 
     it('displays default window title when no video available', async () => {
-      const originalConsoleError = console.error;
-      console.error = () => {};
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos/video-2']}>
           <App apiClient={new FakeBoclipsClient()} />
         </MemoryRouter>,
       );
 
-      expect(await wrapper.findByText('Page not found!')).toBeVisible();
-      const helmet = Helmet.peek();
-      expect(helmet.title).toEqual('Boclips');
-      console.error = originalConsoleError;
-    });
-  });
-  describe('error view', () => {
-    it('shows page not found if there isnt a video with a matching id', async () => {
-      const originalConsoleError = console.error;
-      console.error = () => {};
-
-      const fakeBoclipsClient = new FakeBoclipsClient();
-      fakeBoclipsClient.videos.insertVideo(
-        VideoFactory.sample({
-          id: 'valid-video-id',
-        }),
-      );
-
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos/invalid-video-id']}>
-          <App apiClient={fakeBoclipsClient} />
-        </MemoryRouter>,
-      );
-      expect(await wrapper.findByText('Page not found!')).toBeVisible();
       expect(
-        await wrapper.findByRole('button', { name: 'Contact Support' }),
+        await wrapper.findByText('Sorry, it’s not you! It’s us.'),
       ).toBeVisible();
 
-      console.error = originalConsoleError;
+      const helmet = Helmet.peek();
+      expect(helmet.title).toEqual('Boclips');
     });
   });
 });
