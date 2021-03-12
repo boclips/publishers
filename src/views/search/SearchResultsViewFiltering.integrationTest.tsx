@@ -17,22 +17,7 @@ import {
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
-
-import { MutationCache, QueryCache, QueryClient } from 'react-query';
-
-const createReactQueryClient = () => {
-  const mutationCache = new MutationCache();
-  const queryCache = new QueryCache();
-  return new QueryClient({
-    queryCache,
-    mutationCache,
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-};
+import { createReactQueryClient } from 'src/services/createReactQueryClient';
 
 describe(`SearchResultsFiltering`, () => {
   let fakeClient;

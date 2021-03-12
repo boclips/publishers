@@ -10,11 +10,25 @@ import {
 } from 'boclips-api-client/dist/test-support';
 import { Helmet } from 'react-helmet';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
+import { createReactQueryClient } from 'src/services/createReactQueryClient';
 
 describe('Video View', () => {
-  it('on video page video details are rendered', async () => {
-    const fakeClient = new FakeBoclipsClient();
+  let fakeClient;
+  const renderVideoView = (initialEntries: string[]) => {
+    return render(
+      <MemoryRouter initialEntries={initialEntries}>
+        <App
+          reactQueryClient={createReactQueryClient()}
+          apiClient={fakeClient}
+        />
+      </MemoryRouter>,
+    );
+  };
+  beforeEach(() => {
+    fakeClient = new FakeBoclipsClient();
+  });
 
+  it('on video page video details are rendered', async () => {
     const subject = SubjectFactory.sample({
       name: 'history',
     });
@@ -39,11 +53,7 @@ describe('Video View', () => {
 
     fakeClient.videos.insertVideo(video);
 
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/videos/video-id']}>
-        <App apiClient={fakeClient} />
-      </MemoryRouter>,
-    );
+    const wrapper = renderVideoView(['/videos/video-id']);
 
     expect(await wrapper.findByText('ID: video-id')).toBeVisible();
     expect(
@@ -64,19 +74,13 @@ describe('Video View', () => {
   });
 
   it('copy to clipboard button is visible in the page', async () => {
-    const fakeClient = new FakeBoclipsClient();
-
     const video = VideoFactory.sample({
       id: 'video-id',
     });
 
     fakeClient.videos.insertVideo(video);
 
-    const wrapper = render(
-      <MemoryRouter initialEntries={['/videos/video-id']}>
-        <App apiClient={fakeClient} />
-      </MemoryRouter>,
-    );
+    const wrapper = renderVideoView(['/videos/video-id']);
 
     const button = await wrapper.findByRole('button', { name: 'Copy link' });
 
@@ -90,14 +94,9 @@ describe('Video View', () => {
         title: 'the coolest video you ever did see',
       });
 
-      const fakeClient = new FakeBoclipsClient();
       fakeClient.videos.insertVideo(video);
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos/video-3']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderVideoView(['/videos/video-3']);
 
       await wrapper.findByText('the coolest video you ever did see');
 
@@ -114,15 +113,10 @@ describe('Video View', () => {
         videoId: 'video-4',
       });
 
-      const fakeClient = new FakeBoclipsClient();
       fakeClient.videos.insertVideo(video);
       fakeClient.carts.insertCartItem(cartItem);
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/cart']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderVideoView(['/cart']);
 
       const title = await wrapper.findByText(
         'the coolest video you ever did see',
@@ -149,6 +143,26 @@ describe('Video View', () => {
     });
   });
 
+  it('shows page not found if there isnt a video with a matching id', async () => {
+    const originalConsoleError = console.error;
+    console.error = () => {};
+
+    const fakeBoclipsClient = new FakeBoclipsClient();
+    fakeBoclipsClient.videos.insertVideo(
+      VideoFactory.sample({
+        id: 'valid-video-id',
+      }),
+    );
+
+    const wrapper = renderVideoView(['/videos/invalid-video-id']);
+    expect(await wrapper.findByText('Page not found!')).toBeVisible();
+    expect(
+      await wrapper.findByRole('button', { name: 'Contact Support' }),
+    ).toBeVisible();
+
+    console.error = originalConsoleError;
+  });
+
   describe('window titles', () => {
     it(`displays video title as window title`, async () => {
       const video = VideoFactory.sample({
@@ -156,14 +170,9 @@ describe('Video View', () => {
         title: 'the coolest video you ever did see',
       });
 
-      const fakeClient = new FakeBoclipsClient();
       fakeClient.videos.insertVideo(video);
 
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos/video-1']}>
-          <App apiClient={fakeClient} />
-        </MemoryRouter>,
-      );
+      const wrapper = renderVideoView(['/videos/video-1']);
 
       expect(
         await wrapper.findByText('the coolest video you ever did see'),
@@ -174,18 +183,18 @@ describe('Video View', () => {
     });
 
     it('displays default window title when no video available', async () => {
+      const originalConsoleError = console.error;
+      console.error = () => {};
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos/video-2']}>
           <App apiClient={new FakeBoclipsClient()} />
         </MemoryRouter>,
       );
 
-      expect(
-        await wrapper.findByText('Sorry, it’s not you! It’s us.'),
-      ).toBeVisible();
-
+      expect(await wrapper.findByText('Page not found!')).toBeVisible();
       const helmet = Helmet.peek();
       expect(helmet.title).toEqual('Boclips');
+      console.error = originalConsoleError;
     });
   });
 });
