@@ -20,15 +20,16 @@ const VideoView = () => {
 
   if (isLoading && !video) return <Loading />;
 
-  const errorMessage = error as BoclipsApiError;
-  const videoNotFound = errorMessage?.status === 404;
+  const isVideoNotFound = (error as BoclipsApiError)?.status === 404;
 
   return (
     <Layout dataQa="video-page" rowsSetup="grid-rows-video-view">
       {video?.title && <Helmet title={video.title} />}
       <Navbar showSearchBar />
       <ErrorBoundary
-        fallback={videoNotFound ? <PageNotFoundError /> : <RefreshPageError />}
+        fallback={
+          isVideoNotFound ? <PageNotFoundError /> : <RefreshPageError />
+        }
       >
         <VideoPage video={video} />
       </ErrorBoundary>

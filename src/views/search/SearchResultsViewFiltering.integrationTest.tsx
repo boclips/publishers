@@ -17,7 +17,7 @@ import {
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
-import { createReactQueryClient } from 'src/services/createReactQueryClient';
+import { createReactQueryClient } from 'src/testSupport/createReactQueryClient';
 
 describe(`SearchResultsFiltering`, () => {
   let fakeClient;

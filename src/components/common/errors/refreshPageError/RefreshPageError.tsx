@@ -7,10 +7,6 @@ interface Props {
   row?: string;
 }
 
-export const one = ({ one2 }) => {
-  return <div> {one2}</div>;
-};
-
 const RefreshPageError = ({ row }: Props) => {
   const refreshHandler = () => {
     window.location.reload();

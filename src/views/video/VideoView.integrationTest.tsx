@@ -10,10 +10,11 @@ import {
 } from 'boclips-api-client/dist/test-support';
 import { Helmet } from 'react-helmet';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
-import { createReactQueryClient } from 'src/services/createReactQueryClient';
+import { createReactQueryClient } from 'src/testSupport/createReactQueryClient';
 
 describe('Video View', () => {
   let fakeClient;
+
   const renderVideoView = (initialEntries: string[]) => {
     return render(
       <MemoryRouter initialEntries={initialEntries}>
@@ -24,6 +25,7 @@ describe('Video View', () => {
       </MemoryRouter>,
     );
   };
+
   beforeEach(() => {
     fakeClient = new FakeBoclipsClient();
   });
