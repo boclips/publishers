@@ -4,8 +4,9 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: node
-    tag: '12'
+    repository: cypress/browsers
+    tag: 'node12.14.1-chrome83-ff77'
+
 
 inputs:
 - name: source
@@ -24,5 +25,12 @@ run:
   - |-
     SENTRY_RELEASE="boclips-web-app-$(cat ../version/tag)"
     export SENTRY_RELEASE
-    npm run ci-build
+    npm ci
+    npm run test
+    npm run lint
+    npm run fake &
+    npx cypress run
+    npm run build
+    cp -R ./dist/ ../dist/html/
+    cp application.conf Dockerfile ../dist
   dir: source
