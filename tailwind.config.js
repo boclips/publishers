@@ -62,6 +62,9 @@ module.exports = {
       gridRowEnd: {
         last: '-1',
       },
+      margin: {
+        7: '1.75rem',
+      },
       gridColumnStart: {
         13: '13',
         14: '14',

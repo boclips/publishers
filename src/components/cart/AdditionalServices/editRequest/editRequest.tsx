@@ -96,8 +96,8 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
         )}
       </div>
       {serviceRequested && (
-        <div className="ml-6">
-          <div className="font-normal text-xs mb-3 ml-2">
+        <div className="ml-7 -mt-1 font-normal">
+          <div className="text-xs mb-2">
             Specify how you’d like to edit the video
           </div>
           <InputWithDebounce
@@ -111,7 +111,7 @@ export const EditRequest = ({ label, cartItem, price }: Props) => {
             onUpdateWithoutDebounce={setEditRequestWithoutDebounce}
           />
           {!isEditRequestValid && (
-            <div className="font-normal text-xs text-red-error">
+            <div className="text-xs text-red-error mb-2">
               Specify your editing requirements
             </div>
           )}

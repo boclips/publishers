@@ -152,8 +152,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
         )}
       </div>
       {trimChecked && (
-        <div className="ml-8">
-          <div className="text-xs font-normal mt-1">
+        <div className="ml-7 -mt-1 font-normal">
+          <div className="text-xs mb-2">
             Specify how you’d like to trim the video
           </div>
           <div className="text-md h-full flex flex-row font-normal mt-2">
@@ -179,8 +179,8 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
             />
           </div>
           {!debouncedIsTrimValid && (
-            <div className="font-normal text-xs ml-12 text-red-error mt-1">
-              Specify your trimming options
+            <div className="text-xs ml-12 text-red-error mt-1">
+              &nbsp;Specify your trimming options
             </div>
           )}
         </div>
