@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest --maxWorkers=50%",
     "dev": "webpack serve --config webpack/webpack.dev.js",
+    "fake": "webpack serve --config webpack/webpack.fake-api-client.js",
     "compile": "tsc -p . --noEmit",
     "ci-build": "npm ci && npm run test && npm run lint && npm run build && cp -R ./dist/ ../dist/html/ && cp application.conf Dockerfile ../dist",
     "build": "NODE_ENV=production webpack --config webpack/webpack.prod.js",
