@@ -34,24 +34,6 @@ export const VideoCardWrapper = ({ video }: Props) => {
     );
   };
 
-  const VideoCartButtons = () => {
-    return (
-      <div className="flex flex-row justify-end" key={`copy-${video.id}`}>
-        <CopyVideoLinkButton
-          video={video}
-          appcueEvent={AppcuesEvent.COPY_LINK_FROM_SEARCH_RESULTS}
-        />
-
-        <AddToCartButton
-          video={video}
-          key="cart-button"
-          width="148px"
-          appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
-        />
-      </div>
-    );
-  };
-
   return (
     <div className={s.videoCard}>
       <VideoCardV2
@@ -69,7 +51,34 @@ export const VideoCardWrapper = ({ video }: Props) => {
           />
         }
         title={<VideoCardTitle />}
-        actions={[<VideoCartButtons key={`video-cart-buttons-${video.id}`} />]}
+        actions={[
+          <VideoCartButtons
+            video={video}
+            key={`video-cart-buttons-${video.id}`}
+          />,
+        ]}
+      />
+    </div>
+  );
+};
+
+interface VideoCartButtonsProps {
+  video: Video;
+}
+
+const VideoCartButtons = ({ video }: VideoCartButtonsProps) => {
+  return (
+    <div className="flex flex-row justify-end" key={`copy-${video.id}`}>
+      <CopyVideoLinkButton
+        video={video}
+        appcueEvent={AppcuesEvent.COPY_LINK_FROM_SEARCH_RESULTS}
+      />
+
+      <AddToCartButton
+        video={video}
+        key="cart-button"
+        width="148px"
+        appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
       />
     </div>
   );

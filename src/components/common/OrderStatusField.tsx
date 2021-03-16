@@ -7,6 +7,7 @@ import { OrderInformationField } from 'src/components/common/OrderInformationFie
 interface Props {
   status: OrderStatus;
 }
+
 export const OrderStatusField = ({ status }: Props) => {
   const deliveryStatus = orderDeliveryStatus.get(status);
 

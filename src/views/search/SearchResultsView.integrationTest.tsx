@@ -1,4 +1,4 @@
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
@@ -227,13 +227,9 @@ describe('SearchResults', () => {
       newsVideo = await wrapper.findByText(/news video/);
     });
 
-    act(() => {
-      fireEvent.click(newsVideo);
-    });
+    fireEvent.click(newsVideo);
 
-    await waitFor(async () => {
-      expect(await wrapper.findByTestId('video-page')).toBeVisible();
-    });
+    expect(await wrapper.findByTestId('video-page')).toBeVisible();
   });
 
   describe('cart in video-card', () => {
@@ -274,9 +270,7 @@ describe('SearchResults', () => {
         </MemoryRouter>,
       );
 
-      await waitFor(async () => {
-        expect(await wrapper.findByText('Add to cart')).toBeInTheDocument();
-      });
+      expect(await wrapper.findByText('Add to cart')).toBeInTheDocument();
 
       fireEvent(
         wrapper.getByText('Add to cart'),

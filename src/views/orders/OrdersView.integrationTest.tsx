@@ -13,6 +13,7 @@ import { Link } from 'boclips-api-client/dist/types';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { Helmet } from 'react-helmet';
+import { createReactQueryClient } from 'src/testSupport/createReactQueryClient';
 
 describe('OrderView', () => {
   it('loads the no orders view when there are no orders', async () => {
@@ -43,7 +44,10 @@ describe('OrderView', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App apiClient={fakeClient} />
+        <App
+          apiClient={fakeClient}
+          reactQueryClient={createReactQueryClient()}
+        />
       </MemoryRouter>,
     );
 
@@ -73,7 +77,10 @@ describe('OrderView', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App apiClient={fakeClient} />
+        <App
+          apiClient={fakeClient}
+          reactQueryClient={createReactQueryClient()}
+        />
       </MemoryRouter>,
     );
 
@@ -107,7 +114,10 @@ describe('OrderView', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App apiClient={fakeClient} />
+        <App
+          apiClient={fakeClient}
+          reactQueryClient={createReactQueryClient()}
+        />
       </MemoryRouter>,
     );
 
@@ -135,7 +145,10 @@ describe('OrderView', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App apiClient={fakeClient} />
+        <App
+          apiClient={fakeClient}
+          reactQueryClient={createReactQueryClient()}
+        />
       </MemoryRouter>,
     );
 
@@ -224,7 +237,10 @@ describe('OrderView', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App apiClient={fakeClient} />
+        <App
+          apiClient={fakeClient}
+          reactQueryClient={createReactQueryClient()}
+        />
       </MemoryRouter>,
     );
 
