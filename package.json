@@ -27,10 +27,12 @@
   "devDependencies": {
     "@percy/cypress": "^2.3.4",
     "@tailwindcss/custom-forms": "^0.2.1",
+    "@testing-library/cypress": "^7.0.4",
     "@testing-library/user-event": "^12.7.3",
+    "@types/testing-library__cypress": "^5.0.8",
     "css-loader": "^5.0.0",
     "css-minimizer-webpack-plugin": "^1.1.5",
-    "cypress": "^6.6.0",
+    "cypress": "^6.7.1",
     "html-webpack-plugin": "^4.5.0",
     "i": "^0.3.6",
     "less": "^3.12.2",

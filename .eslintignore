@@ -1,6 +1,5 @@
 node_modules
 dist
-cypress
 fly-dist
 webpack-config
 ts-compiler-dump.*
