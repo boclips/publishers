@@ -42,7 +42,7 @@ describe('Converting an API video', () => {
     expect(convertedVideo.subjects).toEqual(video.subjects);
     expect(convertedVideo.badges).toEqual(video.badges);
     expect(convertedVideo.legalRestrictions).toEqual(video.legalRestrictions);
-    expect(convertedVideo.ageRange).toEqual(video.ageRange);
+    expect(convertedVideo.ageRange).toEqual(null);
     expect(convertedVideo.rating).toEqual(video.rating);
     expect(convertedVideo.yourRating).toEqual(video.yourRating);
     expect(convertedVideo.bestFor).toEqual(video.bestFor);

@@ -46,7 +46,7 @@ describe('Video card', () => {
     expect(wrapper.getByText('Released on Mar 20, 2019')).toBeVisible();
     expect(wrapper.getByText('by BFI')).toBeVisible();
     expect(wrapper.getByText('geography')).toBeVisible();
-    expect(wrapper.getByText('Ages 7-9')).toBeVisible();
+    expect(wrapper.queryByText('Ages 7-9')).not.toBeInTheDocument();
     expect(wrapper.getByText('$100')).toBeVisible();
   });
 

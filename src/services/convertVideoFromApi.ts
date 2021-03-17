@@ -1,6 +1,5 @@
 import { Video as ClientVideo } from 'boclips-api-client/dist/types';
 import { Video as UiVideo } from '@boclips-ui/video';
-import AgeRange from '@boclips-ui/age-range';
 import { convertFromApiClientLink } from '@boclips-ui/link';
 
 export const convertVideoFromApi = (video: ClientVideo): UiVideo => {
@@ -14,7 +13,6 @@ export const convertVideoFromApi = (video: ClientVideo): UiVideo => {
     subjects,
     badges,
     legalRestrictions,
-    ageRange,
     rating,
     yourRating,
     bestFor,
@@ -35,7 +33,7 @@ export const convertVideoFromApi = (video: ClientVideo): UiVideo => {
     subjects,
     badges,
     legalRestrictions,
-    ageRange: ageRange && new AgeRange(ageRange.min, ageRange.max),
+    ageRange: null,
     rating,
     yourRating,
     bestFor,

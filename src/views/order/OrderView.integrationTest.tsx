@@ -198,6 +198,9 @@ describe('order table', () => {
     });
 
     fakeClient.orders.insertOrderFixture(order);
+    fakeClient.videos.insertVideo(
+      VideoFactory.sample({ title: 'linked-video-title' }),
+    );
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/order-video-link1']}>
         <App apiClient={fakeClient} />

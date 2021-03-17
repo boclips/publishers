@@ -54,7 +54,7 @@ describe('SearchResults', () => {
     expect(await wrapper.findByText('Released on Mar 20, 2019')).toBeVisible();
     expect(await wrapper.findByText('by BFI')).toBeVisible();
     expect(await wrapper.findByText('geography')).toBeVisible();
-    expect(await wrapper.findByText('Ages 7-9')).toBeVisible();
+    expect(wrapper.queryByText('Ages 7-9')).not.toBeInTheDocument();
     expect(wrapper.queryByText('Selected filters')).not.toBeInTheDocument();
   });
 
