@@ -19,5 +19,5 @@
       "test-support/*": ["../test-support/*"]
     }
   },
-  "exclude": ["cypress", "node_modules"]
+  "exclude": ["cypress", "node_modules", "dist"]
 }
