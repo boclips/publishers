@@ -8,8 +8,8 @@ const srcPath = path.resolve(__dirname, '../src');
 const distPath = path.resolve(__dirname, '../dist');
 
 module.exports = merge(common, {
-  entry: path.resolve(srcPath, 'index-fake-api-client.tsx'),
-  mode: 'development',
+  entry: path.resolve(srcPath, 'index-fake.tsx'),
+  mode: 'production',
   devtool: 'eval-source-map',
   output: {
     filename: '[name].js',
@@ -30,7 +30,7 @@ module.exports = merge(common, {
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.resolve(srcPath, 'index-dev.html'),
+      template: path.resolve(srcPath, 'index-fake.html'),
     }),
   ],
 });

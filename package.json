@@ -7,7 +7,7 @@
     "test": "jest --maxWorkers=50%",
     "test-visual": "percy exec ./node_modules/.bin/cypress run",
     "dev": "webpack serve --config webpack/webpack.dev.js",
-    "fake": "webpack serve --config webpack/webpack.fake-api-client.js",
+    "fake": "webpack serve --config webpack/webpack.fake.js",
     "compile": "tsc -p . --noEmit",
     "build": "NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "analyse": "NODE_ENV=production webpack --config webpack/webpack.analyse.js",
