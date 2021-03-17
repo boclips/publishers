@@ -5,6 +5,7 @@
   "main": "index.tsx",
   "scripts": {
     "test": "jest --maxWorkers=50%",
+    "test-visual": "percy exec ./node_modules/.bin/cypress run",
     "dev": "webpack serve --config webpack/webpack.dev.js",
     "fake": "webpack serve --config webpack/webpack.fake-api-client.js",
     "compile": "tsc -p . --noEmit",
