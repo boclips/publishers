@@ -12,6 +12,8 @@ trap tidy EXIT
 mkdir "$dir/version"
 echo TEST_VERSION > "$dir/version/tag"
 
+source .envrc
+
 fly --target ci execute \
     --input source="$cwd" \
     --input version="$dir/version" \

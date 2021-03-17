@@ -18,6 +18,9 @@ outputs:
 caches:
 - path: ../../../root/.npm
 
+params:
+  PERCY_TOKEN:
+
 run:
   path: sh
   args:
@@ -29,7 +32,7 @@ run:
     npm run test
     npm run lint
     npm run fake &
-    npx cypress run
+    npm run test-visual
     npm run build
     cp -R ./dist/ ../dist/html/
     cp application.conf Dockerfile ../dist
