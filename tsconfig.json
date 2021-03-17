@@ -13,15 +13,11 @@
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "skipLibCheck": true,
-    "types": [
-      "cypress",
-      "@types/testing-library__cypress",
-      "@percy/cypress"
-      ],
     "paths": {
       "src/*": ["*"],
       "resources/*": ["../resources/*"],
       "test-support/*": ["../test-support/*"]
     }
-  }
+  },
+  "exclude": ["cypress", "node_modules"]
 }
