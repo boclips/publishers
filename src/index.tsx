@@ -14,7 +14,7 @@ import { Constants } from './AppConstants';
 import { FallbackApp } from './FallbackApp';
 
 // eslint-disable-next-line import/extensions
-import { loadHotjar } from './thridParty/loadHotjar.js';
+import { loadHotjar } from './thirdParty/loadHotjar.js';
 
 const addHubspotScript = () => {
   const hubspotScript = document.createElement('script');
