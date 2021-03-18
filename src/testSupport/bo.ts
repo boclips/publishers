@@ -2,6 +2,7 @@ import { FakeVideosClient } from 'boclips-api-client/dist/sub-clients/videos/cli
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import { Link } from 'boclips-api-client/dist/sub-clients/common/model/LinkEntity';
+import { FacetsFactory } from 'boclips-api-client/dist/test-support/FacetsFactory';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 
@@ -12,6 +13,15 @@ export interface Bo {
 }
 
 export const bo = (apiClient: FakeBoclipsClient): Bo => ({
+  inspect: () => apiClient,
+
+  set: {
+    facets: (facets: Partial<VideoFacets>) => {
+      const fakeVideosClient = apiClient.videos as FakeVideosClient;
+      fakeVideosClient.setFacets(FacetsFactory.sample(facets));
+    },
+  },
+
   create: {
     video: (video: Partial<Video>) => {
       const fakeVideosClient = apiClient.videos as FakeVideosClient;
@@ -24,6 +34,7 @@ export const bo = (apiClient: FakeBoclipsClient): Bo => ({
         VideoFactory.sample({
           id: 'blah',
           title: 'test',
+          playback: PlaybackFactory.sample(),
           links: {
             self: new Link({
               href: videoURL,

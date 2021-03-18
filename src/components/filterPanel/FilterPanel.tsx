@@ -26,6 +26,7 @@ export const FilterPanel = ({
   resultsFound,
   areFiltersApplied,
 }: Props) => {
+console.log("Filter Panel:", facets);
   const filterOptions = useFilterOptions(facets);
   const isDurationFilterApplied = filterOptions.durations.find(
     (it) => it.hits > 0,
