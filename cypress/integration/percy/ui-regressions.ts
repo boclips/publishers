@@ -1,3 +1,9 @@
+import {
+  FacetFactory,
+  FacetsFactory,
+} from 'boclips-api-client/dist/test-support/FacetsFactory';
+import { SubjectFactory } from 'boclips-api-client/dist/test-support';
+
 context('UI Regression', () => {
   const endpoint = 'http://localhost:9000';
 
@@ -17,14 +23,54 @@ context('UI Regression', () => {
     });
   });
 
-  it('renders the search results page', () => {
+  it('should apply filters', () => {
     cy.visit(`${endpoint}/`);
+    cy.bo()
+      .create()
+      .video({
+        title: 'orangutans doing maths',
+        subjects: [SubjectFactory.sample({ id: 'maths-id', name: 'maths' })],
+      });
+    cy.bo()
+      .create()
+      .video({
+        title: 'orangutans speaking english',
+        subjects: [
+          SubjectFactory.sample({ id: 'english-id', name: 'english' }),
+        ],
+      });
+    cy.setFacets(
+      FacetsFactory.sample({
+        subjects: [
+          FacetFactory.sample({ id: 'maths-id', name: 'maths', hits: 10 }),
+          FacetFactory.sample({ id: 'english-id', name: 'english', hits: 10 }),
+        ],
+      }),
+    );
 
-    cy.window().then((win) => {
-      win.bo.create.video();
+    cy.createSubject(
+      SubjectFactory.sample({ name: 'english', id: 'english-id' }),
+    );
+    cy.createSubject(SubjectFactory.sample({ name: 'maths', id: 'maths-id' }));
+
+    cy.get('[data-qa="search-input"]').type('orangutans');
+    cy.get('button').contains('Search').click();
+
+    cy.get('[data-qa="video-card-wrapper"]').should((videoCard) => {
+      expect(videoCard.length).to.equal(2);
     });
 
-    cy.get('[data-qa="search-input"]').type('test');
-    cy.get('button').contains('Search').click();
+    cy.percySnapshot('Search before filtering', {
+      widths: [1280, 1440, 1680],
+    });
+
+    cy.get('label').contains('maths').click();
+    cy.get('[data-qa="video-card-wrapper"]').should((videoCard) => {
+      expect(videoCard.length).to.equal(1);
+    });
+
+    cy.percySnapshot('Search with filters', {
+      widths: [1280, 1440, 1680],
+    });
   });
 });

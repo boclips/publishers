@@ -1,12 +1,12 @@
- import './main.less';
+import './main.less';
 
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ReactDom from 'react-dom';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import BoclipsSecurity from 'boclips-js-security';
+import { Bo, bo } from 'src/testSupport/bo';
 import App from './App';
- import { Bo, bo } from 'src/testSupport/bo';
 
 const apiClient = new FakeBoclipsClient();
 
