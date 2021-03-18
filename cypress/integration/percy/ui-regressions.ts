@@ -25,21 +25,18 @@ context('UI Regression', () => {
 
   it('should apply filters', () => {
     cy.visit(`${endpoint}/`);
-    cy.bo()
-      .create()
-      .video({
-        title: 'orangutans doing maths',
-        subjects: [SubjectFactory.sample({ id: 'maths-id', name: 'maths' })],
-      });
-    cy.bo()
-      .create()
-      .video({
-        title: 'orangutans speaking english',
-        subjects: [
-          SubjectFactory.sample({ id: 'english-id', name: 'english' }),
-        ],
-      });
-    cy.setFacets(
+
+    cy.bo('create', 'video', {
+      title: 'orangutans doing maths',
+      subjects: [SubjectFactory.sample({ id: 'maths-id', name: 'maths' })],
+    });
+    cy.bo('create', 'video', {
+      title: 'orangutans speaking english',
+      subjects: [SubjectFactory.sample({ id: 'english-id', name: 'english' })],
+    });
+    cy.bo(
+      'set',
+      'facets',
       FacetsFactory.sample({
         subjects: [
           FacetFactory.sample({ id: 'maths-id', name: 'maths', hits: 10 }),
@@ -47,11 +44,16 @@ context('UI Regression', () => {
         ],
       }),
     );
-
-    cy.createSubject(
+    cy.bo(
+      'create',
+      'subject',
       SubjectFactory.sample({ name: 'english', id: 'english-id' }),
     );
-    cy.createSubject(SubjectFactory.sample({ name: 'maths', id: 'maths-id' }));
+    cy.bo(
+      'create',
+      'subject',
+      SubjectFactory.sample({ name: 'maths', id: 'maths-id' }),
+    );
 
     cy.get('[data-qa="search-input"]').type('orangutans');
     cy.get('button').contains('Search').click();
