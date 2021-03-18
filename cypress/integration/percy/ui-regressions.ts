@@ -21,7 +21,7 @@ context('UI Regression', () => {
     cy.visit(`${endpoint}/`);
 
     cy.window().then((win) => {
-      win.helpers.addVideos();
+      win.bo.create.video();
     });
 
     cy.get('[data-qa="search-input"]').type('test');
