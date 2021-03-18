@@ -1,6 +1,8 @@
 context('UI Regression', () => {
+  const endpoint = 'http://localhost:9000'
+
   it('has a homepage', () => {
-    cy.visit('http://localhost:9000/');
+    cy.visit(`${endpoint}/`);
 
     cy.percySnapshot('Home Page', {
       widths: [1280, 1440, 1680],
@@ -8,7 +10,7 @@ context('UI Regression', () => {
   });
 
   it('renders account panel', () => {
-    cy.visit('http://localhost:9000/');
+    cy.visit(`${endpoint}/`);
 
     cy.percySnapshot('Account panel', {
       widths: [1280, 1440, 1680],
