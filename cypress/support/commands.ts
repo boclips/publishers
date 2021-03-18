@@ -24,3 +24,17 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 import '@percy/cypress';
+
+Cypress.Commands.add('bo', {}, () => {
+  cy.window().then(({ bo }) => {
+    return bo;
+  });
+});
+
+Cypress.Commands.add('create', { prevSubject: true }, (bo) => {
+  return bo.create;
+});
+
+Cypress.Commands.add('video', { prevSubject: true }, (create, attrs) => {
+  create.video(attrs);
+});

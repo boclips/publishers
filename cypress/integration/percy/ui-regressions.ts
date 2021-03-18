@@ -19,12 +19,13 @@ context('UI Regression', () => {
 
   it('renders the search results page', () => {
     cy.visit(`${endpoint}/`);
+    cy.bo().create().video({ title: 'orangutans' });
 
-    cy.window().then((win) => {
-      win.helpers.addVideos();
-    });
-
-    cy.get('[data-qa="search-input"]').type('test');
+    cy.get('[data-qa="search-input"]').type('orangutans');
     cy.get('button').contains('Search').click();
+
+    cy.get('[data-qa="video-card-wrapper"]').should((videoCard) => {
+      expect(videoCard.length).to.be.at.least(1);
+    });
   });
 });
