@@ -23,11 +23,6 @@ module.exports = merge(common, {
   plugins: [
     new MiniCssExtractPlugin({ filename: '[name].css', ignoreOrder: true }),
     new HtmlWebpackPlugin({
-      inject: false,
-      filename: 'silent-check-sso.html',
-      template: path.resolve(srcPath, 'silent-check-sso.html'),
-    }),
-    new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(srcPath, 'index-fake.html'),
     }),
