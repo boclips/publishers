@@ -3,15 +3,24 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ReactDom from 'react-dom';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
-import BoclipsSecurity from 'boclips-js-security';
+import { BoclipsSecurity } from 'boclips-js-security/dist/BoclipsSecurity';
 import { Bo, bo } from 'src/testSupport/bo';
 import App from './App';
 
 const apiClient = new FakeBoclipsClient();
+const fakeSecurity: BoclipsSecurity = {
+  isAuthenticated: () => true,
+  logout: () => {},
+  getTokenFactory: (_validityTime: number) => {
+    return () => Promise.resolve('afaketoken');
+  },
+  configureAxios: () => {},
+  ssoLogin: () => {},
+};
 
 ReactDom.render(
   <Router>
-    <App apiClient={apiClient} />
+    <App apiClient={apiClient} boclipsSecurity={fakeSecurity} />
   </Router>,
   document.getElementById('root'),
 );
@@ -23,13 +32,3 @@ declare global {
 }
 
 window.bo = bo(apiClient);
-
-const authOptions = {
-  realm: 'nonexistent-realm',
-  clientId: 'bogus-client-id',
-  requireLoginPage: false,
-  authEndpoint: 'http://localhost:9000/',
-  onLogin: async () => {},
-};
-
-BoclipsSecurity.createInstance(authOptions);

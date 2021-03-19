@@ -8,6 +8,7 @@ import {
   FakeBoclipsClient,
   SubjectFactory,
 } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { Helmet } from 'react-helmet';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
 import { createReactQueryClient } from 'src/testSupport/createReactQueryClient';
@@ -21,6 +22,7 @@ describe('Video View', () => {
         <App
           reactQueryClient={createReactQueryClient()}
           apiClient={fakeClient}
+          boclipsSecurity={stubBoclipsSecurity}
         />
       </MemoryRouter>,
     );
@@ -189,7 +191,10 @@ describe('Video View', () => {
       console.error = () => {};
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos/video-2']}>
-          <App apiClient={new FakeBoclipsClient()} />
+          <App
+            apiClient={new FakeBoclipsClient()}
+            boclipsSecurity={stubBoclipsSecurity}
+          />
         </MemoryRouter>,
       );
 

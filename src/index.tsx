@@ -56,29 +56,34 @@ if (Constants.IS_SENTRY_ENABLED) {
   initializeSentry();
 }
 
+const onLogin = async () => {
+  try {
+    const apiClient = await ApiBoclipsClient.create(
+      axios,
+      Constants.API_PREFIX,
+    );
+
+    ReactDom.render(
+      <Router>
+        <App
+          apiClient={apiClient}
+          boclipsSecurity={BoclipsSecurity.getInstance()}
+        />
+      </Router>,
+      document.getElementById('root'),
+    );
+  } catch (e) {
+    // If we can't fetch links via the api client (e.g a service is down) show a simple fallback page
+    ReactDom.render(<FallbackApp />, document.getElementById('root'));
+  }
+};
+
 const authOptions = {
   realm: 'boclips',
   clientId: 'boclips-web-app',
   requireLoginPage: true,
   authEndpoint: Constants.AUTH_ENDPOINT,
-  onLogin: async () => {
-    try {
-      const apiClient = await ApiBoclipsClient.create(
-        axios,
-        Constants.API_PREFIX,
-      );
-
-      ReactDom.render(
-        <Router>
-          <App apiClient={apiClient} />
-        </Router>,
-        document.getElementById('root'),
-      );
-    } catch (e) {
-      // If we can't fetch links via the api client (e.g a service is down) show a simple fallback page
-      ReactDom.render(<FallbackApp />, document.getElementById('root'));
-    }
-  },
+  onLogin,
 };
 
 BoclipsSecurity.createInstance(authOptions);

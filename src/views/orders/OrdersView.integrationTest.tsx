@@ -7,6 +7,7 @@ import {
   OrderItemFactory,
   OrdersFactory,
 } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { OrderStatus } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { Link } from 'boclips-api-client/dist/types';
@@ -19,7 +20,10 @@ describe('OrderView', () => {
   it('loads the no orders view when there are no orders', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders']}>
-        <App apiClient={new FakeBoclipsClient()} />
+        <App
+          apiClient={new FakeBoclipsClient()}
+          boclipsSecurity={stubBoclipsSecurity}
+        />
       </MemoryRouter>,
     );
 
@@ -46,6 +50,7 @@ describe('OrderView', () => {
       <MemoryRouter initialEntries={['/orders']}>
         <App
           apiClient={fakeClient}
+          boclipsSecurity={stubBoclipsSecurity}
           reactQueryClient={createReactQueryClient()}
         />
       </MemoryRouter>,
@@ -79,6 +84,7 @@ describe('OrderView', () => {
       <MemoryRouter initialEntries={['/orders']}>
         <App
           apiClient={fakeClient}
+          boclipsSecurity={stubBoclipsSecurity}
           reactQueryClient={createReactQueryClient()}
         />
       </MemoryRouter>,
@@ -116,6 +122,7 @@ describe('OrderView', () => {
       <MemoryRouter initialEntries={['/orders']}>
         <App
           apiClient={fakeClient}
+          boclipsSecurity={stubBoclipsSecurity}
           reactQueryClient={createReactQueryClient()}
         />
       </MemoryRouter>,
@@ -147,6 +154,7 @@ describe('OrderView', () => {
       <MemoryRouter initialEntries={['/orders']}>
         <App
           apiClient={fakeClient}
+          boclipsSecurity={stubBoclipsSecurity}
           reactQueryClient={createReactQueryClient()}
         />
       </MemoryRouter>,
@@ -239,6 +247,7 @@ describe('OrderView', () => {
       <MemoryRouter initialEntries={['/orders']}>
         <App
           apiClient={fakeClient}
+          boclipsSecurity={stubBoclipsSecurity}
           reactQueryClient={createReactQueryClient()}
         />
       </MemoryRouter>,
@@ -255,7 +264,10 @@ describe('OrderView', () => {
     it(`displays Orders as window title`, async () => {
       render(
         <MemoryRouter initialEntries={['/orders']}>
-          <App apiClient={new FakeBoclipsClient()} />
+          <App
+            apiClient={new FakeBoclipsClient()}
+            boclipsSecurity={stubBoclipsSecurity}
+          />
         </MemoryRouter>,
       );
 

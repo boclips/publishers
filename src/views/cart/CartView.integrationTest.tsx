@@ -13,6 +13,7 @@ import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory
 import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 import { BoclipsApiErrorFactory } from 'boclips-api-client/dist/test-support/BoclipsApiErrorFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { QueryClient } from 'react-query';
 import { Helmet } from 'react-helmet';
@@ -522,7 +523,10 @@ describe('CartView', () => {
     it(`displays Cart as window title`, async () => {
       render(
         <MemoryRouter initialEntries={['/cart']}>
-          <App apiClient={new FakeBoclipsClient()} />
+          <App
+            boclipsSecurity={stubBoclipsSecurity}
+            apiClient={new FakeBoclipsClient()}
+          />
         </MemoryRouter>,
       );
 
@@ -557,6 +561,7 @@ function renderCartView(client) {
     <MemoryRouter initialEntries={['/cart']}>
       <App
         apiClient={client}
+        boclipsSecurity={stubBoclipsSecurity}
         reactQueryClient={new QueryClient(queryClientConfig)}
       />
     </MemoryRouter>,

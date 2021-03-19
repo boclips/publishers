@@ -7,6 +7,7 @@ import {
   OrderItemFactory,
   OrdersFactory,
 } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { OrderCaptionStatus } from 'boclips-api-client/dist/sub-clients/orders/model/OrderItem';
 import { Link } from 'boclips-api-client/dist/types';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
@@ -29,7 +30,7 @@ describe('order table', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/i-am-the-id']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -95,7 +96,7 @@ describe('order table', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/i-am-the-id']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -130,7 +131,7 @@ describe('order table', () => {
     fakeClient.orders.insertOrderFixture(order);
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/order-id']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -162,7 +163,7 @@ describe('order table', () => {
     fakeClient.orders.insertOrderFixture(order);
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/order-id-no-note']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -203,7 +204,7 @@ describe('order table', () => {
     );
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/order-video-link1']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -218,7 +219,10 @@ describe('order table', () => {
     it(`displays order id in window title`, async () => {
       render(
         <MemoryRouter initialEntries={['/orders/order-123']}>
-          <App apiClient={new FakeBoclipsClient()} />
+          <App
+            apiClient={new FakeBoclipsClient()}
+            boclipsSecurity={stubBoclipsSecurity}
+          />
         </MemoryRouter>,
       );
 

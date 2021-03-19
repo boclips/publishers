@@ -5,10 +5,11 @@ import { render } from 'src/testSupport/render';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
-import BoclipsSecurity from 'boclips-js-security';
 import { Constants } from 'src/AppConstants';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
+import { BoclipsSecurityProvider } from '../common/providers/BoclipsSecurityProvider';
 
 describe('account button', () => {
   it('opens the tooltip when clicked and close the tooltip when clicked on the body', async () => {
@@ -30,9 +31,12 @@ describe('account button', () => {
     fakeClient.users.insertCurrentUser(user);
 
     const navbar = render(
-      <BoclipsClientProvider client={fakeClient}>
-        <Navbar />
-      </BoclipsClientProvider>,
+      <BoclipsSecurityProvider boclipsSecurity={stubBoclipsSecurity}>
+        <BoclipsClientProvider client={fakeClient}>
+          <Navbar />
+        </BoclipsClientProvider>
+        ,
+      </BoclipsSecurityProvider>,
     );
 
     expect(await navbar.findByText('Account')).toBeInTheDocument();
@@ -58,17 +62,17 @@ describe('account button', () => {
 
     const logoutMock = jest.fn();
 
-    jest.spyOn(BoclipsSecurity, 'getInstance').mockImplementation(() => ({
+    const boclipsSecurity = {
       logout: logoutMock,
       isAuthenticated: () => false,
       getTokenFactory: jest.fn(),
       configureAxios: jest.fn(),
       ssoLogin: jest.fn(),
-    }));
+    };
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/cart']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={boclipsSecurity} />
       </MemoryRouter>,
     );
 

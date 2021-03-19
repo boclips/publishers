@@ -1,6 +1,7 @@
 import React from 'react';
 import { trackPageRendered } from 'src/components/common/analytics/Analytics';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { PageRenderedRequest } from 'boclips-api-client/dist/sub-clients/events/model/PageRenderedRequest';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -29,7 +30,7 @@ describe('track page render event', () => {
 
     render(
       <MemoryRouter initialEntries={['/videos?q=cat']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 

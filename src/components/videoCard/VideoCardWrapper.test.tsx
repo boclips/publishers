@@ -4,9 +4,11 @@ import { VideoCardWrapper } from 'src/components/videoCard/VideoCardWrapper';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { render } from 'src/testSupport/render';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { VideoInteractedWith } from 'boclips-api-client/dist/sub-clients/events/model/EventRequest';
 import { act, fireEvent } from '@testing-library/react';
 import { BoclipsClientProvider } from '../common/providers/BoclipsClientProvider';
+import { BoclipsSecurityProvider } from '../common/providers/BoclipsSecurityProvider';
 
 describe('Video card', () => {
   it('displays all the given information on a video card', async () => {
@@ -36,9 +38,11 @@ describe('Video card', () => {
     });
 
     const wrapper = render(
-      <BoclipsClientProvider client={new FakeBoclipsClient()}>
-        <VideoCardWrapper video={video} />
-      </BoclipsClientProvider>,
+      <BoclipsSecurityProvider boclipsSecurity={stubBoclipsSecurity}>
+        <BoclipsClientProvider client={new FakeBoclipsClient()}>
+          <VideoCardWrapper video={video} />
+        </BoclipsClientProvider>
+      </BoclipsSecurityProvider>,
     );
 
     expect(await wrapper.findByText('hello i am a title')).toBeVisible();
@@ -54,9 +58,11 @@ describe('Video card', () => {
     it('add to cart button sends event when toggled', async () => {
       const fakeClient = new FakeBoclipsClient();
       const wrapper = render(
-        <BoclipsClientProvider client={fakeClient}>
-          <VideoCardWrapper video={VideoFactory.sample({})} />
-        </BoclipsClientProvider>,
+        <BoclipsSecurityProvider boclipsSecurity={stubBoclipsSecurity}>
+          <BoclipsClientProvider client={fakeClient}>
+            <VideoCardWrapper video={VideoFactory.sample({})} />
+          </BoclipsClientProvider>
+        </BoclipsSecurityProvider>,
       );
 
       const addToCart = await wrapper.findByRole('button', {
@@ -94,9 +100,11 @@ describe('Video card', () => {
       });
 
       const wrapper = render(
-        <BoclipsClientProvider client={fakeClient}>
-          <VideoCardWrapper video={video} />
-        </BoclipsClientProvider>,
+        <BoclipsSecurityProvider boclipsSecurity={stubBoclipsSecurity}>
+          <BoclipsClientProvider client={fakeClient}>
+            <VideoCardWrapper video={video} />
+          </BoclipsClientProvider>
+        </BoclipsSecurityProvider>,
       );
 
       const title = await wrapper.findByText('video killed the radio star');

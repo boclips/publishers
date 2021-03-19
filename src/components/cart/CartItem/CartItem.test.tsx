@@ -3,7 +3,9 @@ import React from 'react';
 import CartItem from 'src/components/cart/CartItem/CartItem';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsClientProvider';
+import { BoclipsSecurityProvider } from 'src/components/common/providers/BoclipsSecurityProvider';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -22,11 +24,13 @@ describe('CartItem', () => {
   ) {
     return render(
       <Router>
-        <BoclipsClientProvider client={fakeClient}>
-          <QueryClientProvider client={client}>
-            <CartValidationProvider>{cartItem}</CartValidationProvider>
-          </QueryClientProvider>
-        </BoclipsClientProvider>
+        <BoclipsSecurityProvider boclipsSecurity={stubBoclipsSecurity}>
+          <BoclipsClientProvider client={fakeClient}>
+            <QueryClientProvider client={client}>
+              <CartValidationProvider>{cartItem}</CartValidationProvider>
+            </QueryClientProvider>
+          </BoclipsClientProvider>
+        </BoclipsSecurityProvider>
       </Router>,
     );
   }

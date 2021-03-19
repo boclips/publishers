@@ -97,7 +97,6 @@ export const getFilterLabel = (
 };
 
 const getChannelLabel = (id, channels?: Channel[]) => {
-  console.log(`looking for ${id} in ${channels}`);
   return channels ? channels.find((it) => it.id === id).name : id;
 };
 

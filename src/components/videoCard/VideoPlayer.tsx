@@ -2,14 +2,15 @@ import React from 'react';
 import { PlayerOptions } from 'boclips-player';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import { Player } from 'boclips-player-react';
-import BoclipsSecurity from 'boclips-js-security';
+import { useBoclipsSecurity } from 'src/components/common/providers/BoclipsSecurityProvider';
+import { BoclipsSecurity } from 'boclips-js-security/dist/BoclipsSecurity';
 import s from './VideoPlayer.module.less';
 
 const getPlayerOptions = (
+  security: BoclipsSecurity,
   playerControls?: string,
   showDurationBadge?: boolean,
 ): Partial<PlayerOptions> => {
-  const security = BoclipsSecurity.getInstance();
   const tokenFactory = security.getTokenFactory(5);
 
   const defaultControls: any[] = [
@@ -68,7 +69,11 @@ export const VideoPlayer = ({
   controls,
   showDurationBadge = false,
 }: Props) => {
-  const options = getPlayerOptions(controls, showDurationBadge);
+  const options = getPlayerOptions(
+    useBoclipsSecurity(),
+    controls,
+    showDurationBadge,
+  );
 
   return (
     <div className={s.playerWrapper}>

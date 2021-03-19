@@ -2,6 +2,7 @@ import {
   ChannelFactory,
   FakeBoclipsClient,
 } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import {
   FacetFactory,
   FacetsFactory,
@@ -28,6 +29,7 @@ describe(`SearchResultsFiltering`, () => {
         <App
           reactQueryClient={createReactQueryClient()}
           apiClient={fakeClient}
+          boclipsSecurity={stubBoclipsSecurity}
         />
       </MemoryRouter>,
     );

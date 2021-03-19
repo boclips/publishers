@@ -4,7 +4,7 @@ import { useGetUserQuery } from 'src/hooks/api/userQuery';
 import { Link } from 'react-router-dom';
 import { Loading } from 'src/components/common/Loading';
 import c from 'classnames';
-import BoclipsSecurity from 'boclips-js-security';
+import { useBoclipsSecurity } from 'src/components/common/providers/BoclipsSecurityProvider';
 import { Constants } from 'src/AppConstants';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
@@ -46,6 +46,8 @@ export const AccountButton = () => {
     AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.YOUR_ORDERS_OPENED);
   };
 
+  const boclipsSecurity = useBoclipsSecurity();
+
   return (
     <>
       <div
@@ -56,7 +58,7 @@ export const AccountButton = () => {
         onClick={onClick}
       >
         <MyAccountSVG />
-        <span className="text-xs mt-1 font-medium">Account</span>
+        <span className="mt-1 text-xs font-medium">Account</span>
       </div>
       {isLoading && displayModal && (
         <div ref={ref} className={s.tooltip}>
@@ -78,7 +80,7 @@ export const AccountButton = () => {
             <button
               type="button"
               onClick={() =>
-                BoclipsSecurity.getInstance().logout({
+                boclipsSecurity.logout({
                   redirectUri: `${Constants.HOST}/`,
                 })
               }

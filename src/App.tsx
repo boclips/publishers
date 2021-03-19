@@ -12,7 +12,9 @@ import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import ScrollToTop from 'src/hooks/scrollToTop';
 import { Helmet } from 'react-helmet';
+import { BoclipsSecurity } from 'boclips-js-security/dist/BoclipsSecurity';
 import { BoclipsClientProvider } from './components/common/providers/BoclipsClientProvider';
+import { BoclipsSecurityProvider } from './components/common/providers/BoclipsSecurityProvider';
 import Appcues from './services/analytics/Appcues';
 import { GlobalQueryErrorProvider } from './components/common/providers/GlobalQueryErrorProvider';
 import { JSErrorBoundary } from './components/common/errors/JSErrorBoundary';
@@ -48,13 +50,18 @@ const FallbackView = lazy(() => import('src/views/fallback/FallbackView'));
 
 interface Props {
   apiClient: BoclipsClient;
+  boclipsSecurity: BoclipsSecurity;
   reactQueryClient?: QueryClient;
 }
 
 const analyticsService = new AnalyticsService(window.Appcues);
 const queryClient = new QueryClient(queryClientConfig);
 
-const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
+const App = ({
+  apiClient,
+  boclipsSecurity,
+  reactQueryClient = queryClient,
+}: Props) => {
   const currentLocation = useLocation();
 
   useEffect(() => {
@@ -82,56 +89,58 @@ const App = ({ apiClient, reactQueryClient = queryClient }: Props) => {
     <QueryClientProvider client={reactQueryClient}>
       <GlobalQueryErrorProvider>
         <ScrollToTop />
-        <BoclipsClientProvider client={apiClient}>
-          <Suspense fallback={<Loading />}>
-            <JSErrorBoundary fallback={<FallbackView />}>
-              <Helmet title="Boclips" />
-              <Switch>
-                <Route exact path="/">
-                  <HomeView />
-                </Route>
-                <Route exact path="/videos">
-                  <SearchResultsView />
-                </Route>
-                <Route exact path="/videos/:id">
-                  <VideoView />
-                </Route>
-                <Route exact path="/cart">
-                  <Helmet title="Cart" />
-                  <CartView />
-                </Route>
-                <Route exact path="/orders">
-                  <Helmet title="Orders" />
-                  <OrdersView />
-                </Route>
-                <Route exact path="/orders/:id">
-                  <OrderView />
-                </Route>
-                <Route
-                  exact
-                  path="/error"
-                  render={({ location }) => (
-                    <ErrorView error={location?.state?.error} />
-                  )}
-                />
-                <Route
-                  path="/order-confirmed"
-                  render={({ location }) => (
-                    <>
-                      <Helmet title="Order confirmed!" />
-                      <OrderConfirmationView state={location?.state} />
-                    </>
-                  )}
-                />
-                <Route>
-                  <Helmet title="Page not found" />
-                  <NotFound />
-                </Route>
-              </Switch>
-            </JSErrorBoundary>
-          </Suspense>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </BoclipsClientProvider>
+        <BoclipsSecurityProvider boclipsSecurity={boclipsSecurity}>
+          <BoclipsClientProvider client={apiClient}>
+            <Suspense fallback={<Loading />}>
+              <JSErrorBoundary fallback={<FallbackView />}>
+                <Helmet title="Boclips" />
+                <Switch>
+                  <Route exact path="/">
+                    <HomeView />
+                  </Route>
+                  <Route exact path="/videos">
+                    <SearchResultsView />
+                  </Route>
+                  <Route exact path="/videos/:id">
+                    <VideoView />
+                  </Route>
+                  <Route exact path="/cart">
+                    <Helmet title="Cart" />
+                    <CartView />
+                  </Route>
+                  <Route exact path="/orders">
+                    <Helmet title="Orders" />
+                    <OrdersView />
+                  </Route>
+                  <Route exact path="/orders/:id">
+                    <OrderView />
+                  </Route>
+                  <Route
+                    exact
+                    path="/error"
+                    render={({ location }) => (
+                      <ErrorView error={location?.state?.error} />
+                    )}
+                  />
+                  <Route
+                    path="/order-confirmed"
+                    render={({ location }) => (
+                      <>
+                        <Helmet title="Order confirmed!" />
+                        <OrderConfirmationView state={location?.state} />
+                      </>
+                    )}
+                  />
+                  <Route>
+                    <Helmet title="Page not found" />
+                    <NotFound />
+                  </Route>
+                </Switch>
+              </JSErrorBoundary>
+            </Suspense>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </BoclipsClientProvider>
+        </BoclipsSecurityProvider>
       </GlobalQueryErrorProvider>
     </QueryClientProvider>
   );

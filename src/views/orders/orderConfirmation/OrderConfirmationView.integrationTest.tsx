@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
@@ -9,7 +10,10 @@ describe('OrderConfirmationView', () => {
   it('redirects to main page when no orderLocation', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/order-confirmed']}>
-        <App apiClient={new FakeBoclipsClient()} />
+        <App
+          apiClient={new FakeBoclipsClient()}
+          boclipsSecurity={stubBoclipsSecurity}
+        />
       </MemoryRouter>,
     );
 
@@ -29,9 +33,15 @@ describe('OrderConfirmationView', () => {
       'Test page title',
       '/order-confirmed',
     );
-    const wrapper = render(<App apiClient={new FakeBoclipsClient()} />, {
-      wrapper: BrowserRouter,
-    });
+    const wrapper = render(
+      <App
+        apiClient={new FakeBoclipsClient()}
+        boclipsSecurity={stubBoclipsSecurity}
+      />,
+      {
+        wrapper: BrowserRouter,
+      },
+    );
 
     expect(await wrapper.findByText('Your order is confirmed')).toBeVisible();
     expect(
@@ -53,9 +63,15 @@ describe('OrderConfirmationView', () => {
         '/order-confirmed',
       );
 
-      const wrapper = render(<App apiClient={new FakeBoclipsClient()} />, {
-        wrapper: BrowserRouter,
-      });
+      const wrapper = render(
+        <App
+          apiClient={new FakeBoclipsClient()}
+          boclipsSecurity={stubBoclipsSecurity}
+        />,
+        {
+          wrapper: BrowserRouter,
+        },
+      );
 
       const helmet = Helmet.peek();
 

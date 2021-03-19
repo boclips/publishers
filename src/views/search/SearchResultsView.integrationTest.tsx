@@ -12,7 +12,9 @@ import Navbar from 'src/components/layout/Navbar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { BoclipsClientProvider } from 'src/components/common/providers/BoclipsClientProvider';
+import { BoclipsSecurityProvider } from 'src/components/common/providers/BoclipsSecurityProvider';
 import { Helmet } from 'react-helmet';
 
 describe('SearchResults', () => {
@@ -45,7 +47,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=hello']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -72,7 +74,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=art']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -111,7 +113,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=dogs']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -145,7 +147,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -180,7 +182,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=video']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -217,7 +219,7 @@ describe('SearchResults', () => {
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/videos?q=vid']}>
-        <App apiClient={fakeClient} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -246,7 +248,7 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=video']}>
-          <App apiClient={fakeClient} />
+          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
         </MemoryRouter>,
       );
 
@@ -266,7 +268,7 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=vid']}>
-          <App apiClient={fakeClient} />
+          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
         </MemoryRouter>,
       );
 
@@ -314,11 +316,13 @@ describe('SearchResults', () => {
 
       const wrapper = render(
         <MemoryRouter initialEntries={['/videos?q=vid']}>
-          <BoclipsClientProvider client={fakeClient}>
-            <QueryClientProvider client={new QueryClient(queryClientConfig)}>
-              <Navbar />
-            </QueryClientProvider>
-          </BoclipsClientProvider>
+          <BoclipsSecurityProvider boclipsSecurity={stubBoclipsSecurity}>
+            <BoclipsClientProvider client={fakeClient}>
+              <QueryClientProvider client={new QueryClient(queryClientConfig)}>
+                <Navbar />
+              </QueryClientProvider>
+            </BoclipsClientProvider>
+          </BoclipsSecurityProvider>
         </MemoryRouter>,
       );
 
@@ -336,7 +340,10 @@ describe('SearchResults', () => {
     it('displays search query in window title', async () => {
       render(
         <MemoryRouter initialEntries={['/videos?q=hello']}>
-          <App apiClient={new FakeBoclipsClient()} />
+          <App
+            apiClient={new FakeBoclipsClient()}
+            boclipsSecurity={stubBoclipsSecurity}
+          />
         </MemoryRouter>,
       );
 
@@ -350,7 +357,10 @@ describe('SearchResults', () => {
     it(`displays default title when no query present`, async () => {
       render(
         <MemoryRouter initialEntries={['/videos']}>
-          <App apiClient={new FakeBoclipsClient()} />
+          <App
+            apiClient={new FakeBoclipsClient()}
+            boclipsSecurity={stubBoclipsSecurity}
+          />
         </MemoryRouter>,
       );
 

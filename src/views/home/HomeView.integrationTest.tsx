@@ -4,13 +4,17 @@ import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory';
 import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
+import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { Helmet } from 'react-helmet';
 
 describe('HomeView', () => {
   it('loads the home view text', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/']}>
-        <App apiClient={new FakeBoclipsClient()} />
+        <App
+          apiClient={new FakeBoclipsClient()}
+          boclipsSecurity={stubBoclipsSecurity}
+        />
       </MemoryRouter>,
     );
 
@@ -22,7 +26,10 @@ describe('HomeView', () => {
   it('displays Boclips as window title', async () => {
     const wrapper = render(
       <MemoryRouter initialEntries={['/']}>
-        <App apiClient={new FakeBoclipsClient()} />
+        <App
+          apiClient={new FakeBoclipsClient()}
+          boclipsSecurity={stubBoclipsSecurity}
+        />
       </MemoryRouter>,
     );
 
@@ -49,7 +56,7 @@ describe('HomeView', () => {
     it('goes to the search results page on enter', async () => {
       const wrapper = render(
         <MemoryRouter initialEntries={['/']}>
-          <App apiClient={fakeClient} />
+          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
         </MemoryRouter>,
       );
 
@@ -66,7 +73,7 @@ describe('HomeView', () => {
     it('goes to the search results page when clicking button', async () => {
       const wrapper = render(
         <MemoryRouter initialEntries={['/']}>
-          <App apiClient={fakeClient} />
+          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
         </MemoryRouter>,
       );
 
