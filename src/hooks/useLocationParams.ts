@@ -29,6 +29,8 @@ export const useSearchQueryLocationParams = (): [
       channel: locationParams.getAll('channel'),
       duration: locationParams.getAll('duration'),
       prices: locationParams.getAll('prices'),
+      release_date_from: locationParams.getAll('release_date_from'),
+      release_date_to: locationParams.getAll('release_date_to'),
     },
   };
 

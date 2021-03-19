@@ -114,6 +114,8 @@ const SearchResultsView = () => {
       channel: [],
       subject: [],
       prices: [],
+      release_date_from: [],
+      release_date_to: [],
     };
 
     setSearchLocation({
@@ -128,12 +130,18 @@ const SearchResultsView = () => {
 
   if (isLoading) return <Loading />;
 
+  const dateFilters = {
+    to: filtersFromURL.release_date_to,
+    from: filtersFromURL.release_date_from,
+  };
+
   return (
     <Layout rowsSetup="grid-rows-search-view ">
       <Navbar showSearchBar />
       <ErrorBoundary fallback={<RefreshPageError row="2" />}>
         <FilterPanel
           facets={data?.facets}
+          dateFilters={dateFilters}
           handleChange={handleFilterChange}
           removeFilter={removeFilter}
           removeAllFilters={removeAllFilters}

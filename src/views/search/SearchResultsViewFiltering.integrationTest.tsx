@@ -380,6 +380,66 @@ describe(`SearchResultsFiltering`, () => {
     });
   });
 
+  describe('date filters', () => {
+    it('shows the to and from date filters with placeholders', async () => {
+      fakeClient.videos.insertVideo(VideoFactory.sample({ title: 'video123' }));
+
+      const wrapper = renderSearchResultsView(['/videos?q=video123']);
+
+      expect(await wrapper.findByText('Release date')).toBeVisible();
+      expect(await wrapper.findByText('From:')).toBeVisible();
+      expect(await wrapper.findByText('To:')).toBeVisible();
+
+      expect(wrapper.getAllByPlaceholderText('MM-DD-YYYY')).toHaveLength(2);
+    });
+
+    it('gets the to and from filters from the URL', async () => {
+      fakeClient.videos.insertVideo(VideoFactory.sample({ title: 'video123' }));
+
+      const wrapper = renderSearchResultsView([
+        '/videos?q=video&release_date_to=12-01-2020&release_date_from=12-01-2018',
+      ]);
+
+      expect(await wrapper.findByDisplayValue('12-01-2020')).toBeVisible();
+      expect(await wrapper.findByDisplayValue('12-01-2018')).toBeVisible();
+    });
+
+    it('filters by date when selecting changing the date in the filter', async () => {
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          title: 'old-video',
+          releasedOn: new Date(2000, 10, 10),
+        }),
+      );
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          title: 'new-video',
+          releasedOn: new Date(2025, 10, 10),
+        }),
+      );
+
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
+
+      const fromDatePicker = await within(
+        await wrapper.findByTestId('release_date_from'),
+      ).findByPlaceholderText('MM-DD-YYYY');
+
+      fireEvent.change(fromDatePicker, { target: { value: '01-01-2020' } });
+      fireEvent.keyDown(fromDatePicker, {
+        key: 'Enter',
+        code: 13,
+        charCode: 13,
+      });
+      fireEvent.blur(fromDatePicker);
+
+      await waitFor(async () => {
+        expect(await wrapper.findByText('new-video')).toBeVisible();
+        expect(wrapper.queryByText('old-video')).not.toBeInTheDocument();
+      });
+    });
+  });
+
   describe(`selected filters`, () => {
     beforeEach(() => {
       fakeClient = new FakeBoclipsClient();

@@ -16,7 +16,10 @@ module.exports = {
   },
   testEnvironment: 'jest-environment-jsdom-fifteen',
   testMatch: ['**/*.(integrationTest|test).(ts|tsx)'],
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/node_modules/(?!antd).+\\\\.js$',
+    '<rootDir>/dist/',
+  ],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },

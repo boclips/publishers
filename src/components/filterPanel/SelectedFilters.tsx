@@ -38,13 +38,16 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
 
   useEffect(() => {
     if (searchQueryLocationParams && channels && subjects) {
-      const filtersInUrl: SelectedFilter[][] = Object.entries(
-        searchQueryLocationParams.filters,
-      ).map(([filterKey, appliedFilters]) => {
-        return appliedFilters.map((appliedFilterId) =>
-          buildSelectedFilter(appliedFilterId, filterKey as FilterKey),
-        );
-      });
+      const temporary =
+        delete searchQueryLocationParams.filters.release_date_from &&
+        delete searchQueryLocationParams.filters.release_date_to;
+      const filtersInUrl: SelectedFilter[][] = Object.entries(temporary).map(
+        ([filterKey, appliedFilters]) => {
+          return appliedFilters.map((appliedFilterId) =>
+            buildSelectedFilter(appliedFilterId, filterKey as FilterKey),
+          );
+        },
+      );
       const flattenedFiltersInUrl: SelectedFilter[] = ([] as SelectedFilter[]).concat(
         ...filtersInUrl,
       );

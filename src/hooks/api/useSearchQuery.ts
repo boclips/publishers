@@ -25,6 +25,8 @@ const doSearch = (
     subject: filters?.subject,
     channel: filters?.channel,
     duration: filters?.duration,
+    released_date_to: filters?.release_date_to[0],
+    released_date_from: filters?.release_date_from[0],
     duration_facets: DEFAULT_DURATIONS,
     include_channel_facets: true,
   });
