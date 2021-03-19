@@ -38,6 +38,7 @@ export const CartItemOrderPreview = ({ videos }: Props) => {
     <div>
       {videos.map((video) => (
         <div
+          data-qa="order-summary-item-wrapper"
           key={video.id}
           className={c(
             s.orderSummaryWrapper,
