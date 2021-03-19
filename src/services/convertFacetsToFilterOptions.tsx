@@ -80,7 +80,6 @@ export const getFilterLabel = (
   channels?: Channel[],
   subjects?: Subject[],
 ): string => {
-  // TODO: MOVE STRING TO VARS
   switch (key) {
     case 'video_type':
       return getVideoTypeLabel(id);
@@ -98,6 +97,7 @@ export const getFilterLabel = (
 };
 
 const getChannelLabel = (id, channels?: Channel[]) => {
+  console.log(`looking for ${id} in ${channels}`);
   return channels ? channels.find((it) => it.id === id).name : id;
 };
 
