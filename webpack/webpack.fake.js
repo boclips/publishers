@@ -9,7 +9,6 @@ const distPath = path.resolve(__dirname, '../dist');
 
 module.exports = merge(common, {
   entry: path.resolve(srcPath, 'index-fake.tsx'),
-  mode: 'production',
   devtool: 'eval-source-map',
   output: {
     filename: '[name].js',
