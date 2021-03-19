@@ -43,6 +43,7 @@ const CartItem = ({ videoItem, cartItem }: Props) => {
 
   return (
     <div
+      data-qa="cart-item-wrapper"
       className={c(s.cartItemWrapper, {
         [s.cartAnimationWrapper]: startAnimation,
         [s.shrink]: shrinkAnimation,
