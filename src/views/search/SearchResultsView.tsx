@@ -82,11 +82,29 @@ const SearchResultsView = () => {
   const handleFilterChange = useCallback(
     (key: FilterKey, values: string[]) => {
       const prevValues = filtersFromURL[key];
-      if (prevValues.length !== values.length) {
+
+      const newDateFiltersApplied =
+        (key === 'release_date_to' && filtersFromURL[key] !== []) ||
+        (key === 'release_date_from' && filtersFromURL[key] !== []);
+
+      const removeCurrentDateFilter = (filters: SearchFilters) => {
+        const emptyDateFilter = { [key]: [] };
+        return { ...filters, ...emptyDateFilter };
+      };
+
+      const newFiltersApplied =
+        prevValues.length !== values.length || newDateFiltersApplied;
+
+      if (newFiltersApplied) {
+        const currentFilters = newDateFiltersApplied
+          ? removeCurrentDateFilter(filtersFromURL)
+          : filtersFromURL;
+
         const newFilters = {
-          ...filtersFromURL,
+          ...currentFilters,
           [key]: values,
         };
+
         setSearchLocation({
           query,
           page: 1,
