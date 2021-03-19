@@ -60,19 +60,9 @@ describe('account button', () => {
 
     fakeClient.users.insertCurrentUser(UserFactory.sample());
 
-    const logoutMock = jest.fn();
-
-    const boclipsSecurity = {
-      logout: logoutMock,
-      isAuthenticated: () => false,
-      getTokenFactory: jest.fn(),
-      configureAxios: jest.fn(),
-      ssoLogin: jest.fn(),
-    };
-
     const wrapper = render(
       <MemoryRouter initialEntries={['/cart']}>
-        <App apiClient={fakeClient} boclipsSecurity={boclipsSecurity} />
+        <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
       </MemoryRouter>,
     );
 
@@ -80,7 +70,7 @@ describe('account button', () => {
 
     fireEvent.click(await wrapper.findByText('Log out'));
 
-    expect(logoutMock).toHaveBeenCalledWith({
+    expect(stubBoclipsSecurity.logout).toHaveBeenCalledWith({
       redirectUri: `${Constants.HOST}/`,
     });
   });
