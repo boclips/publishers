@@ -115,12 +115,30 @@ export const TrimService = ({ videoItem, cartItem, price }: Props) => {
 
   const onBlur = () => {
     setIsValidationEnabled(true);
-    mutateAdditionalServices({
-      cartItem,
-      additionalServices: {
-        trim: trimValue.trim,
-      },
-    });
+    const isValid =
+      isTrimFromValid(
+        {
+          from: trimValue.trim.from,
+          to: trimValue.trim.to,
+        },
+        videoDuration,
+      ) &&
+      isTrimToValid(
+        {
+          from: trimValue.trim.from,
+          to: trimValue.trim.to,
+        },
+        videoDuration,
+      );
+
+    if (isValid) {
+      mutateAdditionalServices({
+        cartItem,
+        additionalServices: {
+          trim: trimValue.trim,
+        },
+      });
+    }
   };
 
   return (

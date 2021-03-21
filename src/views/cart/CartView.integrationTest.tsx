@@ -242,13 +242,13 @@ describe('CartView', () => {
       fireEvent.click(await wrapper.findByText('Trim video'));
 
       fireEvent.change(await wrapper.findByLabelText('trim-from'), {
-        target: { value: '2' },
+        target: { value: '0:02' },
       });
 
       fireEvent.blur(await wrapper.findByLabelText('trim-from'));
 
       fireEvent.change(await wrapper.findByLabelText('trim-to'), {
-        target: { value: '3' },
+        target: { value: '0:03' },
       });
 
       fireEvent.blur(await wrapper.findByLabelText('trim-to'));
@@ -261,7 +261,7 @@ describe('CartView', () => {
 
     it('displays error when trying to place order with invalid trim values and then removes the error when trim becomes valid again', async () => {
       const fakeClient = new FakeBoclipsClient();
-
+      jest.spyOn(fakeClient.carts, 'updateCartItemAdditionalServices');
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
           price: { amount: 300, currency: 'USD' },
@@ -290,6 +290,10 @@ describe('CartView', () => {
           'There are some errors. Please review your shopping cart and correct the mistakes.',
         ),
       ).toBeVisible();
+
+      expect(
+        fakeClient.carts.updateCartItemAdditionalServices,
+      ).toHaveBeenCalledTimes(0);
 
       expect(
         await wrapper.findByText('Specify your trimming options'),
