@@ -17,7 +17,7 @@ export const FilterSearch = ({
     onSearch(text);
   };
   return (
-    <div className="w-full h-10 bg-white mt-2 border-2 flex focus-within:border-solid hover:border-solid hover:border-blue-500 focus-within:border-blue-500 rounded flex items-center">
+    <div className="w-full h-10 bg-white mt-2 border-2 border-blue-400 focus-within:border-solid hover:border-solid hover:border-blue-600 focus-within:border-blue-600 rounded flex items-center">
       <div className="w-5 h-5 m-1 ml-2 mr-1 flex-shrink-0">
         <SearchIconSVG className="stroke-current text-gray-600 stroke-2" />
       </div>

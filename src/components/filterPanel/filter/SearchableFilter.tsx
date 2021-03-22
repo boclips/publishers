@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Filter } from 'src/components/filterPanel/filter/Filter';
+import { CheckboxFilter } from 'src/components/filterPanel/filter/CheckboxFilter';
 import { FilterSearch } from 'src/components/filterPanel/filter/FilterSearch';
 import { FilterOption } from 'src/types/FilterOption';
 import { searchFilterOptions } from 'src/services/convertFilterOptions';
@@ -26,7 +26,7 @@ export const SearchableFilter = ({
   );
 
   return (
-    <Filter
+    <CheckboxFilter
       filterName={filterName}
       title={title}
       options={filteredOptions}

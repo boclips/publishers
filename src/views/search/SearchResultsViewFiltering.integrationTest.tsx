@@ -15,10 +15,12 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import App from 'src/App';
 import React from 'react';
 import { createReactQueryClient } from 'src/testSupport/createReactQueryClient';
+import dayjs from 'src/day-js';
 
 describe(`SearchResultsFiltering`, () => {
   let fakeClient;
@@ -379,6 +381,101 @@ describe(`SearchResultsFiltering`, () => {
       const selectedFiltersSection = wrapper.getByTestId('applied-filter-tags');
 
       expect(within(selectedFiltersSection).getByText('$100')).toBeVisible();
+    });
+  });
+
+  describe('date filters', () => {
+    it('shows the to and from date filters with placeholders', async () => {
+      fakeClient.videos.insertVideo(VideoFactory.sample({ title: 'video123' }));
+
+      const wrapper = renderSearchResultsView(['/videos?q=video123']);
+
+      expect(await wrapper.findByText('Release date')).toBeVisible();
+      expect(await wrapper.findByText('From:')).toBeVisible();
+      expect(await wrapper.findByText('To:')).toBeVisible();
+
+      expect(wrapper.getAllByPlaceholderText('MM-DD-YYYY')).toHaveLength(2);
+    });
+
+    it('gets the to and from filters from the URL', async () => {
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          title: 'video123',
+          releasedOn: dayjs('2019-12-01').toDate(),
+        }),
+      );
+
+      const toDate = dayjs('2020-12-01');
+      const fromDate = dayjs('2018-12-01');
+      const wrapper = renderSearchResultsView([
+        `/videos?q=video&release_date_to=${toDate.toISOString()}&release_date_from=${fromDate.toISOString()}`,
+      ]);
+
+      expect(await wrapper.findByDisplayValue('12-01-2020')).toBeVisible();
+      expect(await wrapper.findByDisplayValue('12-01-2018')).toBeVisible();
+    });
+
+    it('resets the date filter when clearing all filters', async () => {
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          title: 'video123',
+          releasedOn: dayjs('2019-12-01').toDate(),
+        }),
+      );
+
+      const toDate = dayjs('2020-12-01');
+      const fromDate = dayjs('2018-12-01');
+      const wrapper = renderSearchResultsView([
+        `/videos?q=video&release_date_to=${toDate.toISOString()}&release_date_from=${fromDate.toISOString()}`,
+      ]);
+
+      expect(await wrapper.findByDisplayValue('12-01-2020')).toBeVisible();
+      expect(await wrapper.findByDisplayValue('12-01-2018')).toBeVisible();
+
+      fireEvent.click(await wrapper.findByText('Clear all'));
+
+      expect(wrapper.getAllByPlaceholderText('MM-DD-YYYY')).toHaveLength(2);
+      await waitFor(() => {
+        expect(
+          wrapper.queryByDisplayValue('12-01-2020'),
+        ).not.toBeInTheDocument();
+
+        expect(
+          wrapper.queryByDisplayValue('12-01-2018'),
+        ).not.toBeInTheDocument();
+      });
+    });
+
+    it('filters by date when selecting changing the date in the filter', async () => {
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          title: 'old-video',
+          releasedOn: new Date(2000, 10, 10),
+        }),
+      );
+
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          title: 'new-video',
+          releasedOn: new Date(2025, 10, 10),
+        }),
+      );
+
+      const wrapper = renderSearchResultsView(['/videos?q=video']);
+
+      const fromDatePicker = await within(
+        await wrapper.findByTestId('release_date_from'),
+      ).findByPlaceholderText('MM-DD-YYYY');
+
+      fireEvent.focus(fromDatePicker);
+      userEvent.type(fromDatePicker, '01-01-2020 {enter}');
+
+      await waitFor(async () => {
+        expect(await wrapper.findByText('new-video')).toBeVisible();
+        expect(wrapper.queryByText('old-video')).not.toBeInTheDocument();
+      });
+
+      expect(await wrapper.findByText('From: 01-01-2020')).toBeVisible();
     });
   });
 

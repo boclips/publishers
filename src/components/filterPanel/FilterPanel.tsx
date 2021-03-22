@@ -7,7 +7,13 @@ import { DurationFilter } from 'src/components/filterPanel/DurationFilter';
 import { useFilterOptions } from 'src/hooks/useFilterOptions';
 import { PriceFilter } from 'src/components/filterPanel/PriceFilter';
 import c from 'classnames';
+import { DateFilter } from 'src/components/filterPanel/DateFilter';
 import { SelectedFilters } from './SelectedFilters';
+
+export interface DateFilters {
+  to: string[];
+  from: string[];
+}
 
 interface Props {
   facets?: VideoFacets;
@@ -16,6 +22,7 @@ interface Props {
   removeAllFilters: () => void;
   resultsFound: boolean;
   areFiltersApplied: boolean;
+  dateFilters: DateFilters;
 }
 
 export const FilterPanel = ({
@@ -25,6 +32,7 @@ export const FilterPanel = ({
   removeAllFilters,
   resultsFound,
   areFiltersApplied,
+  dateFilters,
 }: Props) => {
   const filterOptions = useFilterOptions(facets);
   const isDurationFilterApplied = filterOptions.durations.find(
@@ -62,6 +70,7 @@ export const FilterPanel = ({
               handleChange={handleChange}
             />
           )}
+          <DateFilter releaseDates={dateFilters} handleChange={handleChange} />
           {filterOptions.channels.length > 0 && (
             <ChannelFilter
               options={filterOptions.channels}

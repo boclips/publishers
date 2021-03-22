@@ -3,4 +3,6 @@ export type FilterKey =
   | 'subject'
   | 'channel'
   | 'duration'
-  | 'prices';
+  | 'prices'
+  | 'release_date_to'
+  | 'release_date_from';

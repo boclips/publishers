@@ -81,22 +81,20 @@ const SearchResultsView = () => {
 
   const handleFilterChange = useCallback(
     (key: FilterKey, values: string[]) => {
-      const prevValues = filtersFromURL[key];
-      if (prevValues.length !== values.length) {
-        const newFilters = {
-          ...filtersFromURL,
-          [key]: values,
-        };
-        setSearchLocation({
-          query,
-          page: 1,
-          filters: newFilters,
-        });
-        setNewFiltersBeforeDebounce(newFilters);
-        AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.FILTERS_APPLIED, {
-          filters: newFilters,
-        });
-      }
+      const newFilters = {
+        ...filtersFromURL,
+        [key]: values,
+      };
+
+      setSearchLocation({
+        query,
+        page: 1,
+        filters: newFilters,
+      });
+      setNewFiltersBeforeDebounce(newFilters);
+      AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.FILTERS_APPLIED, {
+        filters: newFilters,
+      });
     },
     [filtersFromURL, query, setSearchLocation],
   );
@@ -114,6 +112,8 @@ const SearchResultsView = () => {
       channel: [],
       subject: [],
       prices: [],
+      release_date_from: [],
+      release_date_to: [],
     };
 
     setSearchLocation({
@@ -126,6 +126,11 @@ const SearchResultsView = () => {
 
   const isNoSearchResults = data?.pageSpec?.totalElements === 0;
 
+  const dateFilters = {
+    to: filtersFromURL.release_date_to,
+    from: filtersFromURL.release_date_from,
+  };
+
   if (isLoading) return <Loading />;
 
   return (
@@ -134,6 +139,7 @@ const SearchResultsView = () => {
       <ErrorBoundary fallback={<RefreshPageError row="2" />}>
         <FilterPanel
           facets={data?.facets}
+          dateFilters={dateFilters}
           handleChange={handleFilterChange}
           removeFilter={removeFilter}
           removeAllFilters={removeAllFilters}

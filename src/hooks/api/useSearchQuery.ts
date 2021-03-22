@@ -4,6 +4,7 @@ import { DEFAULT_DURATIONS } from 'src/types/DefaultDurations';
 import { BoclipsClient } from 'boclips-api-client';
 import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import { FilterKey } from 'src/types/search/FilterKey';
+import dayjs from 'dayjs';
 
 export interface SearchQuery {
   query: string;
@@ -25,6 +26,14 @@ const doSearch = (
     subject: filters?.subject,
     channel: filters?.channel,
     duration: filters?.duration,
+    released_date_to:
+      filters?.release_date_to &&
+      filters?.release_date_to[0] &&
+      dayjs(filters?.release_date_to[0]).format('YYYY-MM-DD'),
+    released_date_from:
+      filters?.release_date_from &&
+      filters?.release_date_from[0] &&
+      dayjs(filters?.release_date_from[0]).format('YYYY-MM-DD'),
     duration_facets: DEFAULT_DURATIONS,
     include_channel_facets: true,
   });
