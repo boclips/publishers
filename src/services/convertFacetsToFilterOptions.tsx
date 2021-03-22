@@ -11,6 +11,7 @@ import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { FilterKey } from 'src/types/search/FilterKey';
 import { Channel } from 'boclips-api-client/dist/sub-clients/channels/model/Channel';
 import { Subject } from 'boclips-api-client/dist/sub-clients/subjects/model/Subject';
+import dayjs from 'dayjs';
 
 export const convertFacetsToFilterOptions = (
   facets?: VideoFacets,
@@ -75,7 +76,7 @@ const createFilterOptions = (
   });
 
 export const getFilterLabel = (
-  key,
+  key: FilterKey,
   id,
   channels?: Channel[],
   subjects?: Subject[],
@@ -92,6 +93,10 @@ export const getFilterLabel = (
       return getChannelLabel(id, channels);
     case 'subject':
       return getSubjectsLabel(id, subjects);
+    case 'release_date_from':
+      return `From: ${dayjs(id).format('MM-DD-YYYY')}`;
+    case 'release_date_to':
+      return `To: ${dayjs(id).format('MM-DD-YYYY')}`;
     default:
       throw 'not supported filter key';
   }

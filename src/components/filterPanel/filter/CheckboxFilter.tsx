@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { FilterHeader } from 'src/components/filterPanel/filter/FilterHeader';
+import React from 'react';
 import { FilterOptionList } from 'src/components/filterPanel/filter/FilterOptionList';
 import { useSearchQueryLocationParams } from 'src/hooks/useLocationParams';
 import { FilterOption } from 'src/types/FilterOption';
+import { CollapsableFilter } from './CollapsableFilter';
 
 interface Props {
   title: string;
@@ -13,7 +13,7 @@ interface Props {
   handleFilterToggle?: (isOpen: boolean) => void;
 }
 
-export const Filter = ({
+export const CheckboxFilter = ({
   title,
   options = [],
   filterName,
@@ -22,7 +22,6 @@ export const Filter = ({
   handleFilterToggle,
 }: Props) => {
   const [searchLocation] = useSearchQueryLocationParams();
-  const [open, setOpen] = useState<boolean>(true);
 
   const onSelectOption = (_, item: string) => {
     const oldFilters = searchLocation.filters[filterName] || [];
@@ -36,30 +35,14 @@ export const Filter = ({
     }
   };
 
-  const toggleFilter = () => {
-    setOpen(!open);
-    if (handleFilterToggle) {
-      handleFilterToggle(!open);
-    }
-  };
-
   return (
-    <div className="bg-blue-100 mt-6 p-4 border-solid border border-blue-300 rounded">
-      <FilterHeader
-        text={title}
-        filterIsOpen={open}
-        toggleFilter={toggleFilter}
+    <CollapsableFilter title={title} handleFilterToggle={handleFilterToggle}>
+      {filtersSearch}
+      <FilterOptionList
+        options={options}
+        onSelect={onSelectOption}
+        selectedOptions={searchLocation.filters[filterName] || []}
       />
-      {open && (
-        <>
-          {filtersSearch}
-          <FilterOptionList
-            options={options}
-            onSelect={onSelectOption}
-            selectedOptions={searchLocation.filters[filterName] || []}
-          />
-        </>
-      )}
-    </div>
+    </CollapsableFilter>
   );
 };

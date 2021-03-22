@@ -21,6 +21,8 @@ describe('convertFacets', () => {
       subject: [],
       duration: [],
       prices: [],
+      release_date_from: [],
+      release_date_to: [],
     };
 
     const filterOptions = convertFacetsToFilterOptions(facets, searchFilters);

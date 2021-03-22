@@ -36,18 +36,24 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
     };
   };
 
+  const releaseDateFrom =
+    searchQueryLocationParams.filters.release_date_from &&
+    searchQueryLocationParams.filters.release_date_from[0];
+
+  const releaseDateTo =
+    searchQueryLocationParams.filters.release_date_to &&
+    searchQueryLocationParams.filters.release_date_to[0];
+
   useEffect(() => {
     if (searchQueryLocationParams && channels && subjects) {
-      const temporary =
-        delete searchQueryLocationParams.filters.release_date_from &&
-        delete searchQueryLocationParams.filters.release_date_to;
-      const filtersInUrl: SelectedFilter[][] = Object.entries(temporary).map(
-        ([filterKey, appliedFilters]) => {
-          return appliedFilters.map((appliedFilterId) =>
-            buildSelectedFilter(appliedFilterId, filterKey as FilterKey),
-          );
-        },
-      );
+      const filtersInUrl: SelectedFilter[][] = Object.entries(
+        searchQueryLocationParams.filters,
+      ).map(([filterKey, appliedFilters]) => {
+        return appliedFilters.map((appliedFilterId) =>
+          buildSelectedFilter(appliedFilterId, filterKey as FilterKey),
+        );
+      });
+
       const flattenedFiltersInUrl: SelectedFilter[] = ([] as SelectedFilter[]).concat(
         ...filtersInUrl,
       );
@@ -60,6 +66,8 @@ export const SelectedFilters = ({ removeFilter, clearFilters }: Props) => {
     searchQueryLocationParams.filters.duration.length,
     searchQueryLocationParams.filters.subject.length,
     searchQueryLocationParams.filters.prices.length,
+    releaseDateFrom,
+    releaseDateTo,
     channels,
     subjects,
   ]);

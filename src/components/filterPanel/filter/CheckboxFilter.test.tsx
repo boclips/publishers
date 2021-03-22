@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, waitFor } from '@testing-library/react';
-import { Filter } from 'src/components/filterPanel/filter/Filter';
+import { CheckboxFilter } from 'src/components/filterPanel/filter/CheckboxFilter';
 import { renderWithLocation } from 'src/testSupport/renderWithLocation';
 import { FilterOption } from 'src/types/FilterOption';
 import { FilterOptionFactory } from 'src/testSupport/FilterOptionFactory';
@@ -37,7 +37,7 @@ describe(`filterPanel`, () => {
 
   it('renders the title, filters and facets provided', () => {
     const panel = renderWithLocation(
-      <Filter
+      <CheckboxFilter
         options={videoTypes}
         title="Video Types"
         filterName="test"
@@ -56,7 +56,7 @@ describe(`filterPanel`, () => {
 
   it('can hide the options if you collapse the panel', () => {
     const panel = renderWithLocation(
-      <Filter
+      <CheckboxFilter
         options={videoTypes}
         title="Video Types"
         filterName="test"
@@ -72,7 +72,7 @@ describe(`filterPanel`, () => {
 
   it('can uncheck an option and others remain checked', () => {
     const panel = renderWithLocation(
-      <Filter
+      <CheckboxFilter
         options={videoTypes}
         title="Video Types"
         filterName="test"
@@ -93,7 +93,7 @@ describe(`filterPanel`, () => {
 
   it('renders a show more label with the correct number', () => {
     const panel = renderWithLocation(
-      <Filter
+      <CheckboxFilter
         options={generateOptions(6)}
         title="Video Types"
         filterName="test"
@@ -108,7 +108,7 @@ describe(`filterPanel`, () => {
 
   it('toggles the filter to show more results', () => {
     const panel = renderWithLocation(
-      <Filter
+      <CheckboxFilter
         options={generateOptions(6)}
         title="Video Types"
         filterName="test"

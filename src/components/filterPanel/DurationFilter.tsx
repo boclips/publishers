@@ -1,5 +1,5 @@
 import React from 'react';
-import { Filter } from 'src/components/filterPanel/filter/Filter';
+import { CheckboxFilter } from 'src/components/filterPanel/filter/CheckboxFilter';
 import { convertFilterOptions } from 'src/services/convertFilterOptions';
 import { FilterOption } from 'src/types/FilterOption';
 
@@ -10,7 +10,7 @@ interface Props {
 
 export const DurationFilter = ({ options, handleChange }: Props) => {
   return (
-    <Filter
+    <CheckboxFilter
       options={convertFilterOptions(options, 'SORT_BY_DURATION')}
       title="Duration"
       filterName="duration"
