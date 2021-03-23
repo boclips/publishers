@@ -4,4 +4,5 @@ export const stubBoclipsSecurity = {
   getTokenFactory: jest.fn(),
   configureAxios: jest.fn(),
   ssoLogin: jest.fn(),
+  hasRole: (_role: string) => true,
 };

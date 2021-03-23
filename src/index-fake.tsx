@@ -16,6 +16,7 @@ const fakeSecurity: BoclipsSecurity = {
   },
   configureAxios: () => {},
   ssoLogin: () => {},
+  hasRole: (_role: string) => true,
 };
 
 ReactDom.render(

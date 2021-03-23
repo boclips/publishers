@@ -13,6 +13,7 @@ import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import ScrollToTop from 'src/hooks/scrollToTop';
 import { Helmet } from 'react-helmet';
 import { BoclipsSecurity } from 'boclips-js-security/dist/BoclipsSecurity';
+import { WithValidRoles } from 'src/components/common/errors/WithValidRoles';
 import { BoclipsClientProvider } from './components/common/providers/BoclipsClientProvider';
 import { BoclipsSecurityProvider } from './components/common/providers/BoclipsSecurityProvider';
 import Appcues from './services/analytics/Appcues';
@@ -47,6 +48,9 @@ const ErrorView = lazy(() => import('src/views/error/ErrorView'));
 const NotFound = lazy(() => import('src/views/notFound/NotFound'));
 
 const FallbackView = lazy(() => import('src/views/fallback/FallbackView'));
+const AccessDeniedView = lazy(
+  () => import('src/views/accessDenied/AccessDenied'),
+);
 
 interface Props {
   apiClient: BoclipsClient;
@@ -93,49 +97,54 @@ const App = ({
           <BoclipsClientProvider client={apiClient}>
             <Suspense fallback={<Loading />}>
               <JSErrorBoundary fallback={<FallbackView />}>
-                <Helmet title="Boclips" />
-                <Switch>
-                  <Route exact path="/">
-                    <HomeView />
-                  </Route>
-                  <Route exact path="/videos">
-                    <SearchResultsView />
-                  </Route>
-                  <Route exact path="/videos/:id">
-                    <VideoView />
-                  </Route>
-                  <Route exact path="/cart">
-                    <Helmet title="Cart" />
-                    <CartView />
-                  </Route>
-                  <Route exact path="/orders">
-                    <Helmet title="Orders" />
-                    <OrdersView />
-                  </Route>
-                  <Route exact path="/orders/:id">
-                    <OrderView />
-                  </Route>
-                  <Route
-                    exact
-                    path="/error"
-                    render={({ location }) => (
-                      <ErrorView error={location?.state?.error} />
-                    )}
-                  />
-                  <Route
-                    path="/order-confirmed"
-                    render={({ location }) => (
-                      <>
-                        <Helmet title="Order confirmed!" />
-                        <OrderConfirmationView state={location?.state} />
-                      </>
-                    )}
-                  />
-                  <Route>
-                    <Helmet title="Page not found" />
-                    <NotFound />
-                  </Route>
-                </Switch>
+                <WithValidRoles
+                  fallback={<AccessDeniedView />}
+                  roles={['ROLE_BOCLIPS_WEB_APP']}
+                >
+                  <Helmet title="Boclips" />
+                  <Switch>
+                    <Route exact path="/">
+                      <HomeView />
+                    </Route>
+                    <Route exact path="/videos">
+                      <SearchResultsView />
+                    </Route>
+                    <Route exact path="/videos/:id">
+                      <VideoView />
+                    </Route>
+                    <Route exact path="/cart">
+                      <Helmet title="Cart" />
+                      <CartView />
+                    </Route>
+                    <Route exact path="/orders">
+                      <Helmet title="Orders" />
+                      <OrdersView />
+                    </Route>
+                    <Route exact path="/orders/:id">
+                      <OrderView />
+                    </Route>
+                    <Route
+                      exact
+                      path="/error"
+                      render={({ location }) => (
+                        <ErrorView error={location?.state?.error} />
+                      )}
+                    />
+                    <Route
+                      path="/order-confirmed"
+                      render={({ location }) => (
+                        <>
+                          <Helmet title="Order confirmed!" />
+                          <OrderConfirmationView state={location?.state} />
+                        </>
+                      )}
+                    />
+                    <Route>
+                      <Helmet title="Page not found" />
+                      <NotFound />
+                    </Route>
+                  </Switch>
+                </WithValidRoles>
               </JSErrorBoundary>
             </Suspense>
             <ReactQueryDevtools initialIsOpen={false} />
