@@ -1,10 +1,11 @@
 import React from 'react';
 import { useBoclipsSecurity } from 'src/components/common/providers/BoclipsSecurityProvider';
+import { Role } from 'src/types/Role';
 
 interface Props {
   children: React.ReactNode;
   fallback: React.ReactNode;
-  roles: string[];
+  roles: Role[];
 }
 
 export const WithValidRoles = ({ children, fallback, roles }: Props) => {
