@@ -33,30 +33,37 @@ export const AdditionalServicesSummaryPreview = ({
 
   return (
     <div
+      data-qa="order-summary-item-additional-services"
       className={`flex flex-col text-gray-800 w-full ${fontSize} ${s.additionalServices}`}
     >
       <span className="font-medium">{getHeaderCopy()}</span>
 
       {captionsRequested && (
-        <span className="relative">
+        <span
+          className="relative"
+          data-qa="order-summary-item-captions-requested"
+        >
           English captions requested {displayPrice && <Price />}
         </span>
       )}
 
       {transcriptRequested && (
-        <span className="relative">
+        <span
+          className="relative"
+          data-qa="order-summary-item-transcripts-requested"
+        >
           Transcripts requested {displayPrice && <Price />}
         </span>
       )}
 
       {trim && (
-        <span className="relative">
+        <span className="relative" data-qa="order-summary-item-trim">
           Trim: {trim} {displayPrice && <Price />}
         </span>
       )}
 
       {editRequest && (
-        <span className="relative">
+        <span className="relative" data-qa="order-summary-item-editing">
           Other type of editing: {editRequest} {displayPrice && <Price />}
         </span>
       )}

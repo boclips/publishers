@@ -64,7 +64,12 @@ export const CartItemOrderPreview = ({ videos }: Props) => {
                 </span>
               )}
             </div>
-            <div className="text-xs text-gray-800"> ID: {video.id}</div>
+            <div
+              className="text-xs text-gray-800"
+              data-qa="order-summary-item-video-id"
+            >
+              ID: {video.id}
+            </div>
             {getAdditionalServicesSummary(
               cart?.items?.find((cartItem) => cartItem.videoId === video.id),
             )}
