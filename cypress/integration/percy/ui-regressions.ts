@@ -17,6 +17,7 @@ context('UI Regression', () => {
 
   it('renders account panel', () => {
     cy.visit(`${endpoint}/`);
+    cy.get('[data-qa="account-menu"]').click()
 
     cy.percySnapshot('Account panel', {
       widths: [1280, 1440, 1680],

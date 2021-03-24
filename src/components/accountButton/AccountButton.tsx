@@ -56,6 +56,7 @@ export const AccountButton = () => {
         onMouseLeave={onMouseLeaveAction}
         className={c(s.account, { [s.active]: displayModal || onMouseEnter })}
         onClick={onClick}
+        data-qa="account-menu"
       >
         <MyAccountSVG />
         <span className="mt-1 text-xs font-medium">Account</span>
