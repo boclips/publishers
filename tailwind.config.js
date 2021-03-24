@@ -1,5 +1,5 @@
 const debugScreens = require('tailwindcss-debug-screens');
-const customForms = require('@tailwindcss/custom-forms');
+const forms = require('@tailwindcss/forms');
 
 module.exports = {
   purge: ['./src/**/*.html', './src/**/*.tsx'],
@@ -7,27 +7,6 @@ module.exports = {
     container: {
       center: true,
     },
-    customForms: (theme) => ({
-      default: {
-        checkbox: {
-          '&:checked': {
-            backgroundSize: '70%',
-            backgroundRepeat: 'no-repeat',
-          },
-          icon:
-            '<svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.75 5.75L4.75 8.75L12.25 1.25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-          '&:focus': {
-            boxShadow: 'none',
-            outline: 'none',
-            borderColor: undefined,
-          },
-          '&:focus-visible': {
-            borderColor: theme('colors.focus'),
-            outline: '0 0 0 3px rgba(66,153,225,.5)',
-          },
-        },
-      },
-    }),
     fontFamily: {
       sans: ['Rubik'],
     },
@@ -181,5 +160,5 @@ module.exports = {
       'checked',
     ],
   },
-  plugins: [customForms, debugScreens],
+  plugins: [forms, debugScreens],
 };

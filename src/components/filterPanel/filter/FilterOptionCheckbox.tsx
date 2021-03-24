@@ -16,7 +16,7 @@ export const FilterOptionCheckbox = ({ option, selected, onSelect }: Props) => {
       >
         <input
           onChange={(event) => onSelect(event, option.id)}
-          className="form-checkbox checked:bg-blue-800 w-5 h-5 hover:border-blue-800 hover:border-solid border-2 cursor-pointer"
+          className="checked:bg-blue-800 w-5 h-5 hover:border-blue-800 hover:border-solid border-2 cursor-pointer"
           type="checkbox"
           value={option.id}
           checked={selected}

@@ -1,5 +1,5 @@
 const postcssPresetEnv = require('postcss-preset-env');
-const tailwind = require('tailwindcss');
+const tailwind = require('@tailwindcss/jit');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
