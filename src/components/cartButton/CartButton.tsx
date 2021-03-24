@@ -30,7 +30,7 @@ const CartButton = () => {
       onMouseLeave={onMouseLeaveAction}
       className={c(s.cartButton, { [s.active]: isOnCartPage || onMouseEnter })}
     >
-      <Link onClick={cartOpenedEvent} to="/cart">
+      <Link onClick={cartOpenedEvent} to="/cart" data-qa="cart-button">
         <CartIcon />
         <span className="text-xs mt-1 font-medium">
           Cart

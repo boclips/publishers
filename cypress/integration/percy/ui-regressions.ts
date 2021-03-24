@@ -76,4 +76,30 @@ context('UI Regression', () => {
       widths: [1280, 1440, 1680],
     });
   });
+
+  it('renders the cart and order flow', () => {
+    cy.visit(`${endpoint}/`);
+
+    cy.bo('create', 'cart')
+
+    cy.get('[data-qa="cart-button"]').click()
+
+    cy.percySnapshot('Cart view', {
+      widths: [1280, 1440, 1680],
+    });
+
+    cy.get('button').contains('Place order').click();
+
+    cy.percySnapshot('Order confirmation modal', {
+      widths: [1280, 1440, 1680],
+    });
+
+    cy.get('button').contains('Confirm order').click();
+    cy.wait(100)
+    cy.get('button').contains('View order details').click();
+
+    cy.percySnapshot('Order view', {
+      widths: [1280, 1440, 1680],
+    });
+  })
 });
