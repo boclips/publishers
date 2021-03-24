@@ -29,9 +29,16 @@ run:
     SENTRY_RELEASE="boclips-web-app-$(cat ../version/tag)"
     export SENTRY_RELEASE
     npm ci
+    npm run fake &
     npm run test
     npm run lint
-    npm run fake &
+    times=0
+    until [ $times -gt 10 ] || curl --fail --silent http://localhost:9000/ > /dev/null
+    do
+      echo "Waiting for bundle before running tests"
+      sleep 1
+      times=$(( times + 1 ))
+    done
     npm run test-visual
     npm run build
     cp -R ./dist/ ../dist/html/
