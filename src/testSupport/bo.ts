@@ -56,7 +56,7 @@ export const bo = (apiClient: FakeBoclipsClient): Bo => ({
         }),
       );
 
-      apiClient.carts.addItemToCart(null, "blah")
+      apiClient.carts.addItemToCart(null, 'blah');
     },
     video: (video: Partial<Video>) => {
       const fakeVideosClient = apiClient.videos as FakeVideosClient;

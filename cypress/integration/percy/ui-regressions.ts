@@ -17,7 +17,7 @@ context('UI Regression', () => {
 
   it('renders account panel', () => {
     cy.visit(`${endpoint}/`);
-    cy.get('[data-qa="account-menu"]').click()
+    cy.get('[data-qa="account-menu"]').click();
 
     cy.percySnapshot('Account panel', {
       widths: [1280, 1440, 1680],
@@ -80,9 +80,9 @@ context('UI Regression', () => {
   it('renders the cart and order flow', () => {
     cy.visit(`${endpoint}/`);
 
-    cy.bo('create', 'cart')
+    cy.bo('create', 'cart');
 
-    cy.get('[data-qa="cart-button"]').click()
+    cy.get('[data-qa="cart-button"]').click();
 
     cy.percySnapshot('Cart view', {
       widths: [1280, 1440, 1680],
@@ -95,11 +95,11 @@ context('UI Regression', () => {
     });
 
     cy.get('button').contains('Confirm order').click();
-    cy.wait(100)
+    cy.wait(100);
     cy.get('button').contains('View order details').click();
 
     cy.percySnapshot('Order view', {
       widths: [1280, 1440, 1680],
     });
-  })
+  });
 });
