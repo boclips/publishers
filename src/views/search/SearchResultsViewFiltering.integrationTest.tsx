@@ -449,6 +449,7 @@ describe(`SearchResultsFiltering`, () => {
     it('filters by date when selecting changing the date in the filter', async () => {
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
+          id: 'video-1',
           title: 'old-video',
           releasedOn: new Date(2000, 10, 10),
         }),
@@ -456,6 +457,7 @@ describe(`SearchResultsFiltering`, () => {
 
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
+          id: 'video-2',
           title: 'new-video',
           releasedOn: new Date(2025, 10, 10),
         }),
