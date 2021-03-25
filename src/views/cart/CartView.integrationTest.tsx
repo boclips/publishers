@@ -18,6 +18,7 @@ import { queryClientConfig } from 'src/hooks/api/queryClientConfig';
 import { QueryClient } from 'react-query';
 import { Helmet } from 'react-helmet';
 import userEvent from '@testing-library/user-event';
+import { EventRequest } from 'boclips-api-client/dist/sub-clients/events/model/EventRequest';
 
 describe('CartView', () => {
   const video = VideoFactory.sample({
@@ -79,7 +80,7 @@ describe('CartView', () => {
     );
   });
 
-  it(`displays order confirmation when place order button clicked`, async () => {
+  it(`displays order confirmation modal when place order button clicked`, async () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(video);
@@ -101,6 +102,12 @@ describe('CartView', () => {
     expect(await within(modal).findByText('$400')).toBeVisible();
     expect(await within(modal).findByText('$1,000')).toBeVisible();
     expect(await within(modal).findByText('Go back to cart')).toBeVisible();
+
+    expect(lastEvent(fakeClient)).toEqual({
+      type: 'PLATFORM_INTERACTED_WITH',
+      subtype: 'ORDER_CONFIRMATION_MODAL_OPENED',
+      anonymous: false,
+    });
   });
 
   it(`places order when confirmation button is clicked`, async () => {
@@ -123,6 +130,12 @@ describe('CartView', () => {
       'href',
       `/orders`,
     );
+
+    expect(lastEvent(fakeClient, 'PLATFORM_INTERACTED_WITH')).toEqual({
+      type: 'PLATFORM_INTERACTED_WITH',
+      subtype: 'ORDER_CONFIRMED',
+      anonymous: false,
+    });
   });
 
   it(`has the cart summary`, async () => {
@@ -560,7 +573,7 @@ async function placeAndConfirmOrder(wrapper: RenderResult) {
     .then((button) => fireEvent.click(button));
 }
 
-function renderCartView(client) {
+function renderCartView(client: FakeBoclipsClient) {
   return render(
     <MemoryRouter initialEntries={['/cart']}>
       <App
@@ -570,4 +583,11 @@ function renderCartView(client) {
       />
     </MemoryRouter>,
   );
+}
+
+function lastEvent(client: FakeBoclipsClient, type?: string): EventRequest {
+  return client.events
+    .getEvents()
+    .filter((event) => !type || event.type === type)
+    .pop();
 }

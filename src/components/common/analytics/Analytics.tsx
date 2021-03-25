@@ -35,3 +35,14 @@ export const trackNavigateToVideoDetails = (
 ) => {
   apiClient.events.trackVideoInteraction(video, 'NAVIGATE_TO_VIDEO_DETAILS');
 };
+
+export const trackOrderConfirmationModalOpened = (apiClient: BoclipsClient) => {
+  apiClient.events.trackPlatformInteraction(
+    'ORDER_CONFIRMATION_MODAL_OPENED',
+    false,
+  );
+};
+
+export const trackOrderConfirmed = (apiClient: BoclipsClient) => {
+  apiClient.events.trackPlatformInteraction('ORDER_CONFIRMED', false);
+};

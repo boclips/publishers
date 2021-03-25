@@ -13,6 +13,8 @@ import { getTotalPriceDisplayValue } from 'src/services/getTotalPriceDisplayValu
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import s from './style.module.less';
+import { trackOrderConfirmed } from '../common/analytics/Analytics';
+import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
 
 export interface Props {
   setOpen: (boolean) => void;
@@ -22,6 +24,7 @@ export interface Props {
 
 export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
   const history = useHistory();
+  const boclipsClient = useBoclipsClient();
 
   const { data: user, isLoading: isUserLoading } = useGetUserQuery();
   const { data: cart } = useCartQuery();
@@ -35,6 +38,7 @@ export const OrderModal = ({ setOpen, modalOpen, videos }: Props) => {
   } = usePlaceOrderQuery();
 
   const onClick = () => {
+    trackOrderConfirmed(boclipsClient);
     AnalyticsFactory.getAppcues().sendEvent(AppcuesEvent.ORDER_CONFIRMED);
     placeOrder({ cart, user });
   };

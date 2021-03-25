@@ -5,6 +5,8 @@ import { Video } from 'boclips-api-client/dist/types';
 import { useCartQuery } from 'src/hooks/api/cartQuery';
 import { useCartValidation } from 'src/components/common/providers/CartValidationProvider';
 import { OrderModal } from '../orderModal/OrderModal';
+import { useBoclipsClient } from '../common/providers/BoclipsClientProvider';
+import { trackOrderConfirmationModalOpened } from '../common/analytics/Analytics';
 
 interface Props {
   videos: Video[];
@@ -16,6 +18,7 @@ interface CartSummaryItem {
 }
 
 export const CartOrderSummary = ({ videos }: Props) => {
+  const boclipsClient = useBoclipsClient();
   const { isCartValid } = useCartValidation();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const { data: cart } = useCartQuery();
@@ -37,6 +40,12 @@ export const CartOrderSummary = ({ videos }: Props) => {
       setDisplayErrorMessage(false);
     }
   }, [isCartValid]);
+
+  React.useEffect(() => {
+    if (modalOpen) {
+      trackOrderConfirmationModalOpened(boclipsClient);
+    }
+  }, [modalOpen, boclipsClient]);
 
   const transriptsRequested = cart.items?.find(
     (item) => item?.additionalServices?.transcriptRequested,
