@@ -46,7 +46,7 @@ describe('OrderConfirmationView', () => {
     expect(await wrapper.findByText('Your order is confirmed')).toBeVisible();
     expect(
       wrapper.getByText(
-        'Your order #632371654 is currently being processed. We’ve sent you an email with your order confirmation.',
+        'Your order #123 is currently being processed. We’ve sent you an email with your order confirmation.',
       ),
     ).toBeVisible();
   });
