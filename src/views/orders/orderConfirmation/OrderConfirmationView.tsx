@@ -32,7 +32,13 @@ const OrderConfirmationView = ({ state }: OrderConfirmedInterface) => {
       <Hero
         title="Your order is confirmed"
         icon={<OrderConfirmedSVG />}
-        description={`Your order #${orderId} is currently being processed. We’ve sent you an email with your order confirmation.`}
+        description={
+          <>
+            Your order #<span data-qa="placed-order-id">{orderId}</span> is
+            currently being processed. We’ve sent you an email with your order
+            confirmation.
+          </>
+        }
         moreDescription="You can track and review all orders in your account"
         actions={
           <>

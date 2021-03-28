@@ -9,6 +9,11 @@ interface Props {
 
 export const OrderDateField = ({ date, fieldName }: Props) => (
   <OrderInformationField fieldName={fieldName}>
-    <div className="text-base">{date ? dateFormat(date, 'dd/mm/yy') : '-'}</div>
+    <div
+      className="text-base"
+      data-qa={`${fieldName.replace(' ', '-').toLowerCase()}-field`}
+    >
+      {date ? dateFormat(date, 'dd/mm/yy') : '-'}
+    </div>
   </OrderInformationField>
 );

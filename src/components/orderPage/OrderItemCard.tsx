@@ -20,6 +20,7 @@ export const OrderItemCard = ({ item }: Props) => {
 
   return (
     <div
+      data-qa="order-item-card"
       className="flex flex-row border-b-2 border-blue-300 first:pt-0 py-4"
       style={{ minHeight: '156px' }}
     >

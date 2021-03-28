@@ -4,7 +4,7 @@ import s from './style.module.less';
 interface Props {
   row?: string;
   title: string;
-  description?: string;
+  description?: React.ReactNode;
   moreDescription?: string;
   icon: React.ReactNode;
   actions?: React.ReactNode;
@@ -32,7 +32,11 @@ export const Hero = ({
         className={`${s.heroCopyWrapper} col-start-12 col-end-23 lg:col-start-12 lg:col-end-21 row-start-${row} row-end-${row} text-blue-800 flex flex-col justify-center`}
       >
         <h2 className="blue-800 font-medium text-4xl">{title}</h2>
-        {description && <p className="text-gray-800 text-lg">{description}</p>}
+        {description && (
+          <p className="text-gray-800 text-lg" data-qa="description">
+            {description}
+          </p>
+        )}
         {moreDescription && (
           <p className="text-gray-800 text-lg mt-6">{moreDescription}</p>
         )}

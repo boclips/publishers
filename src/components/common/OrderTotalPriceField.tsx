@@ -12,6 +12,7 @@ interface Props {
 export const OrderTotalPriceField = ({ totalPrice, highlighted }: Props) => (
   <OrderInformationField fieldName="Total price">
     <span
+      data-qa="total-price-field"
       className={c('text-gray-800 text-base', {
         'font-medium': highlighted,
       })}

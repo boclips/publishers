@@ -14,6 +14,7 @@ export const OrderStatusField = ({ status }: Props) => {
   return (
     <OrderInformationField fieldName="Status">
       <div
+        data-qa="order-status-field"
         className={c('text-gray-800 text-base font-medium', {
           'text-blue-700': deliveryStatus === 'PROCESSING',
         })}
