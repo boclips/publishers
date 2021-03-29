@@ -1,11 +1,11 @@
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
-import { CopyVideoLinkButton } from 'src/components/common/copyLinkButton/CopyVideoLinkButton';
 import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 import React from 'react';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import dateFormat from 'dateformat';
 import { getBrowserLocale } from 'src/services/getBrowserLocale';
+import { CopyVideoLinkButton } from '../videoCard/buttons/CopyVideoLinkButton';
 
 interface Props {
   video: Video;

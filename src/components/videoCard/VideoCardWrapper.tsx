@@ -7,13 +7,12 @@ import { VideoPlayer } from 'src/components/videoCard/VideoPlayer';
 import { Link } from 'react-router-dom';
 import { createPriceDisplayValue } from 'src/services/createPriceDisplayValue';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
-import { CopyVideoLinkButton } from 'src/components/common/copyLinkButton/CopyVideoLinkButton';
-import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
 import { getBrowserLocale } from 'src/services/getBrowserLocale';
 import { trackNavigateToVideoDetails } from 'src/components/common/analytics/Analytics';
 import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientProvider';
 import s from './VideoCardWrapper.module.less';
+import { VideoCardButtons } from './buttons/VideoCardButtons';
 
 interface Props {
   video: Video;
@@ -52,33 +51,11 @@ export const VideoCardWrapper = ({ video }: Props) => {
         }
         title={<VideoCardTitle />}
         actions={[
-          <VideoCartButtons
+          <VideoCardButtons
             video={video}
             key={`video-cart-buttons-${video.id}`}
           />,
         ]}
-      />
-    </div>
-  );
-};
-
-interface VideoCartButtonsProps {
-  video: Video;
-}
-
-const VideoCartButtons = ({ video }: VideoCartButtonsProps) => {
-  return (
-    <div className="flex flex-row justify-end" key={`copy-${video.id}`}>
-      <CopyVideoLinkButton
-        video={video}
-        appcueEvent={AppcuesEvent.COPY_LINK_FROM_SEARCH_RESULTS}
-      />
-
-      <AddToCartButton
-        video={video}
-        key="cart-button"
-        width="148px"
-        appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
       />
     </div>
   );

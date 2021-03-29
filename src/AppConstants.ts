@@ -33,6 +33,10 @@ export class AppConstants {
     return this.window.Environment.API_PREFIX;
   }
 
+  public get LEGACY_VIDEOS_URL(): string {
+    return this.window.Environment.LEGACY_VIDEOS_URL;
+  }
+
   public get HOST(): string {
     return `${this.window.location.protocol}//${this.window.location.hostname}${
       this.window.location.port ? `:${this.window.location.port}` : ''
