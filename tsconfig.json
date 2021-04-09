@@ -17,7 +17,8 @@
       "src/*": ["*"],
       "resources/*": ["../resources/*"],
       "test-support/*": ["../test-support/*"]
-    }
+    },
+    "types": ["cypress"]
   },
   "exclude": ["cypress", "node_modules", "dist"]
 }
