@@ -27,6 +27,9 @@ import '@percy/cypress';
 
 Cypress.Commands.add('bo', (verb, noun, value) => {
   cy.window().then(({ bo }) => {
+    if (typeof bo[verb][noun][value] === 'function') {
+      return bo[verb][noun][value]();
+    }
     return bo[verb][noun](value);
   });
 });

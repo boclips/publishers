@@ -1,9 +1,3 @@
-import {
-  FacetFactory,
-  FacetsFactory,
-} from 'boclips-api-client/dist/test-support/FacetsFactory';
-import { SubjectFactory } from 'boclips-api-client/dist/test-support';
-
 context('UI Regression', () => {
   const endpoint = 'http://localhost:9000';
 
@@ -24,39 +18,12 @@ context('UI Regression', () => {
     });
   });
 
-  it('should apply filters', () => {
+  it('applies filters', () => {
     cy.visit(`${endpoint}/`);
 
-    cy.bo('create', 'video', {
-      title: 'orangutans doing maths',
-      subjects: [SubjectFactory.sample({ id: 'maths-id', name: 'maths' })],
-    });
-    cy.bo('create', 'video', {
-      title: 'orangutans speaking english',
-      subjects: [SubjectFactory.sample({ id: 'english-id', name: 'english' })],
-    });
-    cy.bo(
-      'set',
-      'facets',
-      FacetsFactory.sample({
-        subjects: [
-          FacetFactory.sample({ id: 'maths-id', name: 'maths', hits: 10 }),
-          FacetFactory.sample({ id: 'english-id', name: 'english', hits: 10 }),
-        ],
-      }),
-    );
-    cy.bo(
-      'create',
-      'subject',
-      SubjectFactory.sample({ name: 'english', id: 'english-id' }),
-    );
-    cy.bo(
-      'create',
-      'subject',
-      SubjectFactory.sample({ name: 'maths', id: 'maths-id' }),
-    );
+    cy.bo('create', 'fixtureSet', 'eelsBiologyGeography');
 
-    cy.get('[data-qa="search-input"]').type('orangutans');
+    cy.get('[data-qa="search-input"]').type('eel');
     cy.get('button').contains('Search').click();
 
     cy.get('[data-qa="video-card-wrapper"]').should((videoCard) => {
@@ -67,7 +34,7 @@ context('UI Regression', () => {
       widths: [1280, 1440, 1680],
     });
 
-    cy.get('label').contains('maths').click();
+    cy.get('label').contains('Biology').click();
     cy.get('[data-qa="video-card-wrapper"]').should((videoCard) => {
       expect(videoCard.length).to.equal(1);
     });

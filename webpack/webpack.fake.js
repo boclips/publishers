@@ -15,7 +15,7 @@ module.exports = merge(common, {
     // chunkFilename: '[name].chunk.js',
   },
   devServer: {
-    contentBase: distPath,
+    contentBase: [distPath, path.resolve(__dirname, '../assets')],
     historyApiFallback: true,
     port: 9000,
     hot: true,
