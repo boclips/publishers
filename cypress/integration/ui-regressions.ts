@@ -49,7 +49,7 @@ context('UI Regression', () => {
   it('renders the cart and order flow', () => {
     cy.visit(`${endpoint}/`);
 
-    cy.bo('create', 'withVideos');
+    cy.bo('create', 'cartWithVideos');
 
     cy.get('[data-qa="cart-button"]').click();
 
