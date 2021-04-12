@@ -1,11 +1,13 @@
 context('UI Regression', () => {
   const endpoint = 'http://localhost:9000';
 
+  const snapshotViewWidths = [1280, 1440, 1680];
+
   it('has a homepage', () => {
     cy.visit(`${endpoint}/`);
 
     cy.percySnapshot('Home Page', {
-      widths: [1280, 1440, 1680],
+      widths: snapshotViewWidths,
     });
   });
 
@@ -14,7 +16,7 @@ context('UI Regression', () => {
     cy.get('[data-qa="account-menu"]').click();
 
     cy.percySnapshot('Account panel', {
-      widths: [1280, 1440, 1680],
+      widths: snapshotViewWidths,
     });
   });
 
@@ -31,7 +33,7 @@ context('UI Regression', () => {
     });
 
     cy.percySnapshot('Search before filtering', {
-      widths: [1280, 1440, 1680],
+      widths: snapshotViewWidths,
     });
 
     cy.get('label').contains('Biology').click();
@@ -40,25 +42,25 @@ context('UI Regression', () => {
     });
 
     cy.percySnapshot('Search with filters', {
-      widths: [1280, 1440, 1680],
+      widths: snapshotViewWidths,
     });
   });
 
   it('renders the cart and order flow', () => {
     cy.visit(`${endpoint}/`);
 
-    cy.bo('create', 'cartWithVideos');
+    cy.bo('create', 'withVideos');
 
     cy.get('[data-qa="cart-button"]').click();
 
     cy.percySnapshot('Cart view', {
-      widths: [1280, 1440, 1680],
+      widths: snapshotViewWidths,
     });
 
     cy.get('button').contains('Place order').click();
 
     cy.percySnapshot('Order confirmation modal', {
-      widths: [1280, 1440, 1680],
+      widths: snapshotViewWidths,
     });
 
     cy.get('button').contains('Confirm order').click();
@@ -66,7 +68,7 @@ context('UI Regression', () => {
     cy.get('button').contains('View order details').click();
 
     cy.percySnapshot('Order view', {
-      widths: [1280, 1440, 1680],
+      widths: snapshotViewWidths,
     });
   });
 });
