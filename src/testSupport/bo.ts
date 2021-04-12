@@ -13,7 +13,6 @@ import {
 } from 'boclips-api-client/dist/test-support';
 import { VideoFacets } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { Subject } from 'boclips-api-client/dist/sub-clients/subjects/model/Subject';
-import { Cart } from 'boclips-api-client/dist/sub-clients/carts/model/Cart';
 
 export interface Bo {
   create: {
@@ -22,7 +21,7 @@ export interface Bo {
     };
     video: (video: Partial<Video>) => void;
     subject: (subject: Subject) => void;
-    cart: (cart: Partial<Cart>) => void;
+    cartWithVideos: () => void;
   };
   inspect: () => FakeBoclipsClient;
   set: {
@@ -99,15 +98,25 @@ export function bo(apiClient: FakeBoclipsClient): Bo {
       video: boCreateVideo,
       subject: boCreateSubject,
 
-      cart: () => {
+      cartWithVideos: () => {
         apiClient.videos.insertVideo(
           VideoFactory.sample({
-            id: 'blah',
-            title: 'test',
+            id: '5f75b73f22a6495bdf2c2d14',
+            title:
+              'TED-Ed: No one can figure out how eels have sex | Lucy Cooke',
           }),
         );
 
-        apiClient.carts.addItemToCart(null, 'blah');
+        apiClient.videos.insertVideo(
+          VideoFactory.sample({
+            id: '123',
+            title:
+              'Jason & The Argonauts - The Epic Quest for the Golden Fleece (Greek Mythology)',
+          }),
+        );
+
+        apiClient.carts.addItemToCart(null, '5f75b73f22a6495bdf2c2d14');
+        apiClient.carts.addItemToCart(null, '123');
       },
 
       fixtureSet: {
