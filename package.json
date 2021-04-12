@@ -131,7 +131,8 @@
         1440,
         1680
       ],
-      "minHeight": 1024
+      "minHeight": 1024,
+      "percyCSS": ".plyr__video-wrapper { display: none !important }"
     }
   }
 }
