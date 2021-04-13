@@ -38,7 +38,7 @@ describe('convertFacets', () => {
     expect(filterOptions.prices[0].key).toEqual('prices');
   });
 
-  it(`returns empty lists when facets are null`, () => {
+  it('returns empty lists when facets are null', () => {
     const filterOptions = convertFacetsToFilterOptions(null, null);
 
     expect(filterOptions.subjects).toHaveLength(0);
@@ -48,7 +48,7 @@ describe('convertFacets', () => {
     expect(filterOptions.prices).toHaveLength(0);
   });
 
-  it(`converts video type facet name to display name`, () => {
+  it('converts video type facet name to display name', () => {
     const facets = FacetsFactory.sample({
       videoTypes: [
         FacetFactory.sample({ name: 'NEWS' }),
@@ -63,7 +63,7 @@ describe('convertFacets', () => {
     expect(filterOptions.videoTypes[2].name).toEqual('Raw Footage');
   });
 
-  it(`converts duration facet name to display name`, () => {
+  it('converts duration facet name to display name', () => {
     const facets = FacetsFactory.sample({
       durations: [
         FacetFactory.sample({ name: 'PT0S-PT1M' }),
@@ -82,7 +82,7 @@ describe('convertFacets', () => {
     expect(filterOptions.durations[4].name).toEqual('20 min +');
   });
 
-  it(`converts price facet name to display price`, () => {
+  it('converts price facet name to display price', () => {
     const facets = FacetsFactory.sample({
       prices: [
         FacetFactory.sample({ name: '10000' }),

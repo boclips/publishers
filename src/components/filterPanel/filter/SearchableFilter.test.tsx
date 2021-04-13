@@ -5,7 +5,7 @@ import { SearchableFilter } from 'src/components/filterPanel/filter/SearchableFi
 import { FilterOption } from 'src/types/FilterOption';
 import { FilterOptionFactory } from 'src/testSupport/FilterOptionFactory';
 
-describe(`searchableFilter`, () => {
+describe('searchableFilter', () => {
   const channels: FilterOption[] = [
     FilterOptionFactory.sample({
       id: 'channel-1',

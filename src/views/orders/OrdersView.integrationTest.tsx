@@ -261,7 +261,7 @@ describe('OrderView', () => {
   });
 
   describe('window titles', () => {
-    it(`displays Orders as window title`, async () => {
+    it('displays Orders as window title', async () => {
       render(
         <MemoryRouter initialEntries={['/orders']}>
           <App

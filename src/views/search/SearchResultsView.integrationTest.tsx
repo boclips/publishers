@@ -161,7 +161,7 @@ describe('SearchResults', () => {
     expect(wrapper.queryByText('video 0')).not.toBeInTheDocument();
   });
 
-  it(`persists queries between pages`, async () => {
+  it('persists queries between pages', async () => {
     const fakeClient = new FakeBoclipsClient();
 
     for (let i = 0; i < 11; i++) {
@@ -207,7 +207,7 @@ describe('SearchResults', () => {
     expect(wrapper.queryByText('video 0')).not.toBeInTheDocument();
   });
 
-  it(`directs to video page when card is clicked`, async () => {
+  it('directs to video page when card is clicked', async () => {
     const fakeClient = new FakeBoclipsClient();
 
     const video = VideoFactory.sample({
@@ -236,7 +236,7 @@ describe('SearchResults', () => {
   });
 
   describe('cart in video-card', () => {
-    it(`displays add to cart button`, async () => {
+    it('displays add to cart button', async () => {
       const fakeClient = new FakeBoclipsClient();
 
       fakeClient.videos.insertVideo(
@@ -256,7 +256,7 @@ describe('SearchResults', () => {
       expect(await wrapper.findByText('Add to cart')).toBeVisible();
     });
 
-    it(`adds and removes item from cart when clicked`, async () => {
+    it('adds and removes item from cart when clicked', async () => {
       const fakeClient = new FakeBoclipsClient();
 
       const video = VideoFactory.sample({
@@ -304,7 +304,7 @@ describe('SearchResults', () => {
       });
     });
 
-    it(`basket counter goes up when item added to cart in navbar`, async () => {
+    it('basket counter goes up when item added to cart in navbar', async () => {
       const fakeClient = new FakeBoclipsClient();
 
       const video = VideoFactory.sample({
@@ -338,7 +338,7 @@ describe('SearchResults', () => {
   });
 
   describe('video card buttons', () => {
-    it(`shows copy video link in the video card`, async () => {
+    it('shows copy video link in the video card', async () => {
       const fakeClient = new FakeBoclipsClient();
       fakeClient.videos.insertVideo(
         VideoFactory.sample({ id: '1', title: '1' }),
@@ -353,7 +353,7 @@ describe('SearchResults', () => {
       expect(await wrapper.findByText('Copy link')).toBeVisible();
     });
 
-    it(`does not show copy legacy video link for non boclips users`, async () => {
+    it('does not show copy legacy video link for non boclips users', async () => {
       const fakeClient = new FakeBoclipsClient();
       fakeClient.videos.insertVideo(
         VideoFactory.sample({ id: '1', title: '1' }),
@@ -375,7 +375,7 @@ describe('SearchResults', () => {
       expect(wrapper.queryByText('Copy Legacy Link')).not.toBeInTheDocument();
     });
 
-    it(`does show copy legacy link button for boclips users`, async () => {
+    it('does show copy legacy link button for boclips users', async () => {
       const fakeClient = new FakeBoclipsClient();
       fakeClient.videos.insertVideo(
         VideoFactory.sample({ id: '1', title: '1' }),
@@ -417,7 +417,7 @@ describe('SearchResults', () => {
       });
     });
 
-    it(`displays default title when no query present`, async () => {
+    it('displays default title when no query present', async () => {
       render(
         <MemoryRouter initialEntries={['/videos']}>
           <App

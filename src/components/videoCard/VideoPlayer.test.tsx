@@ -7,7 +7,7 @@ import { mocked } from 'ts-jest/utils';
 import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { BoclipsSecurityProvider } from 'src/components/common/providers/BoclipsSecurityProvider';
 
-describe(`VideoPlayer`, () => {
+describe('VideoPlayer', () => {
   it('provides a token factory to the player that returns a valid token', async () => {
     const video = VideoFactory.sample({ id: 'test-id' });
 

@@ -31,7 +31,7 @@ export const Search = ({ size, showIconOnly, onSearch }: Props) => {
     params.set('page', '1');
 
     return history.push({
-      pathname: `/videos`,
+      pathname: '/videos',
       search: params.toString(),
     });
   };

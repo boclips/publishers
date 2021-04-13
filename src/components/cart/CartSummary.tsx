@@ -11,7 +11,8 @@ export const CartSummary = ({ cart }: Props) => {
       <div className="font-bold text-2xl">Shopping cart</div>
       {!!cart.items.length && (
         <span className="text-2xl pl-3">
-          ({cart.items.length} item{cart.items.length > 1 ? 's' : ''})
+          ({cart.items.length} item
+          {cart.items.length > 1 ? 's' : ''})
         </span>
       )}
     </div>

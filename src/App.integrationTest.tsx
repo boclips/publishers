@@ -6,8 +6,8 @@ import { FakeBoclipsClient } from 'boclips-api-client/dist/test-support';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-describe(`App`, () => {
-  it(`renders the not found page on user having incorrect role`, async () => {
+describe('App', () => {
+  it('renders the not found page on user having incorrect role', async () => {
     const security: BoclipsSecurity = {
       ...stubBoclipsSecurity,
       hasRole: (_role) => false,
@@ -21,7 +21,7 @@ describe(`App`, () => {
     expect(await wrapper.findByText('Page not found!')).toBeVisible();
   });
 
-  it(`doesn't render the not found page if user has correct role`, async () => {
+  it("doesn't render the not found page if user has correct role", async () => {
     const security: BoclipsSecurity = {
       ...stubBoclipsSecurity,
       hasRole: (_role) => true,

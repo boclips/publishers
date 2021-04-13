@@ -28,7 +28,7 @@ export class AnalyticsService {
     }
   }
 
-  public sendEvent(type: AppcuesEvent, payload: {} = {}) {
+  public sendEvent(type: AppcuesEvent, payload: Record<string, any> = {}) {
     if (this.appcuesInstance) {
       this.appcuesInstance.track(type.toString(), payload);
     }

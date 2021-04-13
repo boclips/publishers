@@ -19,10 +19,9 @@ export const VideoHeader = ({ video }: Props) => {
       </div>
       <div className="font-extralight mb-1 text-gray-800">{`ID: ${video?.id}`}</div>
       <div className="flex flex-row mb-6 text-gray-800">
-        <div>{`Released on ${dateFormat(
-          video?.releasedOn,
-          'mediumDate',
-        )} by`}</div>
+        <div>
+          {`Released on ${dateFormat(video?.releasedOn, 'mediumDate')} by`}
+        </div>
         <div className="font-medium ml-1">{video?.createdBy}</div>
       </div>
       <div className="font-bold text-2xl text-gray-900">

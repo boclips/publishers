@@ -80,7 +80,7 @@ describe('CartView', () => {
     );
   });
 
-  it(`displays order confirmation modal when place order button clicked`, async () => {
+  it('displays order confirmation modal when place order button clicked', async () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(video);
@@ -110,7 +110,7 @@ describe('CartView', () => {
     });
   });
 
-  it(`places order when confirmation button is clicked`, async () => {
+  it('places order when confirmation button is clicked', async () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.users.insertCurrentUser(UserFactory.sample({ id: 'user-id' }));
@@ -128,7 +128,7 @@ describe('CartView', () => {
 
     expect(await wrapper.findByText('View all orders')).toHaveAttribute(
       'href',
-      `/orders`,
+      '/orders',
     );
 
     expect(lastEvent(fakeClient, 'PLATFORM_INTERACTED_WITH')).toEqual({
@@ -138,7 +138,7 @@ describe('CartView', () => {
     });
   });
 
-  it(`has the cart summary`, async () => {
+  it('has the cart summary', async () => {
     const fakeClient = new FakeBoclipsClient();
 
     fakeClient.videos.insertVideo(
@@ -479,7 +479,7 @@ describe('CartView', () => {
       ).toEqual('12:30');
     });
 
-    it(`displays error page when error while placing order`, async () => {
+    it('displays error page when error while placing order', async () => {
       const originalConsoleError = console.error;
       console.error = () => {};
 
@@ -537,7 +537,7 @@ describe('CartView', () => {
   });
 
   describe('window titles', () => {
-    it(`displays Cart as window title`, async () => {
+    it('displays Cart as window title', async () => {
       render(
         <MemoryRouter initialEntries={['/cart']}>
           <App

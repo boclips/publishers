@@ -188,7 +188,7 @@ describe('Video View', () => {
   });
 
   describe('window titles', () => {
-    it(`displays video title as window title`, async () => {
+    it('displays video title as window title', async () => {
       const video = VideoFactory.sample({
         id: 'video-1',
         title: 'the coolest video you ever did see',

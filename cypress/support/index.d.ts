@@ -3,7 +3,9 @@
 // import { Bo } from '../../src/testSupport/bo';
 
 type PathTree<T> = {
-  [P in keyof T]: T[P] extends object ? [P?, ...Path<T[P]>] : [P?];
+  [P in keyof T]: T[P] extends Record<string, unknown>
+    ? [P?, ...Path<T[P]>]
+    : [P?];
 };
 
 type Path<T> = PathTree<T>[keyof PathTree<T>];

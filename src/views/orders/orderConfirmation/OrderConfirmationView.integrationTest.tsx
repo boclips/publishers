@@ -50,7 +50,7 @@ describe('OrderConfirmationView', () => {
   });
 
   describe('window titles', () => {
-    it(`displays window title`, async () => {
+    it('displays window title', async () => {
       window.history.pushState(
         {
           state: {

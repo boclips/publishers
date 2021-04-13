@@ -16,7 +16,7 @@ export const EmptyCart = () => {
         <Button
           onClick={() => {
             history.push({
-              pathname: `/`,
+              pathname: '/',
             });
           }}
           text="Go to homepage"

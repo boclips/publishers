@@ -106,7 +106,9 @@ describe('order table', () => {
         .backgroundImage,
     ).toEqual('url(https://url.com)');
     expect(await wrapper.findByText('$600')).toBeVisible();
-    expect(await wrapper.findByText('ID: video-id-1')).toBeVisible();
+    expect(
+      await wrapper.findByText(/[ID:(\n.*?)*)\n\s*\n]video-id-1/),
+    ).toBeVisible();
   });
 
   it('renders order summary', async () => {
@@ -216,7 +218,7 @@ describe('order table', () => {
   });
 
   describe('window titles', () => {
-    it(`displays order id in window title`, async () => {
+    it('displays order id in window title', async () => {
       render(
         <MemoryRouter initialEntries={['/orders/order-123']}>
           <App

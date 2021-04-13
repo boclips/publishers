@@ -40,7 +40,7 @@ describe('SearchHero', () => {
     expect(searchBar.value).toEqual('help');
   });
 
-  it(`sends a search event on search`, () => {
+  it('sends a search event on search', () => {
     const wrapper = render(
       <BoclipsClientProvider client={new FakeBoclipsClient()}>
         <SearchHero />

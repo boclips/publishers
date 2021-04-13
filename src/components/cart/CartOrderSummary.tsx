@@ -68,7 +68,8 @@ export const CartOrderSummary = ({ videos }: Props) => {
             <CartSummaryItem
               label={
                 <div>
-                  Vide<span className="tracking-tightestest">o(s)</span> total
+                  Vide
+                  <span className="tracking-tightestest">o(s)</span> total
                 </div>
               }
               value={getTotalPriceDisplayValue(videos)}
@@ -86,9 +87,9 @@ export const CartOrderSummary = ({ videos }: Props) => {
           </div>
           <div className="flex font-bold text-lg text-gray-900 justify-between mb-6">
             <span>Total</span>
-            <span data-qa="total-price">{`${getTotalPriceDisplayValue(
-              videos,
-            )}`}</span>
+            <span data-qa="total-price">
+              {`${getTotalPriceDisplayValue(videos)}`}
+            </span>
           </div>
           <Button
             onClick={() => {

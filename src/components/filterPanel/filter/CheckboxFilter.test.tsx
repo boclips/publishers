@@ -5,7 +5,7 @@ import { renderWithLocation } from 'src/testSupport/renderWithLocation';
 import { FilterOption } from 'src/types/FilterOption';
 import { FilterOptionFactory } from 'src/testSupport/FilterOptionFactory';
 
-describe(`filterPanel`, () => {
+describe('filterPanel', () => {
   const generateOptions = (optionNumber: number): FilterOption[] => {
     const options: FilterOption[] = [];
     for (let i = 0; i < optionNumber; i++) {

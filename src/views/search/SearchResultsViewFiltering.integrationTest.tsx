@@ -22,7 +22,7 @@ import React from 'react';
 import { createReactQueryClient } from 'src/testSupport/createReactQueryClient';
 import dayjs from 'src/day-js';
 
-describe(`SearchResultsFiltering`, () => {
+describe('SearchResultsFiltering', () => {
   let fakeClient;
 
   function renderSearchResultsView(initialEntries: string[]) {
@@ -41,7 +41,7 @@ describe(`SearchResultsFiltering`, () => {
     fakeClient = new FakeBoclipsClient();
   });
 
-  it(`applies filters from url on load`, async () => {
+  it('applies filters from url on load', async () => {
     fakeClient.videos.setFacets(
       FacetsFactory.sample({
         videoTypes: [
@@ -75,8 +75,8 @@ describe(`SearchResultsFiltering`, () => {
     expect(await wrapper.findByText('Selected filters')).toBeVisible();
   });
 
-  describe(`video type filters`, () => {
-    it(`displays the video type filters and facet counts`, async () => {
+  describe('video type filters', () => {
+    it('displays the video type filters and facet counts', async () => {
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
           id: '1',
@@ -111,7 +111,7 @@ describe(`SearchResultsFiltering`, () => {
       expect(await wrapper.findByText('1234321')).toBeInTheDocument();
     });
 
-    it(`can filter videos by type`, async () => {
+    it('can filter videos by type', async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           videoTypes: [
@@ -175,8 +175,8 @@ describe(`SearchResultsFiltering`, () => {
     });
   });
 
-  describe(`channel filters`, () => {
-    it(`can filter channel filter options`, async () => {
+  describe('channel filters', () => {
+    it('can filter channel filter options', async () => {
       fakeClient.channels.insertFixture(
         ChannelFactory.sample({ id: 'getty-id', name: 'Getty' }),
       );
@@ -232,7 +232,7 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('Subject filters', () => {
-    it(`displays the subject filters and facet counts`, async () => {
+    it('displays the subject filters and facet counts', async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           subjects: [{ id: 'subject1', name: 'History', hits: 12 }],
@@ -256,7 +256,7 @@ describe(`SearchResultsFiltering`, () => {
   });
 
   describe('Duration filters', () => {
-    it(`displays the duration filters and facet counts`, async () => {
+    it('displays the duration filters and facet counts', async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           durations: [
@@ -291,8 +291,8 @@ describe(`SearchResultsFiltering`, () => {
     });
   });
 
-  describe(`price filters`, () => {
-    it(`displays the price filters and facet counts when hits > 0`, async () => {
+  describe('price filters', () => {
+    it('displays the price filters and facet counts when hits > 0', async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           prices: [
@@ -321,7 +321,7 @@ describe(`SearchResultsFiltering`, () => {
       expect(wrapper.queryByText('$500')).not.toBeInTheDocument();
     });
 
-    it(`can filter videos by price`, async () => {
+    it('can filter videos by price', async () => {
       fakeClient.videos.setFacets(
         FacetsFactory.sample({
           prices: [
@@ -481,7 +481,7 @@ describe(`SearchResultsFiltering`, () => {
     });
   });
 
-  describe(`selected filters`, () => {
+  describe('selected filters', () => {
     beforeEach(() => {
       fakeClient = new FakeBoclipsClient();
 
@@ -511,7 +511,7 @@ describe(`SearchResultsFiltering`, () => {
       videos.forEach((v) => fakeClient.videos.insertVideo(v));
     });
 
-    it(`can remove filters individually from selected filter panel`, async () => {
+    it('can remove filters individually from selected filter panel', async () => {
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
           id: '3',
@@ -546,7 +546,7 @@ describe(`SearchResultsFiltering`, () => {
       });
     });
 
-    it(`can remove all filters from selected filters panel`, async () => {
+    it('can remove all filters from selected filters panel', async () => {
       fakeClient.videos.insertVideo(
         VideoFactory.sample({
           id: '3',

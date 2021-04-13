@@ -5,7 +5,7 @@ import { FilterOptionList } from 'src/components/filterPanel/filter/FilterOption
 import { fireEvent } from '@testing-library/react';
 import { FilterOption } from 'src/types/FilterOption';
 
-describe(`FilterOptionList`, () => {
+describe('FilterOptionList', () => {
   const createFixtures = (fixturesToCreate: number) => {
     const go = (index, createdOptions: FilterOption[]) => {
       if (index > 0) {
@@ -67,7 +67,7 @@ describe(`FilterOptionList`, () => {
       <FilterOptionList
         options={createFixtures(7)}
         onSelect={() => {}}
-        selectedOptions={[`2-option`]}
+        selectedOptions={['2-option']}
       />,
     );
 
@@ -87,17 +87,17 @@ describe(`FilterOptionList`, () => {
     const options = [
       FilterOptionFactory.sample({
         hits: 3,
-        id: `3-option`,
+        id: '3-option',
         label: <span>Option 3</span>,
       }),
       FilterOptionFactory.sample({
         hits: 0,
-        id: `0-option`,
+        id: '0-option',
         label: <span>Option 0</span>,
       }),
       FilterOptionFactory.sample({
         hits: 1,
-        id: `1-option`,
+        id: '1-option',
         label: <span>Option 1</span>,
       }),
     ];
@@ -105,7 +105,7 @@ describe(`FilterOptionList`, () => {
       <FilterOptionList
         options={options}
         onSelect={() => {}}
-        selectedOptions={[`0-option`]}
+        selectedOptions={['0-option']}
       />,
     );
     const childNodes = panel.getByTestId('filter-option-list').childNodes;
