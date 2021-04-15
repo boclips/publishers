@@ -12,9 +12,31 @@ import { stubBoclipsSecurity } from 'src/testSupport/StubBoclipsSecurity';
 import { Helmet } from 'react-helmet';
 import { CartItemFactory } from 'boclips-api-client/dist/test-support/CartsFactory';
 import { createReactQueryClient } from 'src/testSupport/createReactQueryClient';
+import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 
 describe('Video View', () => {
   let fakeClient;
+  const exampleVideo = VideoFactory.sample({
+    id: 'video-id',
+    title: 'the coolest video you ever did see',
+    description: 'this is so cool',
+    subjects: [
+      SubjectFactory.sample({
+        name: 'history',
+      }),
+    ],
+    ageRange: {
+      min: 10,
+      max: 14,
+      label: '10 - 14',
+    },
+    releasedOn: new Date('2015-12-17'),
+    createdBy: 'cool videos r us',
+    price: {
+      currency: 'USD',
+      amount: 600,
+    },
+  });
 
   const renderVideoView = (initialEntries: string[]) => {
     return render(
@@ -30,32 +52,15 @@ describe('Video View', () => {
 
   beforeEach(() => {
     fakeClient = new FakeBoclipsClient();
+    fakeClient.users.insertCurrentUser(
+      UserFactory.sample({
+        features: { BO_WEB_APP_ADDITIONAL_SERVICES: true },
+      }),
+    );
   });
 
   it('on video page video details are rendered', async () => {
-    const subject = SubjectFactory.sample({
-      name: 'history',
-    });
-
-    const video = VideoFactory.sample({
-      id: 'video-id',
-      title: 'the coolest video you ever did see',
-      description: 'this is so cool',
-      subjects: [subject],
-      ageRange: {
-        min: 10,
-        max: 14,
-        label: '10 - 14',
-      },
-      releasedOn: new Date('2015-12-17'),
-      createdBy: 'cool videos r us',
-      price: {
-        currency: 'USD',
-        amount: 600,
-      },
-    });
-
-    fakeClient.videos.insertVideo(video);
+    fakeClient.videos.insertVideo(exampleVideo);
 
     const wrapper = renderVideoView(['/videos/video-id']);
 
@@ -75,6 +80,21 @@ describe('Video View', () => {
     ).toBeVisible();
     expect(wrapper.getByRole('button', { name: 'Copy link' })).toBeVisible();
     expect(await wrapper.findByText('Additional services')).toBeVisible();
+  });
+
+  it(`video page does not display additional services when disabled by user's feature`, async () => {
+    fakeClient.users.insertCurrentUser(
+      UserFactory.sample({
+        features: { BO_WEB_APP_ADDITIONAL_SERVICES: false },
+      }),
+    );
+
+    fakeClient.videos.insertVideo(exampleVideo);
+
+    const wrapper = renderVideoView(['/videos/video-id']);
+
+    expect(await wrapper.findByText('ID: video-id')).toBeVisible();
+    expect(wrapper.queryByText('Additional services')).toBeNull();
   });
 
   it('copy to clipboard button is visible in the page', async () => {
