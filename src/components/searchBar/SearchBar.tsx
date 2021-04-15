@@ -6,7 +6,8 @@ import {
   useLocationParams,
   useSearchQueryLocationParams,
 } from 'src/hooks/useLocationParams';
-import SearchIcon from '../../resources/icons/search-icon.svg';
+import c from 'classnames';
+import s from './style.module.less';
 
 interface Props {
   size: 'big' | 'small';
@@ -36,15 +37,19 @@ export const Search = ({ size, showIconOnly, onSearch }: Props) => {
   };
 
   return (
-    <SearchBar
-      placeholder="Search by topic or keyword"
-      size={size}
-      onlySearchIconInButton={showIconOnly}
-      autocomplete={false}
-      onSearch={handleSearch}
-      theme="publishers"
-      initialQuery={query}
-      buttonIcon={<SearchIcon />}
-    />
+    <div
+      className={c(s.searchWrapper, {
+        [s.big]: size === 'big',
+        [s.small]: size !== 'big',
+      })}
+    >
+      <SearchBar
+        placeholder="Search by topic or keyword"
+        iconOnlyButton={showIconOnly}
+        autocomplete={false}
+        onSearch={handleSearch}
+        initialQuery={query}
+      />
+    </div>
   );
 };

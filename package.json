@@ -62,7 +62,7 @@
     "@boclips-ui/button": "^2.0.3",
     "@boclips-ui/link": "^1.0.6",
     "@boclips-ui/release-date-filter": "^1.0.3",
-    "@boclips-ui/search-bar": "^1.4.4",
+    "@boclips-ui/search-bar": "2.0.7",
     "@boclips-ui/styles": "^2.1.9",
     "@boclips-ui/video": "^2.0.0",
     "@boclips-ui/video-card-placeholder": "^2.0.2",
