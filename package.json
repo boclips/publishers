@@ -95,7 +95,7 @@
     "autoprefixer": "^10.2.5",
     "axios": "^0.21.0",
     "babel-loader": "^8.1.0",
-    "boclips-api-client": "^33.2.0",
+    "boclips-api-client": "^33.3.0",
     "boclips-js-security": "^6.1.1",
     "boclips-player": "^6.4.0",
     "boclips-player-react": "1.2.4",
