@@ -47,10 +47,7 @@ export const OrderItemCard = ({ item }: Props) => {
           >
             {item.video.title}
           </Link>
-          <span>
-            ID:
-            {item.video.id}{' '}
-          </span>
+          <span>ID: {item.video.id}</span>
         </div>
 
         <AdditionalServicesSummaryPreview
