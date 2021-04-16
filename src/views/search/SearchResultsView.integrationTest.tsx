@@ -397,6 +397,131 @@ describe('SearchResults', () => {
       expect(await wrapper.findByText('Copy link')).toBeVisible();
       expect(wrapper.getByText('Copy old link')).toBeVisible();
     });
+
+    it(`doesn't show prices or price filters for users with the prices feature disabled`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'video with no prices',
+          price: { currency: 'USD', amount: 1000 },
+        }),
+      );
+      fakeClient.videos.setFacets(FacetsFactory.sample({
+        prices: [FacetFactory.sample({ id: '12300', name: '12300', hits: 123 })],
+      }));
+
+      fakeClient.users.insertCurrentUser(
+        UserFactory.sample({
+          features: { BO_WEB_APP_PRICES: false },
+          organisation: { id: 'org-bo', name: 'Boclips' },
+        }),
+      );
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos']}>
+          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('video with no prices')).toBeVisible();
+      expect(wrapper.queryByText('$123')).not.toBeInTheDocument();
+      expect(wrapper.queryByText('Price')).not.toBeInTheDocument();
+      expect(wrapper.queryByText('$1,000')).not.toBeInTheDocument();
+    });
+
+    it(`shows prices and price filters for users with the prices feature enabled`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'video with prices',
+          price: { currency: 'USD', amount: 1000 },
+        }),
+      );
+      fakeClient.videos.setFacets(FacetsFactory.sample({
+        prices: [FacetFactory.sample({ id: '1000', name: '1000', hits: 10 })],
+      }));
+
+      fakeClient.users.insertCurrentUser(
+        UserFactory.sample({
+          features: { BO_WEB_APP_PRICES: true },
+          organisation: { id: 'org-bo', name: 'Boclips' },
+        }),
+      );
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos']}>
+          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('video with prices')).toBeVisible();
+      expect(await wrapper.findByText('Price')).toBeVisible();
+      expect(await wrapper.findByText('$1,000')).toBeVisible();
+    });
+
+    it(`shows prices and price filters for users with the prices feature enabled`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'video with prices',
+          price: { currency: 'USD', amount: 1000 },
+        }),
+      );
+      fakeClient.videos.setFacets(FacetsFactory.sample({
+        prices: [FacetFactory.sample({ id: '1000', name: '1000', hits: 10 })],
+      }));
+
+      fakeClient.users.insertCurrentUser(
+        UserFactory.sample({
+          features: { BO_WEB_APP_PRICES: true },
+          organisation: { id: 'org-bo', name: 'Boclips' },
+        }),
+      );
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos']}>
+          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('video with prices')).toBeVisible();
+      expect(await wrapper.findByText('Price')).toBeVisible();
+      expect(await wrapper.findByText('$1,000')).toBeVisible();
+    });
+
+    it(`shows prices and price filters for users with the prices feature unset`, async () => {
+      const fakeClient = new FakeBoclipsClient();
+      fakeClient.videos.insertVideo(
+        VideoFactory.sample({
+          id: '1',
+          title: 'video with prices',
+          price: { currency: 'USD', amount: 1000 },
+        }),
+      );
+      fakeClient.videos.setFacets(FacetsFactory.sample({
+        prices: [FacetFactory.sample({ id: '1000', name: '1000', hits: 10 })],
+      }));
+
+      fakeClient.users.insertCurrentUser(
+        UserFactory.sample({
+          features: {},
+          organisation: { id: 'org-bo', name: 'Boclips' },
+        }),
+      );
+
+      const wrapper = render(
+        <MemoryRouter initialEntries={['/videos']}>
+          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
+        </MemoryRouter>,
+      );
+
+      expect(await wrapper.findByText('video with prices')).toBeVisible();
+      expect(await wrapper.findByText('Price')).toBeVisible();
+      expect(await wrapper.findByText('$1,000')).toBeVisible();
+    });
   });
 
   describe('window titles', () => {

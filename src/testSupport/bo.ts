@@ -13,6 +13,7 @@ import {
 } from 'boclips-api-client/dist/test-support';
 import { VideoFacets } from 'boclips-api-client/dist/sub-clients/videos/model/VideoFacets';
 import { Subject } from 'boclips-api-client/dist/sub-clients/subjects/model/Subject';
+import { UserFeatureKey } from 'boclips-api-client/dist/sub-clients/organisations/model/User';
 
 export interface Bo {
   create: {
@@ -26,6 +27,7 @@ export interface Bo {
   inspect: () => FakeBoclipsClient;
   set: {
     facets: (facet: Partial<VideoFacets>) => void;
+    features: (features: { [key in UserFeatureKey]?: boolean }) => void;
   };
 }
 
@@ -33,6 +35,7 @@ export function bo(apiClient: FakeBoclipsClient): Bo {
   const boSetFacets = (facets: Partial<VideoFacets>) => {
     apiClient.videos.setFacets(
       FacetsFactory.sample({
+        prices: [FacetFactory.sample({ hits: 10, id: '1000', name: '1000' })],
         channels: [
           FacetFactory.sample({
             hits: 17,
@@ -43,6 +46,14 @@ export function bo(apiClient: FakeBoclipsClient): Bo {
         ...facets,
       }),
     );
+  };
+
+  const boSetFeatures = (
+    features: {
+      [key in UserFeatureKey]?: boolean;
+    },
+  ) => {
+    apiClient.users.setCurrentUserFeatures(features);
   };
 
   const boCreateSubject = (subject: Subject) => {
@@ -57,6 +68,7 @@ export function bo(apiClient: FakeBoclipsClient): Bo {
       VideoFactory.sample({
         id: Math.random().toString(36).substring(2, 15),
         title: 'test',
+        price: { amount: 1000, currency: 'USD' },
         playback: PlaybackFactory.sample({
           links: {
             createPlaybackEvent: null,
@@ -92,6 +104,7 @@ export function bo(apiClient: FakeBoclipsClient): Bo {
 
     set: {
       facets: boSetFacets,
+      features: boSetFeatures,
     },
 
     create: {
