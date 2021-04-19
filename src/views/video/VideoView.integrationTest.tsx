@@ -54,7 +54,10 @@ describe('Video View', () => {
     fakeClient = new FakeBoclipsClient();
     fakeClient.users.insertCurrentUser(
       UserFactory.sample({
-        features: { BO_WEB_APP_ADDITIONAL_SERVICES: true },
+        features: {
+          BO_WEB_APP_ADDITIONAL_SERVICES: true,
+          BO_WEB_APP_PRICES: true,
+        },
       }),
     );
   });
@@ -95,6 +98,23 @@ describe('Video View', () => {
 
     expect(await wrapper.findByText('ID: video-id')).toBeVisible();
     expect(wrapper.queryByText('Additional services')).toBeNull();
+  });
+
+  it(`video page does not display price info disabled by user's features`, async () => {
+    fakeClient.users.insertCurrentUser(
+      UserFactory.sample({
+        features: { BO_WEB_APP_PRICES: false },
+      }),
+    );
+
+    fakeClient.videos.insertVideo(exampleVideo);
+
+    const wrapper = renderVideoView(['/videos/video-id']);
+
+    expect(await wrapper.findByText('ID: video-id')).toBeVisible();
+    expect(
+      wrapper.queryByText('This is an agreed price for your organization'),
+    ).toBeNull();
   });
 
   it('copy to clipboard button is visible in the page', async () => {

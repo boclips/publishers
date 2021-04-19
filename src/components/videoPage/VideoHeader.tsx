@@ -5,6 +5,7 @@ import React from 'react';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import dateFormat from 'dateformat';
 import { getBrowserLocale } from 'src/services/getBrowserLocale';
+import { FeatureGate } from 'src/components/common/FeatureGate';
 import { CopyVideoLinkButton } from '../videoCard/buttons/CopyVideoLinkButton';
 
 interface Props {
@@ -31,9 +32,11 @@ export const VideoHeader = ({ video }: Props) => {
           getBrowserLocale(),
         )}
       </div>
-      <div className="grey-800 mb-4">
-        This is an agreed price for your organization
-      </div>
+      <FeatureGate feature="BO_WEB_APP_PRICES">
+        <div className="grey-800 mb-4">
+          This is an agreed price for your organization
+        </div>
+      </FeatureGate>
       <div className="flex flex-row " style={{ width: '100%' }}>
         <CopyVideoLinkButton
           video={video}

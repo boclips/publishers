@@ -442,34 +442,6 @@ describe('SearchResultsFiltering', () => {
       expect(await wrapper.findByText('Price')).toBeVisible();
       expect(await wrapper.findByText('$1,000')).toBeVisible();
     });
-
-    it(`shows prices and price filters for users with the prices feature unset`, async () => {
-      fakeClient.videos.insertVideo(VideoFactory.sample({}));
-
-      fakeClient.videos.setFacets(
-        FacetsFactory.sample({
-          prices: [
-            FacetFactory.sample({ id: '100000', name: '100000', hits: 10 }),
-          ],
-        }),
-      );
-
-      fakeClient.users.insertCurrentUser(
-        UserFactory.sample({
-          features: {},
-          organisation: { id: 'org-bo', name: 'Boclips' },
-        }),
-      );
-
-      const wrapper = render(
-        <MemoryRouter initialEntries={['/videos']}>
-          <App apiClient={fakeClient} boclipsSecurity={stubBoclipsSecurity} />
-        </MemoryRouter>,
-      );
-
-      expect(await wrapper.findByText('Price')).toBeVisible();
-      expect(await wrapper.findByText('$1,000')).toBeVisible();
-    });
   });
 
   describe('date filters', () => {
