@@ -6,7 +6,7 @@ import { VideoAdditionalServices } from 'src/components/videoPage/VideoAdditiona
 import { VideoHeader } from 'src/components/videoPage/VideoHeader';
 import { useHistory } from 'react-router-dom';
 import BlueArrow from 'resources/icons/blue-arrow.svg';
-import { useGetUserQuery } from 'src/hooks/api/userQuery';
+import { FeatureGate } from 'src/components/common/FeatureGate';
 
 interface Props {
   video: Video;
@@ -14,8 +14,6 @@ interface Props {
 
 export const VideoPage = ({ video }: Props) => {
   const history: any = useHistory();
-  const { data: user } = useGetUserQuery();
-
   const goToPreviousPage = () => {
     history.goBack();
   };
@@ -42,9 +40,9 @@ export const VideoPage = ({ video }: Props) => {
 
       <div className="col-start-18 col-end-26 row-start-2 row-end-2">
         <VideoHeader video={video} />
-        {user?.features?.BO_WEB_APP_ADDITIONAL_SERVICES && (
+        <FeatureGate feature="BO_WEB_APP_ADDITIONAL_SERVICES">
           <VideoAdditionalServices />
-        )}
+        </FeatureGate>
       </div>
     </>
   );

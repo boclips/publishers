@@ -2,7 +2,7 @@ import React from 'react';
 import { Video } from 'boclips-api-client/dist/sub-clients/videos/model/Video';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import AddToCartButton from 'src/components/addToCartButton/AddToCartButton';
-import { useGetUserQuery } from 'src/hooks/api/userQuery';
+import { FeatureGate } from 'src/components/common/FeatureGate';
 import { CopyVideoLinkButton } from './CopyVideoLinkButton';
 import { CopyLegacyVideoLinkButton } from './CopyLegacyVideoLinkButton';
 
@@ -10,12 +10,11 @@ interface VideoCardButtonsProps {
   video: Video;
 }
 export const VideoCardButtons = ({ video }: VideoCardButtonsProps) => {
-  const { data: user } = useGetUserQuery();
   return (
     <div className="flex flex-row justify-end" key={`copy-${video.id}`}>
-      {user?.features?.BO_WEB_APP_COPY_OLD_LINK_BUTTON && (
+      <FeatureGate feature="BO_WEB_APP_COPY_OLD_LINK_BUTTON">
         <CopyLegacyVideoLinkButton video={video} />
-      )}
+      </FeatureGate>
 
       <CopyVideoLinkButton
         width="140px"

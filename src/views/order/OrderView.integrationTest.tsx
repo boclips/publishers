@@ -14,7 +14,6 @@ import { VideoFactory } from 'boclips-api-client/dist/test-support/VideosFactory
 import { OrderStatus } from 'boclips-api-client/dist/sub-clients/orders/model/Order';
 import { PlaybackFactory } from 'boclips-api-client/dist/test-support/PlaybackFactory';
 import { Helmet } from 'react-helmet';
-import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 
 describe('order table', () => {
   it('renders the order header with an id that matches query', async () => {
@@ -205,7 +204,6 @@ describe('order table', () => {
     fakeClient.videos.insertVideo(
       VideoFactory.sample({ title: 'linked-video-title' }),
     );
-    fakeClient.users.insertCurrentUser(UserFactory.sample());
 
     const wrapper = render(
       <MemoryRouter initialEntries={['/orders/order-video-link1']}>
