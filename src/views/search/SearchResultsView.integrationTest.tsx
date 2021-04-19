@@ -21,6 +21,7 @@ import { UserFactory } from 'boclips-api-client/dist/test-support/UserFactory';
 describe('SearchResults', () => {
   it('renders a list of videos that match the search query', async () => {
     const fakeClient = new FakeBoclipsClient();
+    fakeClient.users.insertCurrentUser(UserFactory.sample());
     const videos = [
       VideoFactory.sample({ id: '1', title: '1' }),
       VideoFactory.sample({

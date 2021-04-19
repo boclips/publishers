@@ -2,6 +2,7 @@ import React from 'react';
 import { CheckboxFilter } from 'src/components/filterPanel/filter/CheckboxFilter';
 import { convertFilterOptions } from 'src/services/convertFilterOptions';
 import { FilterOption } from 'src/types/FilterOption';
+import { useGetUserQuery } from 'src/hooks/api/userQuery';
 
 interface Props {
   options: FilterOption[];
@@ -9,12 +10,16 @@ interface Props {
 }
 
 export const PriceFilter = ({ options, handleChange }: Props) => {
-  return (
+  const { data: user } = useGetUserQuery();
+  const showPrices =
+    typeof user?.features?.BO_WEB_APP_PRICES === 'undefined' ||
+    user.features.BO_WEB_APP_PRICES;
+  return showPrices ? (
     <CheckboxFilter
       options={convertFilterOptions(options, 'SORT_BY_HITS_AND_NAME')}
       title="Price"
       filterName="prices"
       handleChange={handleChange}
     />
-  );
+  ) : null;
 };
