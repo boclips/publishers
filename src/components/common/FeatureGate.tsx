@@ -5,22 +5,23 @@ import { useBoclipsClient } from 'src/components/common/providers/BoclipsClientP
 import { AdminLinks } from 'boclips-api-client/dist/types';
 
 interface FeatureGateProps {
-  feature?: UserFeatureKey;
-  linkName?: keyof AdminLinks;
   children: React.ReactElement;
 }
+
+type OptionalProps =
+  | { linkName: keyof AdminLinks; feature?: never }
+  | { feature: UserFeatureKey; linkName?: never };
 
 export const FeatureGate = ({
   feature,
   children,
   linkName,
-}: FeatureGateProps) => {
-  const links = useBoclipsClient().links;
-  const flags = useFeatureFlags();
-
+}: FeatureGateProps & OptionalProps) => {
   if (linkName) {
-    return links[linkName] && children;
+    const links = useBoclipsClient().links;
+    return <>{links[linkName] && children}</>;
   }
 
+  const flags = useFeatureFlags();
   return <>{flags && flags[feature] && children}</>;
 };

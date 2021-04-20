@@ -19,6 +19,8 @@ import { QueryClient } from 'react-query';
 import { Helmet } from 'react-helmet';
 import userEvent from '@testing-library/user-event';
 import { EventRequest } from 'boclips-api-client/dist/sub-clients/events/model/EventRequest';
+import {BoclipsSecurity} from "boclips-js-security/dist/BoclipsSecurity";
+import {createReactQueryClient} from "src/testSupport/createReactQueryClient";
 
 describe('CartView', () => {
   const video = VideoFactory.sample({
@@ -212,6 +214,26 @@ describe('CartView', () => {
     fireEvent.click(title);
 
     expect(await wrapper.findByTestId('video-page')).toBeVisible();
+  });
+
+  it(`displays access denied if user has BOCLIPS_WEB_APP_DEMO role`, async () => {
+    const fakeClient = new FakeBoclipsClient();
+    const security: BoclipsSecurity = {
+      ...stubBoclipsSecurity,
+      hasRole: (role) => role === "BOCLIPS_WEB_APP_DEMO",
+    };
+
+    const wrapper = render(
+      <MemoryRouter initialEntries={['/cart']}>
+        <App
+          apiClient={fakeClient}
+          boclipsSecurity={security}
+          reactQueryClient={createReactQueryClient()}
+        />
+      </MemoryRouter>,
+    );
+
+    expect(await wrapper.findByText('Page not found!')).toBeVisible();
   });
 
   describe('interacting with additional services', () => {

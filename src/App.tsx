@@ -115,14 +115,29 @@ const App = ({
                     </Route>
                     <Route exact path="/cart">
                       <Helmet title="Cart" />
-                      <CartView />
+                      <WithValidRoles
+                        fallback={<AccessDeniedView />}
+                        roles={['ROLE_BOCLIPS_WEB_APP']}
+                      >
+                        <CartView />
+                      </WithValidRoles>
                     </Route>
                     <Route exact path="/orders">
                       <Helmet title="Orders" />
-                      <OrdersView />
+                      <WithValidRoles
+                        fallback={<AccessDeniedView />}
+                        roles={['ROLE_BOCLIPS_WEB_APP']}
+                      >
+                        <OrdersView />
+                      </WithValidRoles>
                     </Route>
                     <Route exact path="/orders/:id">
-                      <OrderView />
+                      <WithValidRoles
+                        fallback={<AccessDeniedView />}
+                        roles={['ROLE_BOCLIPS_WEB_APP']}
+                      >
+                        <OrderView />
+                      </WithValidRoles>
                     </Route>
                     <Route
                       exact
