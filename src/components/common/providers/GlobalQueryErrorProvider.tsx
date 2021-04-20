@@ -12,6 +12,7 @@ const queryClientContext = createContext<{ isError: boolean }>({
 
 export const GlobalQueryErrorProvider = ({ children }: Props) => {
   const isError = useProvideError();
+
   return (
     <queryClientContext.Provider value={{ isError }}>
       {children}

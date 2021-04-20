@@ -11,7 +11,7 @@ interface Props {
 export const WithValidRoles = ({ children, fallback, roles }: Props) => {
   const security = useBoclipsSecurity();
 
-  if (roles.every((role) => security.hasRole(role))) {
+  if (roles.some((role) => security.hasRole(role))) {
     return <>{children}</>;
   }
 

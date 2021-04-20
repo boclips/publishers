@@ -20,6 +20,7 @@ module.exports = merge(common, {
     historyApiFallback: true,
     port: 9000,
     hot: true,
+    open: true,
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: '[name].css', ignoreOrder: true }),

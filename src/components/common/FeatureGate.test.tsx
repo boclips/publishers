@@ -49,4 +49,68 @@ describe(`FeatureGate`, () => {
       expect(screen.queryByText('I am hidden')).not.toBeInTheDocument();
     });
   });
+
+  it(`hides component when link not present`, async () => {
+    const fakeClient = new FakeBoclipsClient();
+    fakeClient.links.cart = null;
+
+    const client = new QueryClient();
+
+    render(
+      <BoclipsClientProvider client={fakeClient}>
+        <QueryClientProvider client={client}>
+          <div>hi</div>
+          <FeatureGate linkName="cart">
+            <div>I am hidden</div>
+          </FeatureGate>
+        </QueryClientProvider>
+      </BoclipsClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText('I am hidden')).not.toBeInTheDocument();
+    });
+  });
+
+  it(`shows component when link present`, async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    const client = new QueryClient();
+
+    render(
+      <BoclipsClientProvider client={fakeClient}>
+        <QueryClientProvider client={client}>
+          <div>hi</div>
+          <FeatureGate linkName="placeOrder">
+            <div>I am hidden</div>
+          </FeatureGate>
+        </QueryClientProvider>
+      </BoclipsClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText('I am hidden')).toBeInTheDocument();
+    });
+  });
+
+  it(`shows component if null link provided`, async () => {
+    const fakeClient = new FakeBoclipsClient();
+
+    const client = new QueryClient();
+
+    render(
+      <BoclipsClientProvider client={fakeClient}>
+        <QueryClientProvider client={client}>
+          <div>hi</div>
+          <FeatureGate linkName={null}>
+            <div>I am hidden</div>
+          </FeatureGate>
+        </QueryClientProvider>
+      </BoclipsClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText('I am hidden')).toBeInTheDocument();
+    });
+  });
 });
