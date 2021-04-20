@@ -21,13 +21,14 @@ export const VideoCardButtons = ({ video }: VideoCardButtonsProps) => {
         video={video}
         appcueEvent={AppcuesEvent.COPY_LINK_FROM_SEARCH_RESULTS}
       />
-
-      <AddToCartButton
-        video={video}
-        key="cart-button"
-        width="148px"
-        appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
-      />
+      <FeatureGate linkName="cart">
+        <AddToCartButton
+          video={video}
+          key="cart-button"
+          width="148px"
+          appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_SEARCH_RESULTS}
+        />
+      </FeatureGate>
     </div>
   );
 };

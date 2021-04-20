@@ -8,6 +8,7 @@ import { useBoclipsSecurity } from 'src/components/common/providers/BoclipsSecur
 import { Constants } from 'src/AppConstants';
 import { AppcuesEvent } from 'src/types/AppcuesEvent';
 import AnalyticsFactory from 'src/services/analytics/AnalyticsFactory';
+import { FeatureGate } from 'src/components/common/FeatureGate';
 import s from './style.module.less';
 
 export const AccountButton = () => {
@@ -72,11 +73,14 @@ export const AccountButton = () => {
             {data.firstName} {data.lastName}
           </div>
           <div className="text-xs text-gray-800">{data.email}</div>
-          <div className="pt-4 text-sm">
-            <Link onClick={ordersOpenedEvent} to="/orders">
-              Your orders
-            </Link>
-          </div>
+          <FeatureGate linkName="orders">
+            <div className="pt-4 text-sm">
+              <Link onClick={ordersOpenedEvent} to="/orders">
+                Your orders
+              </Link>
+            </div>
+          </FeatureGate>
+
           <div className="pt-1 text-sm">
             <button
               type="button"

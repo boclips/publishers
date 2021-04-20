@@ -3,6 +3,7 @@ import CartButton from 'src/components/cartButton/CartButton';
 import c from 'classnames';
 import { AccountButton } from 'src/components/accountButton/AccountButton';
 import Logo from 'src/components/logo/Logo';
+import { FeatureGate } from 'src/components/common/FeatureGate';
 import { Search } from '../searchBar/SearchBar';
 import s from './navbar.module.less';
 
@@ -28,7 +29,9 @@ const Navbar = (
       )}
       <div className="col-start-20 col-end-25 flex h-full justify-end">
         <AccountButton />
-        <CartButton />
+        <FeatureGate linkName="cart">
+          <CartButton />
+        </FeatureGate>
       </div>
     </nav>
   );
