@@ -14,6 +14,7 @@ import ScrollToTop from 'src/hooks/scrollToTop';
 import { Helmet } from 'react-helmet';
 import { BoclipsSecurity } from 'boclips-js-security/dist/BoclipsSecurity';
 import { WithValidRoles } from 'src/components/common/errors/WithValidRoles';
+import { ROLES } from 'src/types/Roles';
 import { BoclipsClientProvider } from './components/common/providers/BoclipsClientProvider';
 import { BoclipsSecurityProvider } from './components/common/providers/BoclipsSecurityProvider';
 import Appcues from './services/analytics/Appcues';
@@ -48,7 +49,6 @@ const ErrorView = lazy(() => import('src/views/error/ErrorView'));
 const NotFound = lazy(() => import('src/views/notFound/NotFound'));
 
 const FallbackView = lazy(() => import('src/views/fallback/FallbackView'));
-
 const AccessDeniedView = lazy(
   () => import('src/views/accessDenied/AccessDenied'),
 );
@@ -100,7 +100,7 @@ const App = ({
               <JSErrorBoundary fallback={<FallbackView />}>
                 <WithValidRoles
                   fallback={<AccessDeniedView />}
-                  roles={['ROLE_BOCLIPS_WEB_APP', 'ROLE_BOCLIPS_WEB_APP_DEMO']}
+                  roles={[ROLES.BOCLIPS_WEB_APP, ROLES.BOCLIPS_WEB_APP_DEMO]}
                 >
                   <Helmet title="Boclips" />
                   <Switch>
@@ -117,7 +117,7 @@ const App = ({
                       <Helmet title="Cart" />
                       <WithValidRoles
                         fallback={<AccessDeniedView />}
-                        roles={['ROLE_BOCLIPS_WEB_APP']}
+                        roles={[ROLES.BOCLIPS_WEB_APP]}
                       >
                         <CartView />
                       </WithValidRoles>
@@ -126,7 +126,7 @@ const App = ({
                       <Helmet title="Orders" />
                       <WithValidRoles
                         fallback={<AccessDeniedView />}
-                        roles={['ROLE_BOCLIPS_WEB_APP']}
+                        roles={[ROLES.BOCLIPS_WEB_APP]}
                       >
                         <OrdersView />
                       </WithValidRoles>
@@ -134,7 +134,7 @@ const App = ({
                     <Route exact path="/orders/:id">
                       <WithValidRoles
                         fallback={<AccessDeniedView />}
-                        roles={['ROLE_BOCLIPS_WEB_APP']}
+                        roles={[ROLES.BOCLIPS_WEB_APP]}
                       >
                         <OrderView />
                       </WithValidRoles>

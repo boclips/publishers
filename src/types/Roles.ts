@@ -1,0 +1,6 @@
+export type Role = 'ROLE_BOCLIPS_WEB_APP' | 'ROLE_BOCLIPS_WEB_APP_DEMO';
+
+export const ROLES: { [key: string]: Role } = {
+  BOCLIPS_WEB_APP: 'ROLE_BOCLIPS_WEB_APP',
+  BOCLIPS_WEB_APP_DEMO: 'ROLE_BOCLIPS_WEB_APP_DEMO',
+};

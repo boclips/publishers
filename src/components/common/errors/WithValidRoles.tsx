@@ -1,6 +1,6 @@
 import React from 'react';
 import { useBoclipsSecurity } from 'src/components/common/providers/BoclipsSecurityProvider';
-import { Role } from 'src/types/Role';
+import { Role } from 'src/types/Roles';
 
 interface Props {
   children: React.ReactNode;
