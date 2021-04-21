@@ -51,6 +51,38 @@ describe('account button', () => {
     });
   });
 
+  it('does not contain your orders link in tooltip when user does not have userOrders link', async () => {
+    const fakeClient = new FakeBoclipsClient();
+    const user = UserFactory.sample({
+      id: '123',
+      firstName: 'yo',
+      lastName: 'yo',
+      email: 'yoyo@ma.com',
+    });
+    fakeClient.users.insertCurrentUser(user);
+    fakeClient.links.userOrders = null;
+
+    const navbar = render(
+      <BoclipsSecurityProvider boclipsSecurity={stubBoclipsSecurity}>
+        <BoclipsClientProvider client={fakeClient}>
+          <Navbar />
+        </BoclipsClientProvider>
+        ,
+      </BoclipsSecurityProvider>,
+    );
+
+    expect(await navbar.findByText('Account')).toBeInTheDocument();
+
+    fireEvent.click(navbar.getByText('Account'));
+
+    await waitFor(() => {
+      expect(navbar.getByText('yo yo')).toBeInTheDocument();
+      expect(navbar.getByText('yoyo@ma.com')).toBeInTheDocument();
+      expect(navbar.queryByText('Your orders')).toBeNull();
+      expect(navbar.getByText('Log out')).toBeInTheDocument();
+    });
+  });
+
   /**
    * I'm not sure this actually tests anything.
    * Ideally we'd test that we'd actually get back to the home page, somehow.

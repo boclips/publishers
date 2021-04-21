@@ -73,7 +73,7 @@ export const AccountButton = () => {
             {data.firstName} {data.lastName}
           </div>
           <div className="text-xs text-gray-800">{data.email}</div>
-          <FeatureGate linkName="orders">
+          <FeatureGate linkName="userOrders">
             <div className="pt-4 text-sm">
               <Link onClick={ordersOpenedEvent} to="/orders">
                 Your orders
