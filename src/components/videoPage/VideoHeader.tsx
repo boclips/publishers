@@ -15,7 +15,7 @@ interface Props {
 export const VideoHeader = ({ video }: Props) => {
   return (
     <>
-      <div className="text-lg font-medium text-gray-900 mb-2">
+      <div className="text-2xl font-bold text-gray-900 mb-2">
         {video?.title}
       </div>
       <div className="font-extralight mb-1 text-gray-800">{`ID: ${video?.id}`}</div>
