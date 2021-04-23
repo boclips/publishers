@@ -43,11 +43,13 @@ export const VideoHeader = ({ video }: Props) => {
           width="50%"
           appcueEvent={AppcuesEvent.COPY_LINK_FROM_VIDEO_PAGE}
         />
-        <AddToCartButton
-          video={video}
-          width="50%"
-          appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_VIDEO_PAGE}
-        />
+        <FeatureGate linkName="cart">
+          <AddToCartButton
+            video={video}
+            width="50%"
+            appcueEvent={AppcuesEvent.ADD_TO_CART_FROM_VIDEO_PAGE}
+          />
+        </FeatureGate>
       </div>
     </>
   );

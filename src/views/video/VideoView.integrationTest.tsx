@@ -117,6 +117,16 @@ describe('Video View', () => {
     ).toBeNull();
   });
 
+  it(`does not display add to cart button when user does not have cart link`, async () => {
+    fakeClient.links.cart = null;
+    fakeClient.videos.insertVideo(exampleVideo);
+
+    const wrapper = renderVideoView(['/videos/video-id']);
+
+    expect(await wrapper.findByText('ID: video-id')).toBeVisible();
+    expect(wrapper.queryByText('Add to cart')).toBeNull();
+  });
+
   it('copy to clipboard button is visible in the page', async () => {
     const video = VideoFactory.sample({
       id: 'video-id',
